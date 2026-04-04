@@ -1,0 +1,11 @@
+<svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="630" fill="#316148"/>
+  <polygon points="0,441 480,630 0,630" fill="#AAF870" opacity="0.9"/>
+  <polygon points="1200,0 780,0 1200,220" fill="#AAF870" opacity="0.9"/>
+  <text x="80" y="200" font-family="system-ui,sans-serif" font-size="96" font-weight="900" fill="#AAF870" letter-spacing="-2">ECM.DEV</text>
+  <text x="80" y="290" font-family="system-ui,sans-serif" font-size="38" font-weight="600" fill="#ffffff">Content Infrastructure</text>
+  <text x="80" y="340" font-family="system-ui,sans-serif" font-size="38" font-weight="600" fill="#ffffff">for the AI Enterprise</text>
+  <text x="80" y="430" font-family="system-ui,sans-serif" font-size="22" fill="rgba(255,255,255,0.7)">Operating systems, governance frameworks, and structured</text>
+  <text x="80" y="462" font-family="system-ui,sans-serif" font-size="22" fill="rgba(255,255,255,0.7)">workflows that turn content into a reliable, AI-ready asset.</text>
+  <text x="80" y="555" font-family="system-ui,sans-serif" font-size="24" font-weight="700" fill="#AAF870">ecm.dev</text>
+</svg>
