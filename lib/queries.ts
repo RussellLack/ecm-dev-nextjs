@@ -79,3 +79,29 @@ export async function getPost(slug: string) {
     { slug }
   );
 }
+
+// All guides (for /guides page)
+export async function getGuides() {
+  return client.fetch(
+    `*[_type == "guide"] | order(seriesNumber asc, guideNumber asc) {
+      _id, title, subtitle, slug, series, seriesNumber, guideNumber, excerpt, tags, mainImage
+    }`
+  );
+}
+
+// Single guide
+export async function getGuide(slug: string) {
+  return client.fetch(
+    `*[_type == "guide" && slug.current == $slug][0]{
+      _id, title, subtitle, slug, series, seriesNumber, guideNumber, excerpt, tags, mainImage, body
+    }`,
+    { slug }
+  );
+}
+
+// All guide slugs (for generateStaticParams)
+export async function getAllGuideSlugs() {
+  return client.fetch(
+    `*[_type == "guide"]{ "slug": slug.current }`
+  );
+}
