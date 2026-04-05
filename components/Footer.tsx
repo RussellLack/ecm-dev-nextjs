@@ -101,9 +101,27 @@ export default function Footer() {
         </div>
 
         {/* Divider */}
-        <div className="border-t border-white/10 pt-6">
-          <p className="text-center text-white/40 text-sm">
+        <div className="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-2">
+          <p className="text-white/40 text-sm">
             &copy; {new Date().getFullYear()} ECM.DEV. All rights reserved.
+          </p>
+          <p className="text-white/30 text-xs font-barlow">
+            Web design by{" "}
+            <a
+              href="https://ecm.dev"
+              className="text-white/50 hover:text-ecm-lime transition-colors"
+            >
+              ECM.DEV
+            </a>
+            {" · "}Built with{" "}
+            <a
+              href="https://www.sanity.io"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-white/50 hover:text-ecm-lime transition-colors"
+            >
+              Sanity.io
+            </a>
           </p>
         </div>
       </div>
