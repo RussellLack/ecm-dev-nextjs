@@ -62,6 +62,13 @@ export default defineType({
       options: { hotspot: true },
     }),
     defineField({
+      name: "relatedGuides",
+      title: "Related Guides",
+      description: "Internal linking suggestions — guides that contextually relate to this one",
+      type: "array",
+      of: [{ type: "reference", to: [{ type: "guide" }] }],
+    }),
+    defineField({
       name: "body",
       title: "Body",
       type: "array",
@@ -82,7 +89,7 @@ export default defineType({
       return {
         title,
         media,
-        subtitle: series ? `${series} — Guide ${guideNumber ?? ""}` : "No series",
+        subtitle: series ? `${series} â Guide ${guideNumber ?? ""}` : "No series",
       };
     },
   },
