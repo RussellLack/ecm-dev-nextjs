@@ -6,8 +6,6 @@ import { getPost } from "@/lib/queries";
 import { urlFor } from "@/lib/sanity";
 import { notFound } from "next/navigation";
 
-export const revalidate = 60;
-
 export async function generateMetadata({
   params,
 }: {
@@ -131,7 +129,7 @@ export default async function PostPage({
 
   return (
     <>
-      {/* Hero with image */}
+      {/* Hero with tags + title */}
       <section className="bg-ecm-green py-16 lg:py-24">
         <div className="max-w-3xl mx-auto px-6 text-center">
           {post.tags?.length > 0 && (
@@ -181,6 +179,29 @@ export default async function PostPage({
           )}
         </div>
       </article>
+
+      {/* Tags — end of article */}
+      {post.tags?.length > 0 && (
+        <section className="pb-10">
+          <div className="max-w-3xl mx-auto px-6">
+            <div className="border-t border-gray-100 pt-8">
+              <p className="text-ecm-gray text-xs font-barlow font-semibold uppercase tracking-widest mb-3">
+                Filed under
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {post.tags.map((tag: string, i: number) => (
+                  <span
+                    key={i}
+                    className="inline-block border border-ecm-green/30 text-ecm-green text-xs font-barlow font-semibold px-4 py-1.5 rounded-full hover:bg-ecm-green hover:text-white transition-colors cursor-default"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Back to blog */}
       <section className="pb-16">
