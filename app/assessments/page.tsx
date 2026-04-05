@@ -54,7 +54,7 @@ export default async function AssessmentsPage() {
           <div className="space-y-6 mb-12">
 
             {/* Process Assessment */}
-            <div className="group relative bg-gray-50 border border-gray-100 rounded-2xl overflow-hidden hover:shadow-lg transition-all">
+            <div id="process" className="group relative bg-gray-50 border border-gray-100 rounded-2xl overflow-hidden hover:shadow-lg transition-all scroll-mt-24">
               <div className="p-8 sm:p-10 lg:p-12">
                 <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
                   <div className="flex-1">
@@ -99,7 +99,7 @@ export default async function AssessmentsPage() {
               </div>
               <div className="h-1 bg-ecm-lime w-0 group-hover:w-full transition-all duration-500" />
             </div>
-            <div className="group relative bg-gray-50 border border-gray-100 rounded-2xl overflow-hidden hover:shadow-lg transition-all">
+            <div id="lead-magnet" className="group relative bg-gray-50 border border-gray-100 rounded-2xl overflow-hidden hover:shadow-lg transition-all scroll-mt-24">
               <div className="p-8 sm:p-10 lg:p-12">
                 <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
                   <div className="flex-1">
@@ -150,7 +150,8 @@ export default async function AssessmentsPage() {
               {assessments.map((a: any) => (
                 <div
                   key={a._id}
-                  className="group relative bg-gray-50 border border-gray-100 rounded-2xl overflow-hidden hover:shadow-lg transition-all"
+                  id={a.slug?.current}
+                  className="group relative bg-gray-50 border border-gray-100 rounded-2xl overflow-hidden hover:shadow-lg transition-all scroll-mt-24"
                 >
                   <div className="p-8 sm:p-10 lg:p-12">
                     <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
