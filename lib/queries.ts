@@ -93,7 +93,10 @@ export async function getGuides() {
 export async function getGuide(slug: string) {
   return client.fetch(
     `*[_type == "guide" && slug.current == $slug][0]{
-      _id, title, subtitle, slug, series, seriesNumber, guideNumber, excerpt, tags, mainImage, body
+      _id, title, subtitle, slug, series, seriesNumber, guideNumber, excerpt, tags, mainImage, body,
+      relatedGuides[]->{
+        _id, title, subtitle, slug, series, guideNumber, excerpt, tags, mainImage
+      }
     }`,
     { slug }
   );
