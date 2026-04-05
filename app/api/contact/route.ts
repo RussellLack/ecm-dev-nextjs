@@ -36,7 +36,7 @@ export async function POST(request: Request) {
       },
       body: JSON.stringify({
         from: process.env.EMAIL_FROM || "ECM.DEV Contact <onboarding@resend.dev>",
-        to: "info@ecm.dev",
+        to: "rl@ecm.dev",
         reply_to: email,
         subject: `New enquiry from ${firstName} ${lastName}`.trim(),
         html: [

@@ -79,7 +79,7 @@ export default function Footer() {
               Connect
             </h4>
             <a
-              href="mailto:info@ecm.dev"
+              href="mailto:rl@ecm.dev"
               className="inline-block bg-ecm-lime text-ecm-green font-barlow font-semibold text-sm px-6 py-2.5 rounded-full hover:bg-ecm-lime-hover transition-colors mb-4"
             >
               EMAIL US
