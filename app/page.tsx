@@ -359,23 +359,51 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ─── TESTIMONIALS MARQUEE ─── */}
-      <section className="bg-ecm-green py-3 overflow-hidden">
-        <div className="animate-marquee whitespace-nowrap">
-          <span className="text-ecm-lime font-bold text-xl lg:text-2xl mx-8" style={{ fontFamily: "'Courier New', Courier, monospace" }}>
-            AI runs on content.
-          </span>
-          <span className="text-ecm-lime font-bold text-xl lg:text-2xl mx-8" style={{ fontFamily: "'Courier New', Courier, monospace" }}>
-            AI runs on content.
-          </span>
-          <span className="text-ecm-lime font-bold text-xl lg:text-2xl mx-8" style={{ fontFamily: "'Courier New', Courier, monospace" }}>
-            AI runs on content.
-          </span>
-          <span className="text-ecm-lime font-bold text-xl lg:text-2xl mx-8" style={{ fontFamily: "'Courier New', Courier, monospace" }}>
-            AI runs on content.
-          </span>
-        </div>
-      </section>
+      {/* ─── TICKER TAPE ─── */}
+      {(() => {
+        const truths = [
+          "Content without structure is noise.",
+          "Broken inputs. Broken outputs. Always.",
+          "Unfindable information doesn't exist.",
+          "Automation reveals unclear thinking fast.",
+          "Your content is a signal.",
+          "The bottleneck is the workflow.",
+          "Metadata is your intelligence layer.",
+          "Process debt compounds silently.",
+          "Every manual step is a risk.",
+          "Content ops is the edge.",
+          "AI without governance is chaos.",
+          "Information flows before AI wins.",
+          "Content that can't scale, won't.",
+          "Taxonomy is strategy. Not admin.",
+          "Automation exposes undocumented decisions.",
+          "Good architecture is invisible.",
+          "Poor information hides in decisions.",
+          "Content friction is customer friction.",
+          "AI exposes the lack of clarity.",
+          "Localisation is system design.",
+          "Content is infrastructure now.",
+          "Structure today. Intelligence tomorrow.",
+          "Transformation fails at the content layer.",
+          "Unstructured data is just potential.",
+          "Knowledge is only as good as retrieval.",
+          "Automate clarity. Not confusion.",
+          "Velocity without governance is liability.",
+          "Information management is now adaptive.",
+          "You don't have a content problem.",
+          "Intelligent organisations learn from content.",
+        ];
+        return (
+          <section style={{ background: "rgb(49,97,72)", padding: "12px 0", overflow: "hidden", width: "100%" }}>
+            <style>{`.ecm-ticker-inner{display:inline-block;white-space:nowrap;animation:ecm-ticker 200s linear infinite}.ecm-ticker-item{font-family:"Courier New",Courier,monospace;font-weight:bold;font-size:1.2rem;color:#AAF870;display:inline-block;margin:0 120px}.ecm-ticker-sep{font-family:"Courier New",Courier,monospace;font-size:1.2rem;color:#AAF870;opacity:0.4}@keyframes ecm-ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}`}</style>
+            <div className="ecm-ticker-inner">
+              {[...truths, ...truths].map((t, i) => (
+                <span key={i}><span className="ecm-ticker-item">{t}</span><span className="ecm-ticker-sep">✦</span></span>
+              ))}
+            </div>
+          </section>
+        );
+      })()}
 
       {/* ─── TESTIMONIALS CAROUSEL ─── */}
       <TestimonialsClient testimonials={testimonials} />
