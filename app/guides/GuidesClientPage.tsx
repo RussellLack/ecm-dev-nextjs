@@ -3,6 +3,7 @@
 import { useMemo } from "react";
 import Link from "next/link";
 import { urlFor } from "@/lib/sanity";
+import GuideIllustration from "@/components/guides/GuideIllustration";
 
 type Guide = {
   _id: string;
@@ -100,14 +101,10 @@ export default function GuidesClientPage({ guides }: { guides: Guide[] }) {
                         loading="lazy"
                       />
                     ) : (
-                      <div className="flex flex-col items-center justify-center gap-1">
-                        <span className="text-ecm-green/20 font-barlow font-bold text-5xl leading-none">
-                          {String(guide.guideNumber ?? "").padStart(2, "0")}
-                        </span>
-                        <span className="text-ecm-green/30 font-barlow text-xs uppercase tracking-widest">
-                          {guide.series}
-                        </span>
-                      </div>
+                      <GuideIllustration
+                        slug={guide.slug?.current}
+                        guideNumber={guide.guideNumber}
+                      />
                     )}
                     {/* Guide number badge */}
                     <span className="absolute top-3 left-3 bg-ecm-green text-ecm-lime text-[10px] font-barlow font-bold px-2 py-0.5 rounded-full">
