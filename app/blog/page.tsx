@@ -9,10 +9,8 @@ export const metadata: Metadata = {
     "Insights on content operations, CMS architecture, AI-driven workflows, and enterprise content strategy from ECM.DEV.",
 };
 
-export const revalidate = 60;
-
 export default async function BlogPage() {
-  const blogPosts = await getBlogPosts(50).catch(() => null);
+  const blogPosts = await getBlogPosts();
 
   return (
     <>
@@ -39,25 +37,25 @@ export default async function BlogPage() {
               <Link
                 key={post._id || i}
                 href={`/post/${post.slug?.current}`}
-                className="bg-gray-50 rounded-xl overflow-hidden hover:shadow-lg transition-shadow group border border-gray-100"
+                className="bg-gray-50 rounded-xl overflow-hidden hover:shadow-lg transition-shadow group border border-gray-100 flex flex-col"
               >
                 <div className="h-36 overflow-hidden bg-gray-50 flex items-center justify-center">
                   {post.mainImage ? (
                     <img
-                      src={urlFor(post.mainImage).width(300).url()}
+                      src={urlFor(post.mainImage).width(400).height(225).fit("crop").url()}
                       alt={post.title || "Blog post image"}
-                      className="w-full h-full object-contain object-top"
+                      className="w-full h-full object-cover"
                       loading="lazy"
                     />
                   ) : (
                     <div className="w-12 h-12 bg-ecm-green/20 rounded-lg" />
                   )}
                 </div>
-                <div className="p-4">
+                <div className="p-4 flex flex-col flex-1">
                   <h2 className="text-ecm-green font-barlow font-semibold text-sm mb-2 group-hover:text-ecm-green-dark transition-colors leading-snug">
                     {post.title}
                   </h2>
-                  <p className="text-ecm-gray text-xs">
+                  <p className="text-ecm-gray text-xs mb-3">
                     {post.publishedAt
                       ? new Date(post.publishedAt).toLocaleDateString("en-GB", {
                           year: "numeric",
@@ -66,6 +64,18 @@ export default async function BlogPage() {
                         })
                       : ""}
                   </p>
+                  {post.tags?.length > 0 && (
+                    <div className="flex flex-wrap gap-1 mt-auto pt-3 border-t border-gray-100">
+                      {post.tags.slice(0, 3).map((tag: string, j: number) => (
+                        <span
+                          key={j}
+                          className="inline-block border border-ecm-green/25 text-ecm-green text-[10px] font-barlow font-semibold px-2 py-0.5 rounded-full group-hover:border-ecm-green/50 transition-colors"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </Link>
             ))}
