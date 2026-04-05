@@ -3,6 +3,7 @@ import service from "./service";
 import servicePackage from "./servicePackage";
 import caseStudy from "./caseStudy";
 import post from "./post";
+import guide from "./guide";
 import assessment from "./assessment";
 import maturityDimension from "./maturityDimension";
 import maturityBand from "./maturityBand";
@@ -15,6 +16,7 @@ export const schemaTypes = [
   servicePackage,
   caseStudy,
   post,
+  guide,
   // Assessment system
   assessment,
   maturityDimension,
