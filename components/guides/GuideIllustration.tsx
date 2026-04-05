@@ -1,1336 +1,1584 @@
-import React from "react";
+import React from 'react';
 
-const G = "#316148";
-const L = "#AAF870";
-// const GF = "rgba(49,97,72,0.05)";
-// const LF = "rgba(170,248,112,0.12)";
-const W10 = "rgba(255,255,255,0.10)";
-const W20 = "rgba(255,255,255,0.20)";
-const G10 = "rgba(49,97,72,0.10)";
-const G20 = "rgba(49,97,72,0.20)";
-const G30 = "rgba(49,97,72,0.30)";
+const G = '#316148';
+const L = '#AAF870';
 
-function Illus({ children }: { children: React.ReactNode }) {
-  return (
-    <svg
-      viewBox="0 0 280 144"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className="w-full h-full"
-    >
-      {children}
-    </svg>
-  );
-}
-
-// ─── Series 1: Foundations ────────────────────────────────────────────────────
-
-const ContentInfrastructureImperative = () => (
-  <Illus>
-    {/* Stacked infrastructure layers, bottom cracked */}
-    {[0, 1, 2, 3].map((i) => (
-      <rect
-        key={i}
-        x={50}
-        y={30 + i * 20}
-        width={180}
-        height={14}
-        rx={3}
-        stroke={i === 3 ? L : G}
-        strokeWidth={1.2}
-        fill={i === 3 ? "rgba(170,248,112,0.08)" : G10}
-      />
-    ))}
-    {/* layer labels */}
-    {["Delivery", "Processing", "Storage", "Foundation"].map((label, i) => (
-      <text key={label} x={140} y={40 + i * 20} textAnchor="middle" fill={i === 3 ? L : G} fontSize={8} fontFamily="sans-serif" opacity={0.7}>{label}</text>
-    ))}
-    {/* Crack in bottom layer */}
-    <polyline points="90,101 102,107 112,100 124,108" stroke={L} strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
-    {/* Arrows going up */}
-    {[80, 140, 200].map((x) => (
-      <line key={x} x1={x} y1={118} x2={x} y2={108} stroke={G} strokeWidth={1} markerEnd="url(#arr)" opacity={0.4} />
-    ))}
+export const ContentInfrastructureImperative = () => (
+  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="40" y="30" width="200" height="84" stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.04)`} rx="2" />
+    <g stroke={G} strokeWidth="1" fill="none" opacity="0.5">
+      <line x1="50" y1="30" x2="50" y2="114" />
+      <line x1="100" y1="30" x2="100" y2="114" />
+      <line x1="150" y1="30" x2="150" y2="114" />
+      <line x1="200" y1="30" x2="200" y2="114" />
+    </g>
+    <g stroke={L} strokeWidth="1.5" fill="none">
+      <path d="M 60 60 L 90 60" markerEnd="url(#arrowL)" />
+      <path d="M 110 75 L 140 75" markerEnd="url(#arrowL)" />
+      <path d="M 160 90 L 190 90" markerEnd="url(#arrowL)" />
+    </g>
+    <circle cx="70" cy="50" r="4" fill={L} />
+    <circle cx="120" cy="65" r="4" fill={L} />
+    <circle cx="170" cy="80" r="4" fill={L} />
     <defs>
-      <marker id="arr" markerWidth="4" markerHeight="4" refX="2" refY="2" orient="auto">
-        <path d="M0,0 L4,2 L0,4 Z" fill={G} opacity={0.5} />
+      <marker id="arrowL" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L0,6 L9,3 z" fill={L} />
       </marker>
     </defs>
-  </Illus>
+  </svg>
 );
 
-const ContentGovernanceAgeOfAI = () => (
-  <Illus>
-    {/* Shield */}
-    <path
-      d="M140,22 L172,36 L172,74 C172,94 140,108 140,108 C140,108 108,94 108,74 L108,36 Z"
-      stroke={G}
-      strokeWidth={1.5}
-      fill={G10}
-    />
-    {/* Neural nodes inside shield */}
-    {[
-      [140, 58], [124, 70], [156, 70], [132, 84], [148, 84],
-    ].map(([cx, cy], i) => (
-      <circle key={i} cx={cx} cy={cy} r={4} stroke={L} strokeWidth={1.2} fill="rgba(170,248,112,0.15)" />
-    ))}
-    {/* Neural connections */}
-    <line x1={140} y1={58} x2={124} y2={70} stroke={L} strokeWidth={0.8} opacity={0.6} />
-    <line x1={140} y1={58} x2={156} y2={70} stroke={L} strokeWidth={0.8} opacity={0.6} />
-    <line x1={124} y1={70} x2={132} y2={84} stroke={L} strokeWidth={0.8} opacity={0.6} />
-    <line x1={156} y1={70} x2={148} y2={84} stroke={L} strokeWidth={0.8} opacity={0.6} />
-    <line x1={124} y1={70} x2={148} y2={84} stroke={G} strokeWidth={0.6} opacity={0.3} />
-  </Illus>
-);
-
-const ContentLifecycleRedesigned = () => (
-  <Illus>
-    {/* Circular lifecycle with 4 phase nodes */}
-    <circle cx={140} cy={72} r={36} stroke={G20} strokeWidth={1} fill="none" strokeDasharray="4 3" />
-    {[
-      [140, 36, "Plan"],
-      [176, 72, "Create"],
-      [140, 108, "Deliver"],
-      [104, 72, "Optimise"],
-    ].map(([cx, cy, label], i) => (
-      <g key={i}>
-        <circle cx={cx as number} cy={cy as number} r={10} stroke={i === 0 ? L : G} strokeWidth={1.2} fill={i === 0 ? "rgba(170,248,112,0.15)" : G10} />
-        <text x={cx as number} y={(cy as number) + (i === 0 ? -15 : i === 2 ? 20 : 0)} textAnchor={i === 1 ? "start" : i === 3 ? "end" : "middle"} dx={i === 1 ? 14 : i === 3 ? -14 : 0} dy={i === 1 || i === 3 ? 4 : 0} fill={G} fontSize={7.5} fontFamily="sans-serif" opacity={0.7}>{label as string}</text>
-      </g>
-    ))}
-    {/* Curved arrows between nodes */}
-    <path d="M150,38 A40,40 0 0,1 174,62" stroke={G} strokeWidth={1} fill="none" markerEnd="url(#arrG)" opacity={0.5} />
-    <path d="M174,82 A40,40 0 0,1 150,106" stroke={G} strokeWidth={1} fill="none" markerEnd="url(#arrG)" opacity={0.5} />
-    <path d="M130,106 A40,40 0 0,1 106,82" stroke={G} strokeWidth={1} fill="none" markerEnd="url(#arrG)" opacity={0.5} />
-    <path d="M106,62 A40,40 0 0,1 130,38" stroke={G} strokeWidth={1} fill="none" markerEnd="url(#arrG)" opacity={0.5} />
+export const ContentGovernanceAgeOfAi = () => (
+  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g stroke={G} strokeWidth="1.2" fill="none">
+      <circle cx="70" cy="72" r="28" />
+      <path d="M 50 50 L 90 94" opacity="0.4" />
+      <path d="M 90 50 L 50 94" opacity="0.4" />
+    </g>
+    <circle cx="70" cy="72" r="8" fill={`rgba(49,97,72,.08)`} />
+    <g stroke={L} strokeWidth="1.5" fill="none">
+      <path d="M 110 40 L 170 40" markerEnd="url(#arrowL2)" />
+      <path d="M 110 72 L 170 72" markerEnd="url(#arrowL2)" />
+      <path d="M 110 104 L 170 104" markerEnd="url(#arrowL2)" />
+    </g>
+    <rect x="175" y="35" width="12" height="12" stroke={L} strokeWidth="1" fill={`rgba(170,248,112,.1)`} />
+    <rect x="175" y="67" width="12" height="12" stroke={L} strokeWidth="1" fill={`rgba(170,248,112,.1)`} />
+    <rect x="175" y="99" width="12" height="12" stroke={L} strokeWidth="1" fill={`rgba(170,248,112,.1)`} />
     <defs>
-      <marker id="arrG" markerWidth="5" markerHeight="5" refX="2.5" refY="2.5" orient="auto">
-        <path d="M0,0 L5,2.5 L0,5 Z" fill={G} opacity={0.5} />
+      <marker id="arrowL2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L0,6 L9,3 z" fill={L} />
       </marker>
     </defs>
-  </Illus>
+  </svg>
 );
 
-const ContentAsOrganisationalIntelligence = () => (
-  <Illus>
-    {/* Head silhouette */}
-    <path
-      d="M140,28 C120,28 108,42 108,58 C108,70 113,78 122,84 L122,96 L158,96 L158,84 C167,78 172,70 172,58 C172,42 160,28 140,28 Z"
-      stroke={G}
-      strokeWidth={1.2}
-      fill={G10}
-    />
-    {/* Radiating data nodes */}
-    {[
-      [140, 52], [128, 60], [152, 60], [134, 72], [146, 72],
-    ].map(([cx, cy], i) => (
-      <circle key={i} cx={cx} cy={cy} r={3.5} stroke={L} strokeWidth={1} fill="rgba(170,248,112,0.2)" />
-    ))}
-    {/* Connections between nodes */}
-    <line x1={140} y1={52} x2={128} y2={60} stroke={L} strokeWidth={0.8} opacity={0.5} />
-    <line x1={140} y1={52} x2={152} y2={60} stroke={L} strokeWidth={0.8} opacity={0.5} />
-    <line x1={128} y1={60} x2={134} y2={72} stroke={L} strokeWidth={0.8} opacity={0.5} />
-    <line x1={152} y1={60} x2={146} y2={72} stroke={L} strokeWidth={0.8} opacity={0.5} />
-    {/* External radiating lines */}
-    {[[-28, -20], [28, -20], [-36, 0], [36, 0], [-20, 20], [20, 20]].map(([dx, dy], i) => (
-      <line key={i} x1={140} y1={60} x2={140 + (dx as number)} y2={60 + (dy as number)} stroke={G} strokeWidth={0.7} opacity={0.25} strokeDasharray="2 2" />
-    ))}
-  </Illus>
+export const ContentLifecycleRedesigned = () => (
+  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="50" cy="72" r="12" stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.08)`} />
+    <circle cx="140" cy="50" r="12" stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.08)`} />
+    <circle cx="140" cy="94" r="12" stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.08)`} />
+    <circle cx="230" cy="72" r="12" stroke={L} strokeWidth="1.2" fill={`rgba(170,248,112,.1)`} />
+    <path d="M 62 72 L 128 50" stroke={G} strokeWidth="1" opacity="0.5" />
+    <path d="M 62 72 L 128 94" stroke={G} strokeWidth="1" opacity="0.5" />
+    <path d="M 152 50 L 218 72" stroke={L} strokeWidth="1.2" opacity="0.6" />
+    <path d="M 152 94 L 218 72" stroke={L} strokeWidth="1.2" opacity="0.6" />
+  </svg>
 );
 
-const BuildingBusinessCaseContentInfrastructure = () => (
-  <Illus>
-    {/* Bar chart */}
-    {[
-      [72, 90, 28, false],
-      [100, 72, 46, false],
-      [128, 54, 64, false],
-      [156, 42, 76, true],
-      [184, 32, 86, true],
-    ].map(([x, y, h, highlight], i) => (
-      <rect key={i} x={x as number} y={y as number} width={20} height={h as number} rx={2} stroke={highlight ? L : G} strokeWidth={1} fill={highlight ? "rgba(170,248,112,0.15)" : G10} />
-    ))}
-    {/* ROI threshold line */}
-    <line x1={56} y1={54} x2={212} y2={54} stroke={L} strokeWidth={1.2} strokeDasharray="5 3" />
-    <text x={214} y={57} fill={L} fontSize={7.5} fontFamily="sans-serif">ROI</text>
-    {/* Baseline */}
-    <line x1={56} y1={118} x2={212} y2={118} stroke={G} strokeWidth={0.8} opacity={0.3} />
-    <text x={57} y={128} fill={G} fontSize={7} fontFamily="sans-serif" opacity={0.5}>Year 1</text>
-    <text x={185} y={128} fill={G} fontSize={7} fontFamily="sans-serif" opacity={0.5}>Year 5</text>
-  </Illus>
+export const ContentAsOrganisationalIntelligence = () => (
+  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g stroke={G} strokeWidth="1.2" fill="none">
+      <path d="M 40 72 L 100 50 L 160 70 L 220 45" strokeLinecap="round" />
+    </g>
+    <g fill={G} opacity="0.6">
+      <circle cx="40" cy="72" r="3" />
+      <circle cx="100" cy="50" r="3" />
+      <circle cx="160" cy="70" r="3" />
+      <circle cx="220" cy="45" r="3" />
+    </g>
+    <g stroke={L} strokeWidth="1.2" fill="none" opacity="0.6">
+      <circle cx="70" cy="100" r="8" />
+      <circle cx="140" cy="100" r="8" />
+      <circle cx="210" cy="100" r="8" />
+    </g>
+    <g fill={L} opacity="0.4">
+      <circle cx="70" cy="100" r="3" />
+      <circle cx="140" cy="100" r="3" />
+      <circle cx="210" cy="100" r="3" />
+    </g>
+  </svg>
 );
 
-// ─── Series 2: Process Architecture ──────────────────────────────────────────
+export const BuildingBusinessCaseContentInfrastructure = () => (
+  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
+      <rect x="30" y="40" width="50" height="28" rx="2" />
+      <rect x="100" y="40" width="50" height="28" rx="2" />
+      <rect x="170" y="40" width="50" height="28" rx="2" />
+    </g>
+    <line x1="80" y1="54" x2="100" y2="54" stroke={G} strokeWidth="1" opacity="0.5" />
+    <line x1="150" y1="54" x2="170" y2="54" stroke={G} strokeWidth="1" opacity="0.5" />
+    <g stroke={L} strokeWidth="1.2" fill="none" opacity="0.6">
+      <path d="M 30 80 L 220 80" />
+      <path d="M 30 95 L 220 95" />
+      <path d="M 30 110 L 220 110" />
+    </g>
+    <circle cx="50" cy="80" r="2" fill={L} />
+    <circle cx="120" cy="95" r="2" fill={L} />
+    <circle cx="190" cy="110" r="2" fill={L} />
+  </svg>
+);
 
-const ProcessArchitectureContentOperations = () => (
-  <Illus>
-    {/* 2×3 process module grid with arrows */}
-    {[
-      [50, 40], [120, 40], [190, 40],
-      [50, 88], [120, 88], [190, 88],
-    ].map(([x, y], i) => (
-      <rect key={i} x={x as number} y={y as number} width={60} height={30} rx={4} stroke={i === 0 ? L : G} strokeWidth={1.2} fill={i === 0 ? "rgba(170,248,112,0.1)" : G10} />
-    ))}
-    {/* Horizontal arrows row 1 */}
-    <line x1={110} y1={55} x2={120} y2={55} stroke={G} strokeWidth={1} markerEnd="url(#arrS)" opacity={0.5} />
-    <line x1={180} y1={55} x2={190} y2={55} stroke={G} strokeWidth={1} markerEnd="url(#arrS)" opacity={0.5} />
-    {/* Horizontal arrows row 2 */}
-    <line x1={110} y1={103} x2={120} y2={103} stroke={G} strokeWidth={1} markerEnd="url(#arrS)" opacity={0.5} />
-    <line x1={180} y1={103} x2={190} y2={103} stroke={G} strokeWidth={1} markerEnd="url(#arrS)" opacity={0.5} />
-    {/* Vertical arrow col 1 */}
-    <line x1={80} y1={70} x2={80} y2={88} stroke={G} strokeWidth={1} markerEnd="url(#arrS)" opacity={0.4} />
+export const ProcessArchitectureContentOperations = () => (
+  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
     <defs>
-      <marker id="arrS" markerWidth="4" markerHeight="4" refX="2" refY="2" orient="auto">
-        <path d="M0,0 L4,2 L0,4 Z" fill={G} opacity={0.5} />
+      <marker id="arrowHead" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L0,6 L9,3 z" fill={G} />
       </marker>
     </defs>
-  </Illus>
+    <g stroke={G} strokeWidth="1.5" fill="none" markerEnd="url(#arrowHead)">
+      <path d="M 20 72 L 70 72" />
+      <path d="M 100 72 L 150 72" />
+      <path d="M 180 72 L 230 72" />
+    </g>
+    <circle cx="35" cy="72" r="6" stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.08)`} />
+    <circle cx="125" cy="72" r="6" stroke={L} strokeWidth="1.2" fill={`rgba(170,248,112,.1)`} />
+    <circle cx="215" cy="72" r="6" stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.08)`} />
+    <g stroke={L} strokeWidth="1" fill="none" opacity="0.4" strokeDasharray="2,2">
+      <path d="M 215 78 Q 170 110 125 85" />
+    </g>
+  </svg>
 );
 
-const ContentBriefAsSystemInput = () => (
-  <Illus>
-    {/* Document → gear → output pipeline */}
-    {/* Document */}
-    <rect x={30} y={50} width={52} height={44} rx={3} stroke={G} strokeWidth={1.2} fill={G10} />
-    <line x1={40} y1={63} x2={72} y2={63} stroke={G} strokeWidth={0.8} opacity={0.4} />
-    <line x1={40} y1={70} x2={72} y2={70} stroke={G} strokeWidth={0.8} opacity={0.4} />
-    <line x1={40} y1={77} x2={62} y2={77} stroke={G} strokeWidth={0.8} opacity={0.4} />
-    <text x={56} y={47} textAnchor="middle" fill={G} fontSize={7.5} fontFamily="sans-serif" opacity={0.6}>Brief</text>
-    {/* Arrow */}
-    <line x1={82} y1={72} x2={108} y2={72} stroke={G} strokeWidth={1} markerEnd="url(#arrP)" opacity={0.5} />
-    {/* Gear */}
-    <circle cx={124} cy={72} r={14} stroke={G} strokeWidth={1.2} fill={G10} />
-    <circle cx={124} cy={72} r={6} stroke={G} strokeWidth={1} fill="none" />
-    {[0, 45, 90, 135, 180, 225, 270, 315].map((deg) => {
-      const rad = (deg * Math.PI) / 180;
-      const x1 = 124 + 10 * Math.cos(rad);
-      const y1 = 72 + 10 * Math.sin(rad);
-      const x2 = 124 + 14 * Math.cos(rad);
-      const y2 = 72 + 14 * Math.sin(rad);
-      return <line key={deg} x1={x1} y1={y1} x2={x2} y2={y2} stroke={G} strokeWidth={2} strokeLinecap="round" />;
-    })}
-    {/* Arrow */}
-    <line x1={138} y1={72} x2={164} y2={72} stroke={G} strokeWidth={1} markerEnd="url(#arrP)" opacity={0.5} />
-    {/* Output document */}
-    <rect x={164} y={50} width={52} height={44} rx={3} stroke={L} strokeWidth={1.2} fill="rgba(170,248,112,0.1)" />
-    <line x1={174} y1={63} x2={206} y2={63} stroke={L} strokeWidth={0.8} opacity={0.4} />
-    <line x1={174} y1={70} x2={206} y2={70} stroke={L} strokeWidth={0.8} opacity={0.4} />
-    <line x1={174} y1={77} x2={196} y2={77} stroke={L} strokeWidth={0.8} opacity={0.4} />
-    <text x={190} y={47} textAnchor="middle" fill={L} fontSize={7.5} fontFamily="sans-serif" opacity={0.7}>Output</text>
+export const ContentBriefAsSystemInput = () => (
+  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
+      <rect x="20" y="50" width="45" height="48" rx="2" />
+      <line x1="20" y1="60" x2="65" y2="60" opacity="0.5" />
+      <line x1="20" y1="70" x2="65" y2="70" opacity="0.5" />
+      <line x1="20" y1="80" x2="65" y2="80" opacity="0.5" />
+      <line x1="20" y1="90" x2="50" y2="90" opacity="0.5" />
+    </g>
+    <g stroke={L} strokeWidth="1.5" fill="none">
+      <path d="M 75 74 L 120 74" markerEnd="url(#arrow1)" />
+    </g>
+    <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
+      <circle cx="150" cy="74" r="18" />
+      <path d="M 140 68 L 160 68 M 140 74 L 160 74 M 140 80 L 160 80" opacity="0.4" />
+    </g>
+    <g stroke={L} strokeWidth="1.5" fill="none">
+      <path d="M 170 74 L 215 74" markerEnd="url(#arrow1)" />
+    </g>
+    <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
+      <rect x="215" y="60" width="45" height="28" rx="2" />
+      <line x1="215" y1="68" x2="260" y2="68" opacity="0.5" />
+      <line x1="215" y1="76" x2="260" y2="76" opacity="0.5" />
+    </g>
     <defs>
-      <marker id="arrP" markerWidth="5" markerHeight="5" refX="2.5" refY="2.5" orient="auto">
-        <path d="M0,0 L5,2.5 L0,5 Z" fill={G} opacity={0.5} />
+      <marker id="arrow1" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L0,6 L9,3 z" fill={L} />
       </marker>
     </defs>
-  </Illus>
+  </svg>
 );
 
-const WorkflowAutomationContentTeams = () => (
-  <Illus>
-    {/* Pipeline with automated gear nodes */}
-    {/* Pipeline line */}
-    <line x1={34} y1={72} x2={246} y2={72} stroke={G20} strokeWidth={1.5} />
-    {/* Nodes: mix of manual (rect) and automated (gear/circle) */}
-    {[
-      [44, false], [90, true], [140, false], [190, true], [236, false],
-    ].map(([cx, auto], i) => (
-      <g key={i}>
-        {auto ? (
-          <>
-            <circle cx={cx as number} cy={72} r={14} stroke={L} strokeWidth={1.2} fill="rgba(170,248,112,0.12)" />
-            <circle cx={cx as number} cy={72} r={6} stroke={L} strokeWidth={1} fill="none" />
-            {[0, 60, 120, 180, 240, 300].map((deg) => {
-              const rad = (deg * Math.PI) / 180;
-              return <line key={deg} x1={(cx as number) + 8 * Math.cos(rad)} y1={72 + 8 * Math.sin(rad)} x2={(cx as number) + 13 * Math.cos(rad)} y2={72 + 13 * Math.sin(rad)} stroke={L} strokeWidth={2} strokeLinecap="round" />;
-            })}
-          </>
-        ) : (
-          <rect x={(cx as number) - 11} y={61} width={22} height={22} rx={3} stroke={G} strokeWidth={1.2} fill={G10} />
-        )}
-      </g>
-    ))}
-  </Illus>
+export const WorkflowAutomationContentTeams = () => (
+  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g stroke={G} strokeWidth="1.2" fill="none">
+      <path d="M 30 72 L 60 72 L 75 60 L 90 72 L 120 72" strokeLinecap="round" />
+    </g>
+    <circle cx="30" cy="72" r="4" fill={G} />
+    <circle cx="120" cy="72" r="4" fill={G} />
+    <g stroke={L} strokeWidth="1.2" fill="none" opacity="0.6">
+      <circle cx="150" cy="50" r="10" />
+      <circle cx="150" cy="72" r="10" />
+      <circle cx="150" cy="94" r="10" />
+      <line x1="160" y1="50" x2="200" y2="50" />
+      <line x1="160" y1="72" x2="200" y2="72" />
+      <line x1="160" y1="94" x2="200" y2="94" />
+    </g>
+    <g fill={L} opacity="0.4">
+      <circle cx="150" cy="50" r="2" />
+      <circle cx="150" cy="72" r="2" />
+      <circle cx="150" cy="94" r="2" />
+    </g>
+  </svg>
 );
 
-const ApprovalFlowsThatDontKillMomentum = () => (
-  <Illus>
-    {/* Fast arrow path through thin gates */}
-    <path d="M30,72 C60,72 72,56 90,72 C108,88 120,72 140,72 C160,72 172,56 190,72 C208,88 220,72 250,72" stroke={L} strokeWidth={2} fill="none" strokeLinecap="round" />
-    {/* Thin gate bars */}
-    {[90, 140, 190].map((x) => (
-      <g key={x}>
-        <line x1={x} y1={48} x2={x} y2={96} stroke={G} strokeWidth={1.5} opacity={0.5} />
-        <circle cx={x} cy={72} r={5} stroke={G} strokeWidth={1} fill="white" />
-        <text x={x} y={75} textAnchor="middle" fill={G} fontSize={7} fontFamily="sans-serif">✓</text>
-      </g>
-    ))}
-    {/* Speed lines at end */}
-    {[60, 68, 76].map((y) => (
-      <line key={y} x1={232} y1={y} x2={248} y2={y} stroke={L} strokeWidth={0.8} opacity={0.4} />
-    ))}
-  </Illus>
-);
-
-const CrossFunctionalContentOperations = () => (
-  <Illus>
-    {/* 3 overlapping circles connected at central node */}
-    <circle cx={140} cy={54} r={30} stroke={G} strokeWidth={1.2} fill={G10} opacity={0.7} />
-    <circle cx={112} cy={100} r={30} stroke={G} strokeWidth={1.2} fill={G10} opacity={0.7} />
-    <circle cx={168} cy={100} r={30} stroke={G} strokeWidth={1.2} fill={G10} opacity={0.7} />
-    {/* Labels */}
-    <text x={140} y={42} textAnchor="middle" fill={G} fontSize={8} fontFamily="sans-serif" opacity={0.7}>Editorial</text>
-    <text x={88} y={108} textAnchor="middle" fill={G} fontSize={8} fontFamily="sans-serif" opacity={0.7}>Product</text>
-    <text x={192} y={108} textAnchor="middle" fill={G} fontSize={8} fontFamily="sans-serif" opacity={0.7}>Marketing</text>
-    {/* Central node */}
-    <circle cx={140} cy={80} r={8} stroke={L} strokeWidth={1.5} fill="rgba(170,248,112,0.2)" />
-  </Illus>
-);
-
-const ContentOperationsMetricsThatMatter = () => (
-  <Illus>
-    {/* Mini dashboard with 3 chart types */}
-    {/* Dashboard frame */}
-    <rect x={30} y={28} width={220} height={88} rx={5} stroke={G} strokeWidth={1} fill={G10} />
-    {/* Bar chart (left) */}
-    <rect x={44} y={68} width={8} height={32} rx={1} stroke={G} strokeWidth={0.8} fill={G20} />
-    <rect x={55} y={52} width={8} height={48} rx={1} stroke={G} strokeWidth={0.8} fill={G20} />
-    <rect x={66} y={60} width={8} height={40} rx={1} stroke={L} strokeWidth={0.8} fill="rgba(170,248,112,0.2)" />
-    {/* Line chart (centre) */}
-    <polyline points="100,90 114,72 128,80 142,58 156,66" stroke={L} strokeWidth={1.5} fill="none" strokeLinecap="round" />
-    {[100, 114, 128, 142, 156].map((x, i) => {
-      const ys = [90, 72, 80, 58, 66];
-      return <circle key={i} cx={x} cy={ys[i]} r={2.5} fill={L} />;
-    })}
-    {/* Donut chart (right) */}
-    <circle cx={192} cy={72} r={18} stroke={G} strokeWidth={1} fill="none" />
-    <path d="M192,54 A18,18 0 0,1 209,80" stroke={L} strokeWidth={4} fill="none" strokeLinecap="round" />
-    <circle cx={192} cy={72} r={10} stroke="white" strokeWidth={2} fill="white" />
-  </Illus>
-);
-
-const ContentOperationsRegulatedIndustries = () => (
-  <Illus>
-    {/* Document path with compliance locks */}
-    <path d="M36,72 L76,72" stroke={G} strokeWidth={1} opacity={0.4} />
-    <path d="M108,72 L148,72" stroke={G} strokeWidth={1} opacity={0.4} />
-    <path d="M180,72 L220,72" stroke={G} strokeWidth={1} opacity={0.4} />
-    {/* Document */}
-    <rect x={22} y={58} width={28} height={28} rx={3} stroke={G} strokeWidth={1.2} fill={G10} />
-    <line x1={29} y1={66} x2={43} y2={66} stroke={G} strokeWidth={0.8} opacity={0.4} />
-    <line x1={29} y1={71} x2={43} y2={71} stroke={G} strokeWidth={0.8} opacity={0.4} />
-    <line x1={29} y1={76} x2={39} y2={76} stroke={G} strokeWidth={0.8} opacity={0.4} />
-    {/* Lock 1 */}
-    <rect x={82} y={62} width={20} height={18} rx={2} stroke={G} strokeWidth={1.2} fill={G10} />
-    <path d="M86,62 A6,6 0 0,1 98,62" stroke={G} strokeWidth={1.2} fill="none" />
-    <circle cx={92} cy={71} r={3} stroke={G} strokeWidth={1} fill="white" />
-    {/* Lock 2 (lime = compliant) */}
-    <rect x={154} y={62} width={20} height={18} rx={2} stroke={L} strokeWidth={1.2} fill="rgba(170,248,112,0.12)" />
-    <path d="M158,62 A6,6 0 0,1 170,62" stroke={L} strokeWidth={1.2} fill="none" />
-    <circle cx={164} cy={71} r={3} stroke={L} strokeWidth={1} fill="rgba(170,248,112,0.3)" />
-    {/* Output */}
-    <rect x={220} y={58} width={28} height={28} rx={3} stroke={L} strokeWidth={1.2} fill="rgba(170,248,112,0.1)" />
-  </Illus>
-);
-
-const ContentOperationsMaturityModel = () => (
-  <Illus>
-    {/* Ascending 5-step staircase */}
-    {[0, 1, 2, 3, 4].map((i) => (
-      <rect
-        key={i}
-        x={46 + i * 38}
-        y={90 - i * 14}
-        width={36}
-        height={14 + i * 14}
-        rx={2}
-        stroke={i === 4 ? L : G}
-        strokeWidth={1.2}
-        fill={i === 4 ? "rgba(170,248,112,0.12)" : G10}
-      />
-    ))}
-    {/* Step labels */}
-    {["Ad hoc", "Aware", "Defined", "Managed", "Optimised"].map((label, i) => (
-      <text key={label} x={64 + i * 38} y={106 + (4 - i) * 14 - 4} textAnchor="middle" fill={i === 4 ? L : G} fontSize={6.5} fontFamily="sans-serif" opacity={0.7}>{label}</text>
-    ))}
-    {/* Rising arrow */}
-    <path d="M46,90 L84,76 L122,62 L160,48 L198,34" stroke={G} strokeWidth={0.8} strokeDasharray="3 2" fill="none" opacity={0.3} />
-  </Illus>
-);
-
-const OperalisingContentStrategy = () => (
-  <Illus>
-    {/* Strategy triangle */}
-    <polygon points="140,28 94,90 186,90" stroke={G} strokeWidth={1.5} fill={G10} />
-    <text x={140} y={54} textAnchor="middle" fill={G} fontSize={8} fontFamily="sans-serif" opacity={0.6}>Strategy</text>
-    {/* Arrow down */}
-    <line x1={140} y1={94} x2={140} y2={108} stroke={G} strokeWidth={1.2} markerEnd="url(#arrO)" opacity={0.5} />
-    {/* Execution grid */}
-    {[
-      [104, 112], [140, 112], [176, 112],
-    ].map(([x, y], i) => (
-      <rect key={i} x={(x as number) - 14} y={y as number} width={28} height={16} rx={2} stroke={i === 1 ? L : G} strokeWidth={1} fill={i === 1 ? "rgba(170,248,112,0.1)" : G10} />
-    ))}
+export const ApprovalFlowsThatDontKillMomentum = () => (
+  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
+      <rect x="25" y="45" width="35" height="54" rx="2" />
+      <line x1="25" y1="60" x2="60" y2="60" opacity="0.4" />
+      <line x1="25" y1="72" x2="60" y2="72" opacity="0.4" />
+      <line x1="25" y1="84" x2="60" y2="84" opacity="0.4" />
+    </g>
+    <g stroke={L} strokeWidth="1.5" fill="none">
+      <path d="M 65 72 L 100 72" markerEnd="url(#arrowFast)" />
+    </g>
+    <circle cx="130" cy="72" r="12" stroke={L} strokeWidth="1.2" fill={`rgba(170,248,112,.1)`} />
+    <path d="M 122 72 L 130 80 L 138 64" stroke={L} strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+    <g stroke={G} strokeWidth="1" fill="none" opacity="0.3">
+      <path d="M 145 60 L 200 50" />
+      <path d="M 145 72 L 200 72" />
+      <path d="M 145 84 L 200 84" />
+    </g>
+    <g stroke={L} strokeWidth="1.2" fill={`rgba(170,248,112,.08)`} opacity="0.8">
+      <rect x="200" y="40" width="40" height="64" rx="2" />
+    </g>
     <defs>
-      <marker id="arrO" markerWidth="5" markerHeight="5" refX="2.5" refY="2.5" orient="auto">
-        <path d="M0,0 L5,2.5 L0,5 Z" fill={G} opacity={0.5} />
+      <marker id="arrowFast" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L0,6 L9,3 z" fill={L} />
       </marker>
     </defs>
-  </Illus>
+  </svg>
 );
 
-// ─── Series 3: Information Architecture ──────────────────────────────────────
-
-const InformationArchitectureAiSystems = () => (
-  <Illus>
-    {/* IA tree with AI neural nodes interspersed */}
-    <line x1={140} y1={28} x2={140} y2={50} stroke={G} strokeWidth={1} opacity={0.5} />
-    <circle cx={140} cy={28} r={7} stroke={G} strokeWidth={1.2} fill={G10} />
-    {/* Level 1 branches */}
-    <line x1={140} y1={50} x2={90} y2={74} stroke={G} strokeWidth={1} opacity={0.5} />
-    <line x1={140} y1={50} x2={190} y2={74} stroke={G} strokeWidth={1} opacity={0.5} />
-    <circle cx={90} cy={74} r={7} stroke={G} strokeWidth={1.2} fill={G10} />
-    <circle cx={190} cy={74} r={7} stroke={G} strokeWidth={1.2} fill={G10} />
-    {/* AI neural nodes */}
-    <circle cx={140} cy={62} r={6} stroke={L} strokeWidth={1.2} fill="rgba(170,248,112,0.15)" />
-    {/* Level 2 */}
-    {[60, 90, 120, 160, 190, 220].map((x, i) => (
-      <g key={x}>
-        <line x1={i < 3 ? 90 : 190} y1={74} x2={x} y2={100} stroke={G} strokeWidth={0.8} opacity={0.4} />
-        <circle cx={x} cy={100} r={5} stroke={i % 2 === 0 ? L : G} strokeWidth={1} fill={i % 2 === 0 ? "rgba(170,248,112,0.12)" : G10} />
-      </g>
-    ))}
-  </Illus>
+export const CrossFunctionalContentOperations = () => (
+  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g stroke={G} strokeWidth="1.2" fill="none">
+      <circle cx="50" cy="40" r="8" />
+      <circle cx="50" cy="72" r="8" />
+      <circle cx="50" cy="104" r="8" />
+      <line x1="58" y1="40" x2="120" y2="40" opacity="0.4" />
+      <line x1="58" y1="72" x2="120" y2="72" opacity="0.4" />
+      <line x1="58" y1="104" x2="120" y2="104" opacity="0.4" />
+    </g>
+    <g stroke={L} strokeWidth="1.2" fill="none">
+      <path d="M 120 40 L 150 65" />
+      <path d="M 120 72 L 150 72" />
+      <path d="M 120 104 L 150 79" />
+      <circle cx="170" cy="72" r="12" fill={`rgba(170,248,112,.08)`} stroke={L} strokeWidth="1" />
+    </g>
+    <circle cx="170" cy="72" r="3" fill={L} />
+  </svg>
 );
 
-const TaxonomyDesignScalableContentSystems = () => (
-  <Illus>
-    {/* Clean branching taxonomy tree */}
-    <circle cx={140} cy={30} r={8} stroke={L} strokeWidth={1.5} fill="rgba(170,248,112,0.15)" />
-    <text x={140} y={50} textAnchor="middle" fill={G} fontSize={7.5} fontFamily="sans-serif" opacity={0.6}>Root</text>
-    {/* Branches */}
-    {[96, 140, 184].map((x) => (
-      <g key={x}>
-        <line x1={140} y1={38} x2={x} y2={62} stroke={G} strokeWidth={1} opacity={0.5} />
-        <circle cx={x} cy={62} r={6} stroke={G} strokeWidth={1.2} fill={G10} />
-      </g>
-    ))}
-    {/* Sub-branches */}
-    {[72, 96, 120, 132, 148, 160, 172, 196].map((x, i) => {
-      const parents = [96, 96, 140, 140, 140, 184, 184, 184];
-      return (
-        <g key={x}>
-          <line x1={parents[i]} y1={68} x2={x} y2={90} stroke={G} strokeWidth={0.8} opacity={0.35} />
-          <circle cx={x} cy={90} r={4} stroke={G} strokeWidth={1} fill={G10} />
-        </g>
-      );
-    })}
-  </Illus>
+export const ContentOperationsMetricsThatMatter = () => (
+  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g stroke={G} strokeWidth="1.2" fill="none">
+      <line x1="40" y1="110" x2="240" y2="110" />
+      <line x1="40" y1="110" x2="40" y2="30" />
+      <path d="M 60 90 L 100 60 L 140 75 L 180 45 L 220 55" strokeLinecap="round" />
+    </g>
+    <g fill={L} opacity="0.7">
+      <circle cx="60" cy="90" r="3" />
+      <circle cx="100" cy="60" r="3" />
+      <circle cx="140" cy="75" r="3" />
+      <circle cx="180" cy="45" r="3" />
+      <circle cx="220" cy="55" r="3" />
+    </g>
+    <g stroke={L} strokeWidth="1.2" fill="none" opacity="0.4">
+      <rect x="35" y="20" width="15" height="90" />
+      <rect x="55" y="50" width="15" height="60" />
+      <rect x="95" y="40" width="15" height="70" />
+    </g>
+  </svg>
 );
 
-const MetadataStrategyAiPoweredEnterprises = () => (
-  <Illus>
-    {/* Hub-and-spoke with pill tag shapes */}
-    <circle cx={140} cy={72} r={18} stroke={L} strokeWidth={1.5} fill="rgba(170,248,112,0.12)" />
-    <text x={140} y={76} textAnchor="middle" fill={G} fontSize={8} fontFamily="sans-serif" fontWeight="bold">Meta</text>
-    {/* Spokes to tag pills */}
-    {[
-      [140, 28, "type"],
-      [184, 44, "topic"],
-      [196, 88, "locale"],
-      [160, 118, "status"],
-      [104, 118, "owner"],
-      [82, 84, "date"],
-      [84, 44, "format"],
-    ].map(([x, y, label], i) => (
-      <g key={i}>
-        <line x1={140} y1={72} x2={x as number} y2={y as number} stroke={G} strokeWidth={0.8} opacity={0.3} />
-        <rect x={(x as number) - 16} y={(y as number) - 7} width={32} height={14} rx={7} stroke={G} strokeWidth={1} fill={G10} />
-        <text x={x as number} y={(y as number) + 4} textAnchor="middle" fill={G} fontSize={7} fontFamily="sans-serif" opacity={0.7}>{label as string}</text>
-      </g>
-    ))}
-  </Illus>
-);
-
-const ContentModellingEnterpriseAI = () => (
-  <Illus>
-    {/* Schema card with typed fields and brackets */}
-    <rect x={52} y={28} width={176} height={88} rx={4} stroke={G} strokeWidth={1.2} fill={G10} />
-    <text x={64} y={44} fill={L} fontSize={9} fontFamily="monospace" fontWeight="bold">ContentType &#123;</text>
-    {[
-      ["  title", "String"],
-      ["  slug", "Slug"],
-      ["  body", "Block[]"],
-      ["  tags", "String[]"],
-      ["  author", "Ref"],
-    ].map(([field, type], i) => (
-      <g key={field}>
-        <text x={64} y={58 + i * 11} fill={G} fontSize={8} fontFamily="monospace" opacity={0.7}>{field as string}</text>
-        <text x={148} y={58 + i * 11} fill={L} fontSize={8} fontFamily="monospace" opacity={0.6}>{type as string}</text>
-      </g>
-    ))}
-    <text x={64} y={112} fill={G} fontSize={9} fontFamily="monospace" opacity={0.5}>&#125;</text>
-  </Illus>
-);
-
-const StructuredAuthoringAtScale = () => (
-  <Illus>
-    {/* Document with clearly labelled structural zones */}
-    <rect x={60} y={24} width={160} height={96} rx={4} stroke={G} strokeWidth={1.2} fill={G10} />
-    {/* Title zone */}
-    <rect x={68} y={32} width={144} height={14} rx={2} stroke={L} strokeWidth={1} fill="rgba(170,248,112,0.1)" />
-    <text x={140} y={42} textAnchor="middle" fill={G} fontSize={7} fontFamily="sans-serif" opacity={0.6}>Title</text>
-    {/* Intro zone */}
-    <rect x={68} y={50} width={144} height={18} rx={2} stroke={G} strokeWidth={0.8} fill={G10} />
-    <line x1={72} y1={57} x2={204} y2={57} stroke={G} strokeWidth={0.7} opacity={0.3} />
-    <line x1={72} y1={63} x2={184} y2={63} stroke={G} strokeWidth={0.7} opacity={0.3} />
-    <text x={74} y={49} fill={G} fontSize={6.5} fontFamily="sans-serif" opacity={0.5}>Intro</text>
-    {/* Body zone */}
-    <rect x={68} y={72} width={144} height={22} rx={2} stroke={G} strokeWidth={0.8} fill={G10} />
-    {[78, 84, 90].map((y) => (
-      <line key={y} x1={72} y1={y} x2={204} y2={y} stroke={G} strokeWidth={0.7} opacity={0.25} />
-    ))}
-    <text x={74} y={71} fill={G} fontSize={6.5} fontFamily="sans-serif" opacity={0.5}>Body</text>
-    {/* CTA zone */}
-    <rect x={68} y={98} width={144} height={14} rx={2} stroke={L} strokeWidth={1} fill="rgba(170,248,112,0.08)" />
-    <text x={140} y={108} textAnchor="middle" fill={G} fontSize={7} fontFamily="sans-serif" opacity={0.6}>CTA</text>
-  </Illus>
-);
-
-const KnowledgeArchitectureAIEnterprises = () => (
-  <Illus>
-    {/* Knowledge graph with varied node sizes */}
-    {[
-      [140, 60, 14, true],
-      [96, 48, 8, false],
-      [180, 52, 10, false],
-      [100, 90, 9, false],
-      [176, 92, 7, false],
-      [140, 102, 11, false],
-      [68, 68, 6, false],
-      [208, 72, 6, false],
-    ].map(([cx, cy, r, highlight], i) => (
-      <circle key={i} cx={cx as number} cy={cy as number} r={r as number} stroke={highlight ? L : G} strokeWidth={highlight ? 1.5 : 1} fill={highlight ? "rgba(170,248,112,0.15)" : G10} />
-    ))}
-    {/* Edges */}
-    {[
-      [140, 60, 96, 48],
-      [140, 60, 180, 52],
-      [140, 60, 100, 90],
-      [140, 60, 176, 92],
-      [140, 60, 140, 102],
-      [96, 48, 68, 68],
-      [180, 52, 208, 72],
-      [100, 90, 140, 102],
-      [176, 92, 140, 102],
-    ].map(([x1, y1, x2, y2], i) => (
-      <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke={G} strokeWidth={0.8} opacity={0.3} />
-    ))}
-  </Illus>
-);
-
-const SemanticStructureAIContentSystems = () => (
-  <Illus>
-    {/* Nodes with labelled relationship arrows */}
-    {[
-      [72, 72, "Doc A"],
-      [140, 44, "Topic"],
-      [208, 72, "Doc B"],
-      [140, 100, "Entity"],
-    ].map(([x, y, label], i) => (
-      <g key={i}>
-        <circle cx={x as number} cy={y as number} r={16} stroke={i === 1 ? L : G} strokeWidth={1.2} fill={i === 1 ? "rgba(170,248,112,0.12)" : G10} />
-        <text x={x as number} y={(y as number) + 4} textAnchor="middle" fill={G} fontSize={7} fontFamily="sans-serif" opacity={0.7}>{label as string}</text>
-      </g>
-    ))}
-    {/* Labelled arrows */}
-    {[
-      [88, 65, 124, 50, "relates"],
-      [156, 50, 192, 65, "describes"],
-      [88, 79, 124, 94, "mentions"],
-      [156, 94, 192, 79, "classifies"],
-    ].map(([x1, y1, x2, y2, label], i) => (
-      <g key={i}>
-        <line x1={x1 as number} y1={y1 as number} x2={x2 as number} y2={y2 as number} stroke={G} strokeWidth={0.9} opacity={0.45} />
-        <text x={((x1 as number) + (x2 as number)) / 2} y={((y1 as number) + (y2 as number)) / 2 - 3} textAnchor="middle" fill={G} fontSize={6.5} fontFamily="sans-serif" opacity={0.5}>{label as string}</text>
-      </g>
-    ))}
-  </Illus>
-);
-
-const CmsArchitectureAIDrivenEnterprises = () => (
-  <Illus>
-    {/* Horizontal architecture layer stack */}
-    {[
-      ["Delivery Layer", L, "rgba(170,248,112,0.1)"],
-      ["API / CDN Layer", G, G10],
-      ["CMS Core", G, G10],
-      ["Data / Storage", G, G10],
-    ].map(([label, stroke, fill], i) => (
-      <g key={label as string}>
-        <rect x={40} y={32 + i * 22} width={200} height={18} rx={3} stroke={stroke as string} strokeWidth={1.2} fill={fill as string} />
-        <text x={140} y={32 + i * 22 + 12} textAnchor="middle" fill={G} fontSize={8} fontFamily="sans-serif" opacity={0.7}>{label as string}</text>
-      </g>
-    ))}
-    {/* Vertical arrows between layers */}
-    {[42, 64, 86].map((y) => (
-      <line key={y} x1={140} y1={y + 10} x2={140} y2={y + 18} stroke={G} strokeWidth={0.8} opacity={0.3} markerEnd="url(#arrCMS)" />
-    ))}
+export const ContentOperationsRegulatedIndustries = () => (
+  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
+      <rect x="30" y="50" width="50" height="48" rx="2" />
+      <circle cx="55" cy="65" r="4" opacity="0.6" />
+      <circle cx="55" cy="78" r="4" opacity="0.6" />
+      <circle cx="55" cy="91" r="4" opacity="0.6" />
+    </g>
+    <g stroke={L} strokeWidth="1.5" fill="none">
+      <path d="M 85 74 L 120 74" markerEnd="url(#arrowReg)" />
+    </g>
+    <g stroke={G} strokeWidth="1.2" fill="none">
+      <circle cx="150" cy="74" r="15" opacity="0.8" />
+      <path d="M 145 69 L 155 79 M 155 69 L 145 79" strokeWidth="2" opacity="0.6" />
+    </g>
+    <g stroke={L} strokeWidth="1.5" fill="none">
+      <path d="M 170 74 L 205 74" markerEnd="url(#arrowReg)" />
+    </g>
+    <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
+      <rect x="210" y="50" width="50" height="48" rx="2" />
+      <circle cx="235" cy="65" r="4" opacity="0.6" />
+      <circle cx="235" cy="78" r="4" opacity="0.6" />
+      <circle cx="235" cy="91" r="4" opacity="0.6" />
+    </g>
     <defs>
-      <marker id="arrCMS" markerWidth="4" markerHeight="4" refX="2" refY="2" orient="auto">
-        <path d="M0,0 L4,2 L0,4 Z" fill={G} opacity={0.4} />
+      <marker id="arrowReg" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L0,6 L9,3 z" fill={L} />
       </marker>
     </defs>
-  </Illus>
+  </svg>
 );
 
-const ContentFindabilitySystemCapability = () => (
-  <Illus>
-    {/* Search bar with branching result paths */}
-    <rect x={50} y={52} width={180} height={22} rx={11} stroke={G} strokeWidth={1.2} fill={G10} />
-    <circle cx={72} cy={63} r={6} stroke={G} strokeWidth={1} fill="none" />
-    <line x1={76} y1={67} x2={80} y2={71} stroke={G} strokeWidth={1} strokeLinecap="round" />
-    <line x1={88} y1={63} x2={212} y2={63} stroke={G} strokeWidth={0.6} opacity={0.2} />
-    {/* Branching results */}
-    {[100, 140, 180].map((x, i) => (
-      <g key={x}>
-        <line x1={140} y1={74} x2={x} y2={92} stroke={G} strokeWidth={0.9} opacity={0.4} />
-        <rect x={x - 22} y={92} width={44} height={14} rx={2} stroke={i === 0 ? L : G} strokeWidth={1} fill={i === 0 ? "rgba(170,248,112,0.1)" : G10} />
-        <line x1={x - 16} y1={99} x2={x + 16} y2={99} stroke={G} strokeWidth={0.6} opacity={0.3} />
-      </g>
-    ))}
-  </Illus>
+export const ContentOperationsMaturityModel = () => (
+  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
+      <rect x="40" y="85" width="30" height="25" />
+      <rect x="80" y="70" width="30" height="40" />
+      <rect x="120" y="50" width="30" height="60" />
+      <rect x="160" y="35" width="30" height="75" />
+      <rect x="200" y="25" width="30" height="85" />
+    </g>
+    <g fill={L} opacity="0.3">
+      <rect x="40" y="85" width="30" height="25" />
+      <rect x="80" y="70" width="30" height="40" />
+      <rect x="120" y="50" width="30" height="60" />
+      <rect x="160" y="35" width="30" height="75" />
+      <rect x="200" y="25" width="30" height="85" />
+    </g>
+    <line x1="35" y1="112" x2="240" y2="112" stroke={G} strokeWidth="1" opacity="0.5" />
+  </svg>
 );
 
-// ─── Series 4: AI-Driven Content Systems ─────────────────────────────────────
-
-const DesigningAIContentOperatingSystem = () => (
-  <Illus>
-    {/* Central AI hexagon with 6 subsystem nodes */}
-    <polygon points="140,46 158,56 158,76 140,86 122,76 122,56" stroke={L} strokeWidth={1.5} fill="rgba(170,248,112,0.12)" />
-    <text x={140} y={68} textAnchor="middle" fill={G} fontSize={8} fontFamily="sans-serif" fontWeight="bold">AI OS</text>
-    {/* 6 satellite nodes */}
-    {[0, 60, 120, 180, 240, 300].map((deg, i) => {
-      const rad = (deg * Math.PI) / 180;
-      const cx = 140 + 44 * Math.cos(rad);
-      const cy = 66 + 44 * Math.sin(rad);
-      return (
-        <g key={deg}>
-          <line x1={140} y1={66} x2={cx} y2={cy} stroke={G} strokeWidth={0.8} opacity={0.35} />
-          <circle cx={cx} cy={cy} r={9} stroke={G} strokeWidth={1} fill={G10} />
-        </g>
-      );
-    })}
-  </Illus>
-);
-
-const PromptArchitectureContentTeams = () => (
-  <Illus>
-    {/* Prompt box divided into 4 labelled sections */}
-    <rect x={44} y={30} width={192} height={84} rx={4} stroke={G} strokeWidth={1.2} fill={G10} />
-    {/* Dividers */}
-    <line x1={140} y1={30} x2={140} y2={114} stroke={G} strokeWidth={0.8} opacity={0.4} />
-    <line x1={44} y1={72} x2={236} y2={72} stroke={G} strokeWidth={0.8} opacity={0.4} />
-    {/* Labels */}
-    <text x={92} y={54} textAnchor="middle" fill={G} fontSize={8} fontFamily="sans-serif" opacity={0.6}>Role</text>
-    <text x={188} y={54} textAnchor="middle" fill={G} fontSize={8} fontFamily="sans-serif" opacity={0.6}>Context</text>
-    <text x={92} y={96} textAnchor="middle" fill={L} fontSize={8} fontFamily="sans-serif" opacity={0.8}>Task</text>
-    <text x={188} y={96} textAnchor="middle" fill={G} fontSize={8} fontFamily="sans-serif" opacity={0.6}>Format</text>
-    {/* Accent on Task cell */}
-    <rect x={44} y={72} width={96} height={42} rx={0} stroke={L} strokeWidth={1} fill="rgba(170,248,112,0.08)" />
-  </Illus>
-);
-
-const AiQualityAssuranceContentOperations = () => (
-  <Illus>
-    {/* Pipeline with quality gates */}
-    <line x1={28} y1={72} x2={252} y2={72} stroke={G20} strokeWidth={1.5} />
-    {[60, 110, 160, 210].map((x, i) => (
-      <g key={x}>
-        <rect x={x - 12} y={60} width={24} height={24} rx={3} stroke={i % 2 === 0 ? G : L} strokeWidth={1.2} fill={i % 2 === 0 ? G10 : "rgba(170,248,112,0.1)"} />
-        <text x={x} y={75} textAnchor="middle" fill={i % 2 === 0 ? G : L} fontSize={10} fontFamily="sans-serif">{i % 2 === 0 ? "✗" : "✓"}</text>
-      </g>
-    ))}
-    {/* Input/output labels */}
-    <text x={34} y={67} fill={G} fontSize={7} fontFamily="sans-serif" opacity={0.5}>In</text>
-    <text x={238} y={67} fill={L} fontSize={7} fontFamily="sans-serif" opacity={0.7}>Out</text>
-  </Illus>
-);
-
-const AiContentRiskManagement = () => (
-  <Illus>
-    {/* 2×2 risk matrix */}
-    <rect x={50} y={28} width={180} height={88} rx={4} stroke={G} strokeWidth={1} fill={G10} />
-    {/* Quadrant dividers */}
-    <line x1={140} y1={28} x2={140} y2={116} stroke={G} strokeWidth={0.8} opacity={0.4} />
-    <line x1={50} y1={72} x2={230} y2={72} stroke={G} strokeWidth={0.8} opacity={0.4} />
-    {/* Axis labels */}
-    <text x={95} y={122} textAnchor="middle" fill={G} fontSize={7} fontFamily="sans-serif" opacity={0.5}>Low Impact</text>
-    <text x={185} y={122} textAnchor="middle" fill={G} fontSize={7} fontFamily="sans-serif" opacity={0.5}>High Impact</text>
-    <text x={44} y={75} textAnchor="middle" fill={G} fontSize={6.5} fontFamily="sans-serif" opacity={0.5} transform="rotate(-90,44,75)">Likelihood</text>
-    {/* Quadrant colours */}
-    <rect x={141} y={29} width={88} height={42} rx={2} fill="rgba(170,248,112,0.08)" />
-    <text x={185} y={52} textAnchor="middle" fill={L} fontSize={7} fontFamily="sans-serif" opacity={0.7}>Monitor</text>
-    <rect x={141} y={73} width={88} height={42} rx={2} fill="rgba(170,248,112,0.2)" />
-    <text x={185} y={96} textAnchor="middle" fill={G} fontSize={7} fontFamily="sans-serif" fontWeight="bold" opacity={0.8}>Critical</text>
-    <text x={95} y={52} textAnchor="middle" fill={G} fontSize={7} fontFamily="sans-serif" opacity={0.5}>Low</text>
-    <text x={95} y={96} textAnchor="middle" fill={G} fontSize={7} fontFamily="sans-serif" opacity={0.5}>Review</text>
-  </Illus>
-);
-
-const ContentVelocityManagingSpeedQuality = () => (
-  <Illus>
-    {/* Speedometer with optimal zone */}
-    <path d="M60,100 A80,80 0 0,1 220,100" stroke={G20} strokeWidth={12} fill="none" strokeLinecap="round" />
-    {/* Optimal zone arc */}
-    <path d="M118,48 A80,80 0 0,1 185,62" stroke={L} strokeWidth={12} fill="none" strokeLinecap="round" opacity={0.4} />
-    {/* Speed zones */}
-    <path d="M60,100 A80,80 0 0,1 90,55" stroke={G} strokeWidth={2} fill="none" strokeLinecap="round" opacity={0.3} />
-    <path d="M190,55 A80,80 0 0,1 220,100" stroke={G} strokeWidth={2} fill="none" strokeLinecap="round" opacity={0.3} />
-    {/* Needle */}
-    <line x1={140} y1={100} x2={155} y2={55} stroke={G} strokeWidth={2} strokeLinecap="round" />
-    <circle cx={140} cy={100} r={5} stroke={G} strokeWidth={1.2} fill="white" />
-    <text x={140} y={115} textAnchor="middle" fill={G} fontSize={7.5} fontFamily="sans-serif" opacity={0.6}>Velocity</text>
-    <text x={100} y={110} textAnchor="middle" fill={G} fontSize={7} fontFamily="sans-serif" opacity={0.4}>Slow</text>
-    <text x={178} y={110} textAnchor="middle" fill={G} fontSize={7} fontFamily="sans-serif" opacity={0.4}>Fast</text>
-  </Illus>
-);
-
-const RetrievalAugmentedContentSystems = () => (
-  <Illus>
-    {/* RAG 4-step pipeline with knowledge base */}
-    {["Query", "Retrieve", "Augment", "Generate"].map((label, i) => (
-      <g key={label}>
-        <rect x={20 + i * 58} y={54} width={48} height={24} rx={3} stroke={i === 3 ? L : G} strokeWidth={1.2} fill={i === 3 ? "rgba(170,248,112,0.1)" : G10} />
-        <text x={44 + i * 58} y={69} textAnchor="middle" fill={i === 3 ? L : G} fontSize={7.5} fontFamily="sans-serif" opacity={0.8}>{label}</text>
-        {i < 3 && <line x1={68 + i * 58} y1={66} x2={78 + i * 58} y2={66} stroke={G} strokeWidth={1} opacity={0.4} markerEnd="url(#arrR)" />}
-      </g>
-    ))}
-    {/* Knowledge base feed */}
-    <rect x={60} y={96} width={100} height={20} rx={3} stroke={G} strokeWidth={1} fill={G10} />
-    <text x={110} y={109} textAnchor="middle" fill={G} fontSize={7.5} fontFamily="sans-serif" opacity={0.6}>Knowledge Base</text>
-    <line x1={110} y1={96} x2={110} y2={78} stroke={G} strokeWidth={0.8} strokeDasharray="3 2" opacity={0.4} />
+export const OperationalisingContentStrategy = () => (
+  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g stroke={G} strokeWidth="1.2" fill="none">
+      <path d="M 50 40 L 140 40 L 140 104 L 50 104" strokeLinecap="round" strokeLinejoin="round" />
+    </g>
+    <g stroke={L} strokeWidth="1.2" fill="none">
+      <path d="M 170 50 L 230 50" markerEnd="url(#arrowOp)" />
+      <path d="M 170 72 L 230 72" markerEnd="url(#arrowOp)" />
+      <path d="M 170 94 L 230 94" markerEnd="url(#arrowOp)" />
+    </g>
+    <circle cx="160" cy="50" r="3" fill={L} />
+    <circle cx="160" cy="72" r="3" fill={L} />
+    <circle cx="160" cy="94" r="3" fill={L} />
     <defs>
-      <marker id="arrR" markerWidth="4" markerHeight="4" refX="2" refY="2" orient="auto">
-        <path d="M0,0 L4,2 L0,4 Z" fill={G} opacity={0.5} />
+      <marker id="arrowOp" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L0,6 L9,3 z" fill={L} />
       </marker>
     </defs>
-  </Illus>
+  </svg>
 );
 
-const AiPoweredContentAuditing = () => (
-  <Illus>
-    {/* Document grid with horizontal scan beam */}
-    {[0, 1, 2, 3, 4, 5].map((i) => (
-      <rect
-        key={i}
-        x={30 + (i % 3) * 74}
-        y={30 + Math.floor(i / 3) * 50}
-        width={62}
-        height={38}
-        rx={3}
-        stroke={G}
-        strokeWidth={1}
-        fill={G10}
-      />
-    ))}
-    {/* Doc lines */}
-    {[0, 1, 2, 3, 4, 5].map((i) => (
-      <g key={`l${i}`}>
-        {[10, 17, 24].map((dy) => (
-          <line key={dy} x1={38 + (i % 3) * 74} y1={30 + Math.floor(i / 3) * 50 + dy} x2={84 + (i % 3) * 74} y2={30 + Math.floor(i / 3) * 50 + dy} stroke={G} strokeWidth={0.5} opacity={0.3} />
-        ))}
-      </g>
-    ))}
-    {/* Scan beam */}
-    <rect x={28} y={66} width={224} height={4} fill={L} opacity={0.25} rx={1} />
-    <line x1={28} y1={68} x2={252} y2={68} stroke={L} strokeWidth={1.2} opacity={0.6} />
-  </Illus>
-);
-
-const ContentIntelligencePlatforms = () => (
-  <Illus>
-    {/* Platform box with multiple inputs and intelligence outputs */}
-    <rect x={88} y={46} width={104} height={52} rx={5} stroke={L} strokeWidth={1.5} fill="rgba(170,248,112,0.1)" />
-    <text x={140} y={75} textAnchor="middle" fill={G} fontSize={8} fontFamily="sans-serif" fontWeight="bold">Platform</text>
-    {/* Input arrows */}
-    {[36, 60, 84].map((y, i) => (
-      <g key={y}>
-        <rect x={20} y={y + 28} width={44} height={14} rx={2} stroke={G} strokeWidth={0.8} fill={G10} />
-        <text x={42} y={y + 37} textAnchor="middle" fill={G} fontSize={6.5} fontFamily="sans-serif" opacity={0.6}>{["CMS", "Analytics", "CRM"][i]}</text>
-        <line x1={64} y1={y + 35} x2={88} y2={72} stroke={G} strokeWidth={0.8} opacity={0.35} />
-      </g>
-    ))}
-    {/* Output arrows */}
-    {[36, 60, 84].map((y, i) => (
-      <g key={y + 200}>
-        <line x1={192} y1={72} x2={216} y2={y + 35} stroke={G} strokeWidth={0.8} opacity={0.35} />
-        <rect x={216} y={y + 28} width={44} height={14} rx={2} stroke={i === 1 ? L : G} strokeWidth={0.8} fill={i === 1 ? "rgba(170,248,112,0.1)" : G10} />
-        <text x={238} y={y + 37} textAnchor="middle" fill={i === 1 ? L : G} fontSize={6.5} fontFamily="sans-serif" opacity={0.7}>{["Insight", "Action", "Report"][i]}</text>
-      </g>
-    ))}
-  </Illus>
-);
-
-const OperalisingLlmsContentTeams = () => (
-  <Illus>
-    {/* LLM box with role nodes arranged around it */}
-    <rect x={104} y={46} width={72} height={52} rx={5} stroke={L} strokeWidth={1.5} fill="rgba(170,248,112,0.1)" />
-    <text x={140} y={72} textAnchor="middle" fill={G} fontSize={8} fontFamily="sans-serif" fontWeight="bold">LLM</text>
-    <text x={140} y={83} textAnchor="middle" fill={G} fontSize={6.5} fontFamily="sans-serif" opacity={0.5}>Core</text>
-    {/* Role nodes */}
-    {[
-      [54, 40, "Writer"],
-      [54, 90, "Editor"],
-      [226, 40, "Strategist"],
-      [226, 90, "Analyst"],
-      [140, 18, "Orchestrator"],
-    ].map(([x, y, label], i) => (
-      <g key={i}>
-        <circle cx={x as number} cy={y as number} r={14} stroke={G} strokeWidth={1} fill={G10} />
-        <text x={x as number} y={(y as number) + 4} textAnchor="middle" fill={G} fontSize={6.5} fontFamily="sans-serif" opacity={0.7}>{label as string}</text>
-        <line x1={x as number < 100 ? (x as number) + 14 : x as number > 180 ? (x as number) - 14 : x as number} y1={y as number < 46 ? (y as number) + 14 : y as number} x2={x as number < 100 ? 104 : x as number > 180 ? 176 : 140} y2={y as number < 46 ? 46 : 72} stroke={G} strokeWidth={0.8} opacity={0.3} />
-      </g>
-    ))}
-  </Illus>
-);
-
-const AiContentFeedbackLoop = () => (
-  <Illus>
-    {/* Circular 4-stage feedback loop */}
-    <circle cx={140} cy={72} r={44} stroke={G20} strokeWidth={1} fill="none" strokeDasharray="4 3" />
-    {[
-      [140, 28, "Generate"],
-      [184, 72, "Distribute"],
-      [140, 116, "Measure"],
-      [96, 72, "Optimise"],
-    ].map(([cx, cy, label], i) => (
-      <g key={i}>
-        <circle cx={cx as number} cy={cy as number} r={12} stroke={i === 0 ? L : G} strokeWidth={1.2} fill={i === 0 ? "rgba(170,248,112,0.15)" : G10} />
-        <text
-          x={(cx as number)}
-          y={(cy as number) + (i === 0 ? -16 : i === 2 ? 24 : 4)}
-          dx={i === 1 ? 16 : i === 3 ? -16 : 0}
-          dy={i === 1 || i === 3 ? -4 : 0}
-          textAnchor={i === 1 ? "start" : i === 3 ? "end" : "middle"}
-          fill={G} fontSize={7.5} fontFamily="sans-serif" opacity={0.7}
-        >{label as string}</text>
-      </g>
-    ))}
-    {/* Curved arrows */}
-    <path d="M152,30 A44,44 0 0,1 182,60" stroke={G} strokeWidth={1} fill="none" opacity={0.4} markerEnd="url(#arrFB)" />
-    <path d="M182,84 A44,44 0 0,1 152,114" stroke={G} strokeWidth={1} fill="none" opacity={0.4} markerEnd="url(#arrFB)" />
-    <path d="M128,114 A44,44 0 0,1 98,84" stroke={G} strokeWidth={1} fill="none" opacity={0.4} markerEnd="url(#arrFB)" />
-    <path d="M98,60 A44,44 0 0,1 128,30" stroke={G} strokeWidth={1} fill="none" opacity={0.4} markerEnd="url(#arrFB)" />
+export const InformationArchitectureAiSystems = () => (
+  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g stroke={G} strokeWidth="1.2" fill="none">
+      <rect x="40" y="35" width="60" height="30" rx="2" />
+      <line x1="50" y1="35" x2="50" y2="65" opacity="0.4" />
+      <line x1="60" y1="35" x2="60" y2="65" opacity="0.4" />
+      <line x1="70" y1="35" x2="70" y2="65" opacity="0.4" />
+      <line x1="80" y1="35" x2="80" y2="65" opacity="0.4" />
+      <line x1="90" y1="35" x2="90" y2="65" opacity="0.4" />
+    </g>
+    <g stroke={L} strokeWidth="1.2" fill="none">
+      <path d="M 50 75 L 100 75" markerEnd="url(#arrowIA)" />
+      <path d="M 50 100 L 100 100" markerEnd="url(#arrowIA)" />
+      <circle cx="130" cy="75" r="8" />
+      <circle cx="130" cy="100" r="8" />
+    </g>
+    <g fill={G} opacity="0.5">
+      <circle cx="130" cy="75" r="3" />
+      <circle cx="130" cy="100" r="3" />
+    </g>
+    <g stroke={G} strokeWidth="1" fill="none" opacity="0.3">
+      <path d="M 140 75 L 200 50" />
+      <path d="M 140 100 L 200 110" />
+    </g>
     <defs>
-      <marker id="arrFB" markerWidth="5" markerHeight="5" refX="2.5" refY="2.5" orient="auto">
-        <path d="M0,0 L5,2.5 L0,5 Z" fill={G} opacity={0.5} />
+      <marker id="arrowIA" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L0,6 L9,3 z" fill={L} />
       </marker>
     </defs>
-  </Illus>
+  </svg>
 );
 
-// ─── Series 5: Personalisation at Scale ──────────────────────────────────────
+export const TaxonomyDesignScalableContentSystems = () => (
+  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g stroke={G} strokeWidth="1.2" fill="none">
+      <circle cx="70" cy="72" r="20" />
+      <path d="M 55 50 L 85 50 M 55 72 L 85 72 M 55 94 L 85 94" opacity="0.4" />
+    </g>
+    <g stroke={L} strokeWidth="1.2" fill="none">
+      <path d="M 90 50 L 130 40" />
+      <path d="M 90 72 L 130 72" />
+      <path d="M 90 94 L 130 104" />
+      <circle cx="155" cy="40" r="6" fill={`rgba(170,248,112,.1)`} />
+      <circle cx="155" cy="72" r="6" fill={`rgba(170,248,112,.1)`} />
+      <circle cx="155" cy="104" r="6" fill={`rgba(170,248,112,.1)`} />
+    </g>
+    <g stroke={G} strokeWidth="0.8" fill="none" opacity="0.3">
+      <line x1="165" y1="40" x2="220" y2="40" />
+      <line x1="165" y1="72" x2="220" y2="72" />
+      <line x1="165" y1="104" x2="220" y2="104" />
+    </g>
+  </svg>
+);
 
-const PersonalisationArchitectureAIEnterprises = () => (
-  <Illus>
-    {/* 3 stacked layers: Data / AI / Delivery */}
-    {[
-      ["Data Layer", G, G10, 34],
-      ["AI Layer", L, "rgba(170,248,112,0.12)", 62],
-      ["Delivery Layer", G, G10, 90],
-    ].map(([label, stroke, fill, y]) => (
-      <g key={label as string}>
-        <rect x={44} y={y as number} width={192} height={22} rx={4} stroke={stroke as string} strokeWidth={1.2} fill={fill as string} />
-        <text x={140} y={(y as number) + 14} textAnchor="middle" fill={G} fontSize={8} fontFamily="sans-serif" opacity={0.7}>{label as string}</text>
-      </g>
-    ))}
+export const MetadataStrategyAiPoweredEnterprises = () => (
+  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
+      <rect x="25" y="45" width="50" height="54" rx="2" />
+      <line x1="25" y1="60" x2="75" y2="60" opacity="0.5" strokeWidth="0.8" />
+      <line x1="25" y1="75" x2="75" y2="75" opacity="0.5" strokeWidth="0.8" />
+      <line x1="25" y1="90" x2="75" y2="90" opacity="0.5" strokeWidth="0.8" />
+    </g>
+    <g stroke={L} strokeWidth="1.5" fill="none">
+      <path d="M 80 55 L 115 55" markerEnd="url(#arrowMeta)" />
+      <path d="M 80 85 L 115 85" markerEnd="url(#arrowMeta)" />
+    </g>
+    <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.08)`}>
+      <circle cx="145" cy="55" r="12" />
+      <circle cx="145" cy="85" r="12" />
+    </g>
+    <g fill={L} opacity="0.5">
+      <circle cx="145" cy="55" r="4" />
+      <circle cx="145" cy="85" r="4" />
+    </g>
+    <g stroke={G} strokeWidth="1" fill="none" opacity="0.3">
+      <path d="M 160 55 L 220 45" />
+      <path d="M 160 85 L 220 95" />
+    </g>
+    <defs>
+      <marker id="arrowMeta" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L0,6 L9,3 z" fill={L} />
+      </marker>
+    </defs>
+  </svg>
+);
+
+export const ContentModellingEnterpriseAi = () => (
+  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g stroke={G} strokeWidth="1.2" fill="none">
+      <path d="M 50 50 L 80 35 L 110 50 L 110 90 L 50 90 Z" strokeLinecap="round" strokeLinejoin="round" />
+    </g>
+    <g stroke={L} strokeWidth="1.2" fill="none">
+      <path d="M 120 60 L 160 60" markerEnd="url(#arrowCM)" />
+      <path d="M 120 80 L 160 80" markerEnd="url(#arrowCM)" />
+    </g>
+    <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
+      <rect x="165" y="48" width="45" height="14" rx="1" />
+      <rect x="165" y="68" width="45" height="14" rx="1" />
+    </g>
+    <g stroke={L} strokeWidth="1.2" fill="none">
+      <path d="M 215 55 L 250 55" />
+      <path d="M 215 75 L 250 75" />
+    </g>
+    <defs>
+      <marker id="arrowCM" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L0,6 L9,3 z" fill={L} />
+      </marker>
+    </defs>
+  </svg>
+);
+
+export const StructuredAuthoringAtScale = () => (
+  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
+      <rect x="20" y="50" width="40" height="48" rx="2" />
+      <line x1="20" y1="60" x2="60" y2="60" opacity="0.5" strokeWidth="0.8" />
+      <line x1="20" y1="70" x2="60" y2="70" opacity="0.5" strokeWidth="0.8" />
+      <line x1="20" y1="80" x2="60" y2="80" opacity="0.5" strokeWidth="0.8" />
+    </g>
+    <g stroke={L} strokeWidth="1.2" fill={`rgba(170,248,112,.08)`}>
+      <rect x="75" y="48" width="50" height="52" rx="2" />
+      <line x1="85" y1="60" x2="120" y2="60" strokeWidth="0.8" />
+      <line x1="85" y1="72" x2="120" y2="72" strokeWidth="0.8" />
+      <line x1="85" y1="84" x2="120" y2="84" strokeWidth="0.8" />
+    </g>
+    <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
+      <rect x="140" y="48" width="50" height="52" rx="2" />
+      <line x1="150" y1="60" x2="185" y2="60" opacity="0.5" strokeWidth="0.8" />
+      <line x1="150" y1="72" x2="185" y2="72" opacity="0.5" strokeWidth="0.8" />
+      <line x1="150" y1="84" x2="185" y2="84" opacity="0.5" strokeWidth="0.8" />
+    </g>
+    <g stroke={L} strokeWidth="1.5" fill="none">
+      <path d="M 60 74 L 75 74" />
+      <path d="M 130 74 L 140 74" />
+      <path d="M 195 74 L 220 74" />
+    </g>
+  </svg>
+);
+
+export const KnowledgeArchitectureAiEnterprises = () => (
+  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g stroke={G} strokeWidth="1.2" fill="none">
+      <circle cx="80" cy="72" r="30" />
+      <path d="M 55 50 L 105 50 M 55 72 L 105 72 M 55 94 L 105 94" opacity="0.3" strokeWidth="0.8" />
+    </g>
+    <g stroke={L} strokeWidth="1.5" fill="none">
+      <path d="M 115 45 L 160 45" markerEnd="url(#arrowKA)" />
+      <path d="M 115 72 L 160 72" markerEnd="url(#arrowKA)" />
+      <path d="M 115 99 L 160 99" markerEnd="url(#arrowKA)" />
+    </g>
+    <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.08)`}>
+      <circle cx="185" cy="45" r="8" />
+      <circle cx="185" cy="72" r="8" />
+      <circle cx="185" cy="99" r="8" />
+    </g>
+    <g fill={L} opacity="0.6">
+      <circle cx="185" cy="45" r="3" />
+      <circle cx="185" cy="72" r="3" />
+      <circle cx="185" cy="99" r="3" />
+    </g>
+    <g stroke={G} strokeWidth="0.8" fill="none" opacity="0.3">
+      <line x1="195" y1="45" x2="230" y2="35" />
+      <line x1="195" y1="72" x2="230" y2="72" />
+      <line x1="195" y1="99" x2="230" y2="109" />
+    </g>
+    <defs>
+      <marker id="arrowKA" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L0,6 L9,3 z" fill={L} />
+      </marker>
+    </defs>
+  </svg>
+);
+
+export const SemanticStructureAiContentSystems = () => (
+  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="arrowSem" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L0,6 L9,3 z" fill={L} />
+      </marker>
+    </defs>
+    <g stroke={G} strokeWidth="1.2" fill="none">
+      <circle cx="60" cy="50" r="8" />
+      <circle cx="60" cy="94" r="8" />
+      <path d="M 68 50 L 100 50 M 68 94 L 100 94" opacity="0.4" strokeWidth="1" />
+    </g>
+    <g stroke={L} strokeWidth="1.2" fill={`rgba(170,248,112,.08)`}>
+      <rect x="105" y="40" width="35" height="20" rx="2" />
+      <rect x="105" y="84" width="35" height="20" rx="2" />
+    </g>
+    <g stroke={G} strokeWidth="1.2" fill="none">
+      <path d="M 145 50 L 180 50" markerEnd="url(#arrowSem)" />
+      <path d="M 145 94 L 180 94" markerEnd="url(#arrowSem)" />
+    </g>
+    <g stroke={L} strokeWidth="1.5" fill="none" opacity="0.5">
+      <path d="M 200 50 L 230 65" />
+      <path d="M 200 94 L 230 79" />
+    </g>
+  </svg>
+);
+
+export const CmsArchitectureAiDrivenEnterprises = () => (
+  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`} rx="2">
+      <rect x="30" y="35" width="70" height="74" />
+    </g>
+    <g stroke={L} strokeWidth="1.2" fill="none" opacity="0.7">
+      <rect x="40" y="45" width="20" height="15" />
+      <rect x="65" y="45" width="20" height="15" />
+      <rect x="40" y="68" width="20" height="15" />
+      <rect x="65" y="68" width="20" height="15" />
+    </g>
+    <g stroke={G} strokeWidth="1.2" fill="none">
+      <path d="M 110 60 L 140 60" opacity="0.5" />
+      <path d="M 110 85 L 140 85" opacity="0.5" />
+    </g>
+    <g stroke={L} strokeWidth="1.5" fill="none">
+      <path d="M 150 60 L 190 60" markerEnd="url(#arrowCMS)" />
+      <path d="M 150 85 L 190 85" markerEnd="url(#arrowCMS)" />
+    </g>
+    <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
+      <circle cx="220" cy="60" r="10" />
+      <circle cx="220" cy="85" r="10" />
+    </g>
+    <defs>
+      <marker id="arrowCMS" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L0,6 L9,3 z" fill={L} />
+      </marker>
+    </defs>
+  </svg>
+);
+
+export const ContentFindabilitySystemCapability = () => (
+  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g stroke={G} strokeWidth="1.2" fill="none">
+      <circle cx="70" cy="72" r="25" />
+      <circle cx="70" cy="72" r="15" opacity="0.5" />
+      <circle cx="70" cy="72" r="5" opacity="0.3" />
+    </g>
+    <g stroke={L} strokeWidth="1.2" fill="none">
+      <path d="M 100 50 L 140 40" markerEnd="url(#arrowFind)" />
+      <path d="M 100 72 L 140 72" markerEnd="url(#arrowFind)" />
+      <path d="M 100 94 L 140 104" markerEnd="url(#arrowFind)" />
+    </g>
+    <g fill={L} opacity="0.4">
+      <circle cx="165" cy="40" r="4" />
+      <circle cx="165" cy="72" r="4" />
+      <circle cx="165" cy="104" r="4" />
+    </g>
+    <g stroke={G} strokeWidth="0.8" fill="none" opacity="0.3">
+      <path d="M 175 40 L 220 35" />
+      <path d="M 175 72 L 220 72" />
+      <path d="M 175 104 L 220 109" />
+    </g>
+    <defs>
+      <marker id="arrowFind" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L0,6 L9,3 z" fill={L} />
+      </marker>
+    </defs>
+  </svg>
+);
+
+export const DesigningAiContentOperatingSystem = () => (
+  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
+      <rect x="30" y="30" width="220" height="84" rx="4" />
+      <rect x="50" y="50" width="50" height="30" rx="2" opacity="0.8" />
+      <rect x="115" y="50" width="50" height="30" rx="2" opacity="0.8" />
+      <rect x="180" y="50" width="50" height="30" rx="2" opacity="0.8" />
+    </g>
+    <g stroke={L} strokeWidth="1.2" fill="none" opacity="0.6">
+      <path d="M 75 85 L 75 100" markerEnd="url(#arrowOS)" />
+      <path d="M 140 85 L 140 100" markerEnd="url(#arrowOS)" />
+      <path d="M 205 85 L 205 100" markerEnd="url(#arrowOS)" />
+    </g>
+    <defs>
+      <marker id="arrowOS" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L0,6 L9,3 z" fill={L} />
+      </marker>
+    </defs>
+  </svg>
+);
+
+export const PromptArchitectureContentTeams = () => (
+  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
+      <rect x="20" y="45" width="55" height="54" rx="2" />
+      <line x1="20" y1="60" x2="75" y2="60" opacity="0.4" strokeWidth="0.8" />
+      <line x1="20" y1="72" x2="75" y2="72" opacity="0.4" strokeWidth="0.8" />
+      <line x1="20" y1="84" x2="75" y2="84" opacity="0.4" strokeWidth="0.8" />
+    </g>
+    <g stroke={L} strokeWidth="1.5" fill="none">
+      <path d="M 80 72 L 130 72" markerEnd="url(#arrowPA)" />
+    </g>
+    <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.08)`}>
+      <circle cx="160" cy="72" r="18" />
+    </g>
+    <g stroke={L} strokeWidth="1.2" fill="none" opacity="0.5">
+      <path d="M 140 60 L 160 72 L 140 84" strokeLinecap="round" strokeLinejoin="round" />
+    </g>
+    <g stroke={L} strokeWidth="1.5" fill="none">
+      <path d="M 182 72 L 232 72" markerEnd="url(#arrowPA)" />
+    </g>
+    <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
+      <rect x="237" y="45" width="30" height="54" rx="2" />
+    </g>
+    <defs>
+      <marker id="arrowPA" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L0,6 L9,3 z" fill={L} />
+      </marker>
+    </defs>
+  </svg>
+);
+
+export const AiQualityAssuranceContentOperations = () => (
+  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
+      <rect x="30" y="40" width="50" height="64" rx="2" />
+      <line x1="30" y1="55" x2="80" y2="55" opacity="0.4" strokeWidth="0.8" />
+      <line x1="30" y1="70" x2="80" y2="70" opacity="0.4" strokeWidth="0.8" />
+      <line x1="30" y1="85" x2="80" y2="85" opacity="0.4" strokeWidth="0.8" />
+    </g>
+    <g stroke={L} strokeWidth="1.2" fill="none">
+      <circle cx="130" cy="50" r="10" />
+      <circle cx="130" cy="72" r="10" />
+      <circle cx="130" cy="94" r="10" />
+      <path d="M 122 50 L 138 50 M 130 42 L 130 58" strokeLinecap="round" opacity="0.7" strokeWidth="1.2" />
+      <path d="M 122 72 L 138 72 M 130 64 L 130 80" strokeLinecap="round" opacity="0.7" strokeWidth="1.2" />
+      <path d="M 122 94 L 138 94 M 130 86 L 130 102" strokeLinecap="round" opacity="0.7" strokeWidth="1.2" />
+    </g>
+    <g stroke={G} strokeWidth="1" fill="none" opacity="0.4">
+      <path d="M 145 50 L 200 50" />
+      <path d="M 145 72 L 200 72" />
+      <path d="M 145 94 L 200 94" />
+    </g>
+    <g stroke={L} strokeWidth="1.2" fill={`rgba(170,248,112,.1)`} opacity="0.6">
+      <rect x="205" y="40" width="50" height="64" rx="2" />
+    </g>
+  </svg>
+);
+
+export const AiContentRiskManagement = () => (
+  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g stroke={G} strokeWidth="1.2" fill="none">
+      <circle cx="70" cy="72" r="20" />
+    </g>
+    <g stroke={L} strokeWidth="1.5" fill="none">
+      <path d="M 95 40 L 140 40" markerEnd="url(#arrowRM)" />
+      <path d="M 95 72 L 140 72" markerEnd="url(#arrowRM)" />
+      <path d="M 95 104 L 140 104" markerEnd="url(#arrowRM)" />
+    </g>
+    <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.08)`}>
+      <rect x="145" y="33" width="20" height="14" opacity="0.8" />
+      <rect x="145" y="65" width="20" height="14" opacity="0.8" />
+      <rect x="145" y="97" width="20" height="14" opacity="0.8" />
+    </g>
+    <g stroke={L} strokeWidth="1.2" fill="none" opacity="0.5">
+      <path d="M 170 40 L 200 35" />
+      <path d="M 170 72 L 200 72" />
+      <path d="M 170 104 L 200 109" />
+    </g>
+    <circle cx="220" cy="35" r="3" fill={G} />
+    <circle cx="220" cy="72" r="3" fill={L} />
+    <circle cx="220" cy="109" r="3" fill={G} />
+    <defs>
+      <marker id="arrowRM" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L0,6 L9,3 z" fill={L} />
+      </marker>
+    </defs>
+  </svg>
+);
+
+export const ContentVelocityManagingSpeedQuality = () => (
+  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g stroke={G} strokeWidth="1.2" fill="none">
+      <line x1="30" y1="100" x2="250" y2="100" />
+      <line x1="30" y1="100" x2="30" y2="20" />
+      <path d="M 40 90 L 90 50 L 140 65 L 190 35 L 240 55" strokeLinecap="round" />
+    </g>
+    <g fill={L} opacity="0.6">
+      <circle cx="40" cy="90" r="2.5" />
+      <circle cx="90" cy="50" r="2.5" />
+      <circle cx="140" cy="65" r="2.5" />
+      <circle cx="190" cy="35" r="2.5" />
+      <circle cx="240" cy="55" r="2.5" />
+    </g>
+    <g stroke={G} strokeWidth="0.8" fill="none" opacity="0.3">
+      <path d="M 30 100 L 50 100" />
+      <path d="M 100 100 L 120 100" />
+      <path d="M 150 100 L 170 100" />
+      <path d="M 200 100 L 220 100" />
+    </g>
+  </svg>
+);
+
+export const RetrievalAugmentedContentSystems = () => (
+  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
+      <rect x="20" y="50" width="40" height="48" rx="2" />
+      <line x1="20" y1="62" x2="60" y2="62" opacity="0.5" strokeWidth="0.8" />
+      <line x1="20" y1="74" x2="60" y2="74" opacity="0.5" strokeWidth="0.8" />
+      <line x1="20" y1="86" x2="60" y2="86" opacity="0.5" strokeWidth="0.8" />
+    </g>
+    <g stroke={L} strokeWidth="1.5" fill="none">
+      <path d="M 65 74 L 100 50" markerEnd="url(#arrowRAG)" />
+      <path d="M 65 74 L 100 74" markerEnd="url(#arrowRAG)" />
+      <path d="M 65 74 L 100 98" markerEnd="url(#arrowRAG)" />
+    </g>
+    <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.08)`}>
+      <circle cx="130" cy="50" r="10" />
+      <circle cx="130" cy="74" r="10" />
+      <circle cx="130" cy="98" r="10" />
+    </g>
+    <g stroke=${L} strokeWidth="1.5" fill="none">
+      <path d="M 145 50 L 190 50" markerEnd="url(#arrowRAG)" />
+      <path d="M 145 74 L 190 74" markerEnd="url(#arrowRAG)" />
+      <path d="M 145 98 L 190 98" markerEnd="url(#arrowRAG)" />
+    </g>
+    <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
+      <rect x="195" y="40" width="60" height="68" rx="2" />
+    </g>
+    <defs>
+      <marker id="arrowRAG" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L0,6 L9,3 z" fill={L} />
+      </marker>
+    </defs>
+  </svg>
+);
+
+export const AiPoweredContentAuditing = () => (
+  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
+      <rect x="30" y="45" width="50" height="54" rx="2" />
+      <line x1="30" y1="60" x2="80" y2="60" opacity="0.4" strokeWidth="0.8" />
+      <line x1="30" y1="72" x2="80" y2="72" opacity="0.4" strokeWidth="0.8" />
+      <line x1="30" y1="84" x2="80" y2="84" opacity="0.4" strokeWidth="0.8" />
+    </g>
+    <g stroke=${L} strokeWidth="1.5" fill="none">
+      <path d="M 85 72 L 130 72" markerEnd="url(#arrowAudit)" />
+    </g>
+    <g stroke={G} strokeWidth="1.2" fill="none">
+      <circle cx="160" cy="72" r="18" />
+      <path d="M 148 72 L 160 85 L 172 60" stroke=${L} strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+    </g>
+    <g stroke=${L} strokeWidth="1.5" fill="none">
+      <path d="M 182 72 L 227 72" markerEnd="url(#arrowAudit)" />
+    </g>
+    <g stroke=${G} strokeWidth="1.2" fill={`rgba(49,97,72,.08)`}>
+      <circle cx="250" cy="72" r="10" />
+    </g>
+    <defs>
+      <marker id="arrowAudit" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L0,6 L9,3 z" fill=${L} />
+      </marker>
+    </defs>
+  </svg>
+);
+
+export const ContentIntelligencePlatforms = () => (
+  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g stroke=${L} strokeWidth="1.2" fill={`rgba(170,248,112,.08)`}>
+      <circle cx="60" cy="50" r="12" />
+      <circle cx="60" cy="94" r="12" />
+      <circle cx="120" cy="72" r="12" />
+      <circle cx="180" cy="50" r="12" />
+      <circle cx="180" cy="94" r="12" />
+    </g>
+    <g fill=${G} opacity="0.5">
+      <circle cx="60" cy="50" r="4" />
+      <circle cx="60" cy="94" r="4" />
+      <circle cx="120" cy="72" r="4" />
+      <circle cx="180" cy="50" r="4" />
+      <circle cx="180" cy="94" r="4" />
+    </g>
+    <g stroke=${G} strokeWidth="1" fill="none" opacity="0.4">
+      <line x1="70" y1="50" x2="108" y2="65" />
+      <line x1="70" y1="94" x2="108" y2="79" />
+      <line x1="130" y1="72" x2="168" y2="50" />
+      <line x1="130" y1="72" x2="168" y2="94" />
+    </g>
+  </svg>
+);
+
+export const OperationalisingLlmsContentTeams = () => (
+  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g stroke=${G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
+      <rect x="20" y="50" width="45" height="48" rx="2" />
+      <circle cx="42" cy="62" r="2" opacity="0.6" />
+      <circle cx="42" cy="74" r="2" opacity="0.6" />
+      <circle cx="42" cy="86" r="2" opacity="0.6" />
+    </g>
+    <g stroke=${L} strokeWidth="1.5" fill="none">
+      <path d="M 70 60 L 115 60" markerEnd="url(#arrowLLM)" />
+      <path d="M 70 74 L 115 74" markerEnd="url(#arrowLLM)" />
+      <path d="M 70 88 L 115 88" markerEnd="url(#arrowLLM)" />
+    </g>
+    <g stroke=${G} strokeWidth="1.2" fill={`rgba(49,97,72,.08)`}>
+      <circle cx="145" cy="60" r="10" />
+      <circle cx="145" cy="74" r="10" />
+      <circle cx="145" cy="88" r="10" />
+    </g>
+    <g stroke=${L} strokeWidth="1.2" fill="none" opacity="0.5">
+      <path d="M 158 60 L 200 50" />
+      <path d="M 158 74 L 200 74" />
+      <path d="M 158 88 L 200 98" />
+    </g>
+    <g fill=${L} opacity="0.4">
+      <circle cx="220" cy="50" r="3" />
+      <circle cx="220" cy="74" r="3" />
+      <circle cx="220" cy="98" r="3" />
+    </g>
+    <defs>
+      <marker id="arrowLLM" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L0,6 L9,3 z" fill=${L} />
+      </marker>
+    </defs>
+  </svg>
+);
+
+export const AiContentFeedbackLoop = () => (
+  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g stroke=${G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
+      <rect x="35" y="50" width="50" height="48" rx="2" />
+      <line x1="35" y1="65" x2="85" y2="65" opacity="0.4" strokeWidth="0.8" />
+      <line x1="35" y1="78" x2="85" y2="78" opacity="0.4" strokeWidth="0.8" />
+    </g>
+    <g stroke=${L} strokeWidth="1.5" fill="none">
+      <path d="M 90 74 L 140 74" markerEnd="url(#arrowFB)" />
+    </g>
+    <g stroke=${G} strokeWidth="1.2" fill={`rgba(49,97,72,.08)`}>
+      <circle cx="170" cy="74" r="15" />
+      <path d="M 162 74 L 170 82 L 178 66" stroke=${L} strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+    </g>
+    <g stroke=${L} strokeWidth="1.5" fill="none">
+      <path d="M 190 74 L 240 74" markerEnd="url(#arrowFB)" />
+    </g>
+    <g stroke=${G} strokeWidth="1.2" fill="none" opacity="0.5" strokeDasharray="2,2">
+      <path d="M 240 74 L 240 110 L 60 110 L 60 100" markerEnd="url(#arrowFB)" />
+    </g>
+    <defs>
+      <marker id="arrowFB" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L0,6 L9,3 z" fill=${L} />
+      </marker>
+    </defs>
+  </svg>
+);
+
+export const PersonalisationArchitectureAiEnterprises = () => (
+  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g stroke=${G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
+      <rect x="30" y="30" width="220" height="84" rx="4" />
+    </g>
+    <g stroke=${L} strokeWidth="1.2" fill={`rgba(170,248,112,.08)`}>
+      <rect x="50" y="50" width="40" height="30" rx="2" />
+      <rect x="105" y="50" width="40" height="30" rx="2" />
+      <rect x="160" y="50" width="40" height="30" rx="2" />
+    </g>
+    <g stroke=${G} strokeWidth="1.2" fill="none" opacity="0.6">
+      <path d="M 70 85 L 70 100" />
+      <path d="M 125 85 L 125 100" />
+      <path d="M 180 85 L 180 100" />
+    </g>
+  </svg>
+);
+
+export const ContentModellingPersonalisation = () => (
+  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g stroke=${G} strokeWidth="1.2" fill="none">
+      <circle cx="70" cy="50" r="12" />
+      <circle cx="70" cy="94" r="12" />
+      <line x1="82" y1="50" x2="120" y2="50" opacity="0.4" />
+      <line x1="82" y1="94" x2="120" y2="94" opacity="0.4" />
+    </g>
+    <g stroke=${L} strokeWidth="1.2" fill={`rgba(170,248,112,.08)`}>
+      <rect x="125" y="40" width="35" height="20" rx="2" />
+      <rect x="125" y="84" width="35" height="20" rx="2" />
+    </g>
+    <g stroke=${G} strokeWidth="1.2" fill="none">
+      <path d="M 165 50 L 200 50" markerEnd="url(#arrowCMP)" />
+      <path d="M 165 94 L 200 94" markerEnd="url(#arrowCMP)" />
+    </g>
+    <g stroke=${L} strokeWidth="1.2" fill="none" opacity="0.5">
+      <path d="M 210 50 L 240 40" />
+      <path d="M 210 94 L 240 104" />
+    </g>
+    <defs>
+      <marker id="arrowCMP" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L0,6 L9,3 z" fill=${G} />
+      </marker>
+    </defs>
+  </svg>
+);
+
+export const AudienceArchitectureDesigningSegments = () => (
+  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g stroke=${G} strokeWidth="1.2" fill="none">
+      <circle cx="60" cy="50" r="10" />
+      <circle cx="60" cy="72" r="10" />
+      <circle cx="60" cy="94" r="10" />
+      <circle cx="120" cy="60" r="10" />
+      <circle cx="120" cy="84" r="10" />
+    </g>
+    <g fill=${L} opacity="0.5">
+      <circle cx="60" cy="50" r="3" />
+      <circle cx="60" cy="72" r="3" />
+      <circle cx="60" cy="94" r="3" />
+      <circle cx="120" cy="60" r="3" />
+      <circle cx="120" cy="84" r="3" />
+    </g>
+    <g stroke=${L} strokeWidth="1.2" fill="none" opacity="0.6">
+      <path d="M 72 50 L 108 60" />
+      <path d="M 72 72 L 108 72" />
+      <path d="M 72 94 L 108 84" />
+    </g>
+    <g stroke=${G} strokeWidth="1.2" fill={`rgba(49,97,72,.08)`}>
+      <rect x="180" y="40" width="50" height="64" rx="2" />
+    </g>
+    <g fill=${L} opacity="0.3">
+      <rect x="185" y="50" width="12" height="12" />
+      <rect x="205" y="50" width="12" height="12" />
+      <rect x="185" y="72" width="12" height="12" />
+      <rect x="205" y="72" width="12" height="12" />
+    </g>
+  </svg>
+);
+
+export const DecisioningLogicContentPersonalisation = () => (
+  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g stroke=${G} strokeWidth="1.2" fill={`rgba(49,97,72,.08)`}>
+      <circle cx="70" cy="72" r="20" />
+    </g>
+    <g stroke=${L} strokeWidth="1.5" fill="none">
+      <path d="M 92 50 L 140 50" markerEnd="url(#arrowDL)" />
+      <path d="M 92 72 L 140 72" markerEnd="url(#arrowDL)" />
+      <path d="M 92 94 L 140 94" markerEnd="url(#arrowDL)" />
+    </g>
+    <g stroke=${G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
+      <rect x="145" y="40" width="25" height="20" rx="1" />
+      <rect x="145" y="62" width="25" height="20" rx="1" />
+      <rect x="145" y="84" width="25" height="20" rx="1" />
+    </g>
+    <g stroke=${L} strokeWidth="1.5" fill="none">
+      <path d="M 175 50 L 220 40" markerEnd="url(#arrowDL)" />
+      <path d="M 175 72 L 220 72" markerEnd="url(#arrowDL)" />
+      <path d="M 175 94 L 220 104" markerEnd="url(#arrowDL)" />
+    </g>
+    <defs>
+      <marker id="arrowDL" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L0,6 L9,3 z" fill=${L} />
+      </marker>
+    </defs>
+  </svg>
+);
+
+export const PersonalisationScaleB2bEnterprises = () => (
+  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g stroke=${G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
+      <rect x="20" y="50" width="40" height="48" rx="2" />
+      <circle cx="40" cy="62" r="2.5" opacity="0.6" />
+      <circle cx="40" cy="74" r="2.5" opacity="0.6" />
+      <circle cx="40" cy="86" r="2.5" opacity="0.6" />
+    </g>
+    <g stroke=${L} strokeWidth="1.2" fill={`rgba(170,248,112,.08)`}>
+      <circle cx="90" cy="50" r="12" />
+      <circle cx="90" cy="72" r="12" />
+      <circle cx="90" cy="94" r="12" />
+    </g>
+    <g fill=${G} opacity="0.5">
+      <circle cx="90" cy="50" r="4" />
+      <circle cx="90" cy="72" r="4" />
+      <circle cx="90" cy="94" r="4" />
+    </g>
+    <g stroke=${G} strokeWidth="1.2" fill="none">
+      <path d="M 65 62 L 78 50" opacity="0.5" />
+      <path d="M 65 74 L 78 72" opacity="0.5" />
+      <path d="M 65 86 L 78 94" opacity="0.5" />
+    </g>
+    <g stroke=${L} strokeWidth="1.5" fill="none">
+      <path d="M 105 50 L 160 50" markerEnd="url(#arrowP2B)" />
+      <path d="M 105 72 L 160 72" markerEnd="url(#arrowP2B)" />
+      <path d="M 105 94 L 160 94" markerEnd="url(#arrowP2B)" />
+    </g>
+    <g stroke=${G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
+      <rect x="165" y="40" width="50" height="64" rx="2" />
+    </g>
+    <defs>
+      <marker id="arrowP2B" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L0,6 L9,3 z" fill=${L} />
+      </marker>
+    </defs>
+  </svg>
+);
+
+export const RealTimePersonalisationArchitecture = () => (
+  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="arrowRT" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L0,6 L9,3 z" fill=${L} />
+      </marker>
+    </defs>
+    <g stroke=${G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
+      <rect x="20" y="50" width="50" height="48" rx="2" />
+      <line x1="20" y1="62" x2="70" y2="62" opacity="0.4" strokeWidth="0.8" />
+      <line x1="20" y1="74" x2="70" y2="74" opacity="0.4" strokeWidth="0.8" />
+    </g>
+    <g stroke=${L} strokeWidth="1.5" fill="none">
+      <path d="M 75 50 L 120 50" markerEnd="url(#arrowRT)" />
+      <path d="M 75 98 L 120 98" markerEnd="url(#arrowRT)" />
+    </g>
+    <g stroke=${G} strokeWidth="1.2" fill={`rgba(49,97,72,.08)`}>
+      <circle cx="145" cy="50" r="12" />
+      <circle cx="145" cy="98" r="12" />
+    </g>
+    <g stroke=${L} strokeWidth="1.5" fill="none">
+      <path d="M 160 50 L 200 50" markerEnd="url(#arrowRT)" />
+      <path d="M 160 98 L 200 98" markerEnd="url(#arrowRT)" />
+    </g>
+    <g stroke=${G} strokeWidth="1.2" fill=${`rgba(49,97,72,.06)`}>
+      <rect x="205" y="40" width="50" height="56" rx="2" />
+    </g>
+    <g stroke=${L} strokeWidth="1.2" fill="none" opacity="0.4" strokeDasharray="3,2">
+      <path d="M 220 100 Q 180 120 100 100" />
+    </g>
+  </svg>
+);
+
+export const PrivacyFirstPersonalisation = () => (
+  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g stroke=${G} strokeWidth="1.2" fill="none">
+      <circle cx="70" cy="72" r="22" />
+      <path d="M 52 72 L 88 72 M 70 50 L 70 94" opacity="0.4" strokeWidth="0.8" />
+    </g>
+    <g stroke=${L} strokeWidth="1.5" fill="none">
+      <path d="M 97 40 L 140 40" markerEnd="url(#arrowPriv)" />
+      <path d="M 97 72 L 140 72" markerEnd="url(#arrowPriv)" />
+      <path d="M 97 104 L 140 104" markerEnd="url(#arrowPriv)" />
+    </g>
+    <g stroke=${G} strokeWidth="1.2" fill={`rgba(49,97,72,.08)`}>
+      <rect x="145" y="32" width="20" height="16" opacity="0.8" />
+      <rect x="145" y="64" width="20" height="16" opacity="0.8" />
+      <rect x="145" y="96" width="20" height="16" opacity="0.8" />
+    </g>
+    <g stroke=${L} strokeWidth="1.5" fill="none">
+      <path d="M 170 40 L 220 40" markerEnd="url(#arrowPriv)" />
+      <path d="M 170 72 L 220 72" markerEnd="url(#arrowPriv)" />
+      <path d="M 170 104 L 220 104" markerEnd="url(#arrowPriv)" />
+    </g>
+    <g stroke=${G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
+      <rect x="225" y="32" width="40" height="16" opacity="0.8" />
+      <rect x="225" y="64" width="40" height="16" opacity="0.8" />
+      <rect x="225" y="96" width="40" height="16" opacity="0.8" />
+    </g>
+    <defs>
+      <marker id="arrowPriv" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L0,6 L9,3 z" fill=${L} />
+      </marker>
+    </defs>
+  </svg>
+);
+
+export const PersonalisationOperations = () => (
+  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g stroke=${G} strokeWidth="1.2" fill=${`rgba(49,97,72,.06)`}>
+      <rect x="30" y="40" width="70" height="64" rx="2" />
+      <line x1="30" y1="58" x2="100" y2="58" opacity="0.4" strokeWidth="0.8" />
+      <line x1="30" y1="74" x2="100" y2="74" opacity="0.4" strokeWidth="0.8" />
+      <line x1="30" y1="90" x2="100" y2="90" opacity="0.4" strokeWidth="0.8" />
+    </g>
+    <g stroke=${L} strokeWidth="1.5" fill="none">
+      <path d="M 105 50 L 150 50" markerEnd="url(#arrowPOps)" />
+      <path d="M 105 80 L 150 80" markerEnd="url(#arrowPOps)" />
+    </g>
+    <g stroke=${G} strokeWidth="1.2" fill=${`rgba(49,97,72,.08)`}>
+      <circle cx="180" cy="50" r="12" />
+      <circle cx="180" cy="80" r="12" />
+    </g>
+    <g stroke=${L} strokeWidth="1.5" fill="none">
+      <path d="M 195 50 L 240 50" markerEnd="url(#arrowPOps)" />
+      <path d="M 195 80 L 240 80" markerEnd="url(#arrowPOps)" />
+    </g>
+    <defs>
+      <marker id="arrowPOps" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L0,6 L9,3 z" fill=${L} />
+      </marker>
+    </defs>
+  </svg>
+);
+
+export const MeasuringPersonalisationEffectiveness = () => (
+  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g stroke=${G} strokeWidth="1.2" fill="none">
+      <line x1="40" y1="110" x2="240" y2="110" />
+      <line x1="40" y1="110" x2="40" y2="30" />
+    </g>
+    <g stroke=${L} strokeWidth="1.8" fill="none" strokeLinecap="round">
+      <path d="M 60 90 L 100 50 L 140 70 L 180 40 L 220 65" />
+    </g>
+    <g fill=${L} opacity="0.6">
+      <circle cx="60" cy="90" r="3" />
+      <circle cx="100" cy="50" r="3" />
+      <circle cx="140" cy="70" r="3" />
+      <circle cx="180" cy="40" r="3" />
+      <circle cx="220" cy="65" r="3" />
+    </g>
+    <g stroke=${G} strokeWidth="0.8" fill="none" opacity="0.3">
+      <line x1="60" y1="110" x2="60" y2="105" />
+      <line x1="100" y1="110" x2="100" y2="105" />
+      <line x1="140" y1="110" x2="140" y2="105" />
+      <line x1="180" y1="110" x2="180" y2="105" />
+      <line x1="220" y1="110" x2="220" y2="105" />
+    </g>
+  </svg>
+);
+
+export const LocalisationContentOperationsDiscipline = () => (
+  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    {/* Globe with operational flow */}
+    <circle cx="70" cy="72" r="32" stroke={G} strokeWidth="1.2" />
+    {/* Latitude lines */}
+    <ellipse cx="70" cy="72" rx="32" ry="8" stroke={G} strokeWidth="0.8" opacity="0.4" />
+    <ellipse cx="70" cy="62" rx="32" ry="6" stroke={G} strokeWidth="0.8" opacity="0.3" />
+    <ellipse cx="70" cy="82" rx="32" ry="6" stroke={G} strokeWidth="0.8" opacity="0.3" />
+    {/* Meridian */}
+    <path d="M 70 40 Q 75 72 70 104" stroke={G} strokeWidth="0.8" opacity="0.4" />
+
+    {/* Operational flow arrows to the right */}
+    <g stroke={L} strokeWidth="1.5" fill="none">
+      <path d="M 110 50 L 160 50" markerEnd="url(#arrowL)" />
+      <path d="M 110 72 L 160 72" markerEnd="url(#arrowL)" />
+      <path d="M 110 94 L 160 94" markerEnd="url(#arrowL)" />
+    </g>
+
+    {/* Content stream indicators on right */}
+    <g stroke={G} strokeWidth="1" fill="none" opacity="0.6">
+      <rect x="165" y="42" width="15" height="6" />
+      <rect x="165" y="64" width="15" height="6" />
+      <rect x="165" y="86" width="15" height="6" />
+    </g>
+
+    {/* Connecting dots */}
+    <circle cx="158" cy="50" r="1.5" fill={L} />
+    <circle cx="158" cy="72" r="1.5" fill={L} />
+    <circle cx="158" cy="94" r="1.5" fill={L} />
+
+    <defs>
+      <marker id="arrowL" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L0,6 L9,3 z" fill={L} />
+      </marker>
+    </defs>
+  </svg>
+);
+
+export const AIPoweredTranslationOperations = () => (
+  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    {/* Left document stack */}
+    <g>
+      <rect x="20" y="50" width="22" height="32" stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`} />
+      <line x1="20" y1="57" x2="42" y2="57" stroke={G} strokeWidth="0.8" opacity="0.5" />
+      <line x1="20" y1="64" x2="42" y2="64" stroke={G} strokeWidth="0.8" opacity="0.5" />
+      <line x1="20" y1="71" x2="42" y2="71" stroke={G} strokeWidth="0.8" opacity="0.5" />
+
+      <rect x="27" y="56" width="22" height="32" stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`} opacity="0.7" />
+      <line x1="27" y1="63" x2="49" y2="63" stroke={G} strokeWidth="0.8" opacity="0.4" />
+      <line x1="27" y1="70" x2="49" y2="70" stroke={G} strokeWidth="0.8" opacity="0.4" />
+    </g>
+
+    {/* AI Translation bridge */}
+    <g>
+      {/* Lightning bolt accent */}
+      <path d="M 130 45 L 125 62 L 132 62 L 120 90" stroke={L} strokeWidth="1.8" fill="none" strokeLinecap="round" />
+
+      {/* AI bridge box */}
+      <rect x="110" y="55" width="40" height="32" stroke={G} strokeWidth="1.2" rx="2" fill={`rgba(170,248,112,.08)`} />
+      <circle cx="130" cy="71" r="3" fill={L} />
+      <circle cx="120" cy="67" r="1.5" fill={G} opacity="0.5" />
+      <circle cx="140" cy="69" r="1.5" fill={G} opacity="0.5" />
+      <circle cx="125" cy="78" r="1.5" fill={G} opacity="0.5" />
+      <circle cx="135" cy="77" r="1.5" fill={G} opacity="0.5" />
+    </g>
+
+    {/* Right document stack (translated) */}
+    <g>
+      <rect x="218" y="50" width="22" height="32" stroke={L} strokeWidth="1.2" fill={`rgba(170,248,112,.12)`} />
+      <line x1="218" y1="57" x2="240" y2="57" stroke={L} strokeWidth="0.8" opacity="0.6" />
+      <line x1="218" y1="64" x2="240" y2="64" stroke={L} strokeWidth="0.8" opacity="0.6" />
+      <line x1="218" y1="71" x2="240" y2="71" stroke={L} strokeWidth="0.8" opacity="0.6" />
+
+      <rect x="211" y="56" width="22" height="32" stroke={L} strokeWidth="1.2" fill={`rgba(170,248,112,.12)`} opacity="0.7" />
+      <line x1="211" y1="63" x2="233" y2="63" stroke={L} strokeWidth="0.8" opacity="0.5" />
+      <line x1="211" y1="70" x2="233" y2="70" stroke={L} strokeWidth="0.8" opacity="0.5" />
+    </g>
+
     {/* Connecting arrows */}
-    {[56, 84].map((y) => (
-      <line key={y} x1={140} y1={y} x2={140} y2={y + 6} stroke={G} strokeWidth={0.9} opacity={0.3} markerEnd="url(#arrPA)" />
-    ))}
-    {/* Input feeds left */}
-    {[40, 56, 72].map((y) => (
-      <line key={y} x1={24} y1={y} x2={44} y2={y} stroke={G} strokeWidth={0.7} strokeDasharray="2 2" opacity={0.35} />
-    ))}
-    {/* Output feeds right */}
-    {[96, 104, 112].map((y) => (
-      <line key={y} x1={236} y1={y} x2={256} y2={y} stroke={L} strokeWidth={0.7} opacity={0.35} />
-    ))}
-    <defs>
-      <marker id="arrPA" markerWidth="4" markerHeight="4" refX="2" refY="2" orient="auto">
-        <path d="M0,0 L4,2 L0,4 Z" fill={G} opacity={0.4} />
-      </marker>
-    </defs>
-  </Illus>
+    <path d="M 55 65 Q 85 65 110 65" stroke={G} strokeWidth="1" fill="none" opacity="0.4" />
+    <path d="M 150 79 Q 180 79 218 65" stroke={G} strokeWidth="1" fill="none" opacity="0.4" />
+  </svg>
 );
 
-const ContentModellingPersonalisation = () => (
-  <Illus>
-    {/* Root content branching into 3 audience variants */}
-    <rect x={108} y={28} width={64} height={26} rx={3} stroke={G} strokeWidth={1.2} fill={G10} />
-    <text x={140} y={44} textAnchor="middle" fill={G} fontSize={7.5} fontFamily="sans-serif" opacity={0.7}>Content</text>
-    {/* Branches */}
-    {[72, 140, 208].map((x, i) => (
-      <g key={x}>
-        <line x1={140} y1={54} x2={x} y2={80} stroke={G} strokeWidth={1} opacity={0.4} />
-        <rect x={x - 28} y={80} width={56} height={26} rx={3} stroke={i === 1 ? L : G} strokeWidth={1.2} fill={i === 1 ? "rgba(170,248,112,0.1)" : G10} />
-        <text x={x} y={96} textAnchor="middle" fill={G} fontSize={7} fontFamily="sans-serif" opacity={0.7}>{["Segment A", "Segment B", "Segment C"][i]}</text>
-      </g>
-    ))}
-    {/* Sub-branches from each */}
-    {[72, 140, 208].map((x) => (
-      <g key={`sub${x}`}>
-        {[-16, 16].map((dx) => (
-          <g key={dx}>
-            <line x1={x} y1={106} x2={x + dx} y2={118} stroke={G} strokeWidth={0.7} opacity={0.25} />
-            <circle cx={x + dx} cy={118} r={4} stroke={G} strokeWidth={0.8} fill={G10} />
-          </g>
-        ))}
-      </g>
-    ))}
-  </Illus>
+export const ContentArchitectureMultilingual = () => (
+  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    {/* Blueprint grid background accent */}
+    <rect x="40" y="30" width="80" height="84" stroke={G} strokeWidth="0.6" fill={`rgba(49,97,72,.04)`} opacity="0.5" />
+
+    {/* Central architecture structure */}
+    <g stroke={G} strokeWidth="1.2" fill="none">
+      {/* Top box */}
+      <rect x="55" y="35" width="50" height="18" rx="1" fill={`rgba(49,97,72,.06)`} />
+      <line x1="62" y1="35" x2="62" y2="53" stroke={G} strokeWidth="0.8" opacity="0.4" />
+      <line x1="72" y1="35" x2="72" y2="53" stroke={G} strokeWidth="0.8" opacity="0.4" />
+      <line x1="82" y1="35" x2="82" y2="53" stroke={G} strokeWidth="0.8" opacity="0.4" />
+    </g>
+
+    {/* Branching lines to languages */}
+    <g stroke={L} strokeWidth="1.5" fill="none">
+      <path d="M 80 53 L 55 75" />
+      <path d="M 80 53 L 105 75" />
+      <path d="M 80 53 L 80 85" />
+    </g>
+
+    {/* Language branch boxes */}
+    <g stroke={L} strokeWidth="1.2" fill="none">
+      {/* Left language */}
+      <rect x="40" y="72" width="28" height="20" rx="1" fill={`rgba(170,248,112,.08)`} />
+      <text x="54" y="86" textAnchor="middle" fontSize="8" fill={L}>EN</text>
+
+      {/* Center language */}
+      <rect x="66" y="82" width="28" height="20" rx="1" fill={`rgba(170,248,112,.08)`} />
+      <text x="80" y="96" textAnchor="middle" fontSize="8" fill={L}>FR</text>
+
+      {/* Right language */}
+      <rect x="92" y="72" width="28" height="20" rx="1" fill={`rgba(170,248,112,.08)`} />
+      <text x="106" y="86" textAnchor="middle" fontSize="8" fill={L}>ZH</text>
+    </g>
+
+    {/* Architecture diagram lines on right */}
+    <g stroke={G} strokeWidth="0.8" fill="none" opacity="0.5">
+      <rect x="160" y="40" width="30" height="15" />
+      <line x1="175" y1="40" x2="175" y2="55" />
+      <rect x="160" y="65" width="30" height="15" />
+      <line x1="175" y1="65" x2="175" y2="80" />
+      <rect x="160" y="90" width="30" height="15" />
+
+      <line x1="175" y1="55" x2="175" y2="65" stroke={G} strokeWidth="1.2" />
+      <line x1="175" y1="80" x2="175" y2="90" stroke={G} strokeWidth="1.2" />
+    </g>
+
+    {/* Connection to architecture */}
+    <path d="M 125 72 L 160 72" stroke={G} strokeWidth="1" fill="none" opacity="0.3" />
+  </svg>
 );
 
-const AudienceArchitectureDesigningSegments = () => (
-  <Illus>
-    {/* 3-circle Venn diagram */}
-    <circle cx={116} cy={58} r={36} stroke={G} strokeWidth={1.2} fill={G10} opacity={0.65} />
-    <circle cx={164} cy={58} r={36} stroke={G} strokeWidth={1.2} fill={G10} opacity={0.65} />
-    <circle cx={140} cy={96} r={36} stroke={G} strokeWidth={1.2} fill={G10} opacity={0.65} />
-    {/* Labels */}
-    <text x={102} y={50} textAnchor="middle" fill={G} fontSize={8} fontFamily="sans-serif" opacity={0.7}>B2B</text>
-    <text x={178} y={50} textAnchor="middle" fill={G} fontSize={8} fontFamily="sans-serif" opacity={0.7}>SMB</text>
-    <text x={140} y={114} textAnchor="middle" fill={G} fontSize={8} fontFamily="sans-serif" opacity={0.7}>Enterprise</text>
-    {/* Centre intersection */}
-    <circle cx={140} cy={72} r={10} stroke={L} strokeWidth={1.2} fill="rgba(170,248,112,0.25)" />
-  </Illus>
+export const LocalisationWorkflowDesign = () => (
+  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    {/* Main workflow pipeline - left to right */}
+    <g stroke={G} strokeWidth="2.5" fill="none" opacity="0.7" strokeLinecap="round">
+      <path d="M 20 72 L 70 72" />
+      <path d="M 100 72 L 150 72" />
+      <path d="M 180 72 L 230 72" />
+    </g>
+
+    {/* Stage 1: Source */}
+    <g>
+      <circle cx="35" cy="72" r="8" stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`} />
+      <text x="35" y="75" textAnchor="middle" fontSize="6" fill={G} fontWeight="bold">1</text>
+      {/* Source flag - generic */}
+      <rect x="28" y="88" width="14" height="8" stroke={G} strokeWidth="0.8" fill={`rgba(49,97,72,.08)`} />
+    </g>
+
+    {/* Stage 2: Review */}
+    <g>
+      <circle cx="125" cy="72" r="8" stroke={L} strokeWidth="1.2" fill={`rgba(170,248,112,.12)`} />
+      <text x="125" y="75" textAnchor="middle" fontSize="6" fill={L} fontWeight="bold">2</text>
+      {/* Multiple language flags */}
+      <rect x="112" y="88" width="6" height="8" stroke={L} strokeWidth="0.8" fill={`rgba(170,248,112,.1)`} />
+      <rect x="121" y="88" width="6" height="8" stroke={L} strokeWidth="0.8" fill={`rgba(170,248,112,.1)`} />
+      <rect x="130" y="88" width="6" height="8" stroke={L} strokeWidth="0.8" fill={`rgba(170,248,112,.1)`} />
+    </g>
+
+    {/* Stage 3: Delivery */}
+    <g>
+      <circle cx="215" cy="72" r="8" stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`} />
+      <text x="215" y="75" textAnchor="middle" fontSize="6" fill={G} fontWeight="bold">3</text>
+      {/* Delivery nodes */}
+      <circle cx="210" cy="90" r="2" fill={G} opacity="0.6" />
+      <circle cx="215" cy="90" r="2" fill={G} opacity="0.6" />
+      <circle cx="220" cy="90" r="2" fill={G} opacity="0.6" />
+    </g>
+
+    {/* Feedback loop from stage 3 back to stage 2 */}
+    <g stroke={L} strokeWidth="1" fill="none" opacity="0.4">
+      <path d="M 207 80 Q 170 110 130 95" strokeDasharray="3,2" />
+    </g>
+
+    {/* Process indication markers */}
+    <g stroke={G} strokeWidth="0.8" fill="none" opacity="0.3">
+      <path d="M 60 55 L 80 55" />
+      <path d="M 150 55 L 170 55" />
+      <path d="M 230 55 L 250 55" />
+    </g>
+  </svg>
 );
 
-const DecisioningLogicContentPersonalisation = () => (
-  <Illus>
-    {/* Decision tree with diamond nodes */}
-    {/* Root diamond */}
-    <polygon points="140,28 160,48 140,68 120,48" stroke={L} strokeWidth={1.5} fill="rgba(170,248,112,0.12)" />
-    <text x={140} y={51} textAnchor="middle" fill={G} fontSize={7} fontFamily="sans-serif">Segment?</text>
-    {/* Branches */}
-    <line x1={120} y1={48} x2={88} y2={72} stroke={G} strokeWidth={1} opacity={0.4} />
-    <line x1={160} y1={48} x2={192} y2={72} stroke={G} strokeWidth={1} opacity={0.4} />
-    {/* Level 2 diamonds */}
-    {[88, 192].map((cx, i) => (
-      <g key={cx}>
-        <polygon points={`${cx},72 ${cx + 16},88 ${cx},104 ${cx - 16},88`} stroke={G} strokeWidth={1.2} fill={G10} />
-        <text x={cx} y={91} textAnchor="middle" fill={G} fontSize={6.5} fontFamily="sans-serif">{["Stage?", "Intent?"][i]}</text>
-      </g>
-    ))}
-    {/* Leaf outputs */}
-    {[60, 116, 164, 220].map((x, i) => (
-      <g key={x}>
-        <line x1={i < 2 ? 88 : 192} y1={104} x2={x} y2={116} stroke={G} strokeWidth={0.8} opacity={0.35} />
-        <rect x={x - 18} y={116} width={36} height={14} rx={2} stroke={i % 2 === 0 ? L : G} strokeWidth={0.9} fill={i % 2 === 0 ? "rgba(170,248,112,0.1)" : G10} />
-      </g>
-    ))}
-  </Illus>
+export const TerminologyManagementGlobalContent = () => (
+  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    {/* Central dictionary/glossary book */}
+    <g>
+      <rect x="50" y="40" width="40" height="64" stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`} rx="2" />
+      {/* Book spine */}
+      <line x1="50" y1="40" x2="46" y2="44" stroke={G} strokeWidth="1" opacity="0.4" />
+      <line x1="50" y1="104" x2="46" y2="108" stroke={G} strokeWidth="1" opacity="0.4" />
+      <line x1="46" y1="44" x2="46" y2="108" stroke={G} strokeWidth="0.8" opacity="0.3" />
+
+      {/* Text lines inside book */}
+      <line x1="58" y1="50" x2="80" y2="50" stroke={G} strokeWidth="0.8" opacity="0.5" />
+      <line x1="58" y1="58" x2="80" y2="58" stroke={G} strokeWidth="0.8" opacity="0.5" />
+      <line x1="58" y1="66" x2="80" y2="66" stroke={G} strokeWidth="0.8" opacity="0.5" />
+      <line x1="58" y1="74" x2="75" y2="74" stroke={G} strokeWidth="0.8" opacity="0.5" />
+      <line x1="58" y1="82" x2="78" y2="82" stroke={G} strokeWidth="0.8" opacity="0.5" />
+      <line x1="58" y1="90" x2="76" y2="90" stroke={G} strokeWidth="0.8" opacity="0.5" />
+    </g>
+
+    {/* Radiating terms and connections */}
+    <g stroke=${L} strokeWidth="1.2" fill="none">
+      {/* Top-left radiation */}
+      <line x1="55" y1="48" x2="30" y2="25" />
+      <circle cx="30" cy="25" r="5" stroke=${L} strokeWidth="1" fill={`rgba(170,248,112,.08)`} />
+
+      {/* Top-right radiation */}
+      <line x1="85" y1="48" x2="115" y2="25" />
+      <circle cx="115" cy="25" r="5" stroke=${L} strokeWidth="1" fill={`rgba(170,248,112,.08)`} />
+
+      {/* Right radiation */}
+      <line x1="90" y1="72" x2="135" y2="72" />
+      <circle cx="135" cy="72" r="5" stroke=${L} strokeWidth="1" fill={`rgba(170,248,112,.08)`} />
+
+      {/* Bottom-right radiation */}
+      <line x1="85" y1="96" x2="115" y2="119" />
+      <circle cx="115" cy="119" r="5" stroke=${L} strokeWidth="1" fill={`rgba(170,248,112,.08)`} />
+
+      {/* Bottom-left radiation */}
+      <line x1="55" y1="96" x2="30" y2="119" />
+      <circle cx="30" cy="119" r="5" stroke=${L} strokeWidth="1" fill={`rgba(170,248,112,.08)`} />
+
+      {/* Left radiation */}
+      <line x1="50" y1="72" x2="15" y2="72" />
+      <circle cx="15" cy="72" r="5" stroke=${L} strokeWidth="1" fill={`rgba(170,248,112,.08)`} />
+    </g>
+
+    {/* Secondary connections from nodes */}
+    <g stroke=${G} strokeWidth="0.6" fill="none" opacity="0.3">
+      <line x1="30" y1="30" x2="40" y2="40" />
+      <line x1="115" y1="30" x2="95" y2="45" />
+      <line x1="135" y1="77" x2="130" y2="85" />
+      <line x1="115" y1="114" x2="85" y2="100" />
+    </g>
+  </svg>
 );
 
-const PersonalisationScaleB2bEnterprises = () => (
-  <Illus>
-    {/* Buying committee icons with targeted content arrows */}
-    {[68, 140, 212].map((x, i) => (
-      <g key={x}>
-        {/* Person icon */}
-        <circle cx={x} cy={48} r={10} stroke={G} strokeWidth={1} fill={G10} />
-        <path d={`M${x - 14},78 Q${x - 14},62 ${x},62 Q${x + 14},62 ${x + 14},78`} stroke={G} strokeWidth={1} fill={G10} />
-        {/* Arrow down to content */}
-        <line x1={x} y1={80} x2={x} y2={92} stroke={i === 1 ? L : G} strokeWidth={1} opacity={0.5} markerEnd="url(#arrBC)" />
-        {/* Content block */}
-        <rect x={x - 22} y={92} width={44} height={18} rx={2} stroke={i === 1 ? L : G} strokeWidth={1} fill={i === 1 ? "rgba(170,248,112,0.1)" : G10} />
-        <line x1={x - 14} y1={100} x2={x + 14} y2={100} stroke={G} strokeWidth={0.7} opacity={0.3} />
-        <line x1={x - 14} y1={105} x2={x + 6} y2={105} stroke={G} strokeWidth={0.7} opacity={0.3} />
-      </g>
-    ))}
-    <defs>
-      <marker id="arrBC" markerWidth="4" markerHeight="4" refX="2" refY="2" orient="auto">
-        <path d="M0,0 L4,2 L0,4 Z" fill={G} opacity={0.5} />
-      </marker>
-    </defs>
-  </Illus>
+export const GlobalContentStrategyAIEnterprises = () => (
+  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    {/* World map outline - simplified */}
+    <g stroke=${G} strokeWidth="1.2" fill={`rgba(49,97,72,.04)`} opacity="0.6">
+      {/* Landmass silhouettes */}
+      <path d="M 30 60 L 40 50 L 50 55 L 55 50 L 60 60 Z" />
+      <path d="M 100 40 L 120 35 L 130 50 L 115 60 Z" />
+      <path d="M 180 55 L 200 48 L 210 65 L 190 70 Z" />
+      <path d="M 220 75 L 240 72 L 245 90 L 225 95 Z" />
+    </g>
+
+    {/* Regional strategy nodes */}
+    <g>
+      {/* Node 1 - Americas */}
+      <circle cx="45" cy="72" r="6" stroke=${L} strokeWidth="1.2" fill={`rgba(170,248,112,.12)`} />
+      <circle cx="45" cy="72" r="2" fill=${L} />
+
+      {/* Node 2 - Europe/Africa */}
+      <circle cx="115" cy="60" r="6" stroke=${L} strokeWidth="1.2" fill={`rgba(170,248,112,.12)`} />
+      <circle cx="115" cy="60" r="2" fill=${L} />
+
+      {/* Node 3 - Asia Pacific */}
+      <circle cx="195" cy="72" r="6" stroke=${L} strokeWidth="1.2" fill={`rgba(170,248,112,.12)`} />
+      <circle cx="195" cy="72" r="2" fill=${L} />
+
+      {/* Node 4 - Regional Hub */}
+      <circle cx="235" cy="85" r="6" stroke=${L} strokeWidth="1.2" fill={`rgba(170,248,112,.12)`} />
+      <circle cx="235" cy="85" r="2" fill=${L} />
+    </g>
+
+    {/* Strategy connections between regions */}
+    <g stroke=${G} strokeWidth="1.2" fill="none" opacity="0.5">
+      <path d="M 51 66 L 109 66" />
+      <path d="M 121 54 L 189 78" />
+      <path d="M 201 78 L 229 91" />
+    </g>
+
+    {/* Cross-region collaboration lines */}
+    <g stroke=${L} strokeWidth="0.8" fill="none" opacity="0.3" strokeDasharray="2,2">
+      <path d="M 45 78 L 235 79" />
+      <path d="M 115 66 L 45 78" />
+      <path d="M 195 78 L 115 66" />
+    </g>
+
+    {/* Central hub indicator */}
+    <g stroke=${G} strokeWidth="1" fill="none" opacity="0.4">
+      <circle cx="140" cy="72" r="20" />
+    </g>
+  </svg>
 );
 
-const RealTimePersonalisationArchitecture = () => (
-  <Illus>
-    {/* Timeline with event spikes and lightning bolt */}
-    <line x1={28} y1={90} x2={252} y2={90} stroke={G} strokeWidth={1.2} opacity={0.4} />
-    {/* Event spikes */}
-    {[68, 112, 156, 200].map((x, i) => (
-      <g key={x}>
-        <line x1={x} y1={90} x2={x} y2={50 - i * 6} stroke={G} strokeWidth={1} opacity={0.35} />
-        <circle cx={x} cy={50 - i * 6} r={3} fill={G} opacity={0.3} />
-      </g>
-    ))}
-    {/* Trigger event highlighted */}
-    <line x1={156} y1={90} x2={156} y2={32} stroke={L} strokeWidth={1.5} opacity={0.7} />
-    <circle cx={156} cy={32} r={4} fill={L} opacity={0.7} />
-    {/* Lightning bolt */}
-    <path d="M172,24 L162,44 L170,44 L158,64 L172,44 L164,44 Z" stroke={L} strokeWidth={1} fill="rgba(170,248,112,0.2)" />
-    {/* Response block */}
-    <rect x={174} y={50} width={56} height={22} rx={3} stroke={L} strokeWidth={1} fill="rgba(170,248,112,0.1)" />
-    <text x={202} y={64} textAnchor="middle" fill={G} fontSize={7.5} fontFamily="sans-serif" opacity={0.7}>Response</text>
-  </Illus>
-);
-
-const PrivacyFirstPersonalisation = () => (
-  <Illus>
-    {/* Shield with data/targeting lines coming from behind */}
-    {/* Data lines behind */}
-    {[-28, -14, 0, 14, 28].map((dx, i) => (
-      <line key={dx} x1={140 + dx} y1={28} x2={140 + dx} y2={48 + i * 4} stroke={G} strokeWidth={0.8} opacity={0.2} />
-    ))}
-    {/* Shield */}
-    <path
-      d="M140,38 L168,50 L168,82 C168,100 140,114 140,114 C140,114 112,100 112,82 L112,50 Z"
-      stroke={G}
-      strokeWidth={1.5}
-      fill="white"
-    />
-    <path
-      d="M140,38 L168,50 L168,82 C168,100 140,114 140,114 C140,114 112,100 112,82 L112,50 Z"
-      stroke={G}
-      strokeWidth={1.5}
-      fill={G10}
-    />
-    {/* Lock icon inside shield */}
-    <rect x={130} y={68} width={20} height={16} rx={2} stroke={L} strokeWidth={1.2} fill="rgba(170,248,112,0.15)" />
-    <path d="M134,68 A6,6 0 0,1 146,68" stroke={L} strokeWidth={1.2} fill="none" />
-    <circle cx={140} cy={76} r={2.5} stroke={L} strokeWidth={1} fill="rgba(170,248,112,0.4)" />
-    {/* Personalisation arrows emerging from sides */}
-    {[-1, 1].map((dir) => (
-      <line key={dir} x1={140 + dir * 56} y1={76} x2={140 + dir * 26} y2={76} stroke={G} strokeWidth={0.8} strokeDasharray="2 2" opacity={0.35} markerEnd="url(#arrPP)" />
-    ))}
-    <defs>
-      <marker id="arrPP" markerWidth="4" markerHeight="4" refX="2" refY="2" orient="auto">
-        <path d="M0,0 L4,2 L0,4 Z" fill={G} opacity={0.4} />
-      </marker>
-    </defs>
-  </Illus>
-);
-
-const PersonalisationOperations = () => (
-  <Illus>
-    {/* Control panel with sliders, toggles, dial */}
-    <rect x={36} y={28} width={208} height={88} rx={5} stroke={G} strokeWidth={1.2} fill={G10} />
-    {/* Sliders */}
-    {[50, 66, 82].map((y, i) => (
-      <g key={y}>
-        <line x1={52} y1={y} x2={168} y2={y} stroke={G} strokeWidth={1} opacity={0.3} />
-        <circle cx={90 + i * 24} cy={y} r={5} stroke={i === 1 ? L : G} strokeWidth={1.2} fill={i === 1 ? "rgba(170,248,112,0.3)" : "white"} />
-        <text x={175} y={y + 4} fill={G} fontSize={7} fontFamily="sans-serif" opacity={0.5}>{["Freq", "Tone", "Format"][i]}</text>
-      </g>
-    ))}
-    {/* Toggles */}
-    {[100, 116].map((y, i) => (
-      <g key={y}>
-        <rect x={52} y={y - 6} width={24} height={12} rx={6} stroke={G} strokeWidth={1} fill={i === 0 ? "rgba(170,248,112,0.2)" : G10} />
-        <circle cx={i === 0 ? 70 : 58} cy={y} r={5} stroke={i === 0 ? L : G} strokeWidth={1} fill="white" />
-        <text x={82} y={y + 4} fill={G} fontSize={7} fontFamily="sans-serif" opacity={0.5}>{["AI On", "A/B Test"][i]}</text>
-      </g>
-    ))}
-    {/* Dial */}
-    <circle cx={210} cy={75} r={20} stroke={G} strokeWidth={1} fill="white" />
-    <circle cx={210} cy={75} r={20} stroke={G} strokeWidth={1} fill={G10} />
-    <line x1={210} y1={75} x2={210} y2={58} stroke={L} strokeWidth={1.5} strokeLinecap="round" />
-    <circle cx={210} cy={75} r={4} fill={G} />
-  </Illus>
-);
-
-const MeasuringPersonalisationEffectiveness = () => (
-  <Illus>
-    {/* A/B bars with lift measurement arrow */}
-    {/* A bar */}
-    <rect x={72} y={50} width={40} height={60} rx={2} stroke={G} strokeWidth={1.2} fill={G10} />
-    <text x={92} y={125} textAnchor="middle" fill={G} fontSize={8} fontFamily="sans-serif" opacity={0.6}>A</text>
-    {/* B bar (taller = better) */}
-    <rect x={132} y={30} width={40} height={80} rx={2} stroke={L} strokeWidth={1.5} fill="rgba(170,248,112,0.15)" />
-    <text x={152} y={125} textAnchor="middle" fill={L} fontSize={8} fontFamily="sans-serif" opacity={0.8}>B</text>
-    {/* Lift arrow */}
-    <line x1={186} y1={110} x2={186} y2={30} stroke={G} strokeWidth={1} strokeDasharray="3 2" opacity={0.4} />
-    <line x1={178} y1={50} x2={186} y2={30} stroke={G} strokeWidth={0.9} opacity={0.4} />
-    <line x1={194} y1={50} x2={186} y2={30} stroke={G} strokeWidth={0.9} opacity={0.4} />
-    <text x={196} y={68} fill={G} fontSize={7.5} fontFamily="sans-serif" opacity={0.6}>+lift</text>
-    {/* Baseline */}
-    <line x1={56} y1={110} x2={220} y2={110} stroke={G} strokeWidth={0.8} opacity={0.3} />
-  </Illus>
-);
-
-// ─── Series 6: Localisation ───────────────────────────────────────────────────
-
-const LocalisationContentOperationsDiscipline = () => (
-  <Illus>
-    {/* Globe with workflow nodes orbiting */}
-    <circle cx={140} cy={72} r={36} stroke={G} strokeWidth={1.2} fill={G10} />
-    {/* Globe lines */}
-    <ellipse cx={140} cy={72} rx={18} ry={36} stroke={G} strokeWidth={0.7} fill="none" opacity={0.35} />
-    <ellipse cx={140} cy={72} rx={36} ry={14} stroke={G} strokeWidth={0.7} fill="none" opacity={0.35} />
-    <line x1={140} y1={36} x2={140} y2={108} stroke={G} strokeWidth={0.7} opacity={0.3} />
-    {/* Orbit path */}
-    <circle cx={140} cy={72} r={54} stroke={G20} strokeWidth={0.8} fill="none" strokeDasharray="4 3" />
-    {/* Workflow nodes on orbit */}
-    {[0, 90, 180, 270].map((deg) => {
-      const rad = (deg * Math.PI) / 180;
-      const cx = 140 + 54 * Math.cos(rad);
-      const cy = 72 + 54 * Math.sin(rad);
-      return <circle key={deg} cx={cx} cy={cy} r={7} stroke={L} strokeWidth={1.2} fill="rgba(170,248,112,0.15)" />;
-    })}
-  </Illus>
-);
-
-const AiPoweredTranslationOperations = () => (
-  <Illus>
-    {/* Neural network with language characters at input/output */}
-    {/* Input chars */}
-    {["EN", "DE", "FR"].map((lang, i) => (
-      <g key={lang}>
-        <rect x={22} y={36 + i * 28} width={28} height={18} rx={2} stroke={G} strokeWidth={1} fill={G10} />
-        <text x={36} y={48 + i * 28} textAnchor="middle" fill={G} fontSize={8} fontFamily="sans-serif" opacity={0.7}>{lang}</text>
-      </g>
-    ))}
-    {/* Neural network nodes */}
-    {[
-      [90, 45], [90, 72], [90, 99],
-      [140, 36], [140, 60], [140, 84], [140, 108],
-      [190, 45], [190, 72], [190, 99],
-    ].map(([cx, cy], i) => (
-      <circle key={i} cx={cx} cy={cy} r={5} stroke={i >= 7 ? L : G} strokeWidth={1} fill={i >= 7 ? "rgba(170,248,112,0.12)" : G10} />
-    ))}
-    {/* Output chars */}
-    {["JA", "ZH", "ES"].map((lang, i) => (
-      <g key={lang}>
-        <rect x={210} y={36 + i * 28} width={28} height={18} rx={2} stroke={L} strokeWidth={1} fill="rgba(170,248,112,0.1)" />
-        <text x={224} y={48 + i * 28} textAnchor="middle" fill={L} fontSize={8} fontFamily="sans-serif" opacity={0.8}>{lang}</text>
-      </g>
-    ))}
-    {/* Some connections */}
-    <line x1={50} y1={45} x2={85} y2={45} stroke={G} strokeWidth={0.7} opacity={0.3} />
-    <line x1={50} y1={73} x2={85} y2={72} stroke={G} strokeWidth={0.7} opacity={0.3} />
-    <line x1={50} y1={101} x2={85} y2={99} stroke={G} strokeWidth={0.7} opacity={0.3} />
-    <line x1={195} y1={45} x2={210} y2={45} stroke={L} strokeWidth={0.7} opacity={0.4} />
-    <line x1={195} y1={72} x2={210} y2={73} stroke={L} strokeWidth={0.7} opacity={0.4} />
-    <line x1={195} y1={99} x2={210} y2={101} stroke={L} strokeWidth={0.7} opacity={0.4} />
-  </Illus>
-);
-
-const ContentArchitectureMultilingualDelivery = () => (
-  <Illus>
-    {/* Content tree with language-labelled branches */}
-    <rect x={110} y={24} width={60} height={22} rx={3} stroke={G} strokeWidth={1.2} fill={G10} />
-    <text x={140} y={38} textAnchor="middle" fill={G} fontSize={8} fontFamily="sans-serif" opacity={0.7}>Master</text>
-    {/* Branches */}
-    {[56, 108, 172, 224].map((x, i) => (
-      <g key={x}>
-        <line x1={140} y1={46} x2={x} y2={72} stroke={G} strokeWidth={1} opacity={0.4} />
-        <rect x={x - 22} y={72} width={44} height={20} rx={3} stroke={i === 0 ? L : G} strokeWidth={1.2} fill={i === 0 ? "rgba(170,248,112,0.1)" : G10} />
-        <text x={x} y={85} textAnchor="middle" fill={G} fontSize={8} fontFamily="sans-serif" opacity={0.7}>{["EN", "DE", "JA", "ES"][i]}</text>
-        {/* Sub-locale */}
-        {i === 0 && (
-          <g>
-            <line x1={x} y1={92} x2={x - 12} y2={108} stroke={G} strokeWidth={0.8} opacity={0.3} />
-            <line x1={x} y1={92} x2={x + 12} y2={108} stroke={G} strokeWidth={0.8} opacity={0.3} />
-            <rect x={x - 22} y={108} width={22} height={14} rx={2} stroke={G} strokeWidth={0.7} fill={G10} />
-            <rect x={x + 2} y={108} width={22} height={14} rx={2} stroke={G} strokeWidth={0.7} fill={G10} />
-            <text x={x - 11} y={118} textAnchor="middle" fill={G} fontSize={6.5} fontFamily="sans-serif" opacity={0.5}>en-US</text>
-            <text x={x + 13} y={118} textAnchor="middle" fill={G} fontSize={6.5} fontFamily="sans-serif" opacity={0.5}>en-GB</text>
-          </g>
-        )}
-      </g>
-    ))}
-  </Illus>
-);
-
-const LocalisationWorkflowDesign = () => (
-  <Illus>
-    {/* Source docs → TMS box → target docs */}
-    {/* Source docs */}
-    {[44, 64].map((y) => (
-      <rect key={y} x={22} y={y} width={44} height={28} rx={2} stroke={G} strokeWidth={1} fill={G10} />
-    ))}
-    <line x1={29} y1={52} x2={58} y2={52} stroke={G} strokeWidth={0.7} opacity={0.3} />
-    <line x1={29} y1={58} x2={54} y2={58} stroke={G} strokeWidth={0.7} opacity={0.3} />
-    {/* Arrow */}
-    <line x1={66} y1={72} x2={88} y2={72} stroke={G} strokeWidth={1} opacity={0.4} markerEnd="url(#arrLW)" />
-    {/* TMS box */}
-    <rect x={88} y={50} width={104} height={44} rx={4} stroke={L} strokeWidth={1.5} fill="rgba(170,248,112,0.1)" />
-    <text x={140} y={70} textAnchor="middle" fill={G} fontSize={8.5} fontFamily="sans-serif" fontWeight="bold">TMS</text>
-    <text x={140} y={82} textAnchor="middle" fill={G} fontSize={7} fontFamily="sans-serif" opacity={0.5}>Translation Memory</text>
-    {/* Arrow */}
-    <line x1={192} y1={72} x2={214} y2={72} stroke={G} strokeWidth={1} opacity={0.4} markerEnd="url(#arrLW)" />
-    {/* Target docs */}
-    {[44, 64].map((y) => (
-      <rect key={y} x={214} y={y} width={44} height={28} rx={2} stroke={L} strokeWidth={1} fill="rgba(170,248,112,0.1)" />
-    ))}
-    <defs>
-      <marker id="arrLW" markerWidth="5" markerHeight="5" refX="2.5" refY="2.5" orient="auto">
-        <path d="M0,0 L5,2.5 L0,5 Z" fill={G} opacity={0.5} />
-      </marker>
-    </defs>
-  </Illus>
-);
-
-const TerminologyManagementGlobalContent = () => (
-  <Illus>
-    {/* Two-column term table with cross-language connection lines */}
-    {/* EN column */}
-    <rect x={30} y={28} width={90} height={88} rx={3} stroke={G} strokeWidth={1.2} fill={G10} />
-    <text x={75} y={42} textAnchor="middle" fill={L} fontSize={8} fontFamily="sans-serif" fontWeight="bold">EN</text>
-    {["Content", "Workflow", "Taxonomy", "Metadata"].map((term, i) => (
-      <g key={term}>
-        <line x1={38} y1={52 + i * 18} x2={112} y2={52 + i * 18} stroke={G} strokeWidth={0.6} opacity={0.2} />
-        <text x={40} y={50 + i * 18} fill={G} fontSize={7.5} fontFamily="sans-serif" opacity={0.7}>{term}</text>
-      </g>
-    ))}
-    {/* DE column */}
-    <rect x={160} y={28} width={90} height={88} rx={3} stroke={G} strokeWidth={1.2} fill={G10} />
-    <text x={205} y={42} textAnchor="middle" fill={L} fontSize={8} fontFamily="sans-serif" fontWeight="bold">DE</text>
-    {["Inhalt", "Workflow", "Taxonomie", "Metadaten"].map((term, i) => (
-      <g key={term}>
-        <line x1={168} y1={52 + i * 18} x2={242} y2={52 + i * 18} stroke={G} strokeWidth={0.6} opacity={0.2} />
-        <text x={170} y={50 + i * 18} fill={G} fontSize={7.5} fontFamily="sans-serif" opacity={0.7}>{term}</text>
-      </g>
-    ))}
-    {/* Cross-language lines */}
-    {[50, 68, 86, 104].map((y, i) => (
-      <line key={y} x1={120} y1={y} x2={160} y2={y} stroke={i === 0 ? L : G} strokeWidth={i === 0 ? 1 : 0.7} opacity={i === 0 ? 0.6 : 0.3} strokeDasharray={i === 0 ? "" : "2 2"} />
-    ))}
-  </Illus>
-);
-
-const GlobalContentStrategyAIEnterprises = () => (
-  <Illus>
-    {/* Simplified world map outline with market nodes */}
-    {/* Continents as rough shapes */}
-    <path d="M40,56 Q54,44 72,48 Q84,44 88,56 Q84,68 72,70 Q54,72 40,56 Z" stroke={G} strokeWidth={1} fill={G10} opacity={0.6} />
-    <path d="M96,52 Q108,42 124,46 Q138,42 148,52 Q148,64 136,70 Q120,76 100,68 Q90,62 96,52 Z" stroke={G} strokeWidth={1} fill={G10} opacity={0.6} />
-    <path d="M156,46 Q176,38 200,42 Q220,40 232,50 Q236,62 220,70 Q200,76 180,74 Q158,68 152,58 Z" stroke={G} strokeWidth={1} fill={G10} opacity={0.6} />
-    <path d="M100,84 Q116,78 128,84 Q132,96 120,104 Q104,104 96,96 Z" stroke={G} strokeWidth={0.8} fill={G10} opacity={0.5} />
-    <path d="M164,80 Q180,76 196,82 Q200,94 188,100 Q170,102 160,94 Z" stroke={G} strokeWidth={0.8} fill={G10} opacity={0.5} />
-    {/* Market nodes */}
-    {[
-      [64, 56], [120, 56], [192, 54], [112, 94], [180, 90],
-    ].map(([cx, cy], i) => (
-      <circle key={i} cx={cx} cy={cy} r={i === 0 ? 8 : 6} stroke={i === 0 ? L : G} strokeWidth={i === 0 ? 1.5 : 1} fill={i === 0 ? "rgba(170,248,112,0.2)" : "white"} />
-    ))}
-    {/* Connection lines between markets */}
-    <line x1={72} y1={56} x2={114} y2={56} stroke={G} strokeWidth={0.8} strokeDasharray="3 2" opacity={0.35} />
-    <line x1={126} y1={56} x2={186} y2={54} stroke={G} strokeWidth={0.8} strokeDasharray="3 2" opacity={0.35} />
-    <line x1={64} y1={64} x2={112} y2={88} stroke={G} strokeWidth={0.8} strokeDasharray="3 2" opacity={0.25} />
-  </Illus>
-);
-
-const FutureOfContentInfrastructure = () => (
-  <Illus>
-    {/* Horizon line with emerging architecture shapes */}
-    {/* Sky gradient effect */}
-    <rect x={24} y={28} width={232} height={60} rx={0} fill={G10} opacity={0.4} />
+export const FutureOfContentInfrastructure = () => (
+  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
     {/* Horizon line */}
-    <line x1={24} y1={88} x2={256} y2={88} stroke={G} strokeWidth={1.5} opacity={0.5} />
-    {/* Ground */}
-    <rect x={24} y={88} width={232} height={28} rx={0} fill={G10} opacity={0.3} />
-    {/* Emerging shapes above horizon */}
-    {[56, 100, 140, 180, 224].map((x, i) => {
-      const h = [32, 44, 56, 38, 28][i];
-      return (
-        <rect key={x} x={x - 12} y={88 - h} width={24} height={h} rx={2} stroke={i === 2 ? L : G} strokeWidth={i === 2 ? 1.5 : 1} fill={i === 2 ? "rgba(170,248,112,0.1)" : G10} opacity={0.8} />
-      );
-    })}
-    {/* Connection nodes at tops */}
-    {[56, 100, 140, 180, 224].map((x, i) => {
-      const h = [32, 44, 56, 38, 28][i];
-      return <circle key={x} cx={x} cy={88 - h} r={4} stroke={i === 2 ? L : G} strokeWidth={1} fill="white" />;
-    })}
-    {/* Connection lines between tops */}
-    {[[56, 56, 100, 44], [100, 44, 140, 32], [140, 32, 180, 50], [180, 50, 224, 60]].map(([x1, h1, x2, h2], i) => (
-      <line key={i} x1={x1} y1={88 - h1} x2={x2} y2={88 - h2} stroke={G} strokeWidth={0.8} strokeDasharray="3 2" opacity={0.35} />
-    ))}
-  </Illus>
+    <line x1="10" y1="95" x2="270" y2="95" stroke=${G} strokeWidth="1.2" opacity="0.5" />
+
+    {/* Ascending trajectory arc */}
+    <g stroke=${L} strokeWidth="1.8" fill="none">
+      <path d="M 30 100 Q 100 40 200 25" strokeLinecap="round" />
+    </g>
+
+    {/* Bright apex node */}
+    <circle cx="200" cy="25" r="8" stroke=${L} strokeWidth="1.2" fill={`rgba(170,248,112,.2)`} />
+    <circle cx="200" cy="25" r="4" fill=${L} />
+
+    {/* Radiating energy from apex */}
+    <g stroke=${L} strokeWidth="1" fill="none" opacity="0.4">
+      <circle cx="200" cy="25" r="12" />
+      <circle cx="200" cy="25" r="18" />
+    </g>
+
+    {/* Futuristic circuit/data paths */}
+    <g stroke=${G} strokeWidth="1.2" fill="none" opacity="0.6">
+      {/* Lower left path */}
+      <path d="M 40 85 L 60 75 L 75 80" />
+      <circle cx="40" cy="85" r="2" fill=${G} />
+      <circle cx="60" cy="75" r="1.5" fill=${G} />
+      <circle cx="75" cy="80" r="1.5" fill=${G} />
+
+      {/* Center path */}
+      <path d="M 90 90 L 110 70 L 130 65" />
+      <circle cx="90" cy="90" r="2" fill=${G} />
+      <circle cx="110" cy="70" r="1.5" fill=${G} />
+      <circle cx="130" cy="65" r="1.5" fill=${G} />
+
+      {/* Right ascending path */}
+      <path d="M 150 88 L 170 60 L 190 35" />
+      <circle cx="150" cy="88" r="2" fill=${G} />
+      <circle cx="170" cy="60" r="1.5" fill=${G} />
+      <circle cx="190" cy="35" r="1.5" fill=${G} />
+    </g>
+
+    {/* Upward flow indicators */}
+    <g stroke=${L} strokeWidth="0.8" fill="none" opacity="0.3">
+      <path d="M 100 60 L 95 50" strokeLinecap="round" />
+      <path d="M 130 50 L 128 40" strokeLinecap="round" />
+      <path d="M 160 45 L 165 35" strokeLinecap="round" />
+    </g>
+
+    {/* Data nodes leading upward */}
+    <g fill=${G} opacity="0.4">
+      <circle cx="50" cy="78" r="1" />
+      <circle cx="75" cy="68" r="1" />
+      <circle cx="105" cy="63" r="1" />
+      <circle cx="145" cy="52" r="1" />
+      <circle cx="175" cy="40" r="1" />
+    </g>
+
+    {/* Foundation base structure */}
+    <g stroke=${G} strokeWidth="0.8" fill="none" opacity="0.3">
+      <line x1="20" y1="100" x2="35" y2="95" />
+      <line x1="80" y1="100" x2="100" y2="92" />
+      <line x1="150" y1="100" x2="180" y2="85" />
+      <line x1="220" y1="100" x2="250" y2="75" />
+    </g>
+  </svg>
 );
 
-// ─── Default fallback ─────────────────────────────────────────────────────────
+const FallbackIllustration = () => (
+  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    {[0, 1, 2, 3, 4].map((col) =>
+      [0, 1, 2].map((row) => (
+        <circle
+          key={`${col}-${row}`}
+          cx={76 + col * 34}
+          cy={38 + row * 34}
+          r={col === 2 && row === 1 ? 5 : 3}
+          fill={col === 2 && row === 1 ? L : G}
+          opacity={col === 2 && row === 1 ? 0.6 : 0.12 + row * 0.06}
+        />
+      ))
+    )}
+    <line x1="110" y1="72" x2="170" y2="72" stroke={L} strokeWidth="1" opacity=".3" />
+    <line x1="144" y1="38" x2="144" y2="106" stroke={G} strokeWidth="1" opacity=".15" strokeDasharray="3 2" />
+  </svg>
+);
 
-function DefaultIllustration({ n }: { n: number }) {
-  return (
-    <Illus>
-      <text
-        x={140}
-        y={82}
-        textAnchor="middle"
-        fill={G}
-        fontSize={52}
-        fontFamily="sans-serif"
-        fontWeight="bold"
-        opacity={0.12}
-      >
-        {String(n).padStart(2, "0")}
-      </text>
-    </Illus>
-  );
-}
-
-// ─── Slug → illustration map ──────────────────────────────────────────────────
-
-const ILLUSTRATIONS: Record<string, React.ReactElement> = {
-  // Series 1
-  "content-infrastructure-imperative": <ContentInfrastructureImperative />,
-  "content-governance-age-of-ai": <ContentGovernanceAgeOfAI />,
-  "content-lifecycle-redesigned": <ContentLifecycleRedesigned />,
-  "content-as-organisational-intelligence": <ContentAsOrganisationalIntelligence />,
-  "building-business-case-content-infrastructure": <BuildingBusinessCaseContentInfrastructure />,
-  // Series 2
-  "process-architecture-content-operations": <ProcessArchitectureContentOperations />,
-  "content-brief-as-system-input": <ContentBriefAsSystemInput />,
-  "workflow-automation-content-teams": <WorkflowAutomationContentTeams />,
-  "approval-flows-that-dont-kill-momentum": <ApprovalFlowsThatDontKillMomentum />,
-  "cross-functional-content-operations": <CrossFunctionalContentOperations />,
-  "content-operations-metrics-that-matter": <ContentOperationsMetricsThatMatter />,
-  "content-operations-regulated-industries": <ContentOperationsRegulatedIndustries />,
-  "content-operations-maturity-model": <ContentOperationsMaturityModel />,
-  "operationalising-content-strategy": <OperalisingContentStrategy />,
-  // Series 3
-  "information-architecture-ai-systems": <InformationArchitectureAiSystems />,
-  "taxonomy-design-scalable-content-systems": <TaxonomyDesignScalableContentSystems />,
-  "metadata-strategy-ai-powered-enterprises": <MetadataStrategyAiPoweredEnterprises />,
-  "content-modelling-enterprise-ai": <ContentModellingEnterpriseAI />,
-  "structured-authoring-at-scale": <StructuredAuthoringAtScale />,
-  "knowledge-architecture-ai-enterprises": <KnowledgeArchitectureAIEnterprises />,
-  "semantic-structure-ai-content-systems": <SemanticStructureAIContentSystems />,
-  "cms-architecture-ai-driven-enterprises": <CmsArchitectureAIDrivenEnterprises />,
-  "content-findability-system-capability": <ContentFindabilitySystemCapability />,
-  // Series 4
-  "designing-ai-content-operating-system": <DesigningAIContentOperatingSystem />,
-  "prompt-architecture-content-teams": <PromptArchitectureContentTeams />,
-  "ai-quality-assurance-content-operations": <AiQualityAssuranceContentOperations />,
-  "ai-content-risk-management": <AiContentRiskManagement />,
-  "content-velocity-managing-speed-quality": <ContentVelocityManagingSpeedQuality />,
-  "retrieval-augmented-content-systems": <RetrievalAugmentedContentSystems />,
-  "ai-powered-content-auditing": <AiPoweredContentAuditing />,
-  "content-intelligence-platforms": <ContentIntelligencePlatforms />,
-  "operationalising-llms-content-teams": <OperalisingLlmsContentTeams />,
-  "ai-content-feedback-loop": <AiContentFeedbackLoop />,
-  // Series 5
-  "personalisation-architecture-ai-enterprises": <PersonalisationArchitectureAIEnterprises />,
-  "content-modelling-personalisation": <ContentModellingPersonalisation />,
-  "audience-architecture-designing-segments": <AudienceArchitectureDesigningSegments />,
-  "decisioning-logic-content-personalisation": <DecisioningLogicContentPersonalisation />,
-  "personalisation-scale-b2b-enterprises": <PersonalisationScaleB2bEnterprises />,
-  "real-time-personalisation-architecture": <RealTimePersonalisationArchitecture />,
-  "privacy-first-personalisation": <PrivacyFirstPersonalisation />,
-  "personalisation-operations": <PersonalisationOperations />,
-  "measuring-personalisation-effectiveness": <MeasuringPersonalisationEffectiveness />,
-  // Series 6
-  "localisation-content-operations-discipline": <LocalisationContentOperationsDiscipline />,
-  "ai-powered-translation-operations": <AiPoweredTranslationOperations />,
-  "content-architecture-multilingual-delivery": <ContentArchitectureMultilingualDelivery />,
-  "localisation-workflow-design": <LocalisationWorkflowDesign />,
-  "terminology-management-global-content": <TerminologyManagementGlobalContent />,
-  "global-content-strategy-ai-enterprises": <GlobalContentStrategyAIEnterprises />,
-  "future-of-content-infrastructure": <FutureOfContentInfrastructure />,
+const illustrations: Record<string, React.FC> = {
+  // Foundations
+  'content-infrastructure-imperative': ContentInfrastructureImperative,
+  'content-governance-age-of-ai': ContentGovernanceAgeOfAi,
+  'content-lifecycle-redesigned': ContentLifecycleRedesigned,
+  'content-as-organisational-intelligence': ContentAsOrganisationalIntelligence,
+  'building-business-case-content-infrastructure': BuildingBusinessCaseContentInfrastructure,
+  // Process Architecture
+  'process-architecture-content-operations': ProcessArchitectureContentOperations,
+  'content-brief-as-system-input': ContentBriefAsSystemInput,
+  'workflow-automation-content-teams': WorkflowAutomationContentTeams,
+  'approval-flows-that-dont-kill-momentum': ApprovalFlowsThatDontKillMomentum,
+  'cross-functional-content-operations': CrossFunctionalContentOperations,
+  'content-operations-metrics-that-matter': ContentOperationsMetricsThatMatter,
+  'content-operations-regulated-industries': ContentOperationsRegulatedIndustries,
+  'content-operations-maturity-model': ContentOperationsMaturityModel,
+  'operationalising-content-strategy': OperationalisingContentStrategy,
+  // Information Architecture
+  'information-architecture-ai-systems': InformationArchitectureAiSystems,
+  'taxonomy-design-scalable-content-systems': TaxonomyDesignScalableContentSystems,
+  'metadata-strategy-ai-powered-enterprises': MetadataStrategyAiPoweredEnterprises,
+  'content-modelling-enterprise-ai': ContentModellingEnterpriseAi,
+  'structured-authoring-at-scale': StructuredAuthoringAtScale,
+  'knowledge-architecture-ai-enterprises': KnowledgeArchitectureAiEnterprises,
+  'semantic-structure-ai-content-systems': SemanticStructureAiContentSystems,
+  'cms-architecture-ai-driven-enterprises': CmsArchitectureAiDrivenEnterprises,
+  'content-findability-system-capability': ContentFindabilitySystemCapability,
+  // AI-Driven Content Systems
+  'designing-ai-content-operating-system': DesigningAiContentOperatingSystem,
+  'prompt-architecture-content-teams': PromptArchitectureContentTeams,
+  'ai-quality-assurance-content-operations': AiQualityAssuranceContentOperations,
+  'ai-content-risk-management': AiContentRiskManagement,
+  'content-velocity-managing-speed-quality': ContentVelocityManagingSpeedQuality,
+  'retrieval-augmented-content-systems': RetrievalAugmentedContentSystems,
+  'ai-powered-content-auditing': AiPoweredContentAuditing,
+  'content-intelligence-platforms': ContentIntelligencePlatforms,
+  'operationalising-llms-content-teams': OperationalisingLlmsContentTeams,
+  'ai-content-feedback-loop': AiContentFeedbackLoop,
+  // Personalisation at Scale
+  'personalisation-architecture-ai-enterprises': PersonalisationArchitectureAiEnterprises,
+  'content-modelling-personalisation': ContentModellingPersonalisation,
+  'audience-architecture-designing-segments': AudienceArchitectureDesigningSegments,
+  'decisioning-logic-content-personalisation': DecisioningLogicContentPersonalisation,
+  'personalisation-scale-b2b-enterprises': PersonalisationScaleB2bEnterprises,
+  'real-time-personalisation-architecture': RealTimePersonalisationArchitecture,
+  'privacy-first-personalisation': PrivacyFirstPersonalisation,
+  'personalisation-operations': PersonalisationOperations,
+  'measuring-personalisation-effectiveness': MeasuringPersonalisationEffectiveness,
+  // Localisation
+  'localisation-content-operations-discipline': LocalisationContentOperationsDiscipline,
+  'ai-powered-translation-operations': AIPoweredTranslationOperations,
+  'content-architecture-multilingual-delivery': ContentArchitectureMultilingual,
+  'localisation-workflow-design': LocalisationWorkflowDesign,
+  'terminology-management-global-content': TerminologyManagementGlobalContent,
+  'global-content-strategy-ai-enterprises': GlobalContentStrategyAIEnterprises,
+  'future-of-content-infrastructure': FutureOfContentInfrastructure,
 };
 
 // ─── Exported component ───────────────────────────────────────────────────────
@@ -1342,5 +1590,11 @@ export default function GuideIllustration({
   slug: string;
   guideNumber?: number;
 }) {
-  return ILLUSTRATIONS[slug] ?? <DefaultIllustration n={guideNumber} />;
+  const Illustration = illustrations[slug];
+  if (Illustration) return <Illustration />;
+  return <FallbackIllustration />;
+}
+
+export function hasIllustration(slug: string): boolean {
+  return slug in illustrations;
 }
