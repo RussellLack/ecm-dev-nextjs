@@ -401,15 +401,15 @@ function RadarChart({ capabilities }: { capabilities: Capabilities }) {
     <svg viewBox="0 0 280 280" className="w-full max-w-xs mx-auto">
       {/* Grid rings */}
       {rings.map((v) => (
-        <path key={v} d={ringPath(v)} fill="none" stroke="#1f2937" strokeWidth="1" />
+        <path key={v} d={ringPath(v)} fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="1" />
       ))}
       {/* Axes */}
       {CAPABILITY_DIMENSIONS.map((_, i) => {
         const [x, y] = pt(i, 5);
-        return <line key={i} x1={cx} y1={cy} x2={x} y2={y} stroke="#1f2937" strokeWidth="1" />;
+        return <line key={i} x1={cx} y1={cy} x2={x} y2={y} stroke="rgba(255,255,255,0.1)" strokeWidth="1" />;
       })}
       {/* Data polygon */}
-      <path d={dataPath} fill="#6366f1" fillOpacity={0.25} stroke="#6366f1" strokeWidth={2} />
+      <path d={dataPath} fill="#AAF870" fillOpacity={0.25} stroke="#AAF870" strokeWidth={2} />
       {/* Labels */}
       {CAPABILITY_DIMENSIONS.map((dim, i) => {
         const [x, y] = pt(i, 5.7);
@@ -422,7 +422,7 @@ function RadarChart({ capabilities }: { capabilities: Capabilities }) {
             dominantBaseline="middle"
             fontSize={9}
             fontWeight={600}
-            fill="#9ca3af"
+            fill="rgba(255,255,255,0.5)"
           >
             {dim.shortLabel}
           </text>
@@ -439,9 +439,9 @@ function RadarChart({ capabilities }: { capabilities: Capabilities }) {
 function SectionHeader({ step, title, subtitle }: { step: string; title: string; subtitle: string }) {
   return (
     <div className="space-y-2">
-      <div className="text-xs text-indigo-400 font-semibold uppercase tracking-widest">Section {step}</div>
+      <div className="text-xs text-ecm-lime font-semibold uppercase tracking-widest">Section {step}</div>
       <h2 className="text-2xl font-extrabold tracking-tight">{title}</h2>
-      <p className="text-gray-400 text-sm leading-relaxed">{subtitle}</p>
+      <p className="text-white/60 text-sm leading-relaxed">{subtitle}</p>
     </div>
   );
 }
@@ -459,7 +459,7 @@ function Question({
 }) {
   return (
     <div className="space-y-3">
-      <p className="font-semibold text-sm text-gray-100 leading-snug">{label}</p>
+      <p className="font-semibold text-sm text-white/60 leading-snug">{label}</p>
       <div className="space-y-2">
         {options.map((opt) => (
           <button
@@ -467,13 +467,13 @@ function Question({
             onClick={() => onChange(opt.id)}
             className={`w-full text-left px-4 py-3 rounded-xl border transition-all duration-150 ${
               value === opt.id
-                ? "bg-indigo-600 border-indigo-400 text-white"
-                : "bg-gray-900 border-gray-800 text-gray-300 hover:border-gray-600 hover:bg-gray-800"
+                ? "bg-ecm-lime border-ecm-lime text-ecm-green"
+                : "bg-white/5 border-white/15 text-white/80 hover:border-white/30 hover:bg-white/10"
             }`}
           >
             <div className="font-semibold text-sm">{opt.label}</div>
             {opt.desc && (
-              <div className={`text-xs mt-0.5 ${value === opt.id ? "text-indigo-200" : "text-gray-500"}`}>
+              <div className={`text-xs mt-0.5 ${value === opt.id ? "text-ecm-lime/70" : "text-white/40"}`}>
                 {opt.desc}
               </div>
             )}
@@ -500,10 +500,10 @@ function CapabilitySlider({
     <div className="space-y-2">
       <div className="flex items-start justify-between gap-4">
         <div className="flex-1">
-          <p className="font-semibold text-sm text-gray-100">{label}</p>
-          <p className="text-xs text-gray-500 mt-0.5">{desc}</p>
+          <p className="font-semibold text-sm text-white/60">{label}</p>
+          <p className="text-xs text-white/40 mt-0.5">{desc}</p>
         </div>
-        <span className="text-xs font-bold text-indigo-400 shrink-0 mt-0.5">{LABELS[value - 1]}</span>
+        <span className="text-xs font-bold text-ecm-lime shrink-0 mt-0.5">{LABELS[value - 1]}</span>
       </div>
       <input
         type="range"
@@ -511,9 +511,9 @@ function CapabilitySlider({
         max="5"
         value={value}
         onChange={(e) => onChange(parseInt(e.target.value))}
-        className="w-full accent-indigo-500 cursor-pointer"
+        className="w-full accent-[#AAF870] cursor-pointer"
       />
-      <div className="flex justify-between text-xs text-gray-700">
+      <div className="flex justify-between text-xs text-white/20">
         <span>Beginner</span>
         <span>Expert</span>
       </div>
@@ -534,14 +534,14 @@ function NavButtons({
     <div className="flex gap-3 pt-2">
       <button
         onClick={onBack}
-        className="py-3 px-5 border border-gray-700 text-gray-400 rounded-xl hover:border-gray-500 hover:text-gray-300 transition-colors text-sm"
+        className="py-3 px-5 border border-white/20 text-white/40 rounded-full hover:border-white/40 hover:text-white/70 transition-colors text-sm"
       >
         ← Back
       </button>
       <button
         onClick={onNext}
         disabled={!canNext}
-        className="flex-1 py-3 px-5 bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 disabled:bg-gray-800 disabled:text-gray-600 text-white font-semibold rounded-xl transition-colors text-sm"
+        className="flex-1 py-3 px-5 bg-ecm-lime hover:bg-ecm-lime-hover active:bg-ecm-lime-hover disabled:bg-white/10 disabled:text-white/30/30 text-ecm-green font-barlow font-bold rounded-full transition-colors text-sm"
       >
         Continue →
       </button>
@@ -556,7 +556,7 @@ function FormatCard({ format, rank }: { format: Format; rank: number }) {
   return (
     <div
       className={`border rounded-2xl overflow-hidden transition-all ${
-        isBest ? "border-indigo-600 bg-indigo-950 bg-opacity-40" : "border-gray-800 bg-gray-900"
+        isBest ? "border-ecm-lime bg-white/5 bg-opacity-40" : "border-white/15 bg-white/5"
       }`}
     >
       <button
@@ -567,34 +567,34 @@ function FormatCard({ format, rank }: { format: Format; rank: number }) {
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap mb-1">
             {isBest && (
-              <span className="text-xs bg-indigo-500 text-white px-2 py-0.5 rounded-full font-semibold">
+              <span className="text-xs bg-ecm-lime text-ecm-green font-barlow font-bold px-2 py-0.5 rounded-full font-semibold">
                 Best fit
               </span>
             )}
-            <span className="text-xs text-gray-500">#{rank + 1}</span>
+            <span className="text-xs text-white/40">#{rank + 1}</span>
           </div>
           <p className="font-bold">{format.name}</p>
-          <p className="text-sm text-gray-400 mt-0.5">{format.description}</p>
+          <p className="text-sm text-white/60 mt-0.5">{format.description}</p>
         </div>
-        <span className="text-gray-600 text-sm mt-1 shrink-0">{open ? "▲" : "▼"}</span>
+        <span className="text-white/30 text-sm mt-1 shrink-0">{open ? "▲" : "▼"}</span>
       </button>
 
       {open && (
-        <div className="px-5 pb-5 space-y-4 border-t border-gray-800 pt-4">
-          <div className="flex gap-4 text-xs text-gray-500">
-            <span>Effort: <span className="text-gray-300 font-medium">{format.effort}</span></span>
-            <span>Time to create: <span className="text-gray-300 font-medium">{format.timeToCreate}</span></span>
+        <div className="px-5 pb-5 space-y-4 border-t border-white/10 pt-4">
+          <div className="flex gap-4 text-xs text-white/40">
+            <span>Effort: <span className="text-white/80 font-medium">{format.effort}</span></span>
+            <span>Time to create: <span className="text-white/80 font-medium">{format.timeToCreate}</span></span>
           </div>
-          <div className="bg-gray-950 rounded-xl p-4 space-y-2">
-            <p className="text-xs text-gray-500 uppercase tracking-widest font-semibold">Topic template</p>
-            <p className="text-sm text-indigo-300 italic">&ldquo;{format.topicTemplate}&rdquo;</p>
+          <div className="bg-black/20 rounded-xl p-4 space-y-2">
+            <p className="text-xs text-white/40 uppercase tracking-widest font-semibold">Topic template</p>
+            <p className="text-sm text-ecm-lime/80 italic">&ldquo;{format.topicTemplate}&rdquo;</p>
           </div>
           {format.topicExamples && format.topicExamples.length > 0 && (
             <div className="space-y-2">
-              <p className="text-xs text-gray-500 uppercase tracking-widest font-semibold">Example topics</p>
+              <p className="text-xs text-white/40 uppercase tracking-widest font-semibold">Example topics</p>
               {format.topicExamples.map((ex, i) => (
-                <div key={i} className="flex items-start gap-2 text-sm text-gray-300">
-                  <span className="text-indigo-500 shrink-0">›</span>
+                <div key={i} className="flex items-start gap-2 text-sm text-white/80">
+                  <span className="text-ecm-lime shrink-0">›</span>
                   <span className="italic">&ldquo;{ex}&rdquo;</span>
                 </div>
               ))}
@@ -602,7 +602,7 @@ function FormatCard({ format, rank }: { format: Format; rank: number }) {
           )}
           {format.gaps && format.gaps.length > 0 && (
             <div className="flex flex-wrap gap-2">
-              <span className="text-xs text-gray-500">Gaps to close:</span>
+              <span className="text-xs text-white/40">Gaps to close:</span>
               {format.gaps.map((g) => (
                 <span
                   key={g.dimension}
@@ -642,19 +642,19 @@ function Results({
   return (
     <div className="space-y-12">
       <div className="space-y-2">
-        <div className="text-xs text-indigo-400 font-semibold uppercase tracking-widest">Your Results</div>
+        <div className="text-xs text-ecm-lime font-semibold uppercase tracking-widest">Your Results</div>
         <h2 className="text-3xl font-extrabold tracking-tight">Lead Magnet Analysis</h2>
       </div>
 
       {/* Readiness score */}
-      <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6">
+      <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-xs text-gray-500 uppercase tracking-widest mb-2">Readiness Score</p>
+            <p className="text-xs text-white/40 uppercase tracking-widest mb-2">Readiness Score</p>
             <p className={`text-6xl font-black tracking-tight ${readinessColor}`}>{readiness}%</p>
             <p className={`text-sm font-semibold mt-2 ${readinessColor}`}>{readinessLabel}</p>
           </div>
-          <div className="text-right text-xs text-gray-600 space-y-1 leading-relaxed">
+          <div className="text-right text-xs text-white/30 space-y-1 leading-relaxed">
             <p>Scored against your best-fit</p>
             <p>format&apos;s capability requirements</p>
           </div>
@@ -664,7 +664,7 @@ function Results({
       {/* Top 3 formats */}
       <div className="space-y-4">
         <h3 className="text-xl font-bold">Your top 3 lead magnet formats</h3>
-        <p className="text-sm text-gray-500">Ranked and scored to your market position, IP level, and current capabilities.</p>
+        <p className="text-sm text-white/40">Ranked and scored to your market position, IP level, and current capabilities.</p>
         {topThree.map((format, i) => (
           <FormatCard key={format.id} format={format} rank={i} />
         ))}
@@ -673,22 +673,22 @@ function Results({
       {/* Radar chart */}
       <div className="space-y-4">
         <h3 className="text-xl font-bold">Your capability profile</h3>
-        <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6 space-y-6">
+        <div className="bg-white/5 border border-white/10 rounded-2xl p-6 space-y-6">
           <RadarChart capabilities={capabilities} />
           <div className="grid grid-cols-1 gap-2">
             {CAPABILITY_DIMENSIONS.map((dim) => (
               <div key={dim.id} className="flex items-center justify-between text-xs">
-                <span className="text-gray-400">{dim.label}</span>
+                <span className="text-white/60">{dim.label}</span>
                 <div className="flex items-center gap-1.5">
                   <div className="flex gap-0.5">
                     {[1, 2, 3, 4, 5].map((n) => (
                       <div
                         key={n}
-                        className={`w-2.5 h-2.5 rounded-sm ${n <= capabilities[dim.id] ? "bg-indigo-500" : "bg-gray-800"}`}
+                        className={`w-2.5 h-2.5 rounded-sm ${n <= capabilities[dim.id] ? "bg-ecm-lime" : "bg-white/10"}`}
                       />
                     ))}
                   </div>
-                  <span className="text-gray-600 w-4 text-right">{capabilities[dim.id]}</span>
+                  <span className="text-white/30 w-4 text-right">{capabilities[dim.id]}</span>
                 </div>
               </div>
             ))}
@@ -700,20 +700,20 @@ function Results({
       {biggestGap && (
         <div className="space-y-4">
           <h3 className="text-xl font-bold">Your priority gap to close</h3>
-          <div className="bg-amber-950 border border-amber-800 border-opacity-60 rounded-2xl p-6 space-y-5">
+          <div className="bg-amber-500/10 border border-amber-400/30 rounded-2xl p-6 space-y-5">
             <div className="flex items-start justify-between">
               <div>
                 <p className="font-bold text-lg text-amber-300">{biggestGap.dimension}</p>
-                <p className="text-sm text-gray-400 mt-1">
+                <p className="text-sm text-white/60 mt-1">
                   You&apos;re at {biggestGap.current}/5 · Your best-fit format needs {biggestGap.required}/5
                 </p>
               </div>
               <span className="text-2xl">⚡</span>
             </div>
             <div className="space-y-3">
-              <p className="text-xs text-gray-500 uppercase tracking-widest font-semibold">3 ways to close this gap</p>
+              <p className="text-xs text-white/40 uppercase tracking-widest font-semibold">3 ways to close this gap</p>
               {(GAP_ACTIONS[biggestGap.dimension] || []).map((action, idx) => (
-                <div key={idx} className="flex items-start gap-2 text-sm text-gray-300">
+                <div key={idx} className="flex items-start gap-2 text-sm text-white/80">
                   <span className="text-amber-500 shrink-0 mt-0.5">→</span>
                   <span>{action}</span>
                 </div>
@@ -726,12 +726,12 @@ function Results({
       {/* Other gaps */}
       {topThree[0]?.gaps && topThree[0].gaps.length > 1 && (
         <div className="space-y-3">
-          <h3 className="text-base font-semibold text-gray-300">Other gaps for your top format</h3>
+          <h3 className="text-base font-semibold text-white/80">Other gaps for your top format</h3>
           <div className="space-y-2">
             {topThree[0].gaps.slice(1).map((g) => (
-              <div key={g.dimension} className="flex items-center justify-between text-sm bg-gray-900 border border-gray-800 rounded-xl px-4 py-3">
-                <span className="text-gray-400">{g.dimension}</span>
-                <span className="text-gray-600 text-xs">{g.current}/5 → need {g.required}/5</span>
+              <div key={g.dimension} className="flex items-center justify-between text-sm bg-white/5 border border-white/10 rounded-xl px-4 py-3">
+                <span className="text-white/60">{g.dimension}</span>
+                <span className="text-white/30 text-xs">{g.current}/5 → need {g.required}/5</span>
               </div>
             ))}
           </div>
@@ -739,16 +739,16 @@ function Results({
       )}
 
       {/* CTA */}
-      <div className="bg-indigo-950 border border-indigo-800 border-opacity-50 rounded-2xl p-8 text-center space-y-5">
+      <div className="bg-white/5 border border-ecm-lime/20 border-opacity-50 rounded-2xl p-8 text-center space-y-5">
         <div className="text-3xl">◈</div>
         <h3 className="text-2xl font-extrabold">Want help building it?</h3>
-        <p className="text-gray-400 leading-relaxed">
+        <p className="text-white/60 leading-relaxed">
           ECM.dev designs content operating systems — including the lead magnets, workflows,
           and AI-powered distribution that turn content into a consistent growth engine.
         </p>
         <Link
           href="/contact"
-          className="inline-block bg-white text-gray-900 font-semibold px-8 py-3.5 rounded-xl hover:bg-gray-100 active:bg-gray-200 transition-colors"
+          className="inline-block bg-ecm-lime text-ecm-green font-barlow font-bold px-8 py-3.5 rounded-full hover:bg-ecm-lime-hover active:bg-white/5 transition-colors"
         >
           Talk to the team →
         </Link>
@@ -804,11 +804,11 @@ export default function LeadMagnetAssessment() {
   const readiness = getReadinessScore(capabilities, topThree[0]);
 
   return (
-    <div className="min-h-screen bg-gray-950 text-white" style={{ fontFamily: "var(--font-barlow, system-ui, sans-serif)" }}>
+    <div className="min-h-screen bg-ecm-green text-white font-barlow">
       {/* Progress bar */}
-      <div className="border-b border-gray-800 px-6 py-4">
+      <div className="border-b border-white/10 px-6 py-4">
         <div className="max-w-xl mx-auto flex items-center justify-between">
-          <Link href="/assessments" className="text-sm font-semibold tracking-tight text-indigo-400 hover:text-indigo-300 transition-colors">
+          <Link href="/assessments" className="text-sm font-semibold tracking-tight text-ecm-lime hover:text-ecm-lime/80 transition-colors">
             ← Assessments
           </Link>
           {step > 0 && step < STEPS.length - 1 && (
@@ -817,7 +817,7 @@ export default function LeadMagnetAssessment() {
                 <div
                   key={i}
                   className={`h-1 rounded-full transition-all duration-300 ${
-                    step >= i ? "bg-indigo-500 w-8" : "bg-gray-700 w-5"
+                    step >= i ? "bg-ecm-lime w-8" : "bg-white/5 w-5"
                   }`}
                 />
               ))}
@@ -832,15 +832,15 @@ export default function LeadMagnetAssessment() {
         {currentStep === "welcome" && (
           <div className="space-y-8">
             <div className="space-y-5">
-              <div className="inline-flex items-center gap-2 bg-indigo-500 bg-opacity-15 border border-indigo-500 border-opacity-30 text-indigo-400 text-xs font-semibold uppercase tracking-widest px-3 py-1.5 rounded-full">
+              <div className="inline-flex items-center gap-2 bg-ecm-lime bg-opacity-15 border border-ecm-lime border-opacity-30 text-ecm-lime text-xs font-semibold uppercase tracking-widest px-3 py-1.5 rounded-full">
                 <span>◎</span> Lead Magnet Ideation Tool
               </div>
               <h1 className="text-4xl font-extrabold leading-tight tracking-tight">
                 Find your lead magnet.
                 <br />
-                <span className="text-gray-500">Close the gaps that matter.</span>
+                <span className="text-white/40">Close the gaps that matter.</span>
               </h1>
-              <p className="text-gray-400 text-lg leading-relaxed">
+              <p className="text-white/60 text-lg leading-relaxed">
                 Answer 13 questions. Get three ranked lead magnet recommendations with specific topic ideas,
                 a capability radar, and the exact gaps standing between you and a market-leading asset.
               </p>
@@ -851,20 +851,20 @@ export default function LeadMagnetAssessment() {
                 { icon: "◈", stat: "3 formats ranked", sub: "Scored to your context" },
                 { icon: "◉", stat: "Capability report", sub: "With closing actions" },
               ].map((item) => (
-                <div key={item.stat} className="bg-gray-900 border border-gray-800 rounded-2xl p-4 text-center space-y-1">
-                  <div className="text-xl text-indigo-400">{item.icon}</div>
+                <div key={item.stat} className="bg-white/5 border border-white/10 rounded-2xl p-4 text-center space-y-1">
+                  <div className="text-xl text-ecm-lime">{item.icon}</div>
                   <div className="text-sm font-semibold">{item.stat}</div>
-                  <div className="text-xs text-gray-500">{item.sub}</div>
+                  <div className="text-xs text-white/40">{item.sub}</div>
                 </div>
               ))}
             </div>
             <button
               onClick={() => setStep(1)}
-              className="w-full bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 text-white font-semibold py-4 px-6 rounded-2xl transition-colors text-base"
+              className="w-full bg-ecm-lime hover:bg-ecm-lime-hover text-ecm-green font-barlow font-bold py-4 px-6 rounded-full transition-colors text-base"
             >
               Start the assessment →
             </button>
-            <p className="text-center text-xs text-gray-600">No account needed · Results gated on email only</p>
+            <p className="text-center text-xs text-white/30">No account needed · Results gated on email only</p>
           </div>
         )}
 
@@ -918,11 +918,11 @@ export default function LeadMagnetAssessment() {
             <div className="space-y-4">
               <div className="text-5xl">◉</div>
               <h2 className="text-3xl font-extrabold tracking-tight">Your results are ready.</h2>
-              <p className="text-gray-400 text-lg leading-relaxed">
+              <p className="text-white/60 text-lg leading-relaxed">
                 Enter your email to unlock your personalised lead magnet recommendations,
                 capability gap radar, and a set of specific closing actions.
               </p>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-white/30">
                 We&apos;ll send you one follow-up from ECM.dev with additional resources. No spam — unsubscribe any time.
               </p>
             </div>
@@ -933,17 +933,17 @@ export default function LeadMagnetAssessment() {
                 onChange={(e) => setEmail(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && canAdvance() && setStep(6)}
                 placeholder="your@email.com"
-                className="w-full bg-gray-900 border border-gray-700 focus:border-indigo-500 outline-none rounded-xl px-4 py-3.5 text-white placeholder-gray-600 transition-colors"
+                className="w-full bg-white/5 border border-white/20 focus:border-ecm-lime outline-none rounded-xl px-4 py-3.5 text-white placeholder-white/30 transition-colors"
               />
               <button
                 onClick={() => setStep(6)}
                 disabled={!canAdvance()}
-                className="w-full bg-indigo-600 hover:bg-indigo-500 disabled:bg-gray-800 disabled:text-gray-600 text-white font-semibold py-4 px-6 rounded-2xl transition-colors"
+                className="w-full bg-ecm-lime hover:bg-ecm-lime-hover disabled:bg-white/10 disabled:text-white/30 text-ecm-green font-barlow font-bold font-semibold py-4 px-6 rounded-2xl transition-colors"
               >
                 See my results →
               </button>
             </div>
-            <button onClick={() => setStep(4)} className="block text-sm text-gray-600 hover:text-gray-400 transition-colors">
+            <button onClick={() => setStep(4)} className="block text-sm text-white/30 hover:text-white/60 transition-colors">
               ← Back
             </button>
           </div>

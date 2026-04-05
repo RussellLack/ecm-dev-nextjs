@@ -362,7 +362,7 @@ function QLabel({ label, hint }: { label: string; hint?: string }) {
   return (
     <div className="mb-4">
       <h3 className="text-lg font-bold text-white">{label}</h3>
-      {hint && <p className="text-sm text-gray-400 mt-1">{hint}</p>}
+      {hint && <p className="text-sm text-white/60 mt-1">{hint}</p>}
     </div>
   );
 }
@@ -375,11 +375,11 @@ function SingleOpt({
   return (
     <div
       onClick={onSelect}
-      className={`cursor-pointer border-2 rounded-xl p-4 bg-gray-900 transition-all ${selected ? "border-indigo-500 bg-indigo-600/10" : "border-gray-800 hover:border-indigo-500/50"}`}
+      className={`cursor-pointer border-2 rounded-xl p-4 bg-white/5 transition-all ${selected ? "border-ecm-lime bg-ecm-lime/10" : "border-white/15 hover:border-ecm-lime/50"}`}
     >
       {icon && <div className="text-2xl mb-2">{icon}</div>}
       <div className={`font-semibold text-sm ${col}`}>{label}</div>
-      {desc && <div className="text-xs text-gray-500 mt-1 leading-relaxed">{desc}</div>}
+      {desc && <div className="text-xs text-white/40 mt-1 leading-relaxed">{desc}</div>}
     </div>
   );
 }
@@ -392,9 +392,9 @@ function MultiOpt({
   return (
     <div
       onClick={onToggle}
-      className={`cursor-pointer border-2 rounded-xl p-3.5 bg-gray-900 flex items-start gap-3 transition-all ${selected ? "border-indigo-500 bg-indigo-600/10" : "border-gray-800 hover:border-indigo-500/50"}`}
+      className={`cursor-pointer border-2 rounded-xl p-3.5 bg-white/5 flex items-start gap-3 transition-all ${selected ? "border-ecm-lime bg-ecm-lime/10" : "border-white/15 hover:border-ecm-lime/50"}`}
     >
-      <div className={`mt-0.5 w-5 h-5 rounded border-2 flex-shrink-0 flex items-center justify-center ${selected ? "bg-indigo-600 border-indigo-600" : "border-gray-600"}`}>
+      <div className={`mt-0.5 w-5 h-5 rounded border-2 flex-shrink-0 flex items-center justify-center ${selected ? "bg-ecm-lime border-ecm-lime" : "border-white/20"}`}>
         {selected && (
           <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
             <path d="M1 4L3.5 6.5L9 1" stroke="white" strokeWidth="1.8" strokeLinecap="round" />
@@ -403,7 +403,7 @@ function MultiOpt({
       </div>
       <div>
         <div className="text-sm font-semibold">{label}</div>
-        {desc && <div className="text-xs text-gray-500 mt-0.5">{desc}</div>}
+        {desc && <div className="text-xs text-white/40 mt-0.5">{desc}</div>}
       </div>
     </div>
   );
@@ -413,7 +413,7 @@ function ProgressBar({ stage }: { stage: number }) {
   return (
     <div className="flex gap-1 mb-8">
       {[1, 2, 3, 4, 5, 6].map(i => (
-        <div key={i} className={`flex-1 h-1.5 rounded-full transition-all ${i <= stage ? "bg-indigo-500" : "bg-gray-800"}`} />
+        <div key={i} className={`flex-1 h-1.5 rounded-full transition-all ${i <= stage ? "bg-ecm-lime" : "bg-white/10"}`} />
       ))}
     </div>
   );
@@ -447,15 +447,15 @@ function BriefView({ assessment, onBack }: { assessment: Assessment; onBack: () 
   return (
     <div>
       {/* Topbar */}
-      <div className="border-b border-gray-800 sticky top-0 bg-gray-950 z-10">
+      <div className="border-b border-white/10 sticky top-0 bg-ecm-green z-10">
         <div className="max-w-3xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <button onClick={onBack} className="text-gray-500 hover:text-white text-sm transition-colors">← Back</button>
-            <div className="text-xs font-bold text-indigo-400 tracking-widest uppercase">Pre-Diagnostic Brief</div>
+            <button onClick={onBack} className="text-white/40 hover:text-white text-sm transition-colors">← Back</button>
+            <div className="text-xs font-bold text-ecm-lime tracking-widest uppercase">Pre-Diagnostic Brief</div>
           </div>
           <button
             onClick={copyBrief}
-            className="text-xs font-semibold bg-indigo-600/20 hover:bg-indigo-600 text-indigo-400 hover:text-white px-4 py-2 rounded-xl transition-colors"
+            className="text-xs font-semibold bg-ecm-lime/20 hover:bg-ecm-lime-hover text-ecm-lime hover:text-ecm-green px-4 py-2 rounded-xl transition-colors"
           >
             {copied ? "✓ Copied" : "Copy as Markdown"}
           </button>
@@ -465,51 +465,51 @@ function BriefView({ assessment, onBack }: { assessment: Assessment; onBack: () 
       <div className="max-w-3xl mx-auto px-6 py-10 space-y-5">
         {/* Client + summary cards */}
         <div className="grid grid-cols-4 gap-4">
-          <div className="col-span-2 bg-gray-900 border border-gray-800 rounded-2xl p-5">
-            <div className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Client</div>
+          <div className="col-span-2 bg-white/5 border border-white/10 rounded-2xl p-5">
+            <div className="text-xs font-bold text-white/40 uppercase tracking-wide mb-1">Client</div>
             <div className="font-bold text-white">{assessment.name}</div>
-            <div className="text-sm text-gray-400">{assessment.role} · {assessment.company}</div>
+            <div className="text-sm text-white/60">{assessment.role} · {assessment.company}</div>
           </div>
-          <div className="bg-gray-900 border border-gray-800 rounded-2xl p-5 text-center">
+          <div className="bg-white/5 border border-white/10 rounded-2xl p-5 text-center">
             <div className={`text-xl font-black ${rating?.col || ""}`}>{rating?.l?.split(" ")[0] || "—"}</div>
-            <div className="text-xs text-gray-500 mt-1">Process State</div>
+            <div className="text-xs text-white/40 mt-1">Process State</div>
           </div>
-          <div className="bg-gray-900 border border-gray-800 rounded-2xl p-5 text-center">
+          <div className="bg-white/5 border border-white/10 rounded-2xl p-5 text-center">
             <div className={`text-xl font-black ${impact?.col || ""}`}>{assessment.businessImpact || "—"}</div>
-            <div className="text-xs text-gray-500 mt-1">Impact Level</div>
+            <div className="text-xs text-white/40 mt-1">Impact Level</div>
           </div>
         </div>
 
         {/* Process + ownership detail */}
         <div className="grid grid-cols-2 gap-4">
-          <div className="bg-gray-900 border border-gray-800 rounded-2xl p-5">
-            <div className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-3">Process Overview</div>
+          <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
+            <div className="text-xs font-bold text-white/40 uppercase tracking-wide mb-3">Process Overview</div>
             <div className="space-y-1.5 text-sm">
-              <div><span className="text-gray-500">Domain:</span> <span className="text-white">{domain}</span></div>
-              <div><span className="text-gray-500">Type:</span> <span className="text-white">{pt?.icon} {pt?.l || "—"}</span></div>
-              <div><span className="text-gray-500">Frequency:</span> <span className="text-white">{FREQUENCIES.find(f => f.v === assessment.frequency)?.l || "—"}</span></div>
-              <div><span className="text-gray-500">People:</span> <span className="text-white">{PEOPLE.find(p => p.v === assessment.people)?.l || "—"}</span></div>
-              <div><span className="text-gray-500">Duration:</span> <span className="text-white">{DURATIONS.find(d => d.v === assessment.duration)?.l || "—"}</span></div>
+              <div><span className="text-white/40">Domain:</span> <span className="text-white">{domain}</span></div>
+              <div><span className="text-white/40">Type:</span> <span className="text-white">{pt?.icon} {pt?.l || "—"}</span></div>
+              <div><span className="text-white/40">Frequency:</span> <span className="text-white">{FREQUENCIES.find(f => f.v === assessment.frequency)?.l || "—"}</span></div>
+              <div><span className="text-white/40">People:</span> <span className="text-white">{PEOPLE.find(p => p.v === assessment.people)?.l || "—"}</span></div>
+              <div><span className="text-white/40">Duration:</span> <span className="text-white">{DURATIONS.find(d => d.v === assessment.duration)?.l || "—"}</span></div>
             </div>
           </div>
-          <div className="bg-gray-900 border border-gray-800 rounded-2xl p-5">
-            <div className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-3">Ownership & Decisions</div>
+          <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
+            <div className="text-xs font-bold text-white/40 uppercase tracking-wide mb-3">Ownership & Decisions</div>
             <div className="space-y-1.5 text-sm">
-              <div><span className="text-gray-500">Owner:</span> <span className="text-white">{OWNER_OPTIONS.find(o => o.v === assessment.processOwner)?.l || "—"}</span></div>
-              <div><span className="text-gray-500">Approvals:</span> <span className="text-white">{APPROVAL_OPTIONS.find(o => o.v === assessment.approvalStyle)?.l || "—"}</span></div>
-              <div><span className="text-gray-500">Exceptions:</span> <span className="text-white">{WRONG_OPTIONS.find(o => o.v === assessment.whenWrong)?.l || "—"}</span></div>
-              <div><span className="text-gray-500">SOPs:</span> <span className="text-white">{SOP_OPTIONS.find(o => o.v === assessment.hasSops)?.l || "—"}</span></div>
+              <div><span className="text-white/40">Owner:</span> <span className="text-white">{OWNER_OPTIONS.find(o => o.v === assessment.processOwner)?.l || "—"}</span></div>
+              <div><span className="text-white/40">Approvals:</span> <span className="text-white">{APPROVAL_OPTIONS.find(o => o.v === assessment.approvalStyle)?.l || "—"}</span></div>
+              <div><span className="text-white/40">Exceptions:</span> <span className="text-white">{WRONG_OPTIONS.find(o => o.v === assessment.whenWrong)?.l || "—"}</span></div>
+              <div><span className="text-white/40">SOPs:</span> <span className="text-white">{SOP_OPTIONS.find(o => o.v === assessment.hasSops)?.l || "—"}</span></div>
             </div>
           </div>
         </div>
 
         {/* Time lost tags */}
         {assessment.timeLost.length > 0 && (
-          <div className="bg-gray-900 border border-gray-800 rounded-2xl p-5">
-            <div className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-3">Where Time Gets Lost</div>
+          <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
+            <div className="text-xs font-bold text-white/40 uppercase tracking-wide mb-3">Where Time Gets Lost</div>
             <div className="flex flex-wrap gap-2">
               {assessment.timeLost.map(v => (
-                <span key={v} className="text-xs font-semibold bg-gray-800 text-gray-300 px-3 py-1.5 rounded-lg">
+                <span key={v} className="text-xs font-semibold bg-white/10 text-white/80 px-3 py-1.5 rounded-lg">
                   {TIME_LOST.find(o => o.v === v)?.l || v}
                 </span>
               ))}
@@ -519,39 +519,39 @@ function BriefView({ assessment, onBack }: { assessment: Assessment; onBack: () 
 
         {/* Pain points tags */}
         {assessment.painPoints.length > 0 && (
-          <div className="bg-gray-900 border border-gray-800 rounded-2xl p-5">
-            <div className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-3">Pain Points Identified</div>
+          <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
+            <div className="text-xs font-bold text-white/40 uppercase tracking-wide mb-3">Pain Points Identified</div>
             <div className="flex flex-wrap gap-2">
               {assessment.painPoints.map(v => (
-                <span key={v} className="text-xs font-semibold bg-gray-800 text-gray-300 px-3 py-1.5 rounded-lg">
+                <span key={v} className="text-xs font-semibold bg-white/10 text-white/80 px-3 py-1.5 rounded-lg">
                   {PAIN_OPTIONS.find(o => o.v === v)?.l || v}
                 </span>
               ))}
             </div>
-            {assessment.notes && <p className="text-sm text-gray-400 mt-3 italic">&ldquo;{assessment.notes}&rdquo;</p>}
+            {assessment.notes && <p className="text-sm text-white/60 mt-3 italic">&ldquo;{assessment.notes}&rdquo;</p>}
           </div>
         )}
 
         {/* Readiness signals */}
         <div className="grid grid-cols-3 gap-3">
-          <div className="bg-gray-900 border border-gray-800 rounded-2xl p-4 text-center">
+          <div className="bg-white/5 border border-white/10 rounded-2xl p-4 text-center">
             <div className="text-sm font-semibold text-white">{AUTO_OPTIONS.find(o => o.v === assessment.automationDiscussed)?.l || "—"}</div>
-            <div className="text-xs text-gray-500 mt-1">Automation discussed</div>
+            <div className="text-xs text-white/40 mt-1">Automation discussed</div>
           </div>
-          <div className="bg-gray-900 border border-gray-800 rounded-2xl p-4 text-center">
+          <div className="bg-white/5 border border-white/10 rounded-2xl p-4 text-center">
             <div className="text-sm font-semibold text-white">{SOP_OPTIONS.find(o => o.v === assessment.hasSops)?.l?.split("—")[0] || "—"}</div>
-            <div className="text-xs text-gray-500 mt-1">Documentation</div>
+            <div className="text-xs text-white/40 mt-1">Documentation</div>
           </div>
-          <div className="bg-gray-900 border border-gray-800 rounded-2xl p-4 text-center">
+          <div className="bg-white/5 border border-white/10 rounded-2xl p-4 text-center">
             <div className="text-sm font-semibold text-white">{APPETITE_OPTIONS.find(o => o.v === assessment.changeAppetite)?.l || "—"}</div>
-            <div className="text-xs text-gray-500 mt-1">Change appetite</div>
+            <div className="text-xs text-white/40 mt-1">Change appetite</div>
           </div>
         </div>
 
         {/* Flags */}
         {flags.length > 0 && (
-          <div className="bg-gray-900 border border-gray-800 rounded-2xl p-5 space-y-3">
-            <div className="text-xs font-bold text-gray-500 uppercase tracking-wide">Consultant Flags</div>
+          <div className="bg-white/5 border border-white/10 rounded-2xl p-5 space-y-3">
+            <div className="text-xs font-bold text-white/40 uppercase tracking-wide">Consultant Flags</div>
             {flags.map((flag, i) => (
               <div key={i} className={`flex items-start gap-2 text-sm ${flag.type === "critical" ? "text-red-400" : "text-yellow-400"}`}>
                 <span>{flag.type === "critical" ? "🔴" : "🟡"}</span>
@@ -562,32 +562,32 @@ function BriefView({ assessment, onBack }: { assessment: Assessment; onBack: () 
         )}
 
         {critCount === 0 && warnCount === 0 && (
-          <div className="bg-gray-900 border border-gray-800 rounded-2xl p-5">
+          <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
             <p className="text-sm text-emerald-400">✓ No major flags. Process appears relatively well-defined.</p>
           </div>
         )}
 
         {/* Discussion topics */}
-        <div className="bg-gray-900 border border-gray-800 rounded-2xl p-5 space-y-3">
-          <div className="text-xs font-bold text-gray-500 uppercase tracking-wide">Suggested Discussion Topics</div>
+        <div className="bg-white/5 border border-white/10 rounded-2xl p-5 space-y-3">
+          <div className="text-xs font-bold text-white/40 uppercase tracking-wide">Suggested Discussion Topics</div>
           {topics.map((topic, i) => (
-            <div key={i} className="flex items-start gap-3 text-sm text-gray-300">
-              <span className="text-indigo-400 font-bold shrink-0">{i + 1}.</span>
+            <div key={i} className="flex items-start gap-3 text-sm text-white/80">
+              <span className="text-ecm-lime font-bold shrink-0">{i + 1}.</span>
               <span>{topic}</span>
             </div>
           ))}
         </div>
 
         {/* CTA */}
-        <div className="bg-indigo-950 border border-indigo-800 border-opacity-50 rounded-2xl p-8 text-center space-y-4">
+        <div className="bg-white/5 border border-ecm-lime/20 border-opacity-50 rounded-2xl p-8 text-center space-y-4">
           <h3 className="text-xl font-extrabold">Ready to dig deeper?</h3>
-          <p className="text-gray-400 text-sm leading-relaxed">
+          <p className="text-white/60 text-sm leading-relaxed">
             Your consultant has everything they need to make the first call count.
             Book your discovery session now.
           </p>
           <Link
             href="/contact"
-            className="inline-block bg-white text-gray-900 font-semibold px-8 py-3.5 rounded-xl hover:bg-gray-100 transition-colors"
+            className="inline-block bg-ecm-lime text-ecm-green font-barlow font-bold px-8 py-3.5 rounded-full hover:bg-ecm-lime-hover transition-colors"
           >
             Book a discovery call →
           </Link>
@@ -649,42 +649,42 @@ export default function ProcessAssessment() {
   // WELCOME
   if (view === "welcome") {
     return (
-      <div className="min-h-screen bg-gray-950 text-white" style={{ fontFamily: "var(--font-barlow, system-ui, sans-serif)" }}>
-        <div className="border-b border-gray-800">
+      <div className="min-h-screen bg-ecm-green text-white font-barlow">
+        <div className="border-b border-white/10">
           <div className="max-w-3xl mx-auto px-6 py-4">
-            <Link href="/assessments" className="text-xs font-bold text-indigo-400 tracking-widest uppercase hover:text-indigo-300 transition-colors">
+            <Link href="/assessments" className="text-xs font-barlow font-bold text-ecm-lime tracking-widest uppercase hover:text-ecm-lime/80 transition-colors">
               ← Assessments
             </Link>
           </div>
         </div>
         <div className="max-w-xl mx-auto px-6 py-16 text-center">
-          <div className="inline-flex items-center gap-2 bg-indigo-500/10 border border-indigo-500/25 text-indigo-400 text-xs font-bold uppercase tracking-widest px-3 py-1.5 rounded-full mb-8">
+          <div className="inline-flex items-center gap-2 bg-ecm-lime/10 border border-ecm-lime/25 text-ecm-lime text-xs font-bold uppercase tracking-widest px-3 py-1.5 rounded-full mb-8">
             ECM.dev · Process Assessment
           </div>
           <h1 className="text-4xl font-extrabold tracking-tight mb-4">Let&apos;s understand your process</h1>
-          <p className="text-gray-400 text-base leading-relaxed mb-4">
+          <p className="text-white/60 text-base leading-relaxed mb-4">
             This short assessment helps us understand how a key process works in your organisation — where it runs well, where it gets stuck, and how ready it is for improvement.
           </p>
-          <p className="text-gray-500 text-sm mb-10">
-            Takes around <strong className="text-gray-300">10–15 minutes</strong>. No wrong answers — just honest ones.
+          <p className="text-white/40 text-sm mb-10">
+            Takes around <strong className="text-white/80">10–15 minutes</strong>. No wrong answers — just honest ones.
           </p>
           <div className="grid grid-cols-3 gap-4 mb-10 text-center">
-            <div className="bg-gray-900 border border-gray-800 rounded-xl p-4">
-              <div className="text-2xl font-black text-indigo-400">6</div>
-              <div className="text-xs text-gray-500 mt-1">Short sections</div>
+            <div className="bg-white/5 border border-white/10 rounded-xl p-4">
+              <div className="text-2xl font-black text-ecm-lime">6</div>
+              <div className="text-xs text-white/40 mt-1">Short sections</div>
             </div>
-            <div className="bg-gray-900 border border-gray-800 rounded-xl p-4">
-              <div className="text-2xl font-black text-indigo-400">~15</div>
-              <div className="text-xs text-gray-500 mt-1">Minutes</div>
+            <div className="bg-white/5 border border-white/10 rounded-xl p-4">
+              <div className="text-2xl font-black text-ecm-lime">~15</div>
+              <div className="text-xs text-white/40 mt-1">Minutes</div>
             </div>
-            <div className="bg-gray-900 border border-gray-800 rounded-xl p-4">
-              <div className="text-2xl font-black text-indigo-400">1</div>
-              <div className="text-xs text-gray-500 mt-1">Process at a time</div>
+            <div className="bg-white/5 border border-white/10 rounded-xl p-4">
+              <div className="text-2xl font-black text-ecm-lime">1</div>
+              <div className="text-xs text-white/40 mt-1">Process at a time</div>
             </div>
           </div>
           <button
             onClick={() => { setView("stage"); setStage(1); }}
-            className="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-4 rounded-xl transition-colors"
+            className="w-full bg-ecm-lime hover:bg-ecm-lime-hover text-ecm-green font-barlow font-bold font-bold py-4 rounded-xl transition-colors"
           >
             Start Assessment →
           </button>
@@ -696,7 +696,7 @@ export default function ProcessAssessment() {
   // BRIEF VIEW
   if (view === "brief") {
     return (
-      <div className="min-h-screen bg-gray-950 text-white" style={{ fontFamily: "var(--font-barlow, system-ui, sans-serif)" }}>
+      <div className="min-h-screen bg-ecm-green text-white font-barlow">
         <BriefView assessment={assessment} onBack={() => setView("complete")} />
       </div>
     );
@@ -710,38 +710,38 @@ export default function ProcessAssessment() {
     const firstName = assessment.name.split(" ")[0] || "there";
 
     return (
-      <div className="min-h-screen bg-gray-950 text-white" style={{ fontFamily: "var(--font-barlow, system-ui, sans-serif)" }}>
-        <div className="border-b border-gray-800">
+      <div className="min-h-screen bg-ecm-green text-white font-barlow">
+        <div className="border-b border-white/10">
           <div className="max-w-3xl mx-auto px-6 py-4">
-            <div className="text-xs font-bold text-indigo-400 tracking-widest uppercase">Assessment Complete</div>
+            <div className="text-xs font-bold text-ecm-lime tracking-widest uppercase">Assessment Complete</div>
           </div>
         </div>
         <div className="max-w-xl mx-auto px-6 py-16 text-center">
           <div className="text-5xl mb-6">✓</div>
           <h1 className="text-3xl font-extrabold tracking-tight mb-3">Thank you, {firstName}.</h1>
-          <p className="text-gray-400 mb-8">Your assessment is ready. Review your pre-diagnostic brief below, or book your discovery call.</p>
-          <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6 text-left mb-8 space-y-3">
-            <div className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">What happens next</div>
-            <div className="flex gap-3 text-sm"><span className="text-indigo-400 font-bold">1.</span><span className="text-gray-300">Your consultant receives a pre-diagnostic brief based on your responses.</span></div>
-            <div className="flex gap-3 text-sm"><span className="text-indigo-400 font-bold">2.</span><span className="text-gray-300">They review it before your first call — no need to repeat yourself.</span></div>
-            <div className="flex gap-3 text-sm"><span className="text-indigo-400 font-bold">3.</span><span className="text-gray-300">The call focuses on the specific gaps and opportunities the assessment revealed.</span></div>
+          <p className="text-white/60 mb-8">Your assessment is ready. Review your pre-diagnostic brief below, or book your discovery call.</p>
+          <div className="bg-white/5 border border-white/10 rounded-2xl p-6 text-left mb-8 space-y-3">
+            <div className="text-xs font-bold text-white/60 uppercase tracking-wide mb-3">What happens next</div>
+            <div className="flex gap-3 text-sm"><span className="text-ecm-lime font-bold">1.</span><span className="text-white/80">Your consultant receives a pre-diagnostic brief based on your responses.</span></div>
+            <div className="flex gap-3 text-sm"><span className="text-ecm-lime font-bold">2.</span><span className="text-white/80">They review it before your first call — no need to repeat yourself.</span></div>
+            <div className="flex gap-3 text-sm"><span className="text-ecm-lime font-bold">3.</span><span className="text-white/80">The call focuses on the specific gaps and opportunities the assessment revealed.</span></div>
           </div>
           {(critCount > 0 || warnCount > 0) && (
-            <div className="bg-gray-900 border border-gray-800 rounded-2xl p-4 text-left mb-6">
-              <div className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-2">Headline signals</div>
+            <div className="bg-white/5 border border-white/10 rounded-2xl p-4 text-left mb-6">
+              <div className="text-xs font-bold text-white/60 uppercase tracking-wide mb-2">Headline signals</div>
               {critCount > 0 && <div className="text-sm text-red-400 font-semibold">{critCount} critical flag{critCount > 1 ? "s" : ""} identified</div>}
               {warnCount > 0 && <div className="text-sm text-yellow-400 font-semibold mt-1">{warnCount} warning{warnCount > 1 ? "s" : ""} to discuss</div>}
             </div>
           )}
           <button
             onClick={() => setView("brief")}
-            className="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3.5 rounded-xl text-sm transition-colors mb-3"
+            className="w-full bg-ecm-lime hover:bg-ecm-lime-hover text-ecm-green font-barlow font-bold font-semibold py-3.5 rounded-xl text-sm transition-colors mb-3"
           >
             View Pre-Diagnostic Brief →
           </button>
           <Link
             href="/contact"
-            className="block w-full bg-gray-800 hover:bg-gray-700 text-white font-semibold py-3.5 rounded-xl text-sm transition-colors text-center"
+            className="block w-full bg-white/10 hover:bg-white/15 text-white font-semibold py-3.5 rounded-xl text-sm transition-colors text-center"
           >
             Book a discovery call
           </Link>
@@ -755,23 +755,23 @@ export default function ProcessAssessment() {
   const isLast = stage === 6;
 
   return (
-    <div className="min-h-screen bg-gray-950 text-white" style={{ fontFamily: "var(--font-barlow, system-ui, sans-serif)" }}>
+    <div className="min-h-screen bg-ecm-green text-white font-barlow">
       {/* Topbar */}
-      <div className="border-b border-gray-800 sticky top-0 bg-gray-950 z-10">
+      <div className="border-b border-white/10 sticky top-0 bg-ecm-green z-10">
         <div className="max-w-3xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <button
               onClick={() => stage > 1 ? goStage(stage - 1) : setView("welcome")}
-              className="text-gray-500 hover:text-white text-sm transition-colors"
+              className="text-white/40 hover:text-white text-sm transition-colors"
             >
               ← Back
             </button>
             <div>
-              <div className="text-xs font-bold text-indigo-400 tracking-widest uppercase">ecm.dev</div>
+              <div className="text-xs font-bold text-ecm-lime tracking-widest uppercase">ecm.dev</div>
               <div className="text-sm font-semibold text-white">Section {stage} of 6</div>
             </div>
           </div>
-          {assessment.company && <span className="text-xs text-gray-600">{assessment.company}</span>}
+          {assessment.company && <span className="text-xs text-white/30">{assessment.company}</span>}
         </div>
       </div>
 
@@ -784,31 +784,31 @@ export default function ProcessAssessment() {
             <QLabel label="About you and your organisation" hint="We'll use this to personalise your pre-diagnostic brief." />
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1.5">Your Name</label>
+                <label className="block text-xs font-barlow font-semibold text-white/60 uppercase tracking-wide mb-1.5">Your Name</label>
                 <input
                   value={assessment.name}
                   onChange={e => pick("name", e.target.value)}
                   placeholder="e.g. Sarah Brennan"
-                  className="w-full bg-gray-900 border border-gray-700 focus:border-indigo-500 outline-none rounded-xl px-4 py-3 text-white placeholder-gray-600 text-sm transition-colors"
+                  className="w-full bg-white/5 border border-white/20 focus:border-ecm-lime outline-none rounded-xl px-4 py-3 text-white placeholder-white/30 text-sm transition-colors"
                 />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1.5">Your Role</label>
+                <label className="block text-xs font-barlow font-semibold text-white/60 uppercase tracking-wide mb-1.5">Your Role</label>
                 <input
                   value={assessment.role}
                   onChange={e => pick("role", e.target.value)}
                   placeholder="e.g. Operations Manager"
-                  className="w-full bg-gray-900 border border-gray-700 focus:border-indigo-500 outline-none rounded-xl px-4 py-3 text-white placeholder-gray-600 text-sm transition-colors"
+                  className="w-full bg-white/5 border border-white/20 focus:border-ecm-lime outline-none rounded-xl px-4 py-3 text-white placeholder-white/30 text-sm transition-colors"
                 />
               </div>
             </div>
             <div>
-              <label className="block text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1.5">Organisation</label>
+              <label className="block text-xs font-barlow font-semibold text-white/60 uppercase tracking-wide mb-1.5">Organisation</label>
               <input
                 value={assessment.company}
                 onChange={e => pick("company", e.target.value)}
                 placeholder="e.g. Acme Corporation"
-                className="w-full bg-gray-900 border border-gray-700 focus:border-indigo-500 outline-none rounded-xl px-4 py-3 text-white placeholder-gray-600 text-sm transition-colors"
+                className="w-full bg-white/5 border border-white/20 focus:border-ecm-lime outline-none rounded-xl px-4 py-3 text-white placeholder-white/30 text-sm transition-colors"
               />
             </div>
             <QLabel label="Which department owns this process?" />
@@ -886,14 +886,14 @@ export default function ProcessAssessment() {
               </div>
             </div>
             <div>
-              <label className="block text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1.5">
-                Which systems or tools are mainly used? <span className="text-gray-600 normal-case font-normal">(Optional)</span>
+              <label className="block text-xs font-barlow font-semibold text-white/60 uppercase tracking-wide mb-1.5">
+                Which systems or tools are mainly used? <span className="text-white/30 normal-case font-normal">(Optional)</span>
               </label>
               <input
                 value={assessment.systemsUsed}
                 onChange={e => pick("systemsUsed", e.target.value)}
                 placeholder="e.g. SAP, Excel, Salesforce, email"
-                className="w-full bg-gray-900 border border-gray-700 focus:border-indigo-500 outline-none rounded-xl px-4 py-3 text-white placeholder-gray-600 text-sm transition-colors"
+                className="w-full bg-white/5 border border-white/20 focus:border-ecm-lime outline-none rounded-xl px-4 py-3 text-white placeholder-white/30 text-sm transition-colors"
               />
             </div>
           </div>
@@ -949,15 +949,15 @@ export default function ProcessAssessment() {
               </div>
             </div>
             <div>
-              <label className="block text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1.5">
-                Anything else you&apos;d like the consultant to know? <span className="text-gray-600 normal-case font-normal">(Optional)</span>
+              <label className="block text-xs font-barlow font-semibold text-white/60 uppercase tracking-wide mb-1.5">
+                Anything else you&apos;d like the consultant to know? <span className="text-white/30 normal-case font-normal">(Optional)</span>
               </label>
               <textarea
                 value={assessment.notes}
                 onChange={e => pick("notes", e.target.value)}
                 rows={3}
                 placeholder="Context, history, previous attempts to fix this, specific concerns..."
-                className="w-full bg-gray-900 border border-gray-700 focus:border-indigo-500 outline-none rounded-xl px-4 py-3 text-white placeholder-gray-600 text-sm transition-colors"
+                className="w-full bg-white/5 border border-white/20 focus:border-ecm-lime outline-none rounded-xl px-4 py-3 text-white placeholder-white/30 text-sm transition-colors"
               />
             </div>
           </div>
@@ -997,14 +997,14 @@ export default function ProcessAssessment() {
         <button
           onClick={() => isLast ? submit() : goStage(stage + 1)}
           disabled={!valid}
-          className={`w-full mt-8 py-4 rounded-xl font-semibold text-sm transition-colors ${valid ? "bg-indigo-600 hover:bg-indigo-500 text-white" : "bg-gray-800 text-gray-600 cursor-not-allowed"}`}
+          className={`w-full mt-8 py-4 rounded-xl font-semibold text-sm transition-colors ${valid ? "bg-ecm-lime hover:bg-ecm-lime-hover text-ecm-green font-barlow font-bold" : "bg-white/10 text-white/30 cursor-not-allowed"}`}
         >
           {isLast ? "Submit Assessment →" : "Continue →"}
         </button>
         {stage > 1 && (
           <button
             onClick={() => goStage(stage - 1)}
-            className="w-full mt-2 py-3 rounded-xl font-semibold text-sm border border-gray-700 hover:border-gray-600 text-gray-400 hover:text-white transition-colors"
+            className="w-full mt-2 py-3 rounded-xl font-semibold text-sm border border-white/20 hover:border-white/30 text-white/60 hover:text-white transition-colors"
           >
             ← Back
           </button>
