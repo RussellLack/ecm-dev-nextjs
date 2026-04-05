@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getAllAssessments } from "@/lib/assessment/queries";
+import ShareLinkButton from "@/components/assessments/ShareLinkButton";
 
 export const revalidate = 60;
 
@@ -82,6 +83,7 @@ export default async function AssessmentsPage() {
                         </svg>
                         6 sections
                       </div>
+                      <ShareLinkButton anchor="process" />
                     </div>
                   </div>
                   <div className="flex-shrink-0 lg:pt-2">
@@ -126,6 +128,7 @@ export default async function AssessmentsPage() {
                         </svg>
                         13 questions
                       </div>
+                      <ShareLinkButton anchor="lead-magnet" />
                     </div>
                   </div>
                   <div className="flex-shrink-0 lg:pt-2">
@@ -207,6 +210,7 @@ export default async function AssessmentsPage() {
                               {a.questionCount} questions
                             </div>
                           )}
+                          <ShareLinkButton anchor={a.slug?.current} />
                         </div>
                       </div>
 
