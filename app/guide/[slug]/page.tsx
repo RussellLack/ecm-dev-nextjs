@@ -148,12 +148,54 @@ export default async function GuidePage({
         </section>
       )}
 
+
+      {/* Related Guides */}
+      {guide.relatedGuides?.length > 0 && (
+        <section className="pb-10">
+          <div className="max-w-3xl mx-auto px-6">
+            <div className="border-t border-gray-100 pt-8">
+              <p className="text-ecm-gray text-xs font-barlow font-semibold uppercase tracking-widest mb-5">
+                Related Guides
+              </p>
+              <div className="grid sm:grid-cols-2 gap-4">
+                {guide.relatedGuides.map((related: any) => (
+                  <Link
+                    key={related._id}
+                    href={`/guide/${related.slug?.current}`}
+                    className="group flex gap-4 p-4 rounded-xl border border-gray-100 hover:border-ecm-green/20 hover:shadow-md transition-all bg-white"
+                  >
+                    {/* Guide number badge */}
+                    <div className="flex-shrink-0 w-10 h-10 rounded-full bg-ecm-green/8 flex items-center justify-center">
+                      <span className="text-ecm-green font-barlow font-bold text-xs">
+                        {String(related.guideNumber ?? "").padStart(2, "0")}
+                      </span>
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-[10px] font-barlow font-semibold uppercase tracking-widest text-ecm-lime-hover mb-0.5">
+                        {related.series}
+                      </p>
+                      <p className="text-ecm-green font-barlow font-semibold text-sm leading-snug group-hover:text-ecm-green-dark transition-colors line-clamp-2">
+                        {related.title}
+                      </p>
+                      {related.subtitle && (
+                        <p className="text-ecm-gray text-xs italic mt-0.5 line-clamp-1">
+                          {related.subtitle}
+                        </p>
+                      )}
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
       {/* Back */}
       <section className="pb-16">
         <div className="max-w-3xl mx-auto px-6 text-center">
           <Link href="/guides"
             className="inline-block bg-ecm-green text-white font-barlow font-semibold px-8 py-3 rounded-full hover:bg-ecm-green-dark transition-colors">
-            ← Back to Guides
+            â Back to Guides
           </Link>
         </div>
       </section>
