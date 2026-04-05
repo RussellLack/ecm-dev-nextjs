@@ -11,7 +11,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${siteUrl}/services`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
     { url: `${siteUrl}/assessments`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
     { url: `${siteUrl}/blog`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
+    { url: `${siteUrl}/guides`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
     { url: `${siteUrl}/contact`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.6 },
+    { url: `${siteUrl}/privacy`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.3 },
   ];
 
   // Blog posts from Sanity
@@ -52,5 +54,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.error("Sitemap: failed to fetch assessments", e);
   }
 
-  return [...staticPages, ...blogEntries, ...assessmentEntries];
+  // Guides from Sanity
+  let guideEntries: MetadataRoute.Sitemap = [];
+  try {
+    const guides = await client.fetch<
+      { slug: string; _updatedAt: string }[]
+    >(`*[_type == "guide" && defined(slug.current)] | order(seriesNumber asc, guideNumber asc) {
+      "slug": slug.current,
+      _updatedAt
+    }`);
+    guideEntries = guides.map((g) => ({
+      url: `${siteUrl}/guide/${g.slug}`,
+      lastModified: new Date(g._updatedAt),
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    }));
+  } catch (e) {
+    console.error("Sitemap: failed to fetch guides", e);
+  }
+
+  return [...staticPages, ...blogEntries, ...assessmentEntries, ...guideEntries];
 }
