@@ -308,9 +308,10 @@ export default async function HomePage() {
           </h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {learnMoreItems.map((item: any, i: number) => (
-              <div
+              <Link
                 key={i}
-                className="bg-ecm-green rounded-xl p-6 border border-ecm-lime/15 hover:border-ecm-lime/40 transition-all group cursor-pointer hover:shadow-lg hover:shadow-ecm-lime/5"
+                href={`/contact?topic=${encodeURIComponent(item.title)}`}
+                className="bg-ecm-green rounded-xl p-6 border border-ecm-lime/15 hover:border-ecm-lime/40 transition-all group hover:shadow-lg hover:shadow-ecm-lime/5 block"
               >
                 <h3 className="text-ecm-lime font-barlow font-semibold text-base mb-2">
                   {item.title}
@@ -319,7 +320,7 @@ export default async function HomePage() {
                 <span className="inline-block bg-ecm-lime text-ecm-green text-xs font-barlow font-semibold px-4 py-2 rounded-full group-hover:bg-ecm-lime-hover transition-colors">
                   READ MORE
                 </span>
-              </div>
+              </Link>
             ))}
           </div>
         </div>

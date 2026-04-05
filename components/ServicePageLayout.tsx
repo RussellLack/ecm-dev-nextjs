@@ -41,9 +41,10 @@ export default function ServicePageLayout({
         <div className="max-w-6xl mx-auto px-6">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {packages.map((pkg, i) => (
-              <div
+              <Link
                 key={i}
-                className="bg-ecm-green rounded-2xl p-8 border border-ecm-lime/15 hover:border-ecm-lime/40 hover:shadow-lg hover:shadow-ecm-lime/5 transition-all group"
+                href={`/contact?service=${encodeURIComponent(pkg.title)}`}
+                className="bg-ecm-green rounded-2xl p-8 border border-ecm-lime/15 hover:border-ecm-lime/40 hover:shadow-lg hover:shadow-ecm-lime/5 transition-all group block"
               >
                 <h3 className="text-ecm-lime font-barlow font-bold text-lg mb-4 uppercase">
                   {pkg.title}
@@ -51,10 +52,10 @@ export default function ServicePageLayout({
                 <p className="text-white/70 text-sm leading-relaxed mb-6">
                   {pkg.description}
                 </p>
-                <span className="inline-block bg-ecm-lime text-ecm-green text-sm font-barlow font-semibold px-6 py-2 rounded-full group-hover:bg-ecm-lime-hover transition-colors cursor-pointer">
+                <span className="inline-block bg-ecm-lime text-ecm-green text-sm font-barlow font-semibold px-6 py-2 rounded-full group-hover:bg-ecm-lime-hover transition-colors">
                   LEARN MORE
                 </span>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
