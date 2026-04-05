@@ -741,7 +741,7 @@ export const RetrievalAugmentedContentSystems = () => (
       <circle cx="130" cy="74" r="10" />
       <circle cx="130" cy="98" r="10" />
     </g>
-    <g stroke=${L} strokeWidth="1.5" fill="none">
+    <g stroke={L} strokeWidth="1.5" fill="none">
       <path d="M 145 50 L 190 50" markerEnd="url(#arrowRAG)" />
       <path d="M 145 74 L 190 74" markerEnd="url(#arrowRAG)" />
       <path d="M 145 98 L 190 98" markerEnd="url(#arrowRAG)" />
@@ -765,22 +765,22 @@ export const AiPoweredContentAuditing = () => (
       <line x1="30" y1="72" x2="80" y2="72" opacity="0.4" strokeWidth="0.8" />
       <line x1="30" y1="84" x2="80" y2="84" opacity="0.4" strokeWidth="0.8" />
     </g>
-    <g stroke=${L} strokeWidth="1.5" fill="none">
+    <g stroke={L} strokeWidth="1.5" fill="none">
       <path d="M 85 72 L 130 72" markerEnd="url(#arrowAudit)" />
     </g>
     <g stroke={G} strokeWidth="1.2" fill="none">
       <circle cx="160" cy="72" r="18" />
-      <path d="M 148 72 L 160 85 L 172 60" stroke=${L} strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M 148 72 L 160 85 L 172 60" stroke={L} strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
     </g>
-    <g stroke=${L} strokeWidth="1.5" fill="none">
+    <g stroke={L} strokeWidth="1.5" fill="none">
       <path d="M 182 72 L 227 72" markerEnd="url(#arrowAudit)" />
     </g>
-    <g stroke=${G} strokeWidth="1.2" fill={`rgba(49,97,72,.08)`}>
+    <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.08)`}>
       <circle cx="250" cy="72" r="10" />
     </g>
     <defs>
       <marker id="arrowAudit" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
-        <path d="M0,0 L0,6 L9,3 z" fill=${L} />
+        <path d="M0,0 L0,6 L9,3 z" fill={L} />
       </marker>
     </defs>
   </svg>
@@ -788,21 +788,21 @@ export const AiPoweredContentAuditing = () => (
 
 export const ContentIntelligencePlatforms = () => (
   <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <g stroke=${L} strokeWidth="1.2" fill={`rgba(170,248,112,.08)`}>
+    <g stroke={L} strokeWidth="1.2" fill={`rgba(170,248,112,.08)`}>
       <circle cx="60" cy="50" r="12" />
       <circle cx="60" cy="94" r="12" />
       <circle cx="120" cy="72" r="12" />
       <circle cx="180" cy="50" r="12" />
       <circle cx="180" cy="94" r="12" />
     </g>
-    <g fill=${G} opacity="0.5">
+    <g fill={G} opacity="0.5">
       <circle cx="60" cy="50" r="4" />
       <circle cx="60" cy="94" r="4" />
       <circle cx="120" cy="72" r="4" />
       <circle cx="180" cy="50" r="4" />
       <circle cx="180" cy="94" r="4" />
     </g>
-    <g stroke=${G} strokeWidth="1" fill="none" opacity="0.4">
+    <g stroke={G} strokeWidth="1" fill="none" opacity="0.4">
       <line x1="70" y1="50" x2="108" y2="65" />
       <line x1="70" y1="94" x2="108" y2="79" />
       <line x1="130" y1="72" x2="168" y2="50" />
@@ -813,35 +813,35 @@ export const ContentIntelligencePlatforms = () => (
 
 export const OperationalisingLlmsContentTeams = () => (
   <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <g stroke=${G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
+    <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
       <rect x="20" y="50" width="45" height="48" rx="2" />
       <circle cx="42" cy="62" r="2" opacity="0.6" />
       <circle cx="42" cy="74" r="2" opacity="0.6" />
       <circle cx="42" cy="86" r="2" opacity="0.6" />
     </g>
-    <g stroke=${L} strokeWidth="1.5" fill="none">
+    <g stroke={L} strokeWidth="1.5" fill="none">
       <path d="M 70 60 L 115 60" markerEnd="url(#arrowLLM)" />
       <path d="M 70 74 L 115 74" markerEnd="url(#arrowLLM)" />
       <path d="M 70 88 L 115 88" markerEnd="url(#arrowLLM)" />
     </g>
-    <g stroke=${G} strokeWidth="1.2" fill={`rgba(49,97,72,.08)`}>
+    <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.08)`}>
       <circle cx="145" cy="60" r="10" />
       <circle cx="145" cy="74" r="10" />
       <circle cx="145" cy="88" r="10" />
     </g>
-    <g stroke=${L} strokeWidth="1.2" fill="none" opacity="0.5">
+    <g stroke={L} strokeWidth="1.2" fill="none" opacity="0.5">
       <path d="M 158 60 L 200 50" />
       <path d="M 158 74 L 200 74" />
       <path d="M 158 88 L 200 98" />
     </g>
-    <g fill=${L} opacity="0.4">
+    <g fill={L} opacity="0.4">
       <circle cx="220" cy="50" r="3" />
       <circle cx="220" cy="74" r="3" />
       <circle cx="220" cy="98" r="3" />
     </g>
     <defs>
       <marker id="arrowLLM" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
-        <path d="M0,0 L0,6 L9,3 z" fill=${L} />
+        <path d="M0,0 L0,6 L9,3 z" fill={L} />
       </marker>
     </defs>
   </svg>
@@ -849,27 +849,27 @@ export const OperationalisingLlmsContentTeams = () => (
 
 export const AiContentFeedbackLoop = () => (
   <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <g stroke=${G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
+    <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
       <rect x="35" y="50" width="50" height="48" rx="2" />
       <line x1="35" y1="65" x2="85" y2="65" opacity="0.4" strokeWidth="0.8" />
       <line x1="35" y1="78" x2="85" y2="78" opacity="0.4" strokeWidth="0.8" />
     </g>
-    <g stroke=${L} strokeWidth="1.5" fill="none">
+    <g stroke={L} strokeWidth="1.5" fill="none">
       <path d="M 90 74 L 140 74" markerEnd="url(#arrowFB)" />
     </g>
-    <g stroke=${G} strokeWidth="1.2" fill={`rgba(49,97,72,.08)`}>
+    <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.08)`}>
       <circle cx="170" cy="74" r="15" />
-      <path d="M 162 74 L 170 82 L 178 66" stroke=${L} strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M 162 74 L 170 82 L 178 66" stroke={L} strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
     </g>
-    <g stroke=${L} strokeWidth="1.5" fill="none">
+    <g stroke={L} strokeWidth="1.5" fill="none">
       <path d="M 190 74 L 240 74" markerEnd="url(#arrowFB)" />
     </g>
-    <g stroke=${G} strokeWidth="1.2" fill="none" opacity="0.5" strokeDasharray="2,2">
+    <g stroke={G} strokeWidth="1.2" fill="none" opacity="0.5" strokeDasharray="2,2">
       <path d="M 240 74 L 240 110 L 60 110 L 60 100" markerEnd="url(#arrowFB)" />
     </g>
     <defs>
       <marker id="arrowFB" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
-        <path d="M0,0 L0,6 L9,3 z" fill=${L} />
+        <path d="M0,0 L0,6 L9,3 z" fill={L} />
       </marker>
     </defs>
   </svg>
@@ -877,15 +877,15 @@ export const AiContentFeedbackLoop = () => (
 
 export const PersonalisationArchitectureAiEnterprises = () => (
   <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <g stroke=${G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
+    <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
       <rect x="30" y="30" width="220" height="84" rx="4" />
     </g>
-    <g stroke=${L} strokeWidth="1.2" fill={`rgba(170,248,112,.08)`}>
+    <g stroke={L} strokeWidth="1.2" fill={`rgba(170,248,112,.08)`}>
       <rect x="50" y="50" width="40" height="30" rx="2" />
       <rect x="105" y="50" width="40" height="30" rx="2" />
       <rect x="160" y="50" width="40" height="30" rx="2" />
     </g>
-    <g stroke=${G} strokeWidth="1.2" fill="none" opacity="0.6">
+    <g stroke={G} strokeWidth="1.2" fill="none" opacity="0.6">
       <path d="M 70 85 L 70 100" />
       <path d="M 125 85 L 125 100" />
       <path d="M 180 85 L 180 100" />
@@ -895,27 +895,27 @@ export const PersonalisationArchitectureAiEnterprises = () => (
 
 export const ContentModellingPersonalisation = () => (
   <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <g stroke=${G} strokeWidth="1.2" fill="none">
+    <g stroke={G} strokeWidth="1.2" fill="none">
       <circle cx="70" cy="50" r="12" />
       <circle cx="70" cy="94" r="12" />
       <line x1="82" y1="50" x2="120" y2="50" opacity="0.4" />
       <line x1="82" y1="94" x2="120" y2="94" opacity="0.4" />
     </g>
-    <g stroke=${L} strokeWidth="1.2" fill={`rgba(170,248,112,.08)`}>
+    <g stroke={L} strokeWidth="1.2" fill={`rgba(170,248,112,.08)`}>
       <rect x="125" y="40" width="35" height="20" rx="2" />
       <rect x="125" y="84" width="35" height="20" rx="2" />
     </g>
-    <g stroke=${G} strokeWidth="1.2" fill="none">
+    <g stroke={G} strokeWidth="1.2" fill="none">
       <path d="M 165 50 L 200 50" markerEnd="url(#arrowCMP)" />
       <path d="M 165 94 L 200 94" markerEnd="url(#arrowCMP)" />
     </g>
-    <g stroke=${L} strokeWidth="1.2" fill="none" opacity="0.5">
+    <g stroke={L} strokeWidth="1.2" fill="none" opacity="0.5">
       <path d="M 210 50 L 240 40" />
       <path d="M 210 94 L 240 104" />
     </g>
     <defs>
       <marker id="arrowCMP" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
-        <path d="M0,0 L0,6 L9,3 z" fill=${G} />
+        <path d="M0,0 L0,6 L9,3 z" fill={G} />
       </marker>
     </defs>
   </svg>
@@ -923,29 +923,29 @@ export const ContentModellingPersonalisation = () => (
 
 export const AudienceArchitectureDesigningSegments = () => (
   <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <g stroke=${G} strokeWidth="1.2" fill="none">
+    <g stroke={G} strokeWidth="1.2" fill="none">
       <circle cx="60" cy="50" r="10" />
       <circle cx="60" cy="72" r="10" />
       <circle cx="60" cy="94" r="10" />
       <circle cx="120" cy="60" r="10" />
       <circle cx="120" cy="84" r="10" />
     </g>
-    <g fill=${L} opacity="0.5">
+    <g fill={L} opacity="0.5">
       <circle cx="60" cy="50" r="3" />
       <circle cx="60" cy="72" r="3" />
       <circle cx="60" cy="94" r="3" />
       <circle cx="120" cy="60" r="3" />
       <circle cx="120" cy="84" r="3" />
     </g>
-    <g stroke=${L} strokeWidth="1.2" fill="none" opacity="0.6">
+    <g stroke={L} strokeWidth="1.2" fill="none" opacity="0.6">
       <path d="M 72 50 L 108 60" />
       <path d="M 72 72 L 108 72" />
       <path d="M 72 94 L 108 84" />
     </g>
-    <g stroke=${G} strokeWidth="1.2" fill={`rgba(49,97,72,.08)`}>
+    <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.08)`}>
       <rect x="180" y="40" width="50" height="64" rx="2" />
     </g>
-    <g fill=${L} opacity="0.3">
+    <g fill={L} opacity="0.3">
       <rect x="185" y="50" width="12" height="12" />
       <rect x="205" y="50" width="12" height="12" />
       <rect x="185" y="72" width="12" height="12" />
@@ -956,27 +956,27 @@ export const AudienceArchitectureDesigningSegments = () => (
 
 export const DecisioningLogicContentPersonalisation = () => (
   <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <g stroke=${G} strokeWidth="1.2" fill={`rgba(49,97,72,.08)`}>
+    <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.08)`}>
       <circle cx="70" cy="72" r="20" />
     </g>
-    <g stroke=${L} strokeWidth="1.5" fill="none">
+    <g stroke={L} strokeWidth="1.5" fill="none">
       <path d="M 92 50 L 140 50" markerEnd="url(#arrowDL)" />
       <path d="M 92 72 L 140 72" markerEnd="url(#arrowDL)" />
       <path d="M 92 94 L 140 94" markerEnd="url(#arrowDL)" />
     </g>
-    <g stroke=${G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
+    <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
       <rect x="145" y="40" width="25" height="20" rx="1" />
       <rect x="145" y="62" width="25" height="20" rx="1" />
       <rect x="145" y="84" width="25" height="20" rx="1" />
     </g>
-    <g stroke=${L} strokeWidth="1.5" fill="none">
+    <g stroke={L} strokeWidth="1.5" fill="none">
       <path d="M 175 50 L 220 40" markerEnd="url(#arrowDL)" />
       <path d="M 175 72 L 220 72" markerEnd="url(#arrowDL)" />
       <path d="M 175 94 L 220 104" markerEnd="url(#arrowDL)" />
     </g>
     <defs>
       <marker id="arrowDL" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
-        <path d="M0,0 L0,6 L9,3 z" fill=${L} />
+        <path d="M0,0 L0,6 L9,3 z" fill={L} />
       </marker>
     </defs>
   </svg>
@@ -984,38 +984,38 @@ export const DecisioningLogicContentPersonalisation = () => (
 
 export const PersonalisationScaleB2bEnterprises = () => (
   <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <g stroke=${G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
+    <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
       <rect x="20" y="50" width="40" height="48" rx="2" />
       <circle cx="40" cy="62" r="2.5" opacity="0.6" />
       <circle cx="40" cy="74" r="2.5" opacity="0.6" />
       <circle cx="40" cy="86" r="2.5" opacity="0.6" />
     </g>
-    <g stroke=${L} strokeWidth="1.2" fill={`rgba(170,248,112,.08)`}>
+    <g stroke={L} strokeWidth="1.2" fill={`rgba(170,248,112,.08)`}>
       <circle cx="90" cy="50" r="12" />
       <circle cx="90" cy="72" r="12" />
       <circle cx="90" cy="94" r="12" />
     </g>
-    <g fill=${G} opacity="0.5">
+    <g fill={G} opacity="0.5">
       <circle cx="90" cy="50" r="4" />
       <circle cx="90" cy="72" r="4" />
       <circle cx="90" cy="94" r="4" />
     </g>
-    <g stroke=${G} strokeWidth="1.2" fill="none">
+    <g stroke={G} strokeWidth="1.2" fill="none">
       <path d="M 65 62 L 78 50" opacity="0.5" />
       <path d="M 65 74 L 78 72" opacity="0.5" />
       <path d="M 65 86 L 78 94" opacity="0.5" />
     </g>
-    <g stroke=${L} strokeWidth="1.5" fill="none">
+    <g stroke={L} strokeWidth="1.5" fill="none">
       <path d="M 105 50 L 160 50" markerEnd="url(#arrowP2B)" />
       <path d="M 105 72 L 160 72" markerEnd="url(#arrowP2B)" />
       <path d="M 105 94 L 160 94" markerEnd="url(#arrowP2B)" />
     </g>
-    <g stroke=${G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
+    <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
       <rect x="165" y="40" width="50" height="64" rx="2" />
     </g>
     <defs>
       <marker id="arrowP2B" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
-        <path d="M0,0 L0,6 L9,3 z" fill=${L} />
+        <path d="M0,0 L0,6 L9,3 z" fill={L} />
       </marker>
     </defs>
   </svg>
@@ -1025,30 +1025,30 @@ export const RealTimePersonalisationArchitecture = () => (
   <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
     <defs>
       <marker id="arrowRT" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
-        <path d="M0,0 L0,6 L9,3 z" fill=${L} />
+        <path d="M0,0 L0,6 L9,3 z" fill={L} />
       </marker>
     </defs>
-    <g stroke=${G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
+    <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
       <rect x="20" y="50" width="50" height="48" rx="2" />
       <line x1="20" y1="62" x2="70" y2="62" opacity="0.4" strokeWidth="0.8" />
       <line x1="20" y1="74" x2="70" y2="74" opacity="0.4" strokeWidth="0.8" />
     </g>
-    <g stroke=${L} strokeWidth="1.5" fill="none">
+    <g stroke={L} strokeWidth="1.5" fill="none">
       <path d="M 75 50 L 120 50" markerEnd="url(#arrowRT)" />
       <path d="M 75 98 L 120 98" markerEnd="url(#arrowRT)" />
     </g>
-    <g stroke=${G} strokeWidth="1.2" fill={`rgba(49,97,72,.08)`}>
+    <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.08)`}>
       <circle cx="145" cy="50" r="12" />
       <circle cx="145" cy="98" r="12" />
     </g>
-    <g stroke=${L} strokeWidth="1.5" fill="none">
+    <g stroke={L} strokeWidth="1.5" fill="none">
       <path d="M 160 50 L 200 50" markerEnd="url(#arrowRT)" />
       <path d="M 160 98 L 200 98" markerEnd="url(#arrowRT)" />
     </g>
-    <g stroke=${G} strokeWidth="1.2" fill=${`rgba(49,97,72,.06)`}>
+    <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
       <rect x="205" y="40" width="50" height="56" rx="2" />
     </g>
-    <g stroke=${L} strokeWidth="1.2" fill="none" opacity="0.4" strokeDasharray="3,2">
+    <g stroke={L} strokeWidth="1.2" fill="none" opacity="0.4" strokeDasharray="3,2">
       <path d="M 220 100 Q 180 120 100 100" />
     </g>
   </svg>
@@ -1056,33 +1056,33 @@ export const RealTimePersonalisationArchitecture = () => (
 
 export const PrivacyFirstPersonalisation = () => (
   <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <g stroke=${G} strokeWidth="1.2" fill="none">
+    <g stroke={G} strokeWidth="1.2" fill="none">
       <circle cx="70" cy="72" r="22" />
       <path d="M 52 72 L 88 72 M 70 50 L 70 94" opacity="0.4" strokeWidth="0.8" />
     </g>
-    <g stroke=${L} strokeWidth="1.5" fill="none">
+    <g stroke={L} strokeWidth="1.5" fill="none">
       <path d="M 97 40 L 140 40" markerEnd="url(#arrowPriv)" />
       <path d="M 97 72 L 140 72" markerEnd="url(#arrowPriv)" />
       <path d="M 97 104 L 140 104" markerEnd="url(#arrowPriv)" />
     </g>
-    <g stroke=${G} strokeWidth="1.2" fill={`rgba(49,97,72,.08)`}>
+    <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.08)`}>
       <rect x="145" y="32" width="20" height="16" opacity="0.8" />
       <rect x="145" y="64" width="20" height="16" opacity="0.8" />
       <rect x="145" y="96" width="20" height="16" opacity="0.8" />
     </g>
-    <g stroke=${L} strokeWidth="1.5" fill="none">
+    <g stroke={L} strokeWidth="1.5" fill="none">
       <path d="M 170 40 L 220 40" markerEnd="url(#arrowPriv)" />
       <path d="M 170 72 L 220 72" markerEnd="url(#arrowPriv)" />
       <path d="M 170 104 L 220 104" markerEnd="url(#arrowPriv)" />
     </g>
-    <g stroke=${G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
+    <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
       <rect x="225" y="32" width="40" height="16" opacity="0.8" />
       <rect x="225" y="64" width="40" height="16" opacity="0.8" />
       <rect x="225" y="96" width="40" height="16" opacity="0.8" />
     </g>
     <defs>
       <marker id="arrowPriv" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
-        <path d="M0,0 L0,6 L9,3 z" fill=${L} />
+        <path d="M0,0 L0,6 L9,3 z" fill={L} />
       </marker>
     </defs>
   </svg>
@@ -1090,27 +1090,27 @@ export const PrivacyFirstPersonalisation = () => (
 
 export const PersonalisationOperations = () => (
   <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <g stroke=${G} strokeWidth="1.2" fill=${`rgba(49,97,72,.06)`}>
+    <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
       <rect x="30" y="40" width="70" height="64" rx="2" />
       <line x1="30" y1="58" x2="100" y2="58" opacity="0.4" strokeWidth="0.8" />
       <line x1="30" y1="74" x2="100" y2="74" opacity="0.4" strokeWidth="0.8" />
       <line x1="30" y1="90" x2="100" y2="90" opacity="0.4" strokeWidth="0.8" />
     </g>
-    <g stroke=${L} strokeWidth="1.5" fill="none">
+    <g stroke={L} strokeWidth="1.5" fill="none">
       <path d="M 105 50 L 150 50" markerEnd="url(#arrowPOps)" />
       <path d="M 105 80 L 150 80" markerEnd="url(#arrowPOps)" />
     </g>
-    <g stroke=${G} strokeWidth="1.2" fill=${`rgba(49,97,72,.08)`}>
+    <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.08)`}>
       <circle cx="180" cy="50" r="12" />
       <circle cx="180" cy="80" r="12" />
     </g>
-    <g stroke=${L} strokeWidth="1.5" fill="none">
+    <g stroke={L} strokeWidth="1.5" fill="none">
       <path d="M 195 50 L 240 50" markerEnd="url(#arrowPOps)" />
       <path d="M 195 80 L 240 80" markerEnd="url(#arrowPOps)" />
     </g>
     <defs>
       <marker id="arrowPOps" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
-        <path d="M0,0 L0,6 L9,3 z" fill=${L} />
+        <path d="M0,0 L0,6 L9,3 z" fill={L} />
       </marker>
     </defs>
   </svg>
@@ -1118,21 +1118,21 @@ export const PersonalisationOperations = () => (
 
 export const MeasuringPersonalisationEffectiveness = () => (
   <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <g stroke=${G} strokeWidth="1.2" fill="none">
+    <g stroke={G} strokeWidth="1.2" fill="none">
       <line x1="40" y1="110" x2="240" y2="110" />
       <line x1="40" y1="110" x2="40" y2="30" />
     </g>
-    <g stroke=${L} strokeWidth="1.8" fill="none" strokeLinecap="round">
+    <g stroke={L} strokeWidth="1.8" fill="none" strokeLinecap="round">
       <path d="M 60 90 L 100 50 L 140 70 L 180 40 L 220 65" />
     </g>
-    <g fill=${L} opacity="0.6">
+    <g fill={L} opacity="0.6">
       <circle cx="60" cy="90" r="3" />
       <circle cx="100" cy="50" r="3" />
       <circle cx="140" cy="70" r="3" />
       <circle cx="180" cy="40" r="3" />
       <circle cx="220" cy="65" r="3" />
     </g>
-    <g stroke=${G} strokeWidth="0.8" fill="none" opacity="0.3">
+    <g stroke={G} strokeWidth="0.8" fill="none" opacity="0.3">
       <line x1="60" y1="110" x2="60" y2="105" />
       <line x1="100" y1="110" x2="100" y2="105" />
       <line x1="140" y1="110" x2="140" y2="105" />
@@ -1350,34 +1350,34 @@ export const TerminologyManagementGlobalContent = () => (
     </g>
 
     {/* Radiating terms and connections */}
-    <g stroke=${L} strokeWidth="1.2" fill="none">
+    <g stroke={L} strokeWidth="1.2" fill="none">
       {/* Top-left radiation */}
       <line x1="55" y1="48" x2="30" y2="25" />
-      <circle cx="30" cy="25" r="5" stroke=${L} strokeWidth="1" fill={`rgba(170,248,112,.08)`} />
+      <circle cx="30" cy="25" r="5" stroke={L} strokeWidth="1" fill={`rgba(170,248,112,.08)`} />
 
       {/* Top-right radiation */}
       <line x1="85" y1="48" x2="115" y2="25" />
-      <circle cx="115" cy="25" r="5" stroke=${L} strokeWidth="1" fill={`rgba(170,248,112,.08)`} />
+      <circle cx="115" cy="25" r="5" stroke={L} strokeWidth="1" fill={`rgba(170,248,112,.08)`} />
 
       {/* Right radiation */}
       <line x1="90" y1="72" x2="135" y2="72" />
-      <circle cx="135" cy="72" r="5" stroke=${L} strokeWidth="1" fill={`rgba(170,248,112,.08)`} />
+      <circle cx="135" cy="72" r="5" stroke={L} strokeWidth="1" fill={`rgba(170,248,112,.08)`} />
 
       {/* Bottom-right radiation */}
       <line x1="85" y1="96" x2="115" y2="119" />
-      <circle cx="115" cy="119" r="5" stroke=${L} strokeWidth="1" fill={`rgba(170,248,112,.08)`} />
+      <circle cx="115" cy="119" r="5" stroke={L} strokeWidth="1" fill={`rgba(170,248,112,.08)`} />
 
       {/* Bottom-left radiation */}
       <line x1="55" y1="96" x2="30" y2="119" />
-      <circle cx="30" cy="119" r="5" stroke=${L} strokeWidth="1" fill={`rgba(170,248,112,.08)`} />
+      <circle cx="30" cy="119" r="5" stroke={L} strokeWidth="1" fill={`rgba(170,248,112,.08)`} />
 
       {/* Left radiation */}
       <line x1="50" y1="72" x2="15" y2="72" />
-      <circle cx="15" cy="72" r="5" stroke=${L} strokeWidth="1" fill={`rgba(170,248,112,.08)`} />
+      <circle cx="15" cy="72" r="5" stroke={L} strokeWidth="1" fill={`rgba(170,248,112,.08)`} />
     </g>
 
     {/* Secondary connections from nodes */}
-    <g stroke=${G} strokeWidth="0.6" fill="none" opacity="0.3">
+    <g stroke={G} strokeWidth="0.6" fill="none" opacity="0.3">
       <line x1="30" y1="30" x2="40" y2="40" />
       <line x1="115" y1="30" x2="95" y2="45" />
       <line x1="135" y1="77" x2="130" y2="85" />
@@ -1389,7 +1389,7 @@ export const TerminologyManagementGlobalContent = () => (
 export const GlobalContentStrategyAIEnterprises = () => (
   <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
     {/* World map outline - simplified */}
-    <g stroke=${G} strokeWidth="1.2" fill={`rgba(49,97,72,.04)`} opacity="0.6">
+    <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.04)`} opacity="0.6">
       {/* Landmass silhouettes */}
       <path d="M 30 60 L 40 50 L 50 55 L 55 50 L 60 60 Z" />
       <path d="M 100 40 L 120 35 L 130 50 L 115 60 Z" />
@@ -1400,38 +1400,38 @@ export const GlobalContentStrategyAIEnterprises = () => (
     {/* Regional strategy nodes */}
     <g>
       {/* Node 1 - Americas */}
-      <circle cx="45" cy="72" r="6" stroke=${L} strokeWidth="1.2" fill={`rgba(170,248,112,.12)`} />
-      <circle cx="45" cy="72" r="2" fill=${L} />
+      <circle cx="45" cy="72" r="6" stroke={L} strokeWidth="1.2" fill={`rgba(170,248,112,.12)`} />
+      <circle cx="45" cy="72" r="2" fill={L} />
 
       {/* Node 2 - Europe/Africa */}
-      <circle cx="115" cy="60" r="6" stroke=${L} strokeWidth="1.2" fill={`rgba(170,248,112,.12)`} />
-      <circle cx="115" cy="60" r="2" fill=${L} />
+      <circle cx="115" cy="60" r="6" stroke={L} strokeWidth="1.2" fill={`rgba(170,248,112,.12)`} />
+      <circle cx="115" cy="60" r="2" fill={L} />
 
       {/* Node 3 - Asia Pacific */}
-      <circle cx="195" cy="72" r="6" stroke=${L} strokeWidth="1.2" fill={`rgba(170,248,112,.12)`} />
-      <circle cx="195" cy="72" r="2" fill=${L} />
+      <circle cx="195" cy="72" r="6" stroke={L} strokeWidth="1.2" fill={`rgba(170,248,112,.12)`} />
+      <circle cx="195" cy="72" r="2" fill={L} />
 
       {/* Node 4 - Regional Hub */}
-      <circle cx="235" cy="85" r="6" stroke=${L} strokeWidth="1.2" fill={`rgba(170,248,112,.12)`} />
-      <circle cx="235" cy="85" r="2" fill=${L} />
+      <circle cx="235" cy="85" r="6" stroke={L} strokeWidth="1.2" fill={`rgba(170,248,112,.12)`} />
+      <circle cx="235" cy="85" r="2" fill={L} />
     </g>
 
     {/* Strategy connections between regions */}
-    <g stroke=${G} strokeWidth="1.2" fill="none" opacity="0.5">
+    <g stroke={G} strokeWidth="1.2" fill="none" opacity="0.5">
       <path d="M 51 66 L 109 66" />
       <path d="M 121 54 L 189 78" />
       <path d="M 201 78 L 229 91" />
     </g>
 
     {/* Cross-region collaboration lines */}
-    <g stroke=${L} strokeWidth="0.8" fill="none" opacity="0.3" strokeDasharray="2,2">
+    <g stroke={L} strokeWidth="0.8" fill="none" opacity="0.3" strokeDasharray="2,2">
       <path d="M 45 78 L 235 79" />
       <path d="M 115 66 L 45 78" />
       <path d="M 195 78 L 115 66" />
     </g>
 
     {/* Central hub indicator */}
-    <g stroke=${G} strokeWidth="1" fill="none" opacity="0.4">
+    <g stroke={G} strokeWidth="1" fill="none" opacity="0.4">
       <circle cx="140" cy="72" r="20" />
     </g>
   </svg>
@@ -1440,53 +1440,53 @@ export const GlobalContentStrategyAIEnterprises = () => (
 export const FutureOfContentInfrastructure = () => (
   <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
     {/* Horizon line */}
-    <line x1="10" y1="95" x2="270" y2="95" stroke=${G} strokeWidth="1.2" opacity="0.5" />
+    <line x1="10" y1="95" x2="270" y2="95" stroke={G} strokeWidth="1.2" opacity="0.5" />
 
     {/* Ascending trajectory arc */}
-    <g stroke=${L} strokeWidth="1.8" fill="none">
+    <g stroke={L} strokeWidth="1.8" fill="none">
       <path d="M 30 100 Q 100 40 200 25" strokeLinecap="round" />
     </g>
 
     {/* Bright apex node */}
-    <circle cx="200" cy="25" r="8" stroke=${L} strokeWidth="1.2" fill={`rgba(170,248,112,.2)`} />
-    <circle cx="200" cy="25" r="4" fill=${L} />
+    <circle cx="200" cy="25" r="8" stroke={L} strokeWidth="1.2" fill={`rgba(170,248,112,.2)`} />
+    <circle cx="200" cy="25" r="4" fill={L} />
 
     {/* Radiating energy from apex */}
-    <g stroke=${L} strokeWidth="1" fill="none" opacity="0.4">
+    <g stroke={L} strokeWidth="1" fill="none" opacity="0.4">
       <circle cx="200" cy="25" r="12" />
       <circle cx="200" cy="25" r="18" />
     </g>
 
     {/* Futuristic circuit/data paths */}
-    <g stroke=${G} strokeWidth="1.2" fill="none" opacity="0.6">
+    <g stroke={G} strokeWidth="1.2" fill="none" opacity="0.6">
       {/* Lower left path */}
       <path d="M 40 85 L 60 75 L 75 80" />
-      <circle cx="40" cy="85" r="2" fill=${G} />
-      <circle cx="60" cy="75" r="1.5" fill=${G} />
-      <circle cx="75" cy="80" r="1.5" fill=${G} />
+      <circle cx="40" cy="85" r="2" fill={G} />
+      <circle cx="60" cy="75" r="1.5" fill={G} />
+      <circle cx="75" cy="80" r="1.5" fill={G} />
 
       {/* Center path */}
       <path d="M 90 90 L 110 70 L 130 65" />
-      <circle cx="90" cy="90" r="2" fill=${G} />
-      <circle cx="110" cy="70" r="1.5" fill=${G} />
-      <circle cx="130" cy="65" r="1.5" fill=${G} />
+      <circle cx="90" cy="90" r="2" fill={G} />
+      <circle cx="110" cy="70" r="1.5" fill={G} />
+      <circle cx="130" cy="65" r="1.5" fill={G} />
 
       {/* Right ascending path */}
       <path d="M 150 88 L 170 60 L 190 35" />
-      <circle cx="150" cy="88" r="2" fill=${G} />
-      <circle cx="170" cy="60" r="1.5" fill=${G} />
-      <circle cx="190" cy="35" r="1.5" fill=${G} />
+      <circle cx="150" cy="88" r="2" fill={G} />
+      <circle cx="170" cy="60" r="1.5" fill={G} />
+      <circle cx="190" cy="35" r="1.5" fill={G} />
     </g>
 
     {/* Upward flow indicators */}
-    <g stroke=${L} strokeWidth="0.8" fill="none" opacity="0.3">
+    <g stroke={L} strokeWidth="0.8" fill="none" opacity="0.3">
       <path d="M 100 60 L 95 50" strokeLinecap="round" />
       <path d="M 130 50 L 128 40" strokeLinecap="round" />
       <path d="M 160 45 L 165 35" strokeLinecap="round" />
     </g>
 
     {/* Data nodes leading upward */}
-    <g fill=${G} opacity="0.4">
+    <g fill={G} opacity="0.4">
       <circle cx="50" cy="78" r="1" />
       <circle cx="75" cy="68" r="1" />
       <circle cx="105" cy="63" r="1" />
@@ -1495,7 +1495,7 @@ export const FutureOfContentInfrastructure = () => (
     </g>
 
     {/* Foundation base structure */}
-    <g stroke=${G} strokeWidth="0.8" fill="none" opacity="0.3">
+    <g stroke={G} strokeWidth="0.8" fill="none" opacity="0.3">
       <line x1="20" y1="100" x2="35" y2="95" />
       <line x1="80" y1="100" x2="100" y2="92" />
       <line x1="150" y1="100" x2="180" y2="85" />
