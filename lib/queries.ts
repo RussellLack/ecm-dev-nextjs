@@ -74,7 +74,8 @@ export async function getBlogPosts(limit = 10) {
 export async function getPost(slug: string) {
   return client.fetch(
     `*[_type == "post" && slug.current == $slug][0]{
-      title, body, publishedAt, mainImage, tags
+      title, body, publishedAt, mainImage, tags, excerpt,
+      seo { metaTitle, metaDescription, ogImage, noIndex }
     }`,
     { slug }
   );
@@ -94,6 +95,7 @@ export async function getGuide(slug: string) {
   return client.fetch(
     `*[_type == "guide" && slug.current == $slug][0]{
       _id, title, subtitle, slug, series, seriesNumber, guideNumber, excerpt, tags, mainImage, body,
+      seo { metaTitle, metaDescription, ogImage, noIndex },
       relatedGuides[]->{
         _id, title, subtitle, slug, series, guideNumber, excerpt, tags, mainImage
       }

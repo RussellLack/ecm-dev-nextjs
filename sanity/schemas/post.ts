@@ -51,6 +51,12 @@ export default defineType({
         { type: "image", options: { hotspot: true } },
       ],
     }),
+    defineField({
+      name: "seo",
+      title: "SEO",
+      type: "seo",
+      options: { collapsible: true, collapsed: true },
+    }),
   ],
   preview: {
     select: {

@@ -1,9 +1,31 @@
 import { NextResponse } from "next/server";
 import { getSubmission, getMaturityBands, getServiceRecommendations } from "@/lib/assessment/queries";
 import { writeClient } from "@/lib/sanityWrite";
+import { rateLimit } from "@/lib/rateLimit";
+
+/** Escape HTML special characters to prevent XSS in email templates */
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
 
 export async function POST(request: Request) {
   try {
+    // Rate limit: 5 report requests per minute per IP
+    const forwarded = request.headers.get("x-forwarded-for");
+    const ip = forwarded?.split(",")[0]?.trim() || "unknown";
+    const { allowed } = rateLimit({ ip, limit: 5, windowMs: 60_000 });
+    if (!allowed) {
+      return NextResponse.json(
+        { error: "Too many requests. Please try again shortly." },
+        { status: 429 }
+      );
+    }
+
     const body = await request.json();
     const { submissionId, email, name } = body;
 
@@ -203,7 +225,7 @@ function buildReportEmail({
           <table width="100%" cellpadding="0" cellspacing="0">
             <tr>
               <td style="font-family:Helvetica,Arial,sans-serif;font-size:13px;color:#333;padding-bottom:4px;">
-                ${d.dimensionTitle}${isWeak ? ' <span style="color:#D97706;font-size:10px;font-weight:600;">Needs attention</span>' : ""}
+                ${escapeHtml(d.dimensionTitle)}${isWeak ? ' <span style="color:#D97706;font-size:10px;font-weight:600;">Needs attention</span>' : ""}
               </td>
               <td style="font-family:Helvetica,Arial,sans-serif;font-size:13px;color:#333;text-align:right;font-weight:600;padding-bottom:4px;">
                 ${d.score}%
@@ -231,9 +253,9 @@ function buildReportEmail({
           ${recommendations
             .map(
               (rec) => `<div style="background-color:#f9f9f9;border:1px solid #eee;border-radius:8px;padding:16px 20px;margin-bottom:12px;">
-              <p style="margin:0 0 2px;font-family:Helvetica,Arial,sans-serif;font-size:10px;color:#999;text-transform:uppercase;letter-spacing:1px;">${rec.dimensionTitle}</p>
-              <p style="margin:0 0 6px;font-family:Helvetica,Arial,sans-serif;font-size:14px;color:#1a1a2e;font-weight:600;">${rec.title}</p>
-              ${rec.summary ? `<p style="margin:0;font-family:Helvetica,Arial,sans-serif;font-size:12px;color:#666;line-height:1.5;">${rec.summary}</p>` : ""}
+              <p style="margin:0 0 2px;font-family:Helvetica,Arial,sans-serif;font-size:10px;color:#999;text-transform:uppercase;letter-spacing:1px;">${escapeHtml(rec.dimensionTitle)}</p>
+              <p style="margin:0 0 6px;font-family:Helvetica,Arial,sans-serif;font-size:14px;color:#1a1a2e;font-weight:600;">${escapeHtml(rec.title)}</p>
+              ${rec.summary ? `<p style="margin:0;font-family:Helvetica,Arial,sans-serif;font-size:12px;color:#666;line-height:1.5;">${escapeHtml(rec.summary)}</p>` : ""}
             </div>`
             )
             .join("")}
@@ -261,7 +283,7 @@ function buildReportEmail({
         <tr>
           <td style="padding:32px 40px 12px;">
             <p style="margin:0;font-family:Helvetica,Arial,sans-serif;font-size:14px;color:#666;line-height:1.6;">
-              Hi ${firstName}, here is your personalised assessment report.
+              Hi ${escapeHtml(firstName)}, here is your personalised assessment report.
             </p>
           </td>
         </tr>
@@ -275,7 +297,7 @@ function buildReportEmail({
                   <span style="font-family:Helvetica,Arial,sans-serif;font-size:60px;font-weight:700;color:${bandColor};line-height:1;">${totalScore}%</span>
                 </td>
                 <td style="vertical-align:bottom;padding-bottom:12px;">
-                  <span style="display:inline-block;padding:5px 14px;border-radius:20px;background-color:${bandColor};color:#1a1a2e;font-family:Helvetica,Arial,sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;">${bandTitle}</span>
+                  <span style="display:inline-block;padding:5px 14px;border-radius:20px;background-color:${bandColor};color:#1a1a2e;font-family:Helvetica,Arial,sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;">${escapeHtml(bandTitle)}</span>
                 </td>
               </tr>
             </table>
@@ -294,8 +316,8 @@ function buildReportEmail({
         <!-- Band Description -->
         ${bandHeadline || bandDescription ? `<tr>
           <td style="padding:0 40px 24px;">
-            ${bandHeadline ? `<p style="margin:0 0 6px;font-family:Helvetica,Arial,sans-serif;font-size:15px;color:#1a1a2e;font-weight:600;">${bandHeadline}</p>` : ""}
-            ${bandDescription ? `<p style="margin:0;font-family:Helvetica,Arial,sans-serif;font-size:13px;color:#666;line-height:1.6;">${bandDescription}</p>` : ""}
+            ${bandHeadline ? `<p style="margin:0 0 6px;font-family:Helvetica,Arial,sans-serif;font-size:15px;color:#1a1a2e;font-weight:600;">${escapeHtml(bandHeadline)}</p>` : ""}
+            ${bandDescription ? `<p style="margin:0;font-family:Helvetica,Arial,sans-serif;font-size:13px;color:#666;line-height:1.6;">${escapeHtml(bandDescription)}</p>` : ""}
           </td>
         </tr>` : ""}
 

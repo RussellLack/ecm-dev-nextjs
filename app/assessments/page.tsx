@@ -13,8 +13,8 @@ export const metadata = {
 export default async function AssessmentsPage() {
   const assessments = await getAllAssessments().catch(() => []);
 
-  // Only show editor controls when SANITY_WRITE_TOKEN is present (i.e. not in production)
-  const showEditorControls = !!process.env.SANITY_WRITE_TOKEN;
+  // Only show editor controls in local development
+  const showEditorControls = process.env.NODE_ENV === "development";
   const studioUrl =
     process.env.NEXT_PUBLIC_SANITY_STUDIO_URL ||
     "https://ecm-assessment.sanity.studio";
@@ -52,7 +52,7 @@ export default async function AssessmentsPage() {
         <div className="max-w-5xl mx-auto px-6">
 
           {/* ── Hardcoded tools ── */}
-          <div className="space-y-6 mb-12">
+          <div className="space-y-6">
 
             {/* Process Assessment */}
             <div id="process" className="group relative bg-gray-50 border border-gray-100 rounded-2xl overflow-hidden hover:shadow-lg transition-all scroll-mt-24">
@@ -149,7 +149,7 @@ export default async function AssessmentsPage() {
           </div>
 
           {assessments.length > 0 ? (
-            <div className="space-y-12">
+            <div className="space-y-6">
               {assessments.map((a: any) => (
                 <div
                   key={a._id}

@@ -18,6 +18,7 @@ export async function getAssessment(slug: string) {
       resultsIntro,
       resultsCtaHeading,
       resultsCtaBody,
+      seo { metaTitle, metaDescription, ogImage, noIndex },
       sections[]{
         _key,
         title,

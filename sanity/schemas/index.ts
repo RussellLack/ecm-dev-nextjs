@@ -9,6 +9,7 @@ import maturityDimension from "./maturityDimension";
 import maturityBand from "./maturityBand";
 import serviceRecommendation from "./serviceRecommendation";
 import assessmentSubmission from "./assessmentSubmission";
+import seo from "./seo";
 
 export const schemaTypes = [
   homePage,
@@ -23,4 +24,6 @@ export const schemaTypes = [
   maturityBand,
   serviceRecommendation,
   assessmentSubmission,
+  // Shared objects
+  seo,
 ];

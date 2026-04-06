@@ -15,26 +15,34 @@ export async function generateMetadata({
   const post = await getPost(slug);
   if (!post) return {};
 
-  const ogImage = post.mainImage
-    ? urlFor(post.mainImage).width(1200).height(630).fit("crop").crop("top").url()
-    : undefined;
+  const seo = post.seo || {};
+  const title = seo.metaTitle || post.title;
+  const description =
+    seo.metaDescription ||
+    post.excerpt ||
+    `Read ${post.title} on ECM.DEV — insights on content infrastructure and AI-ready operations.`;
+
+  const ogImage = seo.ogImage
+    ? urlFor(seo.ogImage).width(1200).height(630).fit("crop").crop("center").url()
+    : post.mainImage
+      ? urlFor(post.mainImage).width(1200).height(630).fit("crop").crop("top").url()
+      : undefined;
 
   return {
-    title: post.title,
-    description:
-      post.excerpt ||
-      `Read ${post.title} on ECM.DEV — insights on content infrastructure and AI-ready operations.`,
+    title,
+    description,
+    ...(seo.noIndex ? { robots: { index: false, follow: false } } : {}),
     openGraph: {
-      title: post.title,
-      description: post.excerpt || undefined,
+      title,
+      description,
       type: "article",
       publishedTime: post.publishedAt || undefined,
       ...(ogImage ? { images: [{ url: ogImage, width: 1200, height: 630 }] } : {}),
     },
     twitter: {
       card: "summary_large_image",
-      title: post.title,
-      description: post.excerpt || undefined,
+      title,
+      description,
       ...(ogImage ? { images: [ogImage] } : {}),
     },
   };

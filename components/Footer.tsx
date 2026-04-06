@@ -14,12 +14,18 @@ const siteLinks = [
   { name: "Contact", href: "/contact" },
 ];
 
+const resourceLinks = [
+  { name: "Guides", href: "/guides" },
+  { name: "Assessments", href: "/assessments" },
+  { name: "Privacy Policy", href: "/privacy" },
+];
+
 export default function Footer() {
   return (
     <footer className="bg-ecm-green-dark pt-16 pb-8">
       <div className="max-w-7xl mx-auto px-6">
         {/* Top row: 4 columns */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10 mb-12">
           {/* Brand + address */}
           <div>
             <Link href="/">
@@ -44,6 +50,24 @@ export default function Footer() {
             </h4>
             <nav className="flex flex-col gap-2">
               {servicesLinks.map((link) => (
+                <Link
+                  key={link.name}
+                  href={link.href}
+                  className="text-white/70 text-sm hover:text-ecm-lime transition-colors"
+                >
+                  {link.name}
+                </Link>
+              ))}
+            </nav>
+          </div>
+
+          {/* Resources column */}
+          <div>
+            <h4 className="text-ecm-lime font-barlow font-semibold text-sm uppercase tracking-wider mb-4">
+              Resources
+            </h4>
+            <nav className="flex flex-col gap-2">
+              {resourceLinks.map((link) => (
                 <Link
                   key={link.name}
                   href={link.href}

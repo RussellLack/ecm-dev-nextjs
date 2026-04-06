@@ -7,7 +7,7 @@ import { createClient } from "next-sanity";
 export const writeClient = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "YOUR_PROJECT_ID",
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || "production",
-  apiVersion: "2024-01-01",
+  apiVersion: "2026-04-01",
   useCdn: false, // mutations need the live API
   token: process.env.SANITY_WRITE_TOKEN,
 });

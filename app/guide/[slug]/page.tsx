@@ -19,9 +19,33 @@ export async function generateMetadata({
   const { slug } = await params;
   const guide = await getGuide(slug);
   if (!guide) return {};
+
+  const seo = guide.seo || {};
+  const title = seo.metaTitle || guide.title;
+  const description =
+    seo.metaDescription || guide.excerpt || `Read ${guide.title} on ECM.DEV.`;
+
+  const ogImage = seo.ogImage
+    ? urlFor(seo.ogImage).width(1200).height(630).fit("crop").crop("center").url()
+    : guide.mainImage
+      ? urlFor(guide.mainImage).width(1200).height(630).fit("crop").crop("top").url()
+      : undefined;
+
   return {
-    title: guide.title,
-    description: guide.excerpt || `Read ${guide.title} on ECM.DEV.`,
+    title,
+    description,
+    ...(seo.noIndex ? { robots: { index: false, follow: false } } : {}),
+    openGraph: {
+      title,
+      description,
+      ...(ogImage ? { images: [{ url: ogImage, width: 1200, height: 630 }] } : {}),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      ...(ogImage ? { images: [ogImage] } : {}),
+    },
   };
 }
 

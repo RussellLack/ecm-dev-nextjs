@@ -9,8 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@sanity/assist": "^6.0.4",
     "@sanity/client": "^6.22.0",
+    "@sanity/dashboard": "^5.0.1",
+    "@sanity/document-internationalization": "^6.0.6",
     "@sanity/image-url": "^1.2.0",
+    "@sanity/scheduled-publishing": "^0.1.14",
     "@sanity/vision": "^5.19.0",
     "next": "^16.2.2",
     "next-sanity": "^12.1.1",
@@ -18,6 +22,8 @@
     "react-dom": "^18.3.1",
     "react-is": "^18.3.1",
     "sanity": "^5.14.1",
+    "sanity-plugin-media": "^4.1.1",
+    "sanity-plugin-taxonomy-manager": "^4.7.1",
     "styled-components": "^6.3.12"
   },
   "devDependencies": {

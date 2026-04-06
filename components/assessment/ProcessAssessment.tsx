@@ -32,6 +32,7 @@ interface Assessment {
   name: string;
   role: string;
   company: string;
+  email: string;
   domain: string;
   processType: string;
   processDescription: string;
@@ -271,8 +272,9 @@ function generateBrief(a: Assessment): string {
   const topics = generateTopics(a);
   const d = new Date(a.submittedAt || a.createdAt).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
 
+  const clientLine = [a.company, a.name, a.role].filter(Boolean).join(" — ") || "Process Assessment";
   return `# Pre-Diagnostic Brief
-## ${a.company} — ${a.name}, ${a.role}
+## ${clientLine}
 **Submitted:** ${d}
 
 ---
@@ -344,7 +346,7 @@ function uid() {
 function blankAssessment(): Assessment {
   return {
     id: uid(), createdAt: new Date().toISOString(), status: "draft",
-    name: "", role: "", company: "", domain: "",
+    name: "", role: "", company: "", email: "", domain: "",
     processType: "", processDescription: "",
     frequency: "", people: "", duration: "",
     rating: "", timeLost: [], workStyle: "", systemsUsed: "",
@@ -467,8 +469,8 @@ function BriefView({ assessment, onBack }: { assessment: Assessment; onBack: () 
         <div className="grid grid-cols-4 gap-4">
           <div className="col-span-2 bg-white/5 border border-white/10 rounded-2xl p-5">
             <div className="text-xs font-bold text-white/40 uppercase tracking-wide mb-1">Client</div>
-            <div className="font-bold text-white">{assessment.name}</div>
-            <div className="text-sm text-white/60">{assessment.role} · {assessment.company}</div>
+            <div className="font-bold text-white">{assessment.name || "Anonymous"}</div>
+            <div className="text-sm text-white/60">{[assessment.role, assessment.company].filter(Boolean).join(" · ") || "Details not provided"}</div>
           </div>
           <div className="bg-white/5 border border-white/10 rounded-2xl p-5 text-center">
             <div className={`text-xl font-black ${rating?.col || ""}`}>{rating?.l?.split(" ")[0] || "—"}</div>
@@ -607,6 +609,7 @@ export default function ProcessAssessment() {
   const [view, setView] = useState<View>("welcome");
   const [stage, setStage] = useState(1);
   const [assessment, setAssessment] = useState<Assessment>(blankAssessment());
+  const [consentGiven, setConsentGiven] = useState(false);
 
   function pick<K extends keyof Assessment>(field: K, val: Assessment[K]) {
     setAssessment(prev => ({ ...prev, [field]: val }));
@@ -626,7 +629,7 @@ export default function ProcessAssessment() {
 
   function stageValid(): boolean {
     const a = assessment;
-    if (stage === 1) return !!(a.name.trim() && a.company.trim() && a.domain);
+    if (stage === 1) return !!a.domain;
     if (stage === 2) return !!(a.processType && a.frequency && a.people && a.duration);
     if (stage === 3) return !!(a.rating && a.timeLost.length > 0 && a.workStyle);
     if (stage === 4) return !!(a.processOwner && a.approvalStyle && a.whenWrong);
@@ -661,14 +664,17 @@ export default function ProcessAssessment() {
           <div className="inline-flex items-center gap-2 bg-ecm-lime/10 border border-ecm-lime/25 text-ecm-lime text-xs font-bold uppercase tracking-widest px-3 py-1.5 rounded-full mb-8">
             ECM.dev · Process Assessment
           </div>
-          <h1 className="text-4xl font-extrabold tracking-tight mb-4">Let&apos;s understand your process</h1>
+          <h1 className="text-4xl font-extrabold tracking-tight mb-4">Break down how your process really works</h1>
           <p className="text-white/60 text-base leading-relaxed mb-4">
-            This short assessment helps us understand how a key process works in your organisation — where it runs well, where it gets stuck, and how ready it is for improvement.
+            Map a key process in your organisation — where it runs well, where it gets stuck, and how ready it is for improvement. No sign-up required.
+          </p>
+          <p className="text-white/60 text-sm leading-relaxed mb-4">
+            When you&apos;re done, you can save your results via email or a shareable link. If you choose to work with ECM.dev, your completed assessment becomes a ready-made diagnostic — giving your consultant a head start before the first conversation.
           </p>
           <p className="text-white/40 text-sm mb-10">
             Takes around <strong className="text-white/80">10–15 minutes</strong>. No wrong answers — just honest ones.
           </p>
-          <div className="grid grid-cols-3 gap-4 mb-10 text-center">
+          <div className="grid grid-cols-3 gap-4 mb-6 text-center">
             <div className="bg-white/5 border border-white/10 rounded-xl p-4">
               <div className="text-2xl font-black text-ecm-lime">6</div>
               <div className="text-xs text-white/40 mt-1">Short sections</div>
@@ -682,6 +688,9 @@ export default function ProcessAssessment() {
               <div className="text-xs text-white/40 mt-1">Process at a time</div>
             </div>
           </div>
+          <p className="text-white/30 text-xs mb-10">
+            Your responses are processed in accordance with GDPR. No personal data is collected unless you choose to provide it at the end. Results are never shared with third parties.
+          </p>
           <button
             onClick={() => { setView("stage"); setStage(1); }}
             className="w-full bg-ecm-lime hover:bg-ecm-lime-hover text-ecm-green font-barlow font-bold font-bold py-4 rounded-xl transition-colors"
@@ -707,7 +716,6 @@ export default function ProcessAssessment() {
     const flags = generateFlags(assessment);
     const critCount = flags.filter(f => f.type === "critical").length;
     const warnCount = flags.filter(f => f.type === "warning").length;
-    const firstName = assessment.name.split(" ")[0] || "there";
 
     return (
       <div className="min-h-screen bg-ecm-green text-white font-barlow">
@@ -718,13 +726,13 @@ export default function ProcessAssessment() {
         </div>
         <div className="max-w-xl mx-auto px-6 py-16 text-center">
           <div className="text-5xl mb-6">✓</div>
-          <h1 className="text-3xl font-extrabold tracking-tight mb-3">Thank you, {firstName}.</h1>
-          <p className="text-white/60 mb-8">Your assessment is ready. Review your pre-diagnostic brief below, or book your discovery call.</p>
+          <h1 className="text-3xl font-extrabold tracking-tight mb-3">Your assessment is ready.</h1>
+          <p className="text-white/60 mb-8">Review your pre-diagnostic brief below, or book your discovery call.</p>
           <div className="bg-white/5 border border-white/10 rounded-2xl p-6 text-left mb-8 space-y-3">
             <div className="text-xs font-bold text-white/60 uppercase tracking-wide mb-3">What happens next</div>
-            <div className="flex gap-3 text-sm"><span className="text-ecm-lime font-bold">1.</span><span className="text-white/80">Your consultant receives a pre-diagnostic brief based on your responses.</span></div>
-            <div className="flex gap-3 text-sm"><span className="text-ecm-lime font-bold">2.</span><span className="text-white/80">They review it before your first call — no need to repeat yourself.</span></div>
-            <div className="flex gap-3 text-sm"><span className="text-ecm-lime font-bold">3.</span><span className="text-white/80">The call focuses on the specific gaps and opportunities the assessment revealed.</span></div>
+            <div className="flex gap-3 text-sm"><span className="text-ecm-lime font-bold">1.</span><span className="text-white/80">Review your pre-diagnostic brief to see what we found.</span></div>
+            <div className="flex gap-3 text-sm"><span className="text-ecm-lime font-bold">2.</span><span className="text-white/80">Optionally, add your details below to email yourself the results or share a link.</span></div>
+            <div className="flex gap-3 text-sm"><span className="text-ecm-lime font-bold">3.</span><span className="text-white/80">Book a discovery call — your consultant will review the brief before your first conversation.</span></div>
           </div>
           {(critCount > 0 || warnCount > 0) && (
             <div className="bg-white/5 border border-white/10 rounded-2xl p-4 text-left mb-6">
@@ -735,16 +743,91 @@ export default function ProcessAssessment() {
           )}
           <button
             onClick={() => setView("brief")}
-            className="w-full bg-ecm-lime hover:bg-ecm-lime-hover text-ecm-green font-barlow font-bold font-semibold py-3.5 rounded-xl text-sm transition-colors mb-3"
+            className="w-full bg-ecm-lime hover:bg-ecm-lime-hover text-ecm-green font-barlow font-bold py-3.5 rounded-xl text-sm transition-colors mb-3"
           >
             View Pre-Diagnostic Brief →
           </button>
           <Link
             href="/contact"
-            className="block w-full bg-white/10 hover:bg-white/15 text-white font-semibold py-3.5 rounded-xl text-sm transition-colors text-center"
+            className="block w-full bg-white/10 hover:bg-white/15 text-white font-semibold py-3.5 rounded-xl text-sm transition-colors text-center mb-8"
           >
             Book a discovery call
           </Link>
+
+          {/* Optional contact capture */}
+          <div className="bg-white/5 border border-white/10 rounded-2xl p-6 text-left">
+            <div className="text-xs font-bold text-white/60 uppercase tracking-wide mb-1">Optional</div>
+            <div className="text-sm font-semibold text-white mb-1">Want to save or share your results?</div>
+            <p className="text-xs text-white/40 mb-4">Add your details to email yourself the brief or generate a shareable link.</p>
+            <div className="grid grid-cols-2 gap-3 mb-3">
+              <div>
+                <label className="block text-xs font-barlow font-semibold text-white/60 uppercase tracking-wide mb-1.5">Name</label>
+                <input
+                  value={assessment.name}
+                  onChange={e => pick("name", e.target.value)}
+                  placeholder="e.g. Sarah Brennan"
+                  className="w-full bg-white/5 border border-white/20 focus:border-ecm-lime outline-none rounded-xl px-4 py-3 text-white placeholder-white/30 text-sm transition-colors"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-barlow font-semibold text-white/60 uppercase tracking-wide mb-1.5">Role</label>
+                <input
+                  value={assessment.role}
+                  onChange={e => pick("role", e.target.value)}
+                  placeholder="e.g. Operations Manager"
+                  className="w-full bg-white/5 border border-white/20 focus:border-ecm-lime outline-none rounded-xl px-4 py-3 text-white placeholder-white/30 text-sm transition-colors"
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-3 mb-4">
+              <div>
+                <label className="block text-xs font-barlow font-semibold text-white/60 uppercase tracking-wide mb-1.5">Organisation</label>
+                <input
+                  value={assessment.company}
+                  onChange={e => pick("company", e.target.value)}
+                  placeholder="e.g. Acme Corporation"
+                  className="w-full bg-white/5 border border-white/20 focus:border-ecm-lime outline-none rounded-xl px-4 py-3 text-white placeholder-white/30 text-sm transition-colors"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-barlow font-semibold text-white/60 uppercase tracking-wide mb-1.5">Email</label>
+                <input
+                  value={assessment.email}
+                  onChange={e => pick("email", e.target.value)}
+                  placeholder="e.g. sarah@acme.com"
+                  type="email"
+                  className="w-full bg-white/5 border border-white/20 focus:border-ecm-lime outline-none rounded-xl px-4 py-3 text-white placeholder-white/30 text-sm transition-colors"
+                />
+              </div>
+            </div>
+            {/* GDPR consent */}
+            <label className="flex items-start gap-3 cursor-pointer group">
+              <div
+                onClick={() => setConsentGiven(!consentGiven)}
+                className={`mt-0.5 flex-shrink-0 w-5 h-5 rounded border-2 transition-all flex items-center justify-center ${consentGiven ? "bg-ecm-lime border-ecm-lime" : "border-white/30 group-hover:border-white/50"}`}
+              >
+                {consentGiven && (
+                  <svg className="w-3 h-3 text-ecm-green" viewBox="0 0 10 8" fill="none">
+                    <path d="M1 4L3.5 6.5L9 1" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+                  </svg>
+                )}
+              </div>
+              <span className="text-xs text-white/50 leading-relaxed">
+                I consent to ECM.dev storing the information I have provided above for the purpose of sending me my assessment results and, if applicable, supporting a future engagement. Your data is handled in accordance with GDPR and our{" "}
+                <Link href="/privacy" className="text-ecm-lime underline hover:text-ecm-lime/80">privacy policy</Link>.
+                We will never share your information with third parties.
+              </span>
+            </label>
+            {/* Save / Share actions */}
+            <div className={`grid grid-cols-2 gap-3 mt-4 transition-opacity ${consentGiven && assessment.email.trim() ? "opacity-100" : "opacity-30 pointer-events-none"}`}>
+              <button className="bg-ecm-lime hover:bg-ecm-lime-hover text-ecm-green font-barlow font-bold py-3 rounded-xl text-sm transition-colors">
+                Email my results
+              </button>
+              <button className="bg-white/10 hover:bg-white/15 text-white font-semibold py-3 rounded-xl text-sm transition-colors">
+                Copy shareable link
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -781,37 +864,7 @@ export default function ProcessAssessment() {
         {/* STAGE 1 — About you */}
         {stage === 1 && (
           <div className="space-y-6">
-            <QLabel label="About you and your organisation" hint="We'll use this to personalise your pre-diagnostic brief." />
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label className="block text-xs font-barlow font-semibold text-white/60 uppercase tracking-wide mb-1.5">Your Name</label>
-                <input
-                  value={assessment.name}
-                  onChange={e => pick("name", e.target.value)}
-                  placeholder="e.g. Sarah Brennan"
-                  className="w-full bg-white/5 border border-white/20 focus:border-ecm-lime outline-none rounded-xl px-4 py-3 text-white placeholder-white/30 text-sm transition-colors"
-                />
-              </div>
-              <div>
-                <label className="block text-xs font-barlow font-semibold text-white/60 uppercase tracking-wide mb-1.5">Your Role</label>
-                <input
-                  value={assessment.role}
-                  onChange={e => pick("role", e.target.value)}
-                  placeholder="e.g. Operations Manager"
-                  className="w-full bg-white/5 border border-white/20 focus:border-ecm-lime outline-none rounded-xl px-4 py-3 text-white placeholder-white/30 text-sm transition-colors"
-                />
-              </div>
-            </div>
-            <div>
-              <label className="block text-xs font-barlow font-semibold text-white/60 uppercase tracking-wide mb-1.5">Organisation</label>
-              <input
-                value={assessment.company}
-                onChange={e => pick("company", e.target.value)}
-                placeholder="e.g. Acme Corporation"
-                className="w-full bg-white/5 border border-white/20 focus:border-ecm-lime outline-none rounded-xl px-4 py-3 text-white placeholder-white/30 text-sm transition-colors"
-              />
-            </div>
-            <QLabel label="Which department owns this process?" />
+            <QLabel label="Which department owns this process?" hint="Select the area that best describes where this process sits." />
             <div className="grid grid-cols-2 gap-2">
               {DOMAINS.map(d => (
                 <SingleOpt key={d.v} selected={isSelected("domain", d.v)} onSelect={() => pick("domain", d.v)} label={d.l} />

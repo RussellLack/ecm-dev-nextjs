@@ -225,6 +225,12 @@ export default defineType({
       type: "text",
       rows: 2,
     }),
+    defineField({
+      name: "seo",
+      title: "SEO",
+      type: "seo",
+      options: { collapsible: true, collapsed: true },
+    }),
   ],
   preview: {
     select: { title: "title", subtitle: "slug.current" },

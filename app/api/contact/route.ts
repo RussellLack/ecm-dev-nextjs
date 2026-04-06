@@ -1,7 +1,29 @@
 import { NextResponse } from "next/server";
+import { rateLimit } from "@/lib/rateLimit";
+
+/** Escape HTML special characters to prevent XSS in email templates */
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
 
 export async function POST(request: Request) {
   try {
+    // Rate limit: 5 submissions per minute per IP
+    const forwarded = request.headers.get("x-forwarded-for");
+    const ip = forwarded?.split(",")[0]?.trim() || "unknown";
+    const { allowed } = rateLimit({ ip, limit: 5, windowMs: 60_000 });
+    if (!allowed) {
+      return NextResponse.json(
+        { error: "Too many requests. Please try again shortly." },
+        { status: 429 }
+      );
+    }
+
     const body = await request.json();
     const { firstName, lastName, email, message } = body;
 
@@ -38,13 +60,13 @@ export async function POST(request: Request) {
         from: process.env.EMAIL_FROM || "ECM.DEV Contact <onboarding@resend.dev>",
         to: "rl@ecm.dev",
         reply_to: email,
-        subject: `New enquiry from ${firstName} ${lastName}`.trim(),
+        subject: `New enquiry from ${escapeHtml(firstName || "")} ${escapeHtml(lastName || "")}`.trim(),
         html: [
           `<h2>New contact form submission</h2>`,
-          `<p><strong>Name:</strong> ${firstName} ${lastName}</p>`,
-          `<p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>`,
+          `<p><strong>Name:</strong> ${escapeHtml(firstName || "")} ${escapeHtml(lastName || "")}</p>`,
+          `<p><strong>Email:</strong> <a href="mailto:${encodeURI(email)}">${escapeHtml(email)}</a></p>`,
           `<hr />`,
-          `<p>${message.replace(/\n/g, "<br />")}</p>`,
+          `<p>${escapeHtml(message).replace(/\n/g, "<br />")}</p>`,
         ].join("\n"),
       }),
     });
