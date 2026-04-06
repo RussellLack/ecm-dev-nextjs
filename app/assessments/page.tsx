@@ -149,7 +149,7 @@ export default async function AssessmentsPage() {
           </div>
 
           {assessments.length > 0 ? (
-            <div className="space-y-6">
+            <div className="space-y-6 mt-6">
               {assessments.map((a: any) => (
                 <div
                   key={a._id}
