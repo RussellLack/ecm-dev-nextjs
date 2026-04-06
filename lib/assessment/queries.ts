@@ -168,6 +168,26 @@ export async function getSubmission(submissionId: string) {
 }
 
 /**
+ * Fetch a tool submission (Process / Lead Magnet) by ID for the results page.
+ */
+export async function getToolSubmission(submissionId: string) {
+  return client.fetch(
+    `*[_type == "toolSubmission" && _id == $submissionId][0]{
+      _id,
+      toolType,
+      submittedAt,
+      name,
+      email,
+      role,
+      company,
+      answers,
+      results
+    }`,
+    { submissionId }
+  );
+}
+
+/**
  * Fetch all assessments for the listing page.
  */
 export async function getAllAssessments() {

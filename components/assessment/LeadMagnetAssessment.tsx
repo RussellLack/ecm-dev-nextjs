@@ -628,14 +628,18 @@ function Results({
   capabilities,
   email,
   setEmail,
+  answers,
 }: {
   topThree: Format[];
   readiness: number;
   capabilities: Capabilities;
   email: string;
   setEmail: (v: string) => void;
+  answers: Answers;
 }) {
   const [consentGiven, setConsentGiven] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [submissionId, setSubmissionId] = useState<string | null>(null);
   const readinessColor =
     readiness >= 75 ? "text-green-400" : readiness >= 50 ? "text-yellow-400" : "text-orange-400";
   const readinessLabel =
@@ -643,6 +647,68 @@ function Results({
 
   const allGaps = [...(topThree[0]?.gaps || [])].sort((a, b) => b.gap - a.gap);
   const biggestGap = allGaps[0];
+
+  async function saveSubmission(): Promise<string | null> {
+    if (submissionId) return submissionId;
+    setSaving(true);
+    try {
+      const resultsPayload = {
+        topThree: topThree.map(f => ({
+          id: f.id, name: f.name, icon: f.icon, description: f.description,
+          effort: f.effort, timeToCreate: f.timeToCreate,
+          topicTemplate: f.topicTemplate, topicExamples: f.topicExamples,
+          score: f.score, gaps: f.gaps,
+        })),
+        readiness,
+        readinessLabel,
+        readinessColor,
+        capabilities,
+        capabilityDimensions: CAPABILITY_DIMENSIONS.map(d => ({
+          id: d.id, label: d.label, shortLabel: d.shortLabel,
+        })),
+        biggestGap: biggestGap || null,
+        gapActions: biggestGap ? (GAP_ACTIONS[biggestGap.dimension] || []) : [],
+        allGaps,
+      };
+
+      const res = await fetch("/api/assessment/tool-submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          toolType: "lead-magnet",
+          answers,
+          results: resultsPayload,
+          contact: { name: "", email, role: "", company: "" },
+          consentGiven,
+        }),
+      });
+
+      if (!res.ok) throw new Error("Save failed");
+      const data = await res.json();
+      setSubmissionId(data.submissionId);
+      return data.submissionId;
+    } catch (err) {
+      console.error("Save error:", err);
+      return null;
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  async function handleCopyLink() {
+    const sid = await saveSubmission();
+    if (sid) {
+      const url = `${window.location.origin}/assessment/lead-magnet/results?sid=${sid}`;
+      await navigator.clipboard.writeText(url);
+    }
+  }
+
+  async function handleEmailResults() {
+    const sid = await saveSubmission();
+    if (sid) {
+      window.open(`/assessment/lead-magnet/results?sid=${sid}`, "_blank");
+    }
+  }
 
   return (
     <div className="space-y-12">
@@ -777,11 +843,19 @@ function Results({
         </label>
         {/* Save / Share actions */}
         <div className={`grid grid-cols-2 gap-3 transition-opacity ${consentGiven && email.includes("@") && email.includes(".") ? "opacity-100" : "opacity-30 pointer-events-none"}`}>
-          <button className="bg-ecm-lime hover:bg-ecm-lime-hover text-ecm-green font-barlow font-bold py-3 rounded-xl text-sm transition-colors">
-            Email my results
+          <button
+            onClick={handleEmailResults}
+            disabled={saving}
+            className="bg-ecm-lime hover:bg-ecm-lime-hover text-ecm-green font-barlow font-bold py-3 rounded-xl text-sm transition-colors disabled:opacity-50"
+          >
+            {saving ? "Saving…" : submissionId ? "View saved results" : "Email my results"}
           </button>
-          <button className="bg-white/10 hover:bg-white/15 text-white font-semibold py-3 rounded-xl text-sm transition-colors">
-            Copy shareable link
+          <button
+            onClick={handleCopyLink}
+            disabled={saving}
+            className="bg-white/10 hover:bg-white/15 text-white font-semibold py-3 rounded-xl text-sm transition-colors disabled:opacity-50"
+          >
+            {saving ? "Saving…" : "Copy shareable link"}
           </button>
         </div>
       </div>
@@ -961,7 +1035,7 @@ export default function LeadMagnetAssessment() {
 
         {/* RESULTS */}
         {currentStep === "results" && (
-          <Results topThree={topThree} readiness={readiness} capabilities={capabilities} email={email} setEmail={setEmail} />
+          <Results topThree={topThree} readiness={readiness} capabilities={capabilities} email={email} setEmail={setEmail} answers={answers} />
         )}
       </div>
     </div>

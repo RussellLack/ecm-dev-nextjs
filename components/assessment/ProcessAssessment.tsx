@@ -610,6 +610,90 @@ export default function ProcessAssessment() {
   const [stage, setStage] = useState(1);
   const [assessment, setAssessment] = useState<Assessment>(blankAssessment());
   const [consentGiven, setConsentGiven] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [submissionId, setSubmissionId] = useState<string | null>(null);
+
+  /** Resolve assessment values to display labels and save to Sanity */
+  async function saveSubmission(): Promise<string | null> {
+    if (submissionId) return submissionId;
+    setSaving(true);
+    try {
+      const a = assessment;
+      const rating = RATINGS.find(r => r.v === a.rating);
+      const impact = IMPACT_OPTIONS.find(o => o.v === a.businessImpact);
+      const pt = PROCESS_TYPES.find(p => p.v === a.processType);
+
+      const results = {
+        flags: generateFlags(a),
+        topics: generateTopics(a),
+        brief: generateBrief(a),
+        ratingLabel: rating?.l || "",
+        ratingColor: rating?.col || "",
+        impactLabel: impact?.l || "",
+        impactColor: impact?.col || "",
+        domain: DOMAINS.find(d => d.v === a.domain)?.l || a.domain,
+        processType: pt?.l || "",
+        processTypeIcon: pt?.icon || "",
+        frequency: FREQUENCIES.find(f => f.v === a.frequency)?.l || "",
+        people: PEOPLE.find(p => p.v === a.people)?.l || "",
+        duration: DURATIONS.find(d => d.v === a.duration)?.l || "",
+        processOwner: OWNER_OPTIONS.find(o => o.v === a.processOwner)?.l || "",
+        approvalStyle: APPROVAL_OPTIONS.find(o => o.v === a.approvalStyle)?.l || "",
+        exceptions: WRONG_OPTIONS.find(o => o.v === a.whenWrong)?.l || "",
+        sops: SOP_OPTIONS.find(o => o.v === a.hasSops)?.l || "",
+        workStyle: WORK_STYLES.find(o => o.v === a.workStyle)?.l || "",
+        systemsUsed: a.systemsUsed,
+        timeLost: a.timeLost.map(v => TIME_LOST.find(o => o.v === v)?.l || v),
+        painPoints: a.painPoints.map(v => PAIN_OPTIONS.find(o => o.v === v)?.l || v),
+        automationDiscussed: AUTO_OPTIONS.find(o => o.v === a.automationDiscussed)?.l || "",
+        changeAppetite: APPETITE_OPTIONS.find(o => o.v === a.changeAppetite)?.l || "",
+        notes: a.notes,
+      };
+
+      const res = await fetch("/api/assessment/tool-submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          toolType: "process",
+          answers: a,
+          results,
+          contact: {
+            name: a.name,
+            email: a.email,
+            role: a.role,
+            company: a.company,
+          },
+          consentGiven,
+        }),
+      });
+
+      if (!res.ok) throw new Error("Save failed");
+      const data = await res.json();
+      setSubmissionId(data.submissionId);
+      return data.submissionId;
+    } catch (err) {
+      console.error("Save error:", err);
+      return null;
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  async function handleCopyLink() {
+    const sid = await saveSubmission();
+    if (sid) {
+      const url = `${window.location.origin}/assessment/process/results?sid=${sid}`;
+      await navigator.clipboard.writeText(url);
+    }
+  }
+
+  async function handleEmailResults() {
+    const sid = await saveSubmission();
+    if (sid) {
+      // For now, open the results page — email API will be added later
+      window.open(`/assessment/process/results?sid=${sid}`, "_blank");
+    }
+  }
 
   function pick<K extends keyof Assessment>(field: K, val: Assessment[K]) {
     setAssessment(prev => ({ ...prev, [field]: val }));
@@ -820,11 +904,19 @@ export default function ProcessAssessment() {
             </label>
             {/* Save / Share actions */}
             <div className={`grid grid-cols-2 gap-3 mt-4 transition-opacity ${consentGiven && assessment.email.trim() ? "opacity-100" : "opacity-30 pointer-events-none"}`}>
-              <button className="bg-ecm-lime hover:bg-ecm-lime-hover text-ecm-green font-barlow font-bold py-3 rounded-xl text-sm transition-colors">
-                Email my results
+              <button
+                onClick={handleEmailResults}
+                disabled={saving}
+                className="bg-ecm-lime hover:bg-ecm-lime-hover text-ecm-green font-barlow font-bold py-3 rounded-xl text-sm transition-colors disabled:opacity-50"
+              >
+                {saving ? "Saving…" : submissionId ? "View saved results" : "Email my results"}
               </button>
-              <button className="bg-white/10 hover:bg-white/15 text-white font-semibold py-3 rounded-xl text-sm transition-colors">
-                Copy shareable link
+              <button
+                onClick={handleCopyLink}
+                disabled={saving}
+                className="bg-white/10 hover:bg-white/15 text-white font-semibold py-3 rounded-xl text-sm transition-colors disabled:opacity-50"
+              >
+                {saving ? "Saving…" : "Copy shareable link"}
               </button>
             </div>
           </div>

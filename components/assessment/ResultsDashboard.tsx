@@ -89,6 +89,29 @@ export default function ResultsDashboard({
 
   return (
     <div className="min-h-screen bg-ecm-green">
+      {/* Topbar */}
+      <div className="border-b border-white/10 sticky top-0 bg-ecm-green z-10">
+        <div className="max-w-3xl mx-auto px-6 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <Link
+              href="/assessments"
+              className="text-white/40 hover:text-white text-sm font-barlow transition-colors"
+            >
+              ← Assessments
+            </Link>
+            <div className="text-xs font-bold text-ecm-lime tracking-widest uppercase font-barlow">
+              Maturity Results
+            </div>
+          </div>
+          <a
+            href={`/api/assessment/pdf?sid=${submissionId}&type=maturity`}
+            className="text-xs font-semibold bg-white/10 hover:bg-white/15 text-white/70 px-4 py-2 rounded-xl transition-colors font-barlow"
+          >
+            Download PDF
+          </a>
+        </div>
+      </div>
+
       {/* Hero Section */}
       <section className="relative py-16 sm:py-24 overflow-hidden">
         <div className="max-w-3xl mx-auto px-6">
