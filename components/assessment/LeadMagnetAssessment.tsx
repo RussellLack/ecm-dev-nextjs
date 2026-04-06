@@ -705,8 +705,21 @@ function Results({
 
   async function handleEmailResults() {
     const sid = await saveSubmission();
-    if (sid) {
-      window.open(`/assessment/lead-magnet/results?sid=${sid}`, "_blank");
+    if (sid && email.trim()) {
+      try {
+        const res = await fetch("/api/assessment/tool-email", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ submissionId: sid, email: email.trim() }),
+        });
+        if (res.ok) {
+          alert("Results sent to " + email.trim());
+        } else {
+          window.open(`/assessment/lead-magnet/results?sid=${sid}`, "_blank");
+        }
+      } catch {
+        window.open(`/assessment/lead-magnet/results?sid=${sid}`, "_blank");
+      }
     }
   }
 

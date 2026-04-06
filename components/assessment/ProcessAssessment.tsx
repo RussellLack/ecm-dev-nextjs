@@ -689,9 +689,22 @@ export default function ProcessAssessment() {
 
   async function handleEmailResults() {
     const sid = await saveSubmission();
-    if (sid) {
-      // For now, open the results page — email API will be added later
-      window.open(`/assessment/process/results?sid=${sid}`, "_blank");
+    if (sid && assessment.email.trim()) {
+      try {
+        const res = await fetch("/api/assessment/tool-email", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ submissionId: sid, email: assessment.email.trim() }),
+        });
+        if (res.ok) {
+          alert("Results sent to " + assessment.email.trim());
+        } else {
+          // Fallback: open results page
+          window.open(`/assessment/process/results?sid=${sid}`, "_blank");
+        }
+      } catch {
+        window.open(`/assessment/process/results?sid=${sid}`, "_blank");
+      }
     }
   }
 
