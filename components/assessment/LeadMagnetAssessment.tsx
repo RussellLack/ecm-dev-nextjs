@@ -626,11 +626,16 @@ function Results({
   topThree,
   readiness,
   capabilities,
+  email,
+  setEmail,
 }: {
   topThree: Format[];
   readiness: number;
   capabilities: Capabilities;
+  email: string;
+  setEmail: (v: string) => void;
 }) {
+  const [consentGiven, setConsentGiven] = useState(false);
   const readinessColor =
     readiness >= 75 ? "text-green-400" : readiness >= 50 ? "text-yellow-400" : "text-orange-400";
   const readinessLabel =
@@ -738,6 +743,49 @@ function Results({
         </div>
       )}
 
+      {/* Save / Share */}
+      <div className="bg-white/5 border border-white/10 rounded-2xl p-6 space-y-4">
+        <div>
+          <div className="text-xs font-bold text-white/60 uppercase tracking-wide mb-1">Optional</div>
+          <div className="text-sm font-semibold text-white mb-1">Want to save or share your results?</div>
+          <p className="text-xs text-white/40 mb-4">Add your email to receive a copy of your recommendations or generate a shareable link.</p>
+        </div>
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="your@email.com"
+          className="w-full bg-white/5 border border-white/20 focus:border-ecm-lime outline-none rounded-xl px-4 py-3 text-white placeholder-white/30 text-sm transition-colors"
+        />
+        {/* GDPR consent */}
+        <label className="flex items-start gap-3 cursor-pointer group">
+          <div
+            onClick={() => setConsentGiven(!consentGiven)}
+            className={`mt-0.5 flex-shrink-0 w-5 h-5 rounded border-2 transition-all flex items-center justify-center ${consentGiven ? "bg-ecm-lime border-ecm-lime" : "border-white/30 group-hover:border-white/50"}`}
+          >
+            {consentGiven && (
+              <svg className="w-3 h-3 text-ecm-green" viewBox="0 0 10 8" fill="none">
+                <path d="M1 4L3.5 6.5L9 1" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+              </svg>
+            )}
+          </div>
+          <span className="text-xs text-white/50 leading-relaxed">
+            I consent to ECM.dev storing the information I have provided above for the purpose of sending me my assessment results and, if applicable, supporting a future engagement. Your data is handled in accordance with GDPR and our{" "}
+            <Link href="/privacy" className="text-ecm-lime underline hover:text-ecm-lime/80">privacy policy</Link>.
+            We will never share your information with third parties.
+          </span>
+        </label>
+        {/* Save / Share actions */}
+        <div className={`grid grid-cols-2 gap-3 transition-opacity ${consentGiven && email.includes("@") && email.includes(".") ? "opacity-100" : "opacity-30 pointer-events-none"}`}>
+          <button className="bg-ecm-lime hover:bg-ecm-lime-hover text-ecm-green font-barlow font-bold py-3 rounded-xl text-sm transition-colors">
+            Email my results
+          </button>
+          <button className="bg-white/10 hover:bg-white/15 text-white font-semibold py-3 rounded-xl text-sm transition-colors">
+            Copy shareable link
+          </button>
+        </div>
+      </div>
+
       {/* CTA */}
       <div className="bg-white/5 border border-ecm-lime/20 border-opacity-50 rounded-2xl p-8 text-center space-y-5">
         <div className="text-3xl">◈</div>
@@ -761,7 +809,7 @@ function Results({
 // MAIN COMPONENT
 // ─────────────────────────────────────────────────────────────────────────────
 
-const STEPS = ["welcome", "market", "authority", "capabilities", "context", "email", "results"];
+const STEPS = ["welcome", "market", "authority", "capabilities", "context", "results"];
 
 export default function LeadMagnetAssessment() {
   const [step, setStep] = useState(0);
@@ -795,7 +843,6 @@ export default function LeadMagnetAssessment() {
     if (currentStep === "market") return !!(answers.marketType && answers.buyerType && answers.coreValue);
     if (currentStep === "authority") return !!(answers.thoughtLeadership && answers.proprietaryIP && answers.uniqueValue);
     if (currentStep === "context") return !!answers.competition;
-    if (currentStep === "email") return email.includes("@") && email.includes(".");
     return true;
   };
 
@@ -813,7 +860,7 @@ export default function LeadMagnetAssessment() {
           </Link>
           {step > 0 && step < STEPS.length - 1 && (
             <div className="flex items-center gap-1.5">
-              {[1, 2, 3, 4, 5].map((i) => (
+              {[1, 2, 3, 4].map((i) => (
                 <div
                   key={i}
                   className={`h-1 rounded-full transition-all duration-300 ${
@@ -864,7 +911,7 @@ export default function LeadMagnetAssessment() {
             >
               Start the assessment →
             </button>
-            <p className="text-center text-xs text-white/30">No account needed · Results gated on email only</p>
+            <p className="text-center text-xs text-white/30">No sign-up required. Your responses are processed in accordance with GDPR and never shared with third parties.</p>
           </div>
         )}
 
@@ -912,46 +959,9 @@ export default function LeadMagnetAssessment() {
           </div>
         )}
 
-        {/* EMAIL GATE */}
-        {currentStep === "email" && (
-          <div className="space-y-8">
-            <div className="space-y-4">
-              <div className="text-5xl">◉</div>
-              <h2 className="text-3xl font-extrabold tracking-tight">Your results are ready.</h2>
-              <p className="text-white/60 text-lg leading-relaxed">
-                Enter your email to unlock your personalised lead magnet recommendations,
-                capability gap radar, and a set of specific closing actions.
-              </p>
-              <p className="text-sm text-white/30">
-                We&apos;ll send you one follow-up from ECM.dev with additional resources. No spam — unsubscribe any time.
-              </p>
-            </div>
-            <div className="space-y-3">
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && canAdvance() && setStep(6)}
-                placeholder="your@email.com"
-                className="w-full bg-white/5 border border-white/20 focus:border-ecm-lime outline-none rounded-xl px-4 py-3.5 text-white placeholder-white/30 transition-colors"
-              />
-              <button
-                onClick={() => setStep(6)}
-                disabled={!canAdvance()}
-                className="w-full bg-ecm-lime hover:bg-ecm-lime-hover disabled:bg-white/10 disabled:text-white/30 text-ecm-green font-barlow font-bold font-semibold py-4 px-6 rounded-2xl transition-colors"
-              >
-                See my results →
-              </button>
-            </div>
-            <button onClick={() => setStep(4)} className="block text-sm text-white/30 hover:text-white/60 transition-colors">
-              ← Back
-            </button>
-          </div>
-        )}
-
         {/* RESULTS */}
         {currentStep === "results" && (
-          <Results topThree={topThree} readiness={readiness} capabilities={capabilities} />
+          <Results topThree={topThree} readiness={readiness} capabilities={capabilities} email={email} setEmail={setEmail} />
         )}
       </div>
     </div>

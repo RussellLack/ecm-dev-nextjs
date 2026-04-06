@@ -229,10 +229,13 @@ export default function AssessmentShell({ assessment }: AssessmentShellProps) {
             </div>
             <button
               onClick={goNext}
-              className="bg-ecm-lime text-ecm-green font-barlow font-bold text-lg px-10 py-4 rounded-full hover:bg-ecm-lime-hover transition-colors"
+              className="bg-ecm-lime text-ecm-green font-barlow font-bold text-lg px-10 py-4 rounded-full hover:bg-ecm-lime-hover transition-colors mb-4"
             >
               Start Assessment
             </button>
+            <p className="text-white/30 font-barlow text-xs max-w-md">
+              No sign-up required. Your responses are processed in accordance with GDPR and never shared with third parties.
+            </p>
           </div>
         )}
 

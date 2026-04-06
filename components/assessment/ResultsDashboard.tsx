@@ -42,6 +42,8 @@ export default function ResultsDashboard({
   const [reportSending, setReportSending] = useState(false);
   const [reportSent, setReportSent] = useState(false);
   const [reportError, setReportError] = useState<string | null>(null);
+  const [consentGiven, setConsentGiven] = useState(false);
+  const [linkCopied, setLinkCopied] = useState(false);
 
   async function handleRequestReport(e: React.FormEvent) {
     e.preventDefault();
@@ -238,24 +240,20 @@ export default function ResultsDashboard({
         </section>
       )}
 
-      {/* ─── Get Your Report (email-gated PDF) ─── */}
+      {/* ─── Save or Share Your Results ─── */}
       <section className="pb-16">
         <div className="max-w-3xl mx-auto px-6">
           <div className="bg-white/5 border border-white/10 rounded-2xl px-8 py-10">
             {!reportSent ? (
               <>
-                <div className="flex items-center gap-3 mb-4">
-                  <svg className="w-6 h-6 text-ecm-lime flex-shrink-0" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
-                  </svg>
-                  <h3 className="text-white font-barlow font-bold text-xl">
-                    Get your full report
-                  </h3>
-                </div>
+                <div className="text-xs font-bold text-white/60 uppercase tracking-wide font-barlow mb-1">Optional</div>
+                <h3 className="text-white font-barlow font-bold text-xl mb-1">
+                  Want to save or share your results?
+                </h3>
                 <p className="text-white/60 font-barlow text-sm mb-6">
-                  We'll email a summary of your scores, maturity band, and personalised recommendations — yours to keep and share with your team.
+                  Add your details to email yourself the full report or generate a shareable link.
                 </p>
-                <form onSubmit={handleRequestReport} className="space-y-3">
+                <form onSubmit={handleRequestReport} className="space-y-4">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <input
                       type="text"
@@ -269,20 +267,52 @@ export default function ResultsDashboard({
                       value={reportEmail}
                       onChange={(e) => setReportEmail(e.target.value)}
                       placeholder="Email address"
-                      required
                       className="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/15 text-white font-barlow placeholder-white/30 focus:outline-none focus:border-ecm-lime transition-colors"
                     />
                   </div>
+                  {/* GDPR consent */}
+                  <label className="flex items-start gap-3 cursor-pointer group">
+                    <div
+                      onClick={() => setConsentGiven(!consentGiven)}
+                      className={`mt-0.5 flex-shrink-0 w-5 h-5 rounded border-2 transition-all flex items-center justify-center ${consentGiven ? "bg-ecm-lime border-ecm-lime" : "border-white/30 group-hover:border-white/50"}`}
+                    >
+                      {consentGiven && (
+                        <svg className="w-3 h-3 text-ecm-green" viewBox="0 0 10 8" fill="none">
+                          <path d="M1 4L3.5 6.5L9 1" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+                        </svg>
+                      )}
+                    </div>
+                    <span className="text-xs text-white/50 leading-relaxed font-barlow">
+                      I consent to ECM.dev storing the information I have provided above for the purpose of sending me my assessment results and, if applicable, supporting a future engagement. Your data is handled in accordance with GDPR and our{" "}
+                      <Link href="/privacy" className="text-ecm-lime underline hover:text-ecm-lime/80">privacy policy</Link>.
+                      We will never share your information with third parties.
+                    </span>
+                  </label>
                   {reportError && (
                     <p className="text-red-400 font-barlow text-xs">{reportError}</p>
                   )}
-                  <button
-                    type="submit"
-                    disabled={reportSending}
-                    className="bg-ecm-lime text-ecm-green font-barlow font-bold text-sm px-8 py-3 rounded-full hover:bg-ecm-lime-hover transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {reportSending ? "Sending..." : "Send me the report"}
-                  </button>
+                  {/* Save / Share actions */}
+                  <div className={`grid grid-cols-2 gap-3 transition-opacity ${consentGiven && reportEmail.includes("@") && reportEmail.includes(".") ? "opacity-100" : "opacity-30 pointer-events-none"}`}>
+                    <button
+                      type="submit"
+                      disabled={reportSending}
+                      className="bg-ecm-lime hover:bg-ecm-lime-hover text-ecm-green font-barlow font-bold py-3 rounded-xl text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {reportSending ? "Sending..." : "Email my results"}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        navigator.clipboard.writeText(window.location.href).then(() => {
+                          setLinkCopied(true);
+                          setTimeout(() => setLinkCopied(false), 2000);
+                        });
+                      }}
+                      className="bg-white/10 hover:bg-white/15 text-white font-barlow font-semibold py-3 rounded-xl text-sm transition-colors"
+                    >
+                      {linkCopied ? "✓ Copied" : "Copy shareable link"}
+                    </button>
+                  </div>
                 </form>
               </>
             ) : (
