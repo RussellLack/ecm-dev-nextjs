@@ -11,6 +11,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useCsrf } from "@/lib/useCsrf";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // TYPES
@@ -606,6 +607,8 @@ function BriefView({ assessment, onBack }: { assessment: Assessment; onBack: () 
 type View = "welcome" | "stage" | "complete" | "brief";
 
 export default function ProcessAssessment() {
+  const { withCsrf } = useCsrf();
+  const [hp, setHp] = useState(""); // honeypot
   const [view, setView] = useState<View>("welcome");
   const [stage, setStage] = useState(1);
   const [assessment, setAssessment] = useState<Assessment>(blankAssessment());
@@ -652,7 +655,8 @@ export default function ProcessAssessment() {
 
       const res = await fetch("/api/assessment/tool-submit", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        credentials: "same-origin",
+        headers: withCsrf({ "Content-Type": "application/json" }),
         body: JSON.stringify({
           toolType: "process",
           answers: a,
@@ -664,6 +668,7 @@ export default function ProcessAssessment() {
             company: a.company,
           },
           consentGiven,
+          _hp: hp,
         }),
       });
 
@@ -693,8 +698,9 @@ export default function ProcessAssessment() {
       try {
         const res = await fetch("/api/assessment/tool-email", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ submissionId: sid, email: assessment.email.trim() }),
+          credentials: "same-origin",
+          headers: withCsrf({ "Content-Type": "application/json" }),
+          body: JSON.stringify({ submissionId: sid, email: assessment.email.trim(), _hp: hp }),
         });
         if (res.ok) {
           alert("Results sent to " + assessment.email.trim());
@@ -944,6 +950,13 @@ export default function ProcessAssessment() {
 
   return (
     <div className="min-h-screen bg-ecm-green text-white font-barlow">
+      {/* Honeypot — bot trap */}
+      <div aria-hidden="true" style={{ position: "absolute", left: "-9999px", width: 1, height: 1, overflow: "hidden" }}>
+        <label>
+          Leave empty
+          <input type="text" name="_hp" tabIndex={-1} autoComplete="off" value={hp} onChange={(e) => setHp(e.target.value)} />
+        </label>
+      </div>
       {/* Topbar */}
       <div className="border-b border-white/10 sticky top-0 bg-ecm-green z-10">
         <div className="max-w-3xl mx-auto px-6 py-4 flex items-center justify-between">

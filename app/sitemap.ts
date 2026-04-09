@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { client } from "@/lib/sanity";
+import { sanityFetch } from "@/lib/sanity.server";
 
 const siteUrl = "https://ecm.dev";
 
@@ -19,12 +19,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Blog posts from Sanity
   let blogEntries: MetadataRoute.Sitemap = [];
   try {
-    const posts = await client.fetch<
-      { slug: string; _updatedAt: string }[]
-    >(`*[_type == "post" && defined(slug.current)] | order(publishedAt desc) {
-      "slug": slug.current,
-      _updatedAt
-    }`);
+    const posts = await sanityFetch<{ slug: string; _updatedAt: string }[]>(
+      `*[_type == "post" && defined(slug.current)] | order(publishedAt desc) {
+        "slug": slug.current,
+        _updatedAt
+      }`
+    );
     blogEntries = posts.map((post) => ({
       url: `${siteUrl}/post/${post.slug}`,
       lastModified: new Date(post._updatedAt),
@@ -38,12 +38,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Assessments from Sanity
   let assessmentEntries: MetadataRoute.Sitemap = [];
   try {
-    const assessments = await client.fetch<
-      { slug: string; _updatedAt: string }[]
-    >(`*[_type == "assessment" && defined(slug.current)] {
-      "slug": slug.current,
-      _updatedAt
-    }`);
+    const assessments = await sanityFetch<{ slug: string; _updatedAt: string }[]>(
+      `*[_type == "assessment" && defined(slug.current)] {
+        "slug": slug.current,
+        _updatedAt
+      }`
+    );
     assessmentEntries = assessments.map((a) => ({
       url: `${siteUrl}/assessment/${a.slug}`,
       lastModified: new Date(a._updatedAt),
@@ -57,12 +57,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Guides from Sanity
   let guideEntries: MetadataRoute.Sitemap = [];
   try {
-    const guides = await client.fetch<
-      { slug: string; _updatedAt: string }[]
-    >(`*[_type == "guide" && defined(slug.current)] | order(seriesNumber asc, guideNumber asc) {
-      "slug": slug.current,
-      _updatedAt
-    }`);
+    const guides = await sanityFetch<{ slug: string; _updatedAt: string }[]>(
+      `*[_type == "guide" && defined(slug.current)] | order(seriesNumber asc, guideNumber asc) {
+        "slug": slug.current,
+        _updatedAt
+      }`
+    );
     guideEntries = guides.map((g) => ({
       url: `${siteUrl}/guide/${g.slug}`,
       lastModified: new Date(g._updatedAt),

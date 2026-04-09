@@ -1,5 +1,8 @@
 import { NextResponse } from "next/server";
 import { writeClient } from "@/lib/sanityWrite";
+import { guardSubmission } from "@/lib/submissionGuard";
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 /**
  * POST /api/assessment/tool-submit
@@ -20,6 +23,12 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
 
+    // Honeypot + CSRF + rate limit (5/min per IP)
+    const guard = await guardSubmission(request, body, {
+      rateLimit: { limit: 5, windowMs: 60_000 },
+    });
+    if (!guard.ok) return guard.response;
+
     if (!body.toolType || !body.answers || !body.results) {
       return NextResponse.json(
         { error: "toolType, answers, and results are required" },
@@ -30,6 +39,14 @@ export async function POST(request: Request) {
     if (!["process", "lead-magnet"].includes(body.toolType)) {
       return NextResponse.json(
         { error: "Invalid toolType" },
+        { status: 400 }
+      );
+    }
+
+    // Validate email format if contact provided
+    if (body.contact?.email && !EMAIL_RE.test(body.contact.email)) {
+      return NextResponse.json(
+        { error: "Invalid email address" },
         { status: 400 }
       );
     }

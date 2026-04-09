@@ -10,6 +10,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useCsrf } from "@/lib/useCsrf";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // TYPES
@@ -637,6 +638,8 @@ function Results({
   setEmail: (v: string) => void;
   answers: Answers;
 }) {
+  const { withCsrf } = useCsrf();
+  const [hp, setHp] = useState(""); // honeypot — should stay empty
   const [consentGiven, setConsentGiven] = useState(false);
   const [saving, setSaving] = useState(false);
   const [submissionId, setSubmissionId] = useState<string | null>(null);
@@ -673,13 +676,15 @@ function Results({
 
       const res = await fetch("/api/assessment/tool-submit", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        credentials: "same-origin",
+        headers: withCsrf({ "Content-Type": "application/json" }),
         body: JSON.stringify({
           toolType: "lead-magnet",
           answers,
           results: resultsPayload,
           contact: { name: "", email, role: "", company: "" },
           consentGiven,
+          _hp: hp,
         }),
       });
 
@@ -709,8 +714,9 @@ function Results({
       try {
         const res = await fetch("/api/assessment/tool-email", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ submissionId: sid, email: email.trim() }),
+          credentials: "same-origin",
+          headers: withCsrf({ "Content-Type": "application/json" }),
+          body: JSON.stringify({ submissionId: sid, email: email.trim(), _hp: hp }),
         });
         if (res.ok) {
           alert("Results sent to " + email.trim());
@@ -725,6 +731,13 @@ function Results({
 
   return (
     <div className="space-y-12">
+      {/* Honeypot — bot trap */}
+      <div aria-hidden="true" style={{ position: "absolute", left: "-9999px", width: 1, height: 1, overflow: "hidden" }}>
+        <label>
+          Leave empty
+          <input type="text" name="_hp" tabIndex={-1} autoComplete="off" value={hp} onChange={(e) => setHp(e.target.value)} />
+        </label>
+      </div>
       <div className="space-y-2">
         <div className="text-xs text-ecm-lime font-semibold uppercase tracking-widest">Your Results</div>
         <h2 className="text-3xl font-extrabold tracking-tight">Lead Magnet Analysis</h2>

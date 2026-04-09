@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import ProgressBar from "./ProgressBar";
 import QuestionRenderer from "./QuestionRenderer";
+import { useCsrf } from "@/lib/useCsrf";
 import type {
   SanityAssessment,
   SanityQuestion,
@@ -21,6 +22,7 @@ type Step =
 
 export default function AssessmentShell({ assessment }: AssessmentShellProps) {
   const router = useRouter();
+  const { withCsrf } = useCsrf();
   const [step, setStep] = useState<Step>({ type: "intro" });
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -100,12 +102,14 @@ export default function AssessmentShell({ assessment }: AssessmentShellProps) {
     try {
       const res = await fetch("/api/assessment", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        credentials: "same-origin",
+        headers: withCsrf({ "Content-Type": "application/json" }),
         body: JSON.stringify({
           assessmentId: assessment.slug.current,
           answers: answerEntries,
           tracking,
           timeToCompleteSeconds: timeToComplete,
+          _hp: "",
         }),
       });
 
@@ -122,7 +126,7 @@ export default function AssessmentShell({ assessment }: AssessmentShellProps) {
       setError(err.message || "Something went wrong. Please try again.");
       setIsSubmitting(false);
     }
-  }, [answers, assessment, tracking, startTime, router]);
+  }, [answers, assessment, tracking, startTime, router, withCsrf]);
 
   // Navigate to next visible question or auto-submit
   const goNext = useCallback(() => {
