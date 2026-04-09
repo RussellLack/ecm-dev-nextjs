@@ -638,6 +638,8 @@ function Results({
   setEmail: (v: string) => void;
   answers: Answers;
 }) {
+  const { withCsrf } = useCsrf();
+  const [hp, setHp] = useState(""); // honeypot — should stay empty
   const [consentGiven, setConsentGiven] = useState(false);
   const [saving, setSaving] = useState(false);
   const [submissionId, setSubmissionId] = useState<string | null>(null);
@@ -729,6 +731,13 @@ function Results({
 
   return (
     <div className="space-y-12">
+      {/* Honeypot — bot trap */}
+      <div aria-hidden="true" style={{ position: "absolute", left: "-9999px", width: 1, height: 1, overflow: "hidden" }}>
+        <label>
+          Leave empty
+          <input type="text" name="_hp" tabIndex={-1} autoComplete="off" value={hp} onChange={(e) => setHp(e.target.value)} />
+        </label>
+      </div>
       <div className="space-y-2">
         <div className="text-xs text-ecm-lime font-semibold uppercase tracking-widest">Your Results</div>
         <h2 className="text-3xl font-extrabold tracking-tight">Lead Magnet Analysis</h2>
@@ -903,8 +912,6 @@ function Results({
 const STEPS = ["welcome", "market", "authority", "capabilities", "context", "results"];
 
 export default function LeadMagnetAssessment() {
-  const { withCsrf } = useCsrf();
-  const [hp, setHp] = useState(""); // honeypot
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Answers>({
     marketType: null,
@@ -1056,14 +1063,6 @@ export default function LeadMagnetAssessment() {
         {currentStep === "results" && (
           <Results topThree={topThree} readiness={readiness} capabilities={capabilities} email={email} setEmail={setEmail} answers={answers} />
         )}
-
-        {/* Honeypot — bot trap */}
-        <div aria-hidden="true" style={{ position: "absolute", left: "-9999px", width: 1, height: 1, overflow: "hidden" }}>
-          <label>
-            Leave empty
-            <input type="text" name="_hp" tabIndex={-1} autoComplete="off" value={hp} onChange={(e) => setHp(e.target.value)} />
-          </label>
-        </div>
       </div>
     </div>
   );
