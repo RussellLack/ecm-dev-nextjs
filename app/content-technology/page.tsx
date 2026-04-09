@@ -1,6 +1,5 @@
 import ServicePageLayout from "@/components/ServicePageLayout";
-import { getServicePackages } from "@/lib/queries";
-import { client } from "@/lib/sanity";
+import { getServicePackages, getServiceHero } from "@/lib/queries";
 
 export const revalidate = 60;
 
@@ -22,9 +21,7 @@ export default async function ContentTechnologyPage() {
     packages = fallbackPackages;
   }
 
-  const service = await client.fetch(
-    `*[_type == "service" && category == "technology"][0]{heroDescription}`
-  ).catch(() => null);
+  const service = await getServiceHero("technology").catch(() => null);
 
   return (
     <ServicePageLayout

@@ -1,4 +1,5 @@
-import { client } from "../sanity";
+import "server-only";
+import { sanityFetch } from "../sanity.server";
 
 /**
  * Fetch a full assessment with all sections, questions, options,
@@ -7,7 +8,7 @@ import { client } from "../sanity";
 export async function getAssessment(slug: string) {
   // Fetch the assessment with raw dimension references (not dereferenced)
   // because deeply nested inline references don't always dereference in GROQ.
-  const assessment = await client.fetch(
+  const assessment = await sanityFetch<any>(
     `*[_type == "assessment" && slug.current == $slug][0]{
       _id,
       title,
@@ -48,7 +49,7 @@ export async function getAssessment(slug: string) {
   if (!assessment) return null;
 
   // Fetch all dimensions and build a lookup map
-  const dimensions = await client.fetch(
+  const dimensions = await sanityFetch<Array<{ _id: string; title: string; key: string }>>(
     `*[_type == "maturityDimension"]{_id, title, key}`
   );
   const dimMap = new Map<string, any>();
@@ -79,7 +80,7 @@ export async function getAssessment(slug: string) {
  */
 export async function getMaturityBands(assessmentId: string) {
   // Try by reference first, fall back to all bands if references aren't linked
-  let bands = await client.fetch(
+  let bands = await sanityFetch<any[]>(
     `*[_type == "maturityBand" && assessment._ref == $assessmentId] | order(level asc){
       _id, title, level, minScore, maxScore, headline, description, color
     }`,
@@ -87,7 +88,7 @@ export async function getMaturityBands(assessmentId: string) {
   );
 
   if (!bands?.length) {
-    bands = await client.fetch(
+    bands = await sanityFetch<any[]>(
       `*[_type == "maturityBand"] | order(level asc){
         _id, title, level, minScore, maxScore, headline, description, color
       }`
@@ -101,7 +102,7 @@ export async function getMaturityBands(assessmentId: string) {
  * Fetch all service recommendations with dereferenced dimensions and services.
  */
 export async function getServiceRecommendations() {
-  return client.fetch(
+  return sanityFetch(
     `*[_type == "serviceRecommendation"] | order(priority asc){
       _id,
       title,
@@ -125,7 +126,7 @@ export async function getServiceRecommendations() {
  * Fetch all maturity dimensions, ordered for display.
  */
 export async function getMaturityDimensions() {
-  return client.fetch(
+  return sanityFetch(
     `*[_type == "maturityDimension"] | order(order asc){
       _id,
       title,
@@ -140,7 +141,7 @@ export async function getMaturityDimensions() {
  * Fetch a submission by ID for the results page.
  */
 export async function getSubmission(submissionId: string) {
-  return client.fetch(
+  return sanityFetch(
     `*[_type == "assessmentSubmission" && _id == $submissionId][0]{
       _id,
       assessment->{
@@ -171,7 +172,7 @@ export async function getSubmission(submissionId: string) {
  * Fetch a tool submission (Process / Lead Magnet) by ID for the results page.
  */
 export async function getToolSubmission(submissionId: string) {
-  return client.fetch(
+  return sanityFetch(
     `*[_type == "toolSubmission" && _id == $submissionId][0]{
       _id,
       toolType,
@@ -191,7 +192,7 @@ export async function getToolSubmission(submissionId: string) {
  * Fetch all assessments for the listing page.
  */
 export async function getAllAssessments() {
-  return client.fetch(
+  return sanityFetch(
     `*[_type == "assessment" && defined(slug.current)] | order(_createdAt desc){
       _id,
       title,
@@ -208,7 +209,7 @@ export async function getAllAssessments() {
  * Fetch all assessment slugs for static generation.
  */
 export async function getAllAssessmentSlugs() {
-  return client.fetch(
+  return sanityFetch(
     `*[_type == "assessment" && defined(slug.current)]{
       "slug": slug.current
     }`

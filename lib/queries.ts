@@ -1,8 +1,9 @@
-import { client } from "./sanity";
+import "server-only";
+import { sanityFetch } from "./sanity.server";
 
 // Homepage
 export async function getHomePage() {
-  return client.fetch(`*[_type == "homePage"][0]{
+  return sanityFetch(`*[_type == "homePage"][0]{
     heroHeading,
     heroBody,
     symptoms[]{title, description},
@@ -19,14 +20,14 @@ export async function getHomePage() {
 
 // Services
 export async function getServices() {
-  return client.fetch(`*[_type == "service"] | order(order asc){
+  return sanityFetch(`*[_type == "service"] | order(order asc){
     title, slug, category, summary, body
   }`);
 }
 
 // Service packages by category
 export async function getServicePackages(category: string) {
-  return client.fetch(
+  return sanityFetch(
     `*[_type == "servicePackage" && category == $category] | order(order asc){
       title, slug, description, features, cta
     }`,
@@ -34,16 +35,24 @@ export async function getServicePackages(category: string) {
   );
 }
 
+// Service hero description by category
+export async function getServiceHero(category: string) {
+  return sanityFetch<{ heroDescription?: string } | null>(
+    `*[_type == "service" && category == $category][0]{heroDescription}`,
+    { category }
+  );
+}
+
 // Case studies
 export async function getCaseStudies() {
-  return client.fetch(`*[_type == "caseStudy"] | order(order asc){
+  return sanityFetch(`*[_type == "caseStudy"] | order(order asc){
     title, slug, client, tags, description, image
   }`);
 }
 
 // Single case study
 export async function getCaseStudy(slug: string) {
-  return client.fetch(
+  return sanityFetch(
     `*[_type == "caseStudy" && slug.current == $slug][0]{
       title, slug, client, tags, description, image
     }`,
@@ -53,7 +62,7 @@ export async function getCaseStudy(slug: string) {
 
 // All case study slugs (for generateStaticParams)
 export async function getAllCaseStudySlugs() {
-  return client.fetch(
+  return sanityFetch(
     `*[_type == "caseStudy" && defined(slug.current)]{
       "slug": slug.current
     }`
@@ -62,7 +71,7 @@ export async function getAllCaseStudySlugs() {
 
 // Blog posts
 export async function getBlogPosts(limit = 10) {
-  return client.fetch(
+  return sanityFetch(
     `*[_type == "post"] | order(publishedAt desc)[0...$limit]{
       title, slug, excerpt, publishedAt, mainImage, tags
     }`,
@@ -72,7 +81,7 @@ export async function getBlogPosts(limit = 10) {
 
 // Single blog post
 export async function getPost(slug: string) {
-  return client.fetch(
+  return sanityFetch(
     `*[_type == "post" && slug.current == $slug][0]{
       title, body, publishedAt, mainImage, tags, excerpt,
       seo { metaTitle, metaDescription, ogImage, noIndex }
@@ -83,7 +92,7 @@ export async function getPost(slug: string) {
 
 // All guides (for /guides page)
 export async function getGuides() {
-  return client.fetch(
+  return sanityFetch(
     `*[_type == "guide"] | order(seriesNumber asc, guideNumber asc) {
       _id, title, subtitle, slug, series, seriesNumber, guideNumber, excerpt, tags, mainImage
     }`
@@ -92,7 +101,7 @@ export async function getGuides() {
 
 // Single guide
 export async function getGuide(slug: string) {
-  return client.fetch(
+  return sanityFetch(
     `*[_type == "guide" && slug.current == $slug][0]{
       _id, title, subtitle, slug, series, seriesNumber, guideNumber, excerpt, tags, mainImage, body,
       seo { metaTitle, metaDescription, ogImage, noIndex },
@@ -106,7 +115,7 @@ export async function getGuide(slug: string) {
 
 // All guide slugs (for generateStaticParams)
 export async function getAllGuideSlugs() {
-  return client.fetch(
+  return sanityFetch(
     `*[_type == "guide"]{ "slug": slug.current }`
   );
 }
