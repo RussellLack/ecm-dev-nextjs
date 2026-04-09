@@ -1,14 +1,17 @@
 "use client";
 
 import { useState } from "react";
+import { useCsrf } from "@/lib/useCsrf";
 
 export default function ContactForm() {
+  const { withCsrf } = useCsrf();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
     email: "",
     message: "",
   });
+  const [hp, setHp] = useState(""); // honeypot — should stay empty
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -18,8 +21,9 @@ export default function ContactForm() {
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        credentials: "same-origin",
+        headers: withCsrf({ "Content-Type": "application/json" }),
+        body: JSON.stringify({ ...formData, _hp: hp }),
       });
 
       if (!res.ok) throw new Error("Failed to send");
@@ -63,6 +67,20 @@ export default function ContactForm() {
 
         {/* Right: Form */}
         <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Honeypot — hidden from real users, visible to bots */}
+          <div aria-hidden="true" style={{ position: "absolute", left: "-9999px", width: 1, height: 1, overflow: "hidden" }}>
+            <label>
+              Leave this field empty
+              <input
+                type="text"
+                name="_hp"
+                tabIndex={-1}
+                autoComplete="off"
+                value={hp}
+                onChange={(e) => setHp(e.target.value)}
+              />
+            </label>
+          </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-white text-sm mb-1">First name</label>

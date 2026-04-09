@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { rateLimit } from "@/lib/rateLimit";
+import { guardSubmission } from "@/lib/submissionGuard";
 
 /** Escape HTML special characters to prevent XSS in email templates */
 function escapeHtml(str: string): string {
@@ -13,18 +13,14 @@ function escapeHtml(str: string): string {
 
 export async function POST(request: Request) {
   try {
-    // Rate limit: 5 submissions per minute per IP
-    const forwarded = request.headers.get("x-forwarded-for");
-    const ip = forwarded?.split(",")[0]?.trim() || "unknown";
-    const { allowed } = rateLimit({ ip, limit: 5, windowMs: 60_000 });
-    if (!allowed) {
-      return NextResponse.json(
-        { error: "Too many requests. Please try again shortly." },
-        { status: 429 }
-      );
-    }
-
     const body = await request.json();
+
+    // Honeypot + CSRF + rate limit (5/min per IP)
+    const guard = await guardSubmission(request, body, {
+      rateLimit: { limit: 5, windowMs: 60_000 },
+    });
+    if (!guard.ok) return guard.response;
+
     const { firstName, lastName, email, message } = body;
 
     // Basic validation

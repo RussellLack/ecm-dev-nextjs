@@ -3,11 +3,18 @@ import { writeClient } from "@/lib/sanityWrite";
 import { getAssessment, getMaturityBands, getServiceRecommendations } from "@/lib/assessment/queries";
 import { calculateScores } from "@/lib/assessment/scoring";
 import { getCRMProvider, classifyIntent } from "@/lib/assessment/crm";
+import { guardSubmission } from "@/lib/submissionGuard";
 import type { SubmissionPayload, SanityAssessment, SanityMaturityBand, SanityServiceRecommendation } from "@/lib/assessment/types";
 
 export async function POST(request: Request) {
   try {
     const body: SubmissionPayload = await request.json();
+
+    // Honeypot + CSRF + rate limit (5/min per IP)
+    const guard = await guardSubmission(request, body, {
+      rateLimit: { limit: 5, windowMs: 60_000 },
+    });
+    if (!guard.ok) return guard.response;
 
     // ─── Validate (contact is now optional) ───
     if (!body.assessmentId || !body.answers?.length) {

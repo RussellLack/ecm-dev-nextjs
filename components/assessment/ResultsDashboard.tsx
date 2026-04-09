@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useCsrf } from "@/lib/useCsrf";
 import type { DimensionScore, Recommendation } from "@/lib/assessment/types";
 
 interface ResultsDashboardProps {
@@ -37,8 +38,10 @@ export default function ResultsDashboard({
   ctaHeading,
   ctaBody,
 }: ResultsDashboardProps) {
+  const { withCsrf } = useCsrf();
   const [reportEmail, setReportEmail] = useState("");
   const [reportName, setReportName] = useState("");
+  const [reportHp, setReportHp] = useState(""); // honeypot
   const [reportSending, setReportSending] = useState(false);
   const [reportSent, setReportSent] = useState(false);
   const [reportError, setReportError] = useState<string | null>(null);
@@ -58,11 +61,13 @@ export default function ResultsDashboard({
     try {
       const res = await fetch("/api/assessment/report", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        credentials: "same-origin",
+        headers: withCsrf({ "Content-Type": "application/json" }),
         body: JSON.stringify({
           submissionId,
           email: reportEmail.trim(),
           name: reportName.trim() || undefined,
+          _hp: reportHp,
         }),
       });
 
@@ -277,6 +282,12 @@ export default function ResultsDashboard({
                   Add your details to email yourself the full report or generate a shareable link.
                 </p>
                 <form onSubmit={handleRequestReport} className="space-y-4">
+                  <div aria-hidden="true" style={{ position: "absolute", left: "-9999px", width: 1, height: 1, overflow: "hidden" }}>
+                    <label>
+                      Leave empty
+                      <input type="text" name="_hp" tabIndex={-1} autoComplete="off" value={reportHp} onChange={(e) => setReportHp(e.target.value)} />
+                    </label>
+                  </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <input
                       type="text"
