@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -54,11 +55,18 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Consume the per-request x-nonce header set by middleware.ts. This also
+  // opts the whole app into dynamic rendering so Next.js stamps the nonce
+  // onto its own inline bootstrap script at request time. Without this,
+  // pages render statically at build time, no nonce reaches the HTML, and
+  // every script load is blocked by the strict-dynamic CSP at runtime.
+  await headers();
+
   return (
     <html lang="en">
       <body className="antialiased">
