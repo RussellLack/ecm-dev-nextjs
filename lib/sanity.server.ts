@@ -32,7 +32,7 @@ export const serverClient = createClient({
  * directly so we have a single choke point if we later want to add caching,
  * logging, or request tagging.
  */
-export async function sanityFetch<T>(
+export async function sanityFetch<T = any>(
   query: string,
   params: QueryParams = {},
 ): Promise<T> {
