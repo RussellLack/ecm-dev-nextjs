@@ -1,21 +1,23 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="utf-8" />
     <title>Netlify Forms registration</title>
   </head>
   <body>
     <!--
       This file exists so Netlify's build-time form parser detects our forms.
-      The real submission path is: React form -> POST /api/contact
-      -> server-side guardSubmission (CSRF + honeypot + rate limit)
-      -> server forwards to Netlify Forms as x-www-form-urlencoded.
+      Real submission path: React form -> POST /api/contact
+      -> guardSubmission (CSRF + honeypot + rate limit)
+      -> server forwards to /__forms.html (this file) as x-www-form-urlencoded.
       Do not remove. Do not link. Keep field names in sync with the server handler.
     -->
-    <form name="contact" netlify netlify-honeypot="bot-field" hidden>
+    <form name="contact" data-netlify="true" data-netlify-honeypot="bot-field">
       <input type="text" name="firstName" />
       <input type="text" name="lastName" />
       <input type="email" name="email" />
       <textarea name="message"></textarea>
+      <input type="text" name="bot-field" />
     </form>
   </body>
 </html>

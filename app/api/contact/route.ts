@@ -53,7 +53,7 @@ export async function POST(request: Request) {
       message,
     });
 
-    const netlifyRes = await fetch(siteUrl, {
+    const netlifyRes = await fetch(`${siteUrl.replace(/\/$/, "")}/__forms.html`, {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: payload.toString(),
