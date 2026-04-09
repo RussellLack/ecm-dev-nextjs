@@ -1,16 +1,18 @@
 import { NextResponse } from "next/server";
 import { guardSubmission } from "@/lib/submissionGuard";
 
-/** Escape HTML special characters to prevent XSS in email templates */
-function escapeHtml(str: string): string {
-  return str
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-}
-
+/**
+ * Contact form handler.
+ *
+ * Flow:
+ *   1. guardSubmission -> CSRF double-submit + honeypot + 5/min rate limit
+ *   2. Validate required fields
+ *   3. Forward payload to Netlify Forms as application/x-www-form-urlencoded
+ *
+ * Netlify detects the `contact` form at build time from public/__forms.html.
+ * Email notifications are configured in the Netlify dashboard
+ * (Site -> Forms -> Form notifications).
+ */
 export async function POST(request: Request) {
   try {
     const body = await request.json();
@@ -21,9 +23,13 @@ export async function POST(request: Request) {
     });
     if (!guard.ok) return guard.response;
 
-    const { firstName, lastName, email, message } = body;
+    const { firstName, lastName, email, message } = body as {
+      firstName?: string;
+      lastName?: string;
+      email?: string;
+      message?: string;
+    };
 
-    // Basic validation
     if (!email || !message) {
       return NextResponse.json(
         { error: "Email and message are required" },
@@ -31,46 +37,36 @@ export async function POST(request: Request) {
       );
     }
 
-    // Always log to console (useful in dev + production debugging)
-    console.log("━━━ NEW CONTACT FORM SUBMISSION ━━━");
-    console.log(`Name:    ${firstName} ${lastName}`);
-    console.log(`Email:   ${email}`);
-    console.log(`Message: ${message}`);
-    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+    // Build the site URL Netlify Forms POSTs to. Prefer the deployed URL
+    // (set automatically by Netlify at build/runtime) and fall back to the
+    // canonical production domain.
+    const siteUrl =
+      process.env.URL ||
+      process.env.DEPLOY_PRIME_URL ||
+      "https://ecm.dev";
 
-    // Send via Resend
-    const apiKey = process.env.RESEND_API_KEY;
-
-    if (!apiKey) {
-      console.warn("RESEND_API_KEY not set — skipping email delivery");
-      return NextResponse.json({ success: true });
-    }
-
-    const resendRes = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        from: process.env.EMAIL_FROM || "ECM.DEV Contact <onboarding@resend.dev>",
-        to: "rl@ecm.dev",
-        reply_to: email,
-        subject: `New enquiry from ${escapeHtml(firstName || "")} ${escapeHtml(lastName || "")}`.trim(),
-        html: [
-          `<h2>New contact form submission</h2>`,
-          `<p><strong>Name:</strong> ${escapeHtml(firstName || "")} ${escapeHtml(lastName || "")}</p>`,
-          `<p><strong>Email:</strong> <a href="mailto:${encodeURI(email)}">${escapeHtml(email)}</a></p>`,
-          `<hr />`,
-          `<p>${escapeHtml(message).replace(/\n/g, "<br />")}</p>`,
-        ].join("\n"),
-      }),
+    const payload = new URLSearchParams({
+      "form-name": "contact",
+      firstName: firstName ?? "",
+      lastName: lastName ?? "",
+      email,
+      message,
     });
 
-    if (!resendRes.ok) {
-      const err = await resendRes.text();
-      console.error("Resend error:", err);
-      throw new Error("Email delivery failed");
+    const netlifyRes = await fetch(siteUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: payload.toString(),
+    });
+
+    if (!netlifyRes.ok) {
+      const err = await netlifyRes.text().catch(() => "");
+      console.error(
+        "Netlify Forms submission failed:",
+        netlifyRes.status,
+        err.slice(0, 500)
+      );
+      throw new Error("Form submission failed");
     }
 
     return NextResponse.json({ success: true });
