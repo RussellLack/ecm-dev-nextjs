@@ -18,10 +18,6 @@ import { NextRequest, NextResponse } from "next/server";
  *   - fonts.googleapis.com  (Google Fonts stylesheet)
  *   - fonts.gstatic.com     (Google Fonts binary files)
  *   - cdn.sanity.io         (Sanity image CDN)
- *   - api.resend.com        (Resend email API — called from route handlers,
- *                             but CSP's connect-src also governs server
- *                             fetch in some runtimes, and the CSP header
- *                             on the HTML response doesn't hurt)
  *
  * If you add analytics later (GA, Plausible, PostHog, etc.), add the
  * script host to `script-src` and the collector endpoint to
@@ -51,7 +47,7 @@ export function middleware(request: NextRequest) {
     `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com`,
     `font-src 'self' https://fonts.gstatic.com`,
     `img-src 'self' data: blob: https://cdn.sanity.io`,
-    `connect-src 'self' https://cdn.sanity.io https://api.resend.com`,
+    `connect-src 'self' https://cdn.sanity.io`,
     `frame-ancestors 'none'`,
     `form-action 'self'`,
     `base-uri 'self'`,
@@ -70,6 +66,19 @@ export function middleware(request: NextRequest) {
   });
 
   response.headers.set("content-security-policy", cspHeader);
+  // Let Netlify's edge hold the rendered HTML for 10 minutes and serve stale
+  // for a day while revalidating in the background. The middleware still runs
+  // on cache misses, so a fresh nonce is minted per cache entry — visitors
+  // inside the same 10-minute window share a nonce, which is an acceptable
+  // trade-off for a static marketing site with no user-generated inline HTML.
+  response.headers.set(
+    "Netlify-CDN-Cache-Control",
+    "public, s-maxage=600, stale-while-revalidate=86400"
+  );
+  response.headers.set(
+    "Cache-Control",
+    "public, max-age=0, must-revalidate"
+  );
 
   return response;
 }
