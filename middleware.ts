@@ -66,19 +66,6 @@ export function middleware(request: NextRequest) {
   });
 
   response.headers.set("content-security-policy", cspHeader);
-  // Let Netlify's edge hold the rendered HTML for 10 minutes and serve stale
-  // for a day while revalidating in the background. The middleware still runs
-  // on cache misses, so a fresh nonce is minted per cache entry — visitors
-  // inside the same 10-minute window share a nonce, which is an acceptable
-  // trade-off for a static marketing site with no user-generated inline HTML.
-  response.headers.set(
-    "Netlify-CDN-Cache-Control",
-    "public, s-maxage=600, stale-while-revalidate=86400"
-  );
-  response.headers.set(
-    "Cache-Control",
-    "public, max-age=0, must-revalidate"
-  );
 
   return response;
 }
