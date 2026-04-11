@@ -162,7 +162,15 @@ export async function POST(request: Request) {
       const err = await resendRes.text();
       console.error("Resend error:", err);
       return NextResponse.json(
-        { error: "Failed to send email. Please try again." },
+        {
+          error: "Failed to send email. Please try again.",
+          debug: {
+            resendStatus: resendRes.status,
+            resendBody: err.slice(0, 500),
+            from: process.env.EMAIL_FROM || "ECM.DEV <onboarding@resend.dev>",
+            hasKey: !!apiKey,
+          },
+        },
         { status: 500 }
       );
     }
