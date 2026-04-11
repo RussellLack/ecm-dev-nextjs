@@ -1,6 +1,12 @@
 import { NextResponse } from "next/server";
 import { getToolSubmission } from "@/lib/assessment/queries";
 import { guardSubmission } from "@/lib/submissionGuard";
+import { patchSubmissionRecord, type ToolSubmissionRecord } from "@/lib/submissions.server";
+import { getCRMProvider, SnovioCRMProvider } from "@/lib/assessment/crm";
+
+// Blobs requires the Node runtime (not edge).
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 function escapeHtml(str: string): string {
   return str
@@ -21,7 +27,7 @@ export async function POST(request: Request) {
     });
     if (!guard.ok) return guard.response;
 
-    const { submissionId, email } = body;
+    const { submissionId, email, name, consentGiven, consentText, consentVersion } = body;
 
     if (!submissionId || !email) {
       return NextResponse.json(
@@ -37,12 +43,74 @@ export async function POST(request: Request) {
       );
     }
 
+    // Consent gate — explicit opt-in required to send the email and to push
+    // the contact to Snov.io.
+    if (consentGiven !== true) {
+      return NextResponse.json(
+        { error: "Consent is required to send the results email." },
+        { status: 400 }
+      );
+    }
+
     const submission = await getToolSubmission(submissionId);
     if (!submission) {
       return NextResponse.json(
         { error: "Submission not found" },
         { status: 404 }
       );
+    }
+
+    // ─── Patch the Blobs record with email + consent audit trail ───
+    const nowIso = new Date().toISOString();
+    const displayName = (name || submission.name || "").toString();
+    const patch: Partial<ToolSubmissionRecord> = {
+      email,
+      name: displayName,
+      consent: {
+        given: true,
+        text: typeof consentText === "string" ? consentText : null,
+        version: typeof consentVersion === "string" ? consentVersion : null,
+        capturedAt: nowIso,
+      },
+    };
+    await patchSubmissionRecord(submissionId, patch).catch((err: unknown) =>
+      console.error("Failed to patch tool submission record:", err),
+    );
+
+    // ─── Activate in Snov.io (fire-and-forget) ───
+    const crm = getCRMProvider();
+    if (crm instanceof SnovioCRMProvider) {
+      const [firstName, ...rest] = displayName.split(/\s+/);
+      crm
+        .pushToolProspect({
+          toolType: submission.toolType,
+          email,
+          firstName,
+          lastName: rest.join(" "),
+          company: submission.company,
+          role: submission.role,
+          consentVersion:
+            typeof consentVersion === "string" ? consentVersion : undefined,
+        })
+        .then(() =>
+          patchSubmissionRecord(submissionId, {
+            activation: {
+              pushedToCrm: true,
+              pushedAt: new Date().toISOString(),
+              error: null,
+            },
+          }),
+        )
+        .catch((err: unknown) => {
+          console.error("Snov.io tool push failed (non-blocking):", err);
+          void patchSubmissionRecord(submissionId, {
+            activation: {
+              pushedToCrm: false,
+              pushedAt: new Date().toISOString(),
+              error: err instanceof Error ? err.message : String(err),
+            },
+          });
+        });
     }
 
     const results =

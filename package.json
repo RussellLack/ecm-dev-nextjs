@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@netlify/blobs": "^8.1.0",
     "@sanity/assist": "^6.0.4",
     "@sanity/client": "^6.22.0",
     "@sanity/dashboard": "^5.0.1",

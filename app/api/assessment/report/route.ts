@@ -1,7 +1,12 @@
 import { NextResponse } from "next/server";
 import { getSubmission, getMaturityBands, getServiceRecommendations } from "@/lib/assessment/queries";
-import { writeClient } from "@/lib/sanityWrite";
+import { patchSubmissionRecord, type AssessmentSubmissionRecord } from "@/lib/submissions.server";
 import { guardSubmission } from "@/lib/submissionGuard";
+import { getCRMProvider, classifyIntent, SnovioCRMProvider } from "@/lib/assessment/crm";
+
+// Blobs requires the Node runtime (not edge).
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 /** Escape HTML special characters to prevent XSS in email templates */
 function escapeHtml(str: string): string {
@@ -23,11 +28,28 @@ export async function POST(request: Request) {
     });
     if (!guard.ok) return guard.response;
 
-    const { submissionId, email, name } = body;
+    const {
+      submissionId,
+      email,
+      name,
+      consentGiven,
+      consentText,
+      consentVersion,
+    } = body;
 
     if (!submissionId || !email) {
       return NextResponse.json(
         { error: "submissionId and email are required" },
+        { status: 400 }
+      );
+    }
+
+    // Consent gate — explicit opt-in required to receive the email AND to
+    // activate the contact in Snov.io. The checkbox is unchecked by default
+    // in the results UI; if it wasn't ticked we don't proceed.
+    if (consentGiven !== true) {
+      return NextResponse.json(
+        { error: "Consent is required to send the report email." },
         { status: 400 }
       );
     }
@@ -87,18 +109,80 @@ export async function POST(request: Request) {
       }
     }
 
-    // Update submission with email (captures the lead)
-    if (!submission.email) {
-      await writeClient
-        .patch(submissionId)
-        .set({
-          email,
-          firstName: name || submission.firstName || "",
+    // Update submission with email + consent audit trail (captures the lead)
+    const nowIso = new Date().toISOString();
+    const firstNameToStore = (name || submission.firstName || "").toString();
+    const [fnFirst, ...fnRest] = firstNameToStore.split(/\s+/);
+    const patch: Partial<AssessmentSubmissionRecord> = {
+      email,
+      firstName: firstNameToStore,
+      consent: {
+        given: true,
+        text: typeof consentText === "string" ? consentText : null,
+        version: typeof consentVersion === "string" ? consentVersion : null,
+        capturedAt: nowIso,
+      },
+    };
+    await patchSubmissionRecord(submissionId, patch).catch((err: unknown) =>
+      console.error("Failed to patch submission record with email:", err),
+    );
+
+    // ─── Activate in Snov.io (fire-and-forget) ───
+    // This is the real opt-in moment: the visitor has explicitly asked for
+    // the report and ticked the consent box. Failures are logged but do not
+    // block the email send.
+    const crm = getCRMProvider();
+    if (crm instanceof SnovioCRMProvider) {
+      // We only store the scoring fields Snov.io actually reads
+      // (totalScore / bandLevel / bandTitle / dimensionScores / weakAreas).
+      // The full ScoringResult type includes bandHeadline / bandColor /
+      // recommendations which aren't needed here — the unknown cast
+      // acknowledges the partial shape without leaking `any`.
+      const partialScoring = {
+        totalScore: submission.totalScore,
+        bandLevel: submission.bandLevel,
+        bandTitle: submission.bandTitle,
+        dimensionScores: submission.dimensionScores || [],
+        weakAreas: submission.weakAreas || [],
+      } as unknown as Parameters<typeof crm.syncSubmission>[0]["scoring"];
+
+      const intent = classifyIntent(partialScoring, submission.requestedContact || false);
+      void intent; // currently surfaced via customFields.intent inside syncSubmission
+
+      crm
+        .syncSubmission({
+          contact: {
+            firstName: fnFirst || "",
+            lastName: fnRest.join(" "),
+            email,
+            company: submission.company || "",
+            role: "",
+          },
+          scoring: partialScoring,
+          tracking: {},
+          assessmentTitle: submission.assessment?.title || "",
+          submissionId,
+          requestedContact: submission.requestedContact || false,
         })
-        .commit()
-        .catch((err: any) =>
-          console.error("Failed to update submission with email:", err)
-        );
+        .then(() =>
+          patchSubmissionRecord(submissionId, {
+            activation: {
+              pushedToCrm: true,
+              pushedAt: new Date().toISOString(),
+              error: null,
+            },
+          }),
+        )
+        .catch((err: unknown) => {
+          console.error("Snov.io push failed (non-blocking):", err);
+          void patchSubmissionRecord(submissionId, {
+            activation: {
+              pushedToCrm: false,
+              pushedAt: new Date().toISOString(),
+              error: err instanceof Error ? err.message : String(err),
+            },
+          });
+        });
     }
 
     // Send email via Resend

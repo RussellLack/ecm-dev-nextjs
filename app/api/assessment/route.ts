@@ -1,10 +1,13 @@
 import { NextResponse } from "next/server";
-import { writeClient } from "@/lib/sanityWrite";
+import { createSubmission, type AssessmentSubmissionRecord } from "@/lib/submissions.server";
 import { getAssessment, getMaturityBands, getServiceRecommendations } from "@/lib/assessment/queries";
 import { calculateScores } from "@/lib/assessment/scoring";
-import { getCRMProvider, classifyIntent } from "@/lib/assessment/crm";
 import { guardSubmission } from "@/lib/submissionGuard";
 import type { SubmissionPayload, SanityAssessment, SanityMaturityBand, SanityServiceRecommendation } from "@/lib/assessment/types";
+
+// Route must run on Node (Blobs requires node runtime, not edge).
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 export async function POST(request: Request) {
   try {
@@ -49,11 +52,28 @@ export async function POST(request: Request) {
     // ─── Calculate scores ───
     const scoring = calculateScores(body.answers, assessment, bands, recommendations);
 
-    // ─── Store submission in Sanity ───
-    const submission = await writeClient.create({
+    // ─── Archive submission to Netlify Blobs ───
+    // Sanity is no longer the submissions store — it stays read-only for CMS
+    // content (assessment definitions, maturity bands, recommendations).
+    // The record is stored in a denormalised shape that mirrors the old
+    // Sanity `assessmentSubmission` doc, so results pages and downstream
+    // routes don't have to change.
+    //
+    // NB: no Snov.io push happens here. Consent is captured later by the
+    // /api/assessment/report route when the user enters their email to
+    // receive the full report — that's the real opt-in moment.
+    const submission = await createSubmission<AssessmentSubmissionRecord>({
+      kind: "assessment",
       _type: "assessmentSubmission",
-      assessment: { _type: "reference", _ref: assessment._id },
       submittedAt: new Date().toISOString(),
+      assessment: {
+        _id: assessment._id,
+        title: assessment.title,
+        slug: assessment.slug,
+        resultsIntro: assessment.resultsIntro,
+        resultsCtaHeading: assessment.resultsCtaHeading,
+        resultsCtaBody: assessment.resultsCtaBody,
+      },
       firstName: body.contact?.firstName || "",
       lastName: body.contact?.lastName || "",
       email: body.contact?.email || "",
@@ -64,50 +84,30 @@ export async function POST(request: Request) {
       bandLevel: scoring.bandLevel,
       bandTitle: scoring.bandTitle,
       dimensionScores: scoring.dimensionScores.map((d) => ({
-        _key: d.dimensionKey,
         dimensionKey: d.dimensionKey,
         dimensionTitle: d.dimensionTitle,
         score: d.score,
       })),
       weakAreas: scoring.weakAreas,
       answers: body.answers.map((a) => ({
-        _key: a.questionId,
         questionId: a.questionId,
         optionId: a.optionId,
       })),
       tracking: body.tracking || {},
       requestedContact: body.requestedContact || false,
-      timeToCompleteSeconds: body.timeToCompleteSeconds || null,
+      timeToCompleteSeconds: body.timeToCompleteSeconds ?? null,
+      consent: {
+        given: false,
+        text: null,
+        version: null,
+        capturedAt: null,
+      },
+      activation: {
+        pushedToCrm: false,
+        pushedAt: null,
+        error: null,
+      },
     });
-
-    // ─── CRM sync + automation (only if contact provided) ───
-    if (body.contact?.email) {
-      const crm = getCRMProvider();
-      const crmData = {
-        contact: body.contact,
-        scoring,
-        tracking: body.tracking || {},
-        assessmentTitle: assessment.title,
-        submissionId: submission._id,
-        requestedContact: body.requestedContact || false,
-        timeToCompleteSeconds: body.timeToCompleteSeconds,
-      };
-
-      // Fire-and-forget — don't block the response on CRM
-      Promise.all([
-        crm.syncSubmission(crmData),
-        crm.triggerAutomation({
-          type: classifyIntent(scoring, body.requestedContact || false),
-          data: crmData,
-        }),
-        crm.triggerAutomation({
-          type: "submission_complete",
-          data: crmData,
-        }),
-      ]).catch((err) => {
-        console.error("CRM sync error (non-blocking):", err);
-      });
-    }
 
     // ─── Return submission ID for redirect to results ───
     return NextResponse.json({

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useCsrf } from "@/lib/useCsrf";
+import { CONSENT_TEXT, CONSENT_VERSION } from "@/lib/consent";
 import type { DimensionScore, Recommendation } from "@/lib/assessment/types";
 
 interface ResultsDashboardProps {
@@ -54,6 +55,10 @@ export default function ResultsDashboard({
       setReportError("Please enter a valid email address");
       return;
     }
+    if (!consentGiven) {
+      setReportError("Please tick the consent box so we can send you the report.");
+      return;
+    }
 
     setReportSending(true);
     setReportError(null);
@@ -68,6 +73,9 @@ export default function ResultsDashboard({
           email: reportEmail.trim(),
           name: reportName.trim() || undefined,
           _hp: reportHp,
+          consentGiven,
+          consentText: CONSENT_TEXT,
+          consentVersion: CONSENT_VERSION,
         }),
       });
 

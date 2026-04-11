@@ -12,6 +12,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useCsrf } from "@/lib/useCsrf";
+import { CONSENT_TEXT, CONSENT_VERSION } from "@/lib/consent";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // TYPES
@@ -668,6 +669,8 @@ export default function ProcessAssessment() {
             company: a.company,
           },
           consentGiven,
+          consentText: CONSENT_TEXT,
+          consentVersion: CONSENT_VERSION,
           _hp: hp,
         }),
       });
@@ -693,6 +696,10 @@ export default function ProcessAssessment() {
   }
 
   async function handleEmailResults() {
+    if (!consentGiven) {
+      alert("Please tick the consent box so we can send you your results.");
+      return;
+    }
     const sid = await saveSubmission();
     if (sid && assessment.email.trim()) {
       try {
@@ -700,7 +707,14 @@ export default function ProcessAssessment() {
           method: "POST",
           credentials: "same-origin",
           headers: withCsrf({ "Content-Type": "application/json" }),
-          body: JSON.stringify({ submissionId: sid, email: assessment.email.trim(), _hp: hp }),
+          body: JSON.stringify({
+            submissionId: sid,
+            email: assessment.email.trim(),
+            consentGiven,
+            consentText: CONSENT_TEXT,
+            consentVersion: CONSENT_VERSION,
+            _hp: hp,
+          }),
         });
         if (res.ok) {
           alert("Results sent to " + assessment.email.trim());

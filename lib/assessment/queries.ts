@@ -1,5 +1,10 @@
 import "server-only";
 import { sanityFetch } from "../sanity.server";
+import {
+  getSubmissionRecord,
+  type AssessmentSubmissionRecord,
+  type ToolSubmissionRecord,
+} from "../submissions.server";
 
 /**
  * Fetch a full assessment with all sections, questions, options,
@@ -138,54 +143,54 @@ export async function getMaturityDimensions() {
 }
 
 /**
- * Fetch a submission by ID for the results page.
+ * Fetch an assessment submission by ID for the results page.
+ *
+ * Now reads from Netlify Blobs rather than Sanity. The record shape is a
+ * drop-in match for the old Sanity GROQ projection, so results pages, the
+ * PDF route, and the report route don't have to change.
  */
 export async function getSubmission(submissionId: string) {
-  return sanityFetch(
-    `*[_type == "assessmentSubmission" && _id == $submissionId][0]{
-      _id,
-      assessment->{
-        _id,
-        title,
-        slug,
-        resultsIntro,
-        resultsCtaHeading,
-        resultsCtaBody
-      },
-      submittedAt,
-      firstName,
-      lastName,
-      email,
-      company,
-      totalScore,
-      bandLevel,
-      bandTitle,
-      dimensionScores,
-      weakAreas,
-      requestedContact
-    }`,
-    { submissionId }
-  );
+  const record = await getSubmissionRecord(submissionId);
+  if (!record || record.kind !== "assessment") return null;
+  const r = record as AssessmentSubmissionRecord;
+  return {
+    _id: r._id,
+    assessment: r.assessment,
+    submittedAt: r.submittedAt,
+    firstName: r.firstName,
+    lastName: r.lastName,
+    email: r.email,
+    company: r.company,
+    totalScore: r.totalScore,
+    bandLevel: r.bandLevel,
+    bandTitle: r.bandTitle,
+    dimensionScores: r.dimensionScores,
+    weakAreas: r.weakAreas,
+    requestedContact: r.requestedContact,
+  };
 }
 
 /**
  * Fetch a tool submission (Process / Lead Magnet) by ID for the results page.
+ *
+ * Reads from Netlify Blobs. Returns the same shape as the old Sanity query,
+ * including `answers` and `results` as JSON strings — the UI parses them.
  */
 export async function getToolSubmission(submissionId: string) {
-  return sanityFetch(
-    `*[_type == "toolSubmission" && _id == $submissionId][0]{
-      _id,
-      toolType,
-      submittedAt,
-      name,
-      email,
-      role,
-      company,
-      answers,
-      results
-    }`,
-    { submissionId }
-  );
+  const record = await getSubmissionRecord(submissionId);
+  if (!record || record.kind !== "tool") return null;
+  const r = record as ToolSubmissionRecord;
+  return {
+    _id: r._id,
+    toolType: r.toolType,
+    submittedAt: r.submittedAt,
+    name: r.name,
+    email: r.email,
+    role: r.role,
+    company: r.company,
+    answers: r.answers,
+    results: r.results,
+  };
 }
 
 /**

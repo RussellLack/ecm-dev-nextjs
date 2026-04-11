@@ -34,6 +34,17 @@ export interface SubmissionPayload {
   tracking: TrackingData;
   requestedContact?: boolean;
   timeToCompleteSeconds?: number;
+  /**
+   * Explicit, unchecked-by-default opt-in captured in the results UI.
+   * When true, the server is allowed to push the contact to the external CRM
+   * (Snov.io). When false or missing, the submission is archived to Netlify
+   * Blobs but no activation occurs. Required for GDPR audit trail.
+   */
+  consentGiven?: boolean;
+  /** Verbatim consent text the user ticked, for audit log. */
+  consentText?: string;
+  /** Version string of the consent copy (e.g. "2026-04-11-v1"). */
+  consentVersion?: string;
 }
 
 export interface AnswerEntry {

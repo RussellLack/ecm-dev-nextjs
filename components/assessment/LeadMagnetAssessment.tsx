@@ -11,6 +11,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useCsrf } from "@/lib/useCsrf";
+import { CONSENT_TEXT, CONSENT_VERSION } from "@/lib/consent";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // TYPES
@@ -684,6 +685,8 @@ function Results({
           results: resultsPayload,
           contact: { name: "", email, role: "", company: "" },
           consentGiven,
+          consentText: CONSENT_TEXT,
+          consentVersion: CONSENT_VERSION,
           _hp: hp,
         }),
       });
@@ -709,6 +712,10 @@ function Results({
   }
 
   async function handleEmailResults() {
+    if (!consentGiven) {
+      alert("Please tick the consent box so we can send you your results.");
+      return;
+    }
     const sid = await saveSubmission();
     if (sid && email.trim()) {
       try {
@@ -716,7 +723,14 @@ function Results({
           method: "POST",
           credentials: "same-origin",
           headers: withCsrf({ "Content-Type": "application/json" }),
-          body: JSON.stringify({ submissionId: sid, email: email.trim(), _hp: hp }),
+          body: JSON.stringify({
+            submissionId: sid,
+            email: email.trim(),
+            consentGiven,
+            consentText: CONSENT_TEXT,
+            consentVersion: CONSENT_VERSION,
+            _hp: hp,
+          }),
         });
         if (res.ok) {
           alert("Results sent to " + email.trim());
