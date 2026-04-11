@@ -4,3 +4,7 @@ node_modules/
 .sanity/
 dist/
 tsconfig.tsbuildinfo
+
+# macOS finder metadata
+.DS_Store
+**/.DS_Store
