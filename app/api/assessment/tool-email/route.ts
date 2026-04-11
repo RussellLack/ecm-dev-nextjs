@@ -77,18 +77,15 @@ export async function POST(request: Request) {
       console.error("Failed to patch tool submission record:", err),
     );
 
-    // ─── Activate in Snov.io (synchronous + debug capture) ───
+    // ─── Activate in Snov.io ───
+    // Push is synchronous (awaited) rather than fire-and-forget, because on
+    // Netlify serverless the function runtime can be frozen as soon as the
+    // response is sent — a background promise would never complete.
     const crm = getCRMProvider();
-    let snovioDebug: Record<string, unknown> = {
-      providerKind: crm?.constructor?.name ?? "unknown",
-      hasClientId: !!process.env.SNOVIO_CLIENT_ID,
-      hasClientSecret: !!process.env.SNOVIO_CLIENT_SECRET,
-      hasToolListId: !!process.env.SNOVIO_LIST_ID_TOOL,
-    };
     if (crm instanceof SnovioCRMProvider) {
       const [firstName, ...rest] = displayName.split(/\s+/);
       try {
-        const pushResult = await crm.pushToolProspect({
+        await crm.pushToolProspect({
           toolType: submission.toolType,
           email,
           firstName,
@@ -98,7 +95,6 @@ export async function POST(request: Request) {
           consentVersion:
             typeof consentVersion === "string" ? consentVersion : undefined,
         });
-        snovioDebug.listIdUsed = pushResult.listId;
         await patchSubmissionRecord(submissionId, {
           activation: {
             pushedToCrm: true,
@@ -106,17 +102,13 @@ export async function POST(request: Request) {
             error: null,
           },
         });
-        snovioDebug.pushedToCrm = true;
       } catch (err: unknown) {
-        console.error("Snov.io tool push failed:", err);
-        const errMsg = err instanceof Error ? err.message : String(err);
-        snovioDebug.pushedToCrm = false;
-        snovioDebug.error = errMsg;
+        console.error("Snov.io tool push failed (non-blocking):", err);
         await patchSubmissionRecord(submissionId, {
           activation: {
             pushedToCrm: false,
             pushedAt: new Date().toISOString(),
-            error: errMsg,
+            error: err instanceof Error ? err.message : String(err),
           },
         }).catch(() => {});
       }
@@ -133,7 +125,6 @@ export async function POST(request: Request) {
       return NextResponse.json({
         success: true,
         warning: "Email delivery skipped (no API key)",
-        snovioDebug,
       });
     }
 
@@ -172,20 +163,12 @@ export async function POST(request: Request) {
       const err = await resendRes.text();
       console.error("Resend error:", err);
       return NextResponse.json(
-        {
-          error: "Failed to send email. Please try again.",
-          debug: {
-            resendStatus: resendRes.status,
-            resendBody: err.slice(0, 500),
-            from: process.env.EMAIL_FROM || "ECM.DEV <onboarding@resend.dev>",
-            hasKey: !!apiKey,
-          },
-        },
+        { error: "Failed to send email. Please try again." },
         { status: 500 }
       );
     }
 
-    return NextResponse.json({ success: true, snovioDebug });
+    return NextResponse.json({ success: true });
   } catch (error: unknown) {
     console.error("Tool email error:", error);
     return NextResponse.json(

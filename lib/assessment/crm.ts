@@ -247,7 +247,9 @@ export class SnovioCRMProvider implements CRMProvider {
       throw new Error(`Snov.io add-prospect failed: ${res.status} ${body}`);
     }
 
-    // Snov.io returns 200 OK with { success: false, message: "..." } on validation errors.
+    // Snov.io returns 200 OK with { success: false, message: "..." } on
+    // validation errors (e.g. unknown custom field keys). A plain res.ok
+    // check would silently treat these as success, so we parse the body.
     try {
       const parsed = JSON.parse(body);
       if (parsed && parsed.success === false) {
@@ -256,14 +258,15 @@ export class SnovioCRMProvider implements CRMProvider {
         );
       }
     } catch (err) {
-      // If it's our own thrown error, rethrow. Otherwise swallow JSON parse errors
-      // (body wasn't JSON, but status was 2xx so assume success).
-      if (err instanceof Error && err.message.startsWith("Snov.io add-prospect soft-fail")) {
+      // Rethrow our own soft-fail error; swallow JSON parse errors on
+      // non-JSON 2xx bodies (treat as success).
+      if (
+        err instanceof Error &&
+        err.message.startsWith("Snov.io add-prospect soft-fail")
+      ) {
         throw err;
       }
     }
-    // Surface the body via console for deploy-preview diagnosis.
-    console.log("[Snov.io] add-prospect response:", res.status, body.slice(0, 500));
   }
 
   async syncSubmission(data: CRMSubmissionData): Promise<void> {
