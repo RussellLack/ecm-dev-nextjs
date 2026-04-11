@@ -77,12 +77,18 @@ export async function POST(request: Request) {
       console.error("Failed to patch tool submission record:", err),
     );
 
-    // ─── Activate in Snov.io (fire-and-forget) ───
+    // ─── Activate in Snov.io (synchronous + debug capture) ───
     const crm = getCRMProvider();
+    let snovioDebug: Record<string, unknown> = {
+      providerKind: crm?.constructor?.name ?? "unknown",
+      hasClientId: !!process.env.SNOVIO_CLIENT_ID,
+      hasClientSecret: !!process.env.SNOVIO_CLIENT_SECRET,
+      hasToolListId: !!process.env.SNOVIO_LIST_ID_TOOL,
+    };
     if (crm instanceof SnovioCRMProvider) {
       const [firstName, ...rest] = displayName.split(/\s+/);
-      crm
-        .pushToolProspect({
+      try {
+        await crm.pushToolProspect({
           toolType: submission.toolType,
           email,
           firstName,
@@ -91,26 +97,28 @@ export async function POST(request: Request) {
           role: submission.role,
           consentVersion:
             typeof consentVersion === "string" ? consentVersion : undefined,
-        })
-        .then(() =>
-          patchSubmissionRecord(submissionId, {
-            activation: {
-              pushedToCrm: true,
-              pushedAt: new Date().toISOString(),
-              error: null,
-            },
-          }),
-        )
-        .catch((err: unknown) => {
-          console.error("Snov.io tool push failed (non-blocking):", err);
-          void patchSubmissionRecord(submissionId, {
-            activation: {
-              pushedToCrm: false,
-              pushedAt: new Date().toISOString(),
-              error: err instanceof Error ? err.message : String(err),
-            },
-          });
         });
+        await patchSubmissionRecord(submissionId, {
+          activation: {
+            pushedToCrm: true,
+            pushedAt: new Date().toISOString(),
+            error: null,
+          },
+        });
+        snovioDebug.pushedToCrm = true;
+      } catch (err: unknown) {
+        console.error("Snov.io tool push failed:", err);
+        const errMsg = err instanceof Error ? err.message : String(err);
+        snovioDebug.pushedToCrm = false;
+        snovioDebug.error = errMsg;
+        await patchSubmissionRecord(submissionId, {
+          activation: {
+            pushedToCrm: false,
+            pushedAt: new Date().toISOString(),
+            error: errMsg,
+          },
+        }).catch(() => {});
+      }
     }
 
     const results =
@@ -124,6 +132,7 @@ export async function POST(request: Request) {
       return NextResponse.json({
         success: true,
         warning: "Email delivery skipped (no API key)",
+        snovioDebug,
       });
     }
 
@@ -175,7 +184,7 @@ export async function POST(request: Request) {
       );
     }
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ success: true, snovioDebug });
   } catch (error: unknown) {
     console.error("Tool email error:", error);
     return NextResponse.json(
