@@ -331,19 +331,16 @@ export class SnovioCRMProvider implements CRMProvider {
       console.warn("[Snov.io] SNOVIO_LIST_ID_TOOL not set — skipping");
       return { listId: "(unset)" };
     }
-    // Let caller catch errors — pushToolProspect no longer swallows them.
+    // NOTE: Snov.io rejects custom fields that aren't pre-defined in the
+    // account (422 "Custom fields [...] not found"). For MVP activation we
+    // push only email + name + list membership, and rely on the Netlify
+    // Blobs archive record as the source of truth for metadata. If richer
+    // CRM enrichment is wanted later, create matching custom fields in
+    // Snov.io first (Settings → Custom Fields), then re-enable the payload.
     await this.pushToList(listId, {
       email: params.email,
       firstName: params.firstName,
       lastName: params.lastName,
-      customFields: {
-        source: `ecm.dev tool: ${params.toolType}`,
-        toolType: params.toolType,
-        company: params.company ?? "",
-        role: params.role ?? "",
-        consentVersion: params.consentVersion ?? "",
-        submittedAt: new Date().toISOString(),
-      },
     });
     return { listId };
   }
