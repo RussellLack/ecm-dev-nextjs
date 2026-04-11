@@ -241,10 +241,29 @@ export class SnovioCRMProvider implements CRMProvider {
       res = await doCall(token);
     }
 
+    const body = await res.text().catch(() => "");
+
     if (!res.ok) {
-      const body = await res.text().catch(() => "");
       throw new Error(`Snov.io add-prospect failed: ${res.status} ${body}`);
     }
+
+    // Snov.io returns 200 OK with { success: false, message: "..." } on validation errors.
+    try {
+      const parsed = JSON.parse(body);
+      if (parsed && parsed.success === false) {
+        throw new Error(
+          `Snov.io add-prospect soft-fail: ${parsed.message || body}`,
+        );
+      }
+    } catch (err) {
+      // If it's our own thrown error, rethrow. Otherwise swallow JSON parse errors
+      // (body wasn't JSON, but status was 2xx so assume success).
+      if (err instanceof Error && err.message.startsWith("Snov.io add-prospect soft-fail")) {
+        throw err;
+      }
+    }
+    // Surface the body via console for deploy-preview diagnosis.
+    console.log("[Snov.io] add-prospect response:", res.status, body.slice(0, 500));
   }
 
   async syncSubmission(data: CRMSubmissionData): Promise<void> {
@@ -306,29 +325,27 @@ export class SnovioCRMProvider implements CRMProvider {
     company?: string;
     role?: string;
     consentVersion?: string;
-  }): Promise<void> {
+  }): Promise<{ listId: string }> {
     const listId = this.toolListId;
     if (!listId) {
       console.warn("[Snov.io] SNOVIO_LIST_ID_TOOL not set — skipping");
-      return;
+      return { listId: "(unset)" };
     }
-    try {
-      await this.pushToList(listId, {
-        email: params.email,
-        firstName: params.firstName,
-        lastName: params.lastName,
-        customFields: {
-          source: `ecm.dev tool: ${params.toolType}`,
-          toolType: params.toolType,
-          company: params.company ?? "",
-          role: params.role ?? "",
-          consentVersion: params.consentVersion ?? "",
-          submittedAt: new Date().toISOString(),
-        },
-      });
-    } catch (err) {
-      console.error("[Snov.io] pushToolProspect failed (non-blocking):", err);
-    }
+    // Let caller catch errors — pushToolProspect no longer swallows them.
+    await this.pushToList(listId, {
+      email: params.email,
+      firstName: params.firstName,
+      lastName: params.lastName,
+      customFields: {
+        source: `ecm.dev tool: ${params.toolType}`,
+        toolType: params.toolType,
+        company: params.company ?? "",
+        role: params.role ?? "",
+        consentVersion: params.consentVersion ?? "",
+        submittedAt: new Date().toISOString(),
+      },
+    });
+    return { listId };
   }
 }
 

@@ -88,7 +88,7 @@ export async function POST(request: Request) {
     if (crm instanceof SnovioCRMProvider) {
       const [firstName, ...rest] = displayName.split(/\s+/);
       try {
-        await crm.pushToolProspect({
+        const pushResult = await crm.pushToolProspect({
           toolType: submission.toolType,
           email,
           firstName,
@@ -98,6 +98,7 @@ export async function POST(request: Request) {
           consentVersion:
             typeof consentVersion === "string" ? consentVersion : undefined,
         });
+        snovioDebug.listIdUsed = pushResult.listId;
         await patchSubmissionRecord(submissionId, {
           activation: {
             pushedToCrm: true,
