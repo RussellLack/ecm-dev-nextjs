@@ -1,4 +1,9 @@
-import "server-only";
+// NOTE: no `import "server-only"` here — this module is also invoked by
+// scripts/backfill-intel-enrichment.ts (a plain Node script, not a React
+// Server Component). server-only's runtime check would throw otherwise.
+// Safety is maintained by convention: never import from a client
+// component. Callers today: the Next.js webhook receiver
+// (app/api/intel/hook/route.ts) and the backfill script.
 import Anthropic from "@anthropic-ai/sdk";
 import { randomUUID } from "node:crypto";
 import { sanityIntelWriteClient as sanityWriteClient } from "@/lib/intel/sanity.write";
