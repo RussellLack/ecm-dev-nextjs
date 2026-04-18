@@ -25,7 +25,8 @@ export default function CookieConsent() {
     localStorage.setItem(STORAGE_KEY, "accepted");
     setConsent("accepted");
     setVisible(false);
-    // Fire any analytics init here in future
+    // Notify Analytics component so it can load GTM + GA4 without a reload.
+    window.dispatchEvent(new Event("ecm:consent-granted"));
   };
 
   const handleDecline = () => {

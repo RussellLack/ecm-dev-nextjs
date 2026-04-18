@@ -46,8 +46,8 @@ export function middleware(request: NextRequest) {
     // 'unsafe-inline'. This is the standard Next.js App Router trade-off.
     `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com`,
     `font-src 'self' https://fonts.gstatic.com`,
-    `img-src 'self' data: blob: https://cdn.sanity.io`,
-    `connect-src 'self' https://cdn.sanity.io`,
+    `img-src 'self' data: blob: https://cdn.sanity.io https://*.google-analytics.com https://www.googletagmanager.com`,
+    `connect-src 'self' https://cdn.sanity.io https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com`,
     `frame-ancestors 'none'`,
     `form-action 'self'`,
     `base-uri 'self'`,

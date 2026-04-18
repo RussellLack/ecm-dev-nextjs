@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import CookieConsent from "@/components/CookieConsent";
+import Analytics from "@/components/Analytics";
 
 const siteUrl = "https://ecm.dev";
 const siteName = "ECM.DEV";
@@ -73,6 +74,7 @@ export default async function RootLayout({
         <Header />
         <main>{children}</main>
         <Footer />
+        <Analytics />
         <CookieConsent />
       </body>
     </html>
