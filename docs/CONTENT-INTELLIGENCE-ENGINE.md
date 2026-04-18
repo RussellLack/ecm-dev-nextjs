@@ -1,12 +1,22 @@
 # Content Intelligence Engine — Design & Implementation Spec
 
-**Status:** design ready for staged implementation
-**Stack fit:** Next.js 16 + Sanity v5 + Netlify (matches this repo)
+**Status:** implemented; intel content lives in a separate Sanity project
+**Stack fit:** Next.js 16 + two Sanity projects + Netlify
 **LLM:** Anthropic Claude (claude-sonnet-4-6 for processing; claude-haiku-4-5 for dedup/classification)
 
 Replaces Feedly as a content-intake system and emits AI-enriched, structured
 articles that can drive the website feed, newsletter generation, and
 downstream AI workflows.
+
+## Project boundary
+
+Intel content is deliberately isolated in its **own Sanity project**
+(`ecm-dev-intel`) with its own Studio (`intel-studio/` in this repo, or
+extracted to a separate repo later). The main ECM.DEV website Sanity
+project (`ecm-dev`) never sees intel schemas or documents — editors pick
+between the two studios explicitly. The Next.js site in this repo reads
+from both projects via different clients: `lib/sanity.server.ts` for the
+main site, `lib/intel/sanity.ts` for intel.
 
 ---
 
@@ -127,8 +137,9 @@ Every distribution endpoint returns this shape:
 
 ## 5. Sanity schema (drop-in files)
 
-All four files go in `sanity/schemas/` and are registered in
-`sanity/schemas/index.ts`.
+All four schema files live in `intel-studio/schemas/` and are registered
+in `intel-studio/schemas/index.ts`. They are deployed to the
+`ecm-dev-intel` Sanity project only — never to the main website project.
 
 ### `sanity/schemas/intelTopic.ts`
 
@@ -713,49 +724,81 @@ code, different declaration) and return `202` immediately from the webhook.
 
 ## 8. Environment variables
 
-Add to `.env.local` and the Netlify dashboard (scope = all contexts):
+All intel-specific vars use the `INTEL_` prefix so they can never be
+confused with the main-site equivalents.
+
+### Next.js site (Netlify — scope: all contexts)
 
 ```
 ANTHROPIC_API_KEY=sk-ant-...
-SANITY_PROJECT_ID=xxxxxxxx
-SANITY_DATASET=production
-SANITY_WRITE_TOKEN=...         # Editor, write-scoped
-SANITY_WEBHOOK_SECRET=...      # random 32+ char string
+
+# ECM-DEV-INTEL Sanity project — read + write tokens
+NEXT_PUBLIC_SANITY_INTEL_PROJECT_ID=xxxxxxxx
+NEXT_PUBLIC_SANITY_INTEL_DATASET=production
+SANITY_INTEL_API_READ_TOKEN=...           # Viewer scope
+SANITY_INTEL_API_WRITE_TOKEN=...          # Editor scope
+SANITY_INTEL_WEBHOOK_SECRET=...           # any 32+ char random string
 ```
 
-`SANITY_WRITE_TOKEN` must **not** be exposed to the client — it's only
-referenced in server-only code (`lib/intel/*`, API routes, functions).
+The main website vars (`NEXT_PUBLIC_SANITY_PROJECT_ID`,
+`SANITY_API_READ_TOKEN`, etc.) are unchanged — intel does not touch them.
+
+### Intel Studio (`intel-studio/`)
+
+```
+SANITY_STUDIO_INTEL_PROJECT_ID=xxxxxxxx   # same as above
+SANITY_STUDIO_INTEL_DATASET=production
+SANITY_STUDIO_INTEL_HOST=ecm-dev-intel    # optional, used by sanity.cli.ts
+SANITY_INTEL_API_WRITE_TOKEN=...          # only needed for scripts/seed-topics.ts
+```
+
+None of the write tokens or the webhook secret are exposed to the
+browser — they're only referenced in server-only code (`lib/intel/*`,
+API routes, the Netlify scheduled function, and the Studio seeder).
 
 ---
 
 ## 9. Deployment steps
 
-1. **Branch & install deps**
+1. **Create the Sanity project** at https://www.sanity.io/manage:
+   - Name: `ecm-dev-intel`
+   - Dataset: `production`
+   - Create two tokens (Project → API → Tokens):
+     a. Viewer-scoped (read) — becomes `SANITY_INTEL_API_READ_TOKEN`
+     b. Editor-scoped (write) — becomes `SANITY_INTEL_API_WRITE_TOKEN`
+2. **Deploy the intel Studio**:
    ```bash
-   git checkout -b feat/intel-engine
-   npm i rss-parser @anthropic-ai/sdk @netlify/blobs @sanity/webhook
+   cd intel-studio
+   SANITY_STUDIO_INTEL_PROJECT_ID=<project-id> npx sanity deploy
    ```
-2. **Add schemas** — copy the four files from §5 into `sanity/schemas/` and
-   register them in `sanity/schemas/index.ts`.
-3. **Deploy Studio schema** — commit; `@sanity/cli` will pick it up on next
-   `sanity deploy`. (Do NOT use the `deploy_schema` MCP tool — this repo has
-   local Studio files.)
-4. **Seed taxonomy** — create `intelTopic` docs for the 11 seed tags listed
-   in §3.2 (one-off script in `scripts/seed-intel-topics.ts` or via Studio).
-5. **Add sources** — via Studio: create `intelSource` docs with feed URLs
-   you want to track. Start with 3–5 feeds to validate behaviour.
-6. **Deploy code** — push; Netlify will:
-   - build Next.js (routes under `app/api/intel/*` become live)
+   First deploy hosts it at `ecm-dev-intel.sanity.studio` (overridable
+   via `SANITY_STUDIO_INTEL_HOST`).
+3. **Seed the taxonomy** (once):
+   ```bash
+   cd intel-studio
+   SANITY_STUDIO_INTEL_PROJECT_ID=<id> \
+   SANITY_INTEL_API_WRITE_TOKEN=<token> \
+   npx tsx scripts/seed-topics.ts
+   ```
+4. **Add sources** — in the intel Studio, create `intelSource` docs
+   with the RSS URLs you want to track. Toggle `autoPublish` on trusted
+   feeds to skip the review queue.
+5. **Configure Netlify env vars** — see §8 for the full list. Scope
+   "all contexts" so they're available to both the build and the
+   scheduled function at runtime.
+6. **Deploy the Next.js site** — push; Netlify will:
+   - build Next.js (routes under `app/api/intel/*` and the `/intel`
+     page become live)
    - register the scheduled function (`netlify/functions/intel-ingest.ts`)
    - register the Netlify Blobs store `intel-seen` on first write
-7. **Configure env vars** — in Netlify site settings (see §8).
-8. **Create Sanity webhooks** — see §7.
-9. **Smoke test**
+7. **Create Sanity webhooks** — in the `ecm-dev-intel` project (not the
+   main one). See §7 for the trigger definitions and target URL.
+8. **Smoke test**
    - Trigger the scheduled function manually:
-     `curl -X POST https://ecm.dev/.netlify/functions/intel-ingest`
-   - Check Studio: new `intelArticle` drafts with `status="raw"` appear.
-   - Confirm webhook fires, processor patches to `status="enriched"`.
-   - Publish one manually; hit `/api/intel/feed` and verify JSON.
+     `curl -X POST https://<site>.netlify.app/.netlify/functions/intel-ingest`
+   - Open the intel Studio: new `intelArticle` docs with `status="raw"` appear.
+   - Confirm the webhook fires and the processor patches to `status="enriched"`.
+   - Publish one manually; hit `/api/intel/feed` and `/intel` and verify.
 
 ---
 

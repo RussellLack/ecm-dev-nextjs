@@ -25,7 +25,7 @@ type Payload = {
 };
 
 export async function POST(req: Request) {
-  const secret = process.env.SANITY_WEBHOOK_SECRET;
+  const secret = process.env.SANITY_INTEL_WEBHOOK_SECRET;
   if (!secret) {
     return NextResponse.json(
       { error: "Webhook secret not configured" },

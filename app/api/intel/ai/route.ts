@@ -1,4 +1,4 @@
-import { sanityFetch } from "@/lib/sanity.server";
+import { sanityIntelFetch as sanityFetch } from "@/lib/intel/sanity";
 
 /**
  * LLM-optimised intel feed.

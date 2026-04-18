@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { sanityFetch } from "@/lib/sanity.server";
+import { sanityIntelFetch as sanityFetch } from "@/lib/intel/sanity";
 import IntelBoard, { type IntelArticle, type IntelTopic } from "./IntelBoard";
 
 export const metadata: Metadata = {

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { sanityFetch } from "@/lib/sanity.server";
+import { sanityIntelFetch as sanityFetch } from "@/lib/intel/sanity";
 
 /**
  * Newsletter digest endpoint.

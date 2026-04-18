@@ -1,11 +1,13 @@
 /**
  * One-off seed script for the Content Intelligence Engine taxonomy.
  *
- * Usage (from the repo root):
- *   SANITY_API_WRITE_TOKEN=... \
- *   NEXT_PUBLIC_SANITY_PROJECT_ID=... \
- *   NEXT_PUBLIC_SANITY_DATASET=production \
- *   npx tsx scripts/seed-intel-topics.ts
+ * Run against the ECM-DEV-INTEL Sanity project (separate from the main
+ * website project). Usage from the intel-studio directory:
+ *
+ *   SANITY_STUDIO_INTEL_PROJECT_ID=... \
+ *   SANITY_STUDIO_INTEL_DATASET=production \
+ *   SANITY_INTEL_API_WRITE_TOKEN=... \
+ *   npx tsx scripts/seed-topics.ts
  *
  * Idempotent: if a topic with the given slug already exists it is left
  * alone.
@@ -29,10 +31,10 @@ const TOPICS = [
 ];
 
 const client = createClient({
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "",
-  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || "production",
+  projectId: process.env.SANITY_STUDIO_INTEL_PROJECT_ID || "",
+  dataset: process.env.SANITY_STUDIO_INTEL_DATASET || "production",
   apiVersion: "2026-04-01",
-  token: process.env.SANITY_API_WRITE_TOKEN,
+  token: process.env.SANITY_INTEL_API_WRITE_TOKEN,
   useCdn: false,
 });
 

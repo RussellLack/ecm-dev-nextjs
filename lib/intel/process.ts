@@ -1,7 +1,7 @@
 import "server-only";
 import Anthropic from "@anthropic-ai/sdk";
 import { randomUUID } from "node:crypto";
-import { sanityWriteClient } from "@/lib/sanity.write";
+import { sanityIntelWriteClient as sanityWriteClient } from "@/lib/intel/sanity.write";
 
 /**
  * Content Intelligence Engine — processing layer.

@@ -2,7 +2,7 @@ import "server-only";
 import Parser from "rss-parser";
 import { createHash } from "node:crypto";
 import { getStore } from "@netlify/blobs";
-import { sanityWriteClient } from "@/lib/sanity.write";
+import { sanityIntelWriteClient as sanityWriteClient } from "@/lib/intel/sanity.write";
 
 /**
  * Content Intelligence Engine — ingestion layer.
