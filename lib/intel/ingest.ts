@@ -1,4 +1,7 @@
-import "server-only";
+// NOTE: no `import "server-only"` here — this module is imported by the
+// Netlify scheduled function (netlify/functions/intel-ingest.ts), which
+// is a plain Node Lambda, not a React Server Component. The server-only
+// package throws at runtime outside of RSC context.
 import Parser from "rss-parser";
 import { createHash } from "node:crypto";
 import { getStore } from "@netlify/blobs";

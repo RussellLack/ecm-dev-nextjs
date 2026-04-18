@@ -1,15 +1,21 @@
-import "server-only";
 import { createClient } from "@sanity/client";
 
 /**
- * Server-only WRITE client for the ECM-DEV-INTEL Sanity project.
+ * WRITE client for the ECM-DEV-INTEL Sanity project.
  *
  * Used by the ingester (netlify/functions/intel-ingest.ts) and the
  * processor (lib/intel/process.ts) to create intelArticle drafts and
  * patch them with enriched fields.
  *
- * NEVER import from a client component — the `import "server-only"` guard
- * will fail the build if that happens.
+ * This file deliberately does NOT use `import "server-only"` because the
+ * ingester runs in a Netlify Lambda (plain Node), not a React Server
+ * Component — server-only's runtime check would throw.
+ *
+ * Safety is maintained by convention: this module must never be imported
+ * by a client component. It is currently only imported by:
+ *   - lib/intel/ingest.ts  (Netlify function)
+ *   - lib/intel/process.ts (Next.js route handler via the webhook receiver)
+ * Both paths execute server-side only.
  */
 export const sanityIntelWriteClient = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_INTEL_PROJECT_ID || "",
