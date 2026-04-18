@@ -6,7 +6,7 @@ interface Testimonial {
   name: string;
   role: string;
   quote: string;
-  commentary: string;
+  commentary?: string;
 }
 
 export default function TestimonialsClient({
