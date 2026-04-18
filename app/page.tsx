@@ -1,5 +1,8 @@
 import Link from "next/link";
 import ContactForm from "@/components/ContactForm";
+import TickerTape from "@/components/TickerTape";
+import TestimonialsClient from "@/components/TestimonialsClient";
+import { getTickerTape } from "@/lib/queries";
 
 /* ─── Static fallback data (replace with Sanity queries once connected) ─── */
 
@@ -120,7 +123,8 @@ const blogPosts = [
   { title: "Optimizely AEO/GEO: AI Visibility", date: "Aug 15, 2025", slug: "optimizely-aeo-geo-ai-visibility" },
 ];
 
-export default function HomePage() {
+export default async function HomePage() {
+  const tickerTape = await getTickerTape();
   return (
     <>
       {/* ─── HERO ─── */}
@@ -263,26 +267,14 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ─── TESTIMONIALS MARQUEE ─── */}
-      <section className="py-4 bg-ecm-green overflow-hidden">
-        <div className="animate-marquee whitespace-nowrap">
-          <span className="text-ecm-lime font-barlow font-bold text-2xl lg:text-4xl mx-8">
-            AI RUNS ON CONTENT.
-          </span>
-          <span className="text-ecm-lime font-barlow font-bold text-2xl lg:text-4xl mx-8">
-            AI RUNS ON CONTENT.
-          </span>
-          <span className="text-ecm-lime font-barlow font-bold text-2xl lg:text-4xl mx-8">
-            AI RUNS ON CONTENT.
-          </span>
-          <span className="text-ecm-lime font-barlow font-bold text-2xl lg:text-4xl mx-8">
-            AI RUNS ON CONTENT.
-          </span>
-        </div>
-      </section>
+      {/* ─── TICKER TAPE ─── */}
+      {tickerTape?.phrases?.length > 0 && (
+        <TickerTape phrases={tickerTape.phrases} separator={tickerTape.separator} />
+      )}
+      
 
       {/* ─── TESTIMONIALS CAROUSEL ─── */}
-      <TestimonialsCarousel testimonials={testimonials} />
+      <TestimonialsClient testimonials={testimonials} />
 
       {/* ─── CTA ─── */}
       <section className="py-24 bg-gray-100 text-center">
@@ -308,13 +300,3 @@ export default function HomePage() {
   );
 }
 
-/* ─── Testimonials Carousel (client component) ─── */
-function TestimonialsCarousel({
-  testimonials,
-}: {
-  testimonials: {quote: string; name: string; role: string; commentary?: string}[];
-}) {
-  return <TestimonialsClient testimonials={testimonials} />;
-}
-
-import TestimonialsClient from "@/components/TestimonialsClient";

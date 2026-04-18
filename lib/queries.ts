@@ -94,3 +94,11 @@ export async function getPost(slug: string) {
     { slug }
   );
 }
+
+// Ticker tape (homepage marquee)
+export async function getTickerTape() {
+  return client.fetch(`*[_type == "tickerTape"][0]{
+    phrases,
+    separator
+  }`);
+}
