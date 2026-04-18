@@ -39,6 +39,7 @@
     "node_modules",
     "scripts",
     "sanity.config.ts",
-    "sanity.cli.ts"
+    "sanity.cli.ts",
+    "intel-studio"
   ]
 }
