@@ -54,7 +54,8 @@ export async function getCaseStudies() {
 export async function getCaseStudy(slug: string) {
   return sanityFetch(
     `*[_type == "caseStudy" && slug.current == $slug][0]{
-      title, slug, client, tags, description, image
+      title, slug, client, tags, description, image,
+      whoThisIsFor, theChallenge, whatWePropose, whyItMatters, body
     }`,
     { slug }
   );

@@ -1,8 +1,66 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import { PortableText, type PortableTextComponents } from "@portabletext/react";
 import { getCaseStudy, getAllCaseStudySlugs } from "@/lib/queries";
 import { urlFor } from "@/lib/sanity";
+
+const portableTextComponents: PortableTextComponents = {
+  types: {
+    image: ({ value }) => {
+      if (!value?.asset) return null;
+      return (
+        <Image
+          src={urlFor(value).width(1200).url()}
+          alt={value.alt || ""}
+          width={1200}
+          height={675}
+          className="rounded-lg my-6 w-full h-auto"
+        />
+      );
+    },
+  },
+  block: {
+    h2: ({ children }) => (
+      <h2 className="text-ecm-green font-barlow font-bold text-2xl mt-8 mb-3">
+        {children}
+      </h2>
+    ),
+    h3: ({ children }) => (
+      <h3 className="text-ecm-green font-barlow font-bold text-xl mt-6 mb-2">
+        {children}
+      </h3>
+    ),
+    normal: ({ children }) => (
+      <p className="text-ecm-gray-dark leading-relaxed text-base lg:text-lg mb-4">
+        {children}
+      </p>
+    ),
+  },
+  list: {
+    bullet: ({ children }) => (
+      <ul className="list-disc pl-6 mb-4 text-ecm-gray-dark space-y-2">
+        {children}
+      </ul>
+    ),
+    number: ({ children }) => (
+      <ol className="list-decimal pl-6 mb-4 text-ecm-gray-dark space-y-2">
+        {children}
+      </ol>
+    ),
+  },
+  marks: {
+    link: ({ children, value }) => (
+      <a
+        href={value?.href}
+        className="text-ecm-green underline hover:text-ecm-green/80"
+      >
+        {children}
+      </a>
+    ),
+    strong: ({ children }) => <strong className="font-semibold">{children}</strong>,
+  },
+};
 
 export const revalidate = 60;
 
@@ -131,6 +189,59 @@ export default async function CaseStudyDetailPage({
                     </p>
                   </div>
                 </div>
+
+                {cs.whoThisIsFor && (
+                  <div className="mt-10">
+                    <h2 className="text-ecm-green font-barlow font-bold text-2xl mb-3">
+                      Who This Is For
+                    </h2>
+                    <p className="text-ecm-gray-dark leading-relaxed text-base lg:text-lg whitespace-pre-line">
+                      {cs.whoThisIsFor}
+                    </p>
+                  </div>
+                )}
+
+                {cs.theChallenge && (
+                  <div className="mt-10">
+                    <h2 className="text-ecm-green font-barlow font-bold text-2xl mb-3">
+                      The Challenge
+                    </h2>
+                    <p className="text-ecm-gray-dark leading-relaxed text-base lg:text-lg whitespace-pre-line">
+                      {cs.theChallenge}
+                    </p>
+                  </div>
+                )}
+
+                {cs.whatWePropose && (
+                  <div className="mt-10">
+                    <h2 className="text-ecm-green font-barlow font-bold text-2xl mb-3">
+                      What We Propose
+                    </h2>
+                    <p className="text-ecm-gray-dark leading-relaxed text-base lg:text-lg whitespace-pre-line">
+                      {cs.whatWePropose}
+                    </p>
+                  </div>
+                )}
+
+                {cs.whyItMatters && (
+                  <div className="mt-10">
+                    <h2 className="text-ecm-green font-barlow font-bold text-2xl mb-3">
+                      Why It Matters
+                    </h2>
+                    <p className="text-ecm-gray-dark leading-relaxed text-base lg:text-lg whitespace-pre-line">
+                      {cs.whyItMatters}
+                    </p>
+                  </div>
+                )}
+
+                {cs.body && Array.isArray(cs.body) && cs.body.length > 0 && (
+                  <div className="mt-10">
+                    <PortableText
+                      value={cs.body}
+                      components={portableTextComponents}
+                    />
+                  </div>
+                )}
               </div>
             </div>
 
