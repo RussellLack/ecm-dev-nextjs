@@ -47,9 +47,9 @@ export default function PrivacyPage() {
                 1. Who we are
               </h2>
               <p>
-                ECM.DEV is operated by Russell Lack. When this policy refers to
-                &ldquo;we&rdquo;, &ldquo;us&rdquo;, or &ldquo;our&rdquo;, it
-                means ECM.DEV and its operator. Our website address is{" "}
+                When this policy refers to &ldquo;we&rdquo;, &ldquo;us&rdquo;,
+                or &ldquo;our&rdquo;, it means ECM.DEV and its operator. Our
+                website address is{" "}
                 <a
                   href="https://ecm.dev"
                   className="text-ecm-green underline hover:text-ecm-green-dark transition-colors"
