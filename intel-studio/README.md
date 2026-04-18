@@ -48,36 +48,43 @@ SANITY_INTEL_API_WRITE_TOKEN=...
 SANITY_INTEL_WEBHOOK_SECRET=...
 ```
 
-## Deploy
+## Install & deploy
 
-From this directory:
+This directory has its own `package.json` and `node_modules` — it does
+**not** share dependencies with the parent Next.js repo. That's
+deliberate: Sanity 5.x peer-requires React 19, which the parent still
+pins to React 18.
+
+First run:
 
 ```bash
 cd intel-studio
-npx sanity deploy
+npm install
+SANITY_STUDIO_INTEL_PROJECT_ID=<project-id> npx sanity deploy
 ```
 
-First deploy pushes the schema and puts the studio at
-`<studioHost>.sanity.studio` (defaults to `ecm-dev-intel.sanity.studio`).
+The first `sanity deploy` will prompt for login and a studio hostname.
+Subsequent deploys reuse both. The studio lands at
+`<studioHost>.sanity.studio` (defaults to `ecm-dev-intel.sanity.studio`
+via `sanity.cli.ts`).
 
 ## Seed the taxonomy (once, after first deploy)
 
 ```bash
 cd intel-studio
-npx tsx scripts/seed-topics.ts
+SANITY_STUDIO_INTEL_PROJECT_ID=<id> \
+SANITY_INTEL_API_WRITE_TOKEN=<editor-token> \
+npm run seed
 ```
+
+Idempotent — re-running prints `✓ X (exists)` for already-seeded topics.
 
 ## Extracting to its own repo
 
 When you're ready to decouple entirely:
 
-1. `git filter-repo --path intel-studio/ --path-rename intel-studio/:` (or
-   copy the directory) into a fresh repo.
-2. Add a `package.json` with `sanity`, `@sanity/client` as dependencies.
-3. Add `@sanity/assist` and `@sanity/scheduled-publishing` if you want the
-   same plugins as the main studio.
-4. Deploys stay the same — the schema is identical and the project ID is
-   driven by env vars.
-
-Until extracted, this directory piggy-backs on the parent repo's
-`node_modules/sanity` install.
+1. Copy this directory to a fresh repo (or use `git filter-repo --path intel-studio/ --path-rename intel-studio/:`).
+2. Everything needed is already here — `package.json`, schemas, structure,
+   actions, CLI config. No parent-repo dependencies.
+3. Deploys keep working — the project ID is driven by env vars, not
+   hard-coded.

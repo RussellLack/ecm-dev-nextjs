@@ -1,0 +1,25 @@
+{
+  "name": "ecm-dev-intel-studio",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Standalone Sanity Studio for the ECM.DEV Content Intelligence Engine. Deploys to the ecm-dev-intel Sanity project.",
+  "scripts": {
+    "dev": "sanity dev",
+    "build": "sanity build",
+    "deploy": "sanity deploy",
+    "seed": "tsx scripts/seed-topics.ts"
+  },
+  "dependencies": {
+    "@sanity/client": "^6.22.0",
+    "react": "^19.2.2",
+    "react-dom": "^19.2.2",
+    "sanity": "^5.21.0",
+    "styled-components": "^6.1.15"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/react": "^19.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.0.0"
+  }
+}
