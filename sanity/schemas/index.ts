@@ -11,6 +11,10 @@ import serviceRecommendation from "./serviceRecommendation";
 import assessmentSubmission from "./assessmentSubmission";
 import toolSubmission from "./toolSubmission";
 import seo from "./seo";
+import intelSource from "./intelSource";
+import intelTopic from "./intelTopic";
+import intelVendor from "./intelVendor";
+import intelArticle from "./intelArticle";
 
 export const schemaTypes = [
   homePage,
@@ -26,6 +30,11 @@ export const schemaTypes = [
   serviceRecommendation,
   assessmentSubmission,
   toolSubmission,
+  // Content Intelligence Engine
+  intelSource,
+  intelTopic,
+  intelVendor,
+  intelArticle,
   // Shared objects
   seo,
 ];
