@@ -81,7 +81,10 @@ type IntelArticleDoc = {
   title: string;
   url: string;
   rawContent?: string;
+  source?: { _ref?: string };
 };
+
+type IntelSourceSnapshot = { autoPublish?: boolean } | null;
 
 function extractJson(text: string): EnrichmentPayload {
   const start = text.indexOf("{");
@@ -140,6 +143,16 @@ export async function enrichArticle(docId: string): Promise<void> {
   const topicRefs = await resolveTopics(topics);
   const vendorRefs = await resolveVendors(parsed.vendors ?? []);
 
+  // If the source is whitelisted for auto-publish, skip the human review
+  // queue and go straight to status="published".
+  const source = doc.source?._ref
+    ? ((await sanityWriteClient.fetch(
+        `*[_id == $id][0]{ autoPublish }`,
+        { id: doc.source._ref }
+      )) as IntelSourceSnapshot)
+    : null;
+  const nextStatus = source?.autoPublish ? "published" : "enriched";
+
   await sanityWriteClient
     .patch(docId)
     .setIfMissing({ processingLog: [] })
@@ -150,10 +163,12 @@ export async function enrichArticle(docId: string): Promise<void> {
       linkedinPost: parsed.linkedin_post,
       topics: topicRefs,
       vendors: vendorRefs,
-      status: "enriched",
+      status: nextStatus,
     })
     .append("processingLog", [
-      `${new Date().toISOString()} enriched via ${MODEL}`,
+      `${new Date().toISOString()} enriched via ${MODEL}${
+        nextStatus === "published" ? " (auto-published)" : ""
+      }`,
     ])
     .commit();
 }

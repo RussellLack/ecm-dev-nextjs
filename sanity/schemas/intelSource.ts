@@ -30,6 +30,14 @@ export default defineType({
       type: "boolean",
       initialValue: true,
     }),
+    defineField({
+      name: "autoPublish",
+      title: "Auto-publish (skip human review)",
+      type: "boolean",
+      description:
+        "If true, enriched articles from this source go straight to status=\"published\" and appear on the public feed without a human flipping the switch. Only enable for fully trusted sources.",
+      initialValue: false,
+    }),
     defineField({ name: "lastFetchedAt", type: "datetime", readOnly: true }),
     defineField({ name: "lastError", type: "string", readOnly: true }),
   ],
