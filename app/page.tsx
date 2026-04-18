@@ -312,7 +312,7 @@ export default function HomePage() {
 function TestimonialsCarousel({
   testimonials,
 }: {
-  testimonials: typeof testimonials;
+  testimonials: {quote: string; name: string; role: string; commentary?: string}[];
 }) {
   return <TestimonialsClient testimonials={testimonials} />;
 }
