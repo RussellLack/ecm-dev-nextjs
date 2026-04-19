@@ -29,7 +29,7 @@ import { sanityIntelWriteClient as sanityWriteClient } from "@/lib/intel/sanity.
 
 const anthropic = new Anthropic();
 
-const MODEL = "claude-sonnet-4-6";
+const MODEL = "claude-haiku-4-5";
 const MAX_BODY_CHARS = 8000;
 
 const SYSTEM = `You are ECM.DEV's content intelligence analyst.
