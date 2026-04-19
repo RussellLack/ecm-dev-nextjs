@@ -225,10 +225,16 @@ async function resolveVendors(
 
     let id = knownByLower.get(key);
     if (!id) {
-      // Create as a DRAFT so editors review/merge new vendors in Studio.
-      const draftId = `drafts.intelVendor-${randomUUID()}`;
+      // Create the vendor as a published document (no `drafts.` prefix).
+      // We originally tried to create drafts so editors could review/merge
+      // duplicates before publish, but Sanity rejects references to
+      // non-existent documents — the article reference couldn't resolve
+      // until the editor hit publish. Creating published-directly unblocks
+      // the pipeline. Editors can still merge duplicates in Studio by
+      // editing references on the winning vendor and deleting the losers.
+      const newId = `intelVendor-${randomUUID()}`;
       const created = await sanityWriteClient.create({
-        _id: draftId,
+        _id: newId,
         _type: "intelVendor",
         name,
         slug: {
@@ -236,9 +242,7 @@ async function resolveVendors(
           current: key.replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""),
         },
       });
-      // Reference the *published* id (strip drafts. prefix) so that when the
-      // editor publishes the vendor, this article's reference resolves.
-      id = created._id.replace(/^drafts\./, "");
+      id = created._id;
     }
     refs.push({ _type: "reference", _ref: id, _key: randomUUID() });
   }
