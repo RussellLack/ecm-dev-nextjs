@@ -17,7 +17,6 @@ const siteLinks = [
 const resourceLinks = [
   { name: "Guides", href: "/guides" },
   { name: "Assessments", href: "/assessments" },
-  { name: "Privacy Policy", href: "/privacy" },
 ];
 
 export default function Footer() {
@@ -128,6 +127,13 @@ export default function Footer() {
         <div className="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-2">
           <p className="text-white/40 text-sm">
             &copy; {new Date().getFullYear()} ECM.DEV. All rights reserved.
+            {" · "}
+            <Link
+              href="/privacy"
+              className="hover:text-ecm-lime transition-colors"
+            >
+              Privacy Policy
+            </Link>
           </p>
           <p className="text-white/30 text-xs font-barlow">
             Web design by{" "}
