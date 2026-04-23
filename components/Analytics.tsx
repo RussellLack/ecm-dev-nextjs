@@ -33,16 +33,22 @@ window.gtag = gtag;
 
 var stored = null;
 try { stored = localStorage.getItem('${STORAGE_KEY}'); } catch (e) {}
-var granted = stored === 'accepted';
-var state = granted ? 'granted' : 'denied';
+var accepted = stored === 'accepted';
+var declined = stored === 'declined';
+
+// First-party analytics runs under legitimate interest — default granted,
+// but honoured as denied if the user explicitly clicks Decline.
+var analyticsState = declined ? 'denied' : 'granted';
+// Ads and personalization stay denied until the user explicitly accepts.
+var adState = accepted ? 'granted' : 'denied';
 
 gtag('consent', 'default', {
-  ad_storage: state,
-  ad_user_data: state,
-  ad_personalization: state,
-  analytics_storage: state,
-  functionality_storage: state,
-  personalization_storage: state,
+  ad_storage: adState,
+  ad_user_data: adState,
+  ad_personalization: adState,
+  analytics_storage: analyticsState,
+  functionality_storage: adState,
+  personalization_storage: adState,
   security_storage: 'granted',
   wait_for_update: 500
 });
