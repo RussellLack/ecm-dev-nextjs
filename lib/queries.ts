@@ -120,3 +120,32 @@ export async function getAllGuideSlugs() {
     `*[_type == "guide"]{ "slug": slug.current }`
   );
 }
+
+export const getServicePageQuery = `
+  *[_type == "service" && slug.current == $slug][0] {
+    title,
+    category,
+    heroDescription,
+    problemIntro,
+    diagnosisItems,
+    reframeStatement,
+    ctaText,
+    ctaUrl,
+    "packages": *[_type == "servicePackage" && category == ^.category] | order(order asc) {
+      title,
+      description,
+      features,
+      order
+    }
+  }
+`;
+
+export const getAllServicesQuery = `
+  *[_type == "service"] | order(order asc) {
+    title,
+    summary,
+    heroDescription,
+    "slug": slug.current,
+    category
+  }
+`;
