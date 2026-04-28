@@ -3,6 +3,8 @@ import Image from "next/image";
 import type { Metadata } from "next";
 import { PortableText } from "@portabletext/react";
 import { getPost } from "@/lib/queries";
+import JsonLd from "@/components/JsonLd";
+import { articleSchema } from "@/lib/structuredData";
 import { urlFor } from "@/lib/sanity";
 import { notFound } from "next/navigation";
 
@@ -137,6 +139,7 @@ export default async function PostPage({
 
   return (
     <>
+      <JsonLd data={articleSchema(post, slug, "post")} />
       {/* Hero with tags + title */}
       <section className="bg-ecm-green py-16 lg:py-24">
         <div className="max-w-3xl mx-auto px-6 text-center">

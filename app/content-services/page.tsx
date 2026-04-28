@@ -1,5 +1,7 @@
 import ServicePageLayout from "@/components/ServicePageLayout";
 import { getServicePackages, getServiceHero } from "@/lib/queries";
+import JsonLd from "@/components/JsonLd";
+import { serviceSchema } from "@/lib/structuredData";
 
 export const revalidate = 60;
 
@@ -23,12 +25,25 @@ export default async function ContentServicesPage() {
   }
 
   const service = await getServiceHero("services").catch(() => null);
+  const description =
+    service?.heroDescription ||
+    "Designing effective content strategies, optimizing content workflows, and improving overall content performance. We can also train employees with the skills and knowledge to build a content marketing engine to support business growth strategies.";
 
   return (
-    <ServicePageLayout
-      title="CONTENT SERVICES"
-      heroDescription={service?.heroDescription || "Designing effective content strategies, optimizing content workflows, and improving overall content performance. We can also train employees with the skills and knowledge to build a content marketing engine to support business growth strategies."}
-      packages={packages}
-    />
+    <>
+      <JsonLd
+        data={serviceSchema({
+          name: "Content Services",
+          description,
+          path: "/content-services",
+          serviceType: "Content Operations",
+        })}
+      />
+      <ServicePageLayout
+        title="CONTENT SERVICES"
+        heroDescription={description}
+        packages={packages}
+      />
+    </>
   );
 }

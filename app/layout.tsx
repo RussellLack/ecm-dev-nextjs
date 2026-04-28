@@ -5,6 +5,8 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import CookieConsent from "@/components/CookieConsent";
 import Analytics from "@/components/Analytics";
+import JsonLd from "@/components/JsonLd";
+import { organizationSchema } from "@/lib/structuredData";
 
 const siteUrl = "https://ecm.dev";
 const siteName = "ECM.DEV";
@@ -71,6 +73,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased">
+        <JsonLd data={organizationSchema()} />
         <Header />
         <main>{children}</main>
         <Footer />

@@ -1,5 +1,7 @@
 import ServicePageLayout from "@/components/ServicePageLayout";
 import { getServicePackages, getServiceHero } from "@/lib/queries";
+import JsonLd from "@/components/JsonLd";
+import { serviceSchema } from "@/lib/structuredData";
 
 export const revalidate = 60;
 
@@ -22,12 +24,25 @@ export default async function ContentLocalizationPage() {
   }
 
   const service = await getServiceHero("localization").catch(() => null);
+  const description =
+    service?.heroDescription ||
+    "Our marketing collateral localization services offer a combination of machine translation with human editing to ensure high-quality translations. These packages cover documents, websites, presentations, social media posts, graphics, and videos.";
 
   return (
-    <ServicePageLayout
-      title="CONTENT LOCALIZATION"
-      heroDescription={service?.heroDescription || "Our marketing collateral localization services offer a combination of machine translation with human editing to ensure high-quality translations. These packages cover documents, websites, presentations, social media posts, graphics, and videos."}
-      packages={packages}
-    />
+    <>
+      <JsonLd
+        data={serviceSchema({
+          name: "Content Localization Services",
+          description,
+          path: "/content-localization",
+          serviceType: "Content Localization",
+        })}
+      />
+      <ServicePageLayout
+        title="CONTENT LOCALIZATION"
+        heroDescription={description}
+        packages={packages}
+      />
+    </>
   );
 }

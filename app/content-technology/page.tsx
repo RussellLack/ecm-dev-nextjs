@@ -1,5 +1,7 @@
 import ServicePageLayout from "@/components/ServicePageLayout";
 import { getServicePackages, getServiceHero } from "@/lib/queries";
+import JsonLd from "@/components/JsonLd";
+import { serviceSchema } from "@/lib/structuredData";
 
 export const revalidate = 60;
 
@@ -22,12 +24,25 @@ export default async function ContentTechnologyPage() {
   }
 
   const service = await getServiceHero("technology").catch(() => null);
+  const description =
+    service?.heroDescription ||
+    "Elevate your content with cutting-edge technology. Maximize your content\u2019s potential with our Content Technology Management Services. We offer advisory and implementation services to help you create, manage, store, and distribute content seamlessly across multiple channels.";
 
   return (
-    <ServicePageLayout
-      title="CONTENT TECHNOLOGY"
-      heroDescription={service?.heroDescription || "Elevate your content with cutting-edge technology. Maximize your content\u2019s potential with our Content Technology Management Services. We offer advisory and implementation services to help you create, manage, store, and distribute content seamlessly across multiple channels."}
-      packages={packages}
-    />
+    <>
+      <JsonLd
+        data={serviceSchema({
+          name: "Content Technology Consulting",
+          description,
+          path: "/content-technology",
+          serviceType: "Content Technology",
+        })}
+      />
+      <ServicePageLayout
+        title="CONTENT TECHNOLOGY"
+        heroDescription={description}
+        packages={packages}
+      />
+    </>
   );
 }
