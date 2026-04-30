@@ -6,6 +6,7 @@ import { getCaseStudy, getAllCaseStudySlugs, getRelatedCaseStudies } from "@/lib
 import { urlFor } from "@/lib/sanity";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import RelatedContent from "@/components/RelatedContent";
+import { internalLinkHref } from "@/lib/internalLink";
 import { INDUSTRY_OPTIONS } from "@/sanity/schemas/taxonomyOptions";
 
 const INDUSTRY_LABEL: Record<string, string> = Object.fromEntries(
@@ -65,6 +66,18 @@ const portableTextComponents: PortableTextComponents = {
         {children}
       </a>
     ),
+    internalLink: ({ children, value }: any) => {
+      const href = internalLinkHref(value?.reference);
+      if (!href) return <>{children}</>;
+      return (
+        <Link
+          href={href}
+          className="text-ecm-green underline hover:text-ecm-green/80"
+        >
+          {children}
+        </Link>
+      );
+    },
     strong: ({ children }) => <strong className="font-semibold">{children}</strong>,
   },
 };
