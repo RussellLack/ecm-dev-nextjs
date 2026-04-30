@@ -1,4 +1,5 @@
 import ServicePageLayout from "@/components/ServicePageLayout";
+import PillarClusters from "@/components/PillarClusters";
 import { getServicePackages, getServiceHero } from "@/lib/queries";
 import JsonLd from "@/components/JsonLd";
 import { serviceSchema } from "@/lib/structuredData";
@@ -44,6 +45,7 @@ export default async function ContentServicesPage() {
         heroDescription={description}
         packages={packages}
       />
+      <PillarClusters pillar="services" />
     </>
   );
 }

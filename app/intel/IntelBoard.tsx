@@ -1,8 +1,10 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
 
 export type IntelTopic = { title: string; slug: string };
+export type IntelVendorRef = { name: string; slug: string | null };
 
 export type IntelArticle = {
   id: string;
@@ -13,7 +15,7 @@ export type IntelArticle = {
   summary: string | null;
   keyInsight: string | null;
   topics: IntelTopic[];
-  vendors: string[];
+  vendors: IntelVendorRef[];
   contentAngle: string | null;
 };
 
@@ -123,14 +125,6 @@ export default function IntelBoard({
                 <time dateTime={article.publishedDate ?? undefined}>
                   {formatDate(article.publishedDate)}
                 </time>
-                {article.topics.length > 0 && (
-                  <>
-                    <span>·</span>
-                    <span>
-                      {article.topics.map((t) => t.title).join(" · ")}
-                    </span>
-                  </>
-                )}
               </div>
 
               <h2 className="text-xl font-semibold text-neutral-900">
@@ -166,10 +160,29 @@ export default function IntelBoard({
                 </p>
               )}
 
-              {article.vendors.length > 0 && (
-                <p className="mt-3 text-xs text-neutral-500">
-                  Vendors mentioned: {article.vendors.join(", ")}
-                </p>
+              {(article.topics.length > 0 || article.vendors.length > 0) && (
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {article.topics.map((t) => (
+                    <Link
+                      key={`topic-${t.slug}`}
+                      href={`/intel/topic/${t.slug}`}
+                      className="text-xs rounded-full border border-neutral-300 bg-white px-3 py-1 text-neutral-700 hover:border-neutral-500 transition-colors"
+                    >
+                      {t.title}
+                    </Link>
+                  ))}
+                  {article.vendors
+                    .filter((v) => v.slug)
+                    .map((v) => (
+                      <Link
+                        key={`vendor-${v.slug}`}
+                        href={`/intel/vendor/${v.slug}`}
+                        className="text-xs rounded-full border border-neutral-900/10 bg-neutral-900 text-white px-3 py-1 hover:bg-neutral-800 transition-colors"
+                      >
+                        {v.name}
+                      </Link>
+                    ))}
+                </div>
               )}
             </li>
           ))}

@@ -1,4 +1,5 @@
 import { defineType, defineField, defineArrayMember } from "sanity";
+import { PILLAR_OPTIONS } from "./taxonomyOptions";
 
 export default defineType({
   name: "assessment",
@@ -38,6 +39,15 @@ export default defineType({
       type: "number",
       description: "How long the assessment takes (shown on intro screen)",
       initialValue: 5,
+    }),
+    defineField({
+      name: "pillars",
+      title: "Service Pillars",
+      description:
+        "Which service pillar(s) this assessment supports. Drives cross-linking from /content-technology, /content-services, /content-localization.",
+      type: "array",
+      of: [{ type: "string" }],
+      options: { list: [...PILLAR_OPTIONS] },
     }),
     defineField({
       name: "sections",

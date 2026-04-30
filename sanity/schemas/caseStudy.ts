@@ -1,4 +1,5 @@
 import { defineType, defineField } from "sanity";
+import { PILLAR_OPTIONS, INDUSTRY_OPTIONS } from "./taxonomyOptions";
 
 export default defineType({
   name: "caseStudy",
@@ -28,6 +29,32 @@ export default defineType({
       type: "array",
       of: [{ type: "string" }],
       options: { layout: "tags" },
+    }),
+    defineField({
+      name: "pillars",
+      title: "Service Pillars",
+      description:
+        "Which service pillar(s) this case study supports. Drives cross-linking from /content-technology, /content-services, /content-localization.",
+      type: "array",
+      of: [{ type: "string" }],
+      options: { list: [...PILLAR_OPTIONS] },
+    }),
+    defineField({
+      name: "industry",
+      title: "Industry",
+      description:
+        "Primary industry. Powers future /industries/<slug> hub pages and cross-linking between case studies.",
+      type: "string",
+      options: { list: [...INDUSTRY_OPTIONS] },
+    }),
+    defineField({
+      name: "relatedCaseStudies",
+      title: "Related Case Studies",
+      description:
+        "Editor-curated related case studies. Falls back to shared-pillar/industry matches when empty.",
+      type: "array",
+      of: [{ type: "reference", to: [{ type: "caseStudy" }] }],
+      validation: (rule) => rule.max(6),
     }),
     defineField({
       name: "description",

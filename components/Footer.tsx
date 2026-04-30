@@ -10,6 +10,7 @@ const servicesLinks = [
 const siteLinks = [
   { name: "Home", href: "/" },
   { name: "Work", href: "/case-study" },
+  { name: "Industries", href: "/industries" },
   { name: "Blog", href: "/blog" },
   { name: "Contact", href: "/contact" },
 ];
@@ -17,6 +18,7 @@ const siteLinks = [
 const resourceLinks = [
   { name: "Guides", href: "/guides" },
   { name: "Assessments", href: "/assessments" },
+  { name: "Intel", href: "/intel" },
 ];
 
 export default function Footer() {

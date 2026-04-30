@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
-import { sanityIntelFetch as sanityFetch } from "@/lib/intel/sanity";
-import IntelBoard, { type IntelArticle, type IntelTopic } from "./IntelBoard";
+import {
+  getActiveIntelTopics,
+  getPublishedIntelArticles,
+} from "@/lib/intel/queries";
+import IntelBoard from "./IntelBoard";
 
 export const metadata: Metadata = {
   title: "Intel — industry signal, curated",
@@ -14,26 +17,8 @@ export const revalidate = 300;
 
 export default async function IntelPage() {
   const [articles, topics] = await Promise.all([
-    sanityFetch<IntelArticle[]>(
-      `*[_type == "intelArticle" && status == "published"]
-        | order(publishedDate desc) [0...100] {
-          "id": _id,
-          title,
-          url,
-          "source": source->{ "title": title, "url": homepageUrl },
-          "publishedDate": publishedDate,
-          summary,
-          "keyInsight": keyInsight,
-          "topics": topics[]->{ "title": title, "slug": slug.current },
-          "vendors": vendors[]->name,
-          "contentAngle": contentAngle
-        }`
-    ),
-    sanityFetch<IntelTopic[]>(
-      `*[_type == "intelTopic"] | order(title asc) {
-         "title": title, "slug": slug.current
-       }`
-    ),
+    getPublishedIntelArticles(100),
+    getActiveIntelTopics(),
   ]);
 
   return <IntelBoard articles={articles ?? []} topics={topics ?? []} />;
