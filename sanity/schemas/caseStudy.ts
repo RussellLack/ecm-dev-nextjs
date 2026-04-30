@@ -96,7 +96,29 @@ export default defineType({
       title: "Body",
       type: "array",
       of: [
-        { type: "block" },
+        {
+          type: "block",
+          marks: {
+            annotations: [
+              { type: "internalLink" },
+              {
+                name: "link",
+                type: "object",
+                fields: [
+                  {
+                    name: "href",
+                    type: "url",
+                    validation: (rule: any) =>
+                      rule.uri({
+                        scheme: ["http", "https", "mailto", "tel"],
+                        allowRelative: false,
+                      }),
+                  },
+                ],
+              },
+            ],
+          },
+        },
         { type: "image", options: { hotspot: true } },
       ],
     }),

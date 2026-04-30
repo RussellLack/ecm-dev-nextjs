@@ -10,6 +10,7 @@ import MixedRelated from "@/components/MixedRelated";
 import { articleSchema } from "@/lib/structuredData";
 import { urlFor } from "@/lib/sanity";
 import { tagToSlug } from "@/lib/tags";
+import { internalLinkHref } from "@/lib/internalLink";
 import { notFound } from "next/navigation";
 
 export async function generateMetadata({
@@ -103,6 +104,18 @@ const ptComponents = {
         {children}
       </a>
     ),
+    internalLink: ({ children, value }: any) => {
+      const href = internalLinkHref(value?.reference);
+      if (!href) return <>{children}</>;
+      return (
+        <Link
+          href={href}
+          className="text-ecm-green underline hover:text-ecm-lime transition-colors"
+        >
+          {children}
+        </Link>
+      );
+    },
     strong: ({ children }: any) => (
       <strong className="font-semibold text-ecm-green-dark">{children}</strong>
     ),

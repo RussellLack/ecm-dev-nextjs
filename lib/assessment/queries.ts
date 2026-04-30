@@ -237,3 +237,16 @@ export async function getAssessmentsByPillar(pillar: string, limit = 4) {
     { pillar, limit }
   );
 }
+
+/**
+ * Pillars for a single assessment (used by the results page to drive
+ * "what to do next" cross-links to the matching pillar / guides / case
+ * studies). Returns [] when the assessment has none configured.
+ */
+export async function getAssessmentPillars(slug: string): Promise<string[]> {
+  const result = await sanityFetch<{ pillars?: string[] } | null>(
+    `*[_type == "assessment" && slug.current == $slug][0]{ pillars }`,
+    { slug }
+  );
+  return result?.pillars ?? [];
+}
