@@ -28,6 +28,7 @@
     "react-is": "^19.2.2",
     "rss-parser": "^3.13.0",
     "sanity": "^5.14.1",
+    "sanity-plugin-internationalized-array": "^5.1.1",
     "sanity-plugin-media": "^4.1.1",
     "sanity-plugin-taxonomy-manager": "^4.7.1",
     "styled-components": "^6.3.12"
