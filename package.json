@@ -18,7 +18,7 @@
     "@sanity/dashboard": "^5.0.1",
     "@sanity/document-internationalization": "^6.0.6",
     "@sanity/image-url": "^1.2.0",
-    "@sanity/scheduled-publishing": "^0.1.14",
+    "@sanity/language-filter": "^5.0.1",
     "@sanity/vision": "^5.19.0",
     "@sanity/webhook": "^4.0.4",
     "next": "^16.2.2",
