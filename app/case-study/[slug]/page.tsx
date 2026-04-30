@@ -6,6 +6,11 @@ import { getCaseStudy, getAllCaseStudySlugs, getRelatedCaseStudies } from "@/lib
 import { urlFor } from "@/lib/sanity";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import RelatedContent from "@/components/RelatedContent";
+import { INDUSTRY_OPTIONS } from "@/sanity/schemas/taxonomyOptions";
+
+const INDUSTRY_LABEL: Record<string, string> = Object.fromEntries(
+  INDUSTRY_OPTIONS.map((o) => [o.value, o.title])
+);
 
 const portableTextComponents: PortableTextComponents = {
   types: {
@@ -293,6 +298,20 @@ export default async function CaseStudyDetailPage({
                     <p className="text-ecm-green font-barlow font-semibold text-sm">
                       {cs.client}
                     </p>
+                  </div>
+                )}
+
+                {cs.industry && (
+                  <div className="mb-4">
+                    <p className="text-ecm-gray text-xs uppercase tracking-wider mb-1">
+                      Industry
+                    </p>
+                    <Link
+                      href={`/industries/${cs.industry}`}
+                      className="inline-block bg-ecm-green/10 text-ecm-green text-xs font-barlow font-semibold px-3 py-1 rounded-full hover:bg-ecm-green hover:text-white transition-colors"
+                    >
+                      {INDUSTRY_LABEL[cs.industry] ?? cs.industry}
+                    </Link>
                   </div>
                 )}
 

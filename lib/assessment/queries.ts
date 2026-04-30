@@ -220,3 +220,20 @@ export async function getAllAssessmentSlugs() {
     }`
   );
 }
+
+/**
+ * Assessments for a given pillar (drives cluster sections on pillar pages).
+ *
+ * Editor-published assessments only; the three hardcoded tools on
+ * /assessments (process, lead-magnet, localisation-cost) are linked in by
+ * pillar pages directly since they don't live in Sanity.
+ */
+export async function getAssessmentsByPillar(pillar: string, limit = 4) {
+  return sanityFetch(
+    `*[_type == "assessment" && defined(slug.current) && $pillar in pillars[]]
+      | order(_createdAt desc)[0...$limit]{
+      _id, title, slug, subtitle, introText, estimatedMinutes
+    }`,
+    { pillar, limit }
+  );
+}

@@ -95,6 +95,35 @@ export async function getAllCaseStudySlugs() {
   );
 }
 
+// Case studies for a given pillar (drives cluster sections on pillar pages).
+export async function getCaseStudiesByPillar(pillar: string, limit = 4) {
+  return sanityFetch(
+    `*[_type == "caseStudy" && $pillar in pillars[]] | order(order asc)[0...$limit]{
+      _id, title, slug, client, tags, description, image, industry
+    }`,
+    { pillar, limit }
+  );
+}
+
+// Case studies for a given industry (drives /industries/<slug> hubs).
+export async function getCaseStudiesByIndustry(industry: string) {
+  return sanityFetch(
+    `*[_type == "caseStudy" && industry == $industry] | order(order asc){
+      _id, title, slug, client, tags, description, image, industry
+    }`,
+    { industry }
+  );
+}
+
+// Distinct list of industries actually used by a case study (for
+// /industries listing + generateStaticParams).
+export async function getAllUsedIndustries(): Promise<string[]> {
+  const industries = await sanityFetch<string[]>(
+    `array::unique(*[_type == "caseStudy" && defined(industry)].industry)`
+  );
+  return (industries ?? []).filter(Boolean);
+}
+
 // Blog posts
 export async function getBlogPosts(limit = 10) {
   return sanityFetch(
@@ -157,6 +186,16 @@ export async function getAllPostTags(): Promise<string[]> {
   return (tags ?? []).filter(Boolean);
 }
 
+// Recent posts for a given pillar (drives cluster sections on pillar pages).
+export async function getPostsByPillar(pillar: string, limit = 4) {
+  return sanityFetch(
+    `*[_type == "post" && $pillar in pillars[]] | order(publishedAt desc)[0...$limit]{
+      _id, title, slug, excerpt, publishedAt, mainImage, tags
+    }`,
+    { pillar, limit }
+  );
+}
+
 // All guides (for /guides page)
 export async function getGuides() {
   return sanityFetch(
@@ -205,4 +244,14 @@ export async function getAllGuideTags(): Promise<string[]> {
     `array::unique(*[_type == "guide" && defined(tags)].tags[])`
   );
   return (tags ?? []).filter(Boolean);
+}
+
+// Guides for a given pillar (drives cluster sections on pillar pages).
+export async function getGuidesByPillar(pillar: string, limit = 4) {
+  return sanityFetch(
+    `*[_type == "guide" && $pillar in pillars[]] | order(seriesNumber asc, guideNumber asc)[0...$limit]{
+      _id, title, subtitle, slug, series, seriesNumber, guideNumber, excerpt, tags, mainImage
+    }`,
+    { pillar, limit }
+  );
 }

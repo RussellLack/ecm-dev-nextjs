@@ -1,5 +1,9 @@
 import type { MetadataRoute } from "next";
 import { sanityFetch } from "@/lib/sanity.server";
+import {
+  getActiveIntelTopics,
+  getActiveIntelVendors,
+} from "@/lib/intel/queries";
 import { tagToSlug } from "@/lib/tags";
 
 const siteUrl = "https://ecm.dev";
@@ -17,6 +21,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${siteUrl}/blog`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
     { url: `${siteUrl}/guides`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
     { url: `${siteUrl}/intel`, lastModified: new Date(), changeFrequency: "daily", priority: 0.7 },
+    { url: `${siteUrl}/industries`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
     { url: `${siteUrl}/contact`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.6 },
     { url: `${siteUrl}/privacy`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.3 },
   ];
@@ -132,6 +137,49 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.error("Sitemap: failed to fetch tag list", e);
   }
 
+  // Industry hub pages — one per distinct industry actually in use.
+  let industryEntries: MetadataRoute.Sitemap = [];
+  try {
+    const industries = await sanityFetch<string[]>(
+      `array::unique(*[_type == "caseStudy" && defined(industry)].industry)`
+    ).catch(() => [] as string[]);
+    industryEntries = (industries ?? [])
+      .filter(Boolean)
+      .map((slug) => ({
+        url: `${siteUrl}/industries/${slug}`,
+        lastModified: new Date(),
+        changeFrequency: "monthly" as const,
+        priority: 0.6,
+      }));
+  } catch (e) {
+    console.error("Sitemap: failed to fetch industries", e);
+  }
+
+  // Intel topic + vendor hubs (only those with at least one published article).
+  let intelHubEntries: MetadataRoute.Sitemap = [];
+  try {
+    const [topics, vendors] = await Promise.all([
+      getActiveIntelTopics().catch(() => []),
+      getActiveIntelVendors().catch(() => []),
+    ]);
+    intelHubEntries = [
+      ...(topics ?? []).map((t) => ({
+        url: `${siteUrl}/intel/topic/${t.slug}`,
+        lastModified: new Date(),
+        changeFrequency: "weekly" as const,
+        priority: 0.6,
+      })),
+      ...(vendors ?? []).map((v) => ({
+        url: `${siteUrl}/intel/vendor/${v.slug}`,
+        lastModified: new Date(),
+        changeFrequency: "weekly" as const,
+        priority: 0.6,
+      })),
+    ];
+  } catch (e) {
+    console.error("Sitemap: failed to fetch intel hubs", e);
+  }
+
   return [
     ...staticPages,
     ...blogEntries,
@@ -139,5 +187,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...assessmentEntries,
     ...guideEntries,
     ...tagEntries,
+    ...industryEntries,
+    ...intelHubEntries,
   ];
 }
