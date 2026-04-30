@@ -1,7 +1,6 @@
 import { defineConfig } from "sanity";
 import { structureTool } from "sanity/structure";
 import { dashboardTool } from "@sanity/dashboard";
-import { scheduledPublishing } from "@sanity/scheduled-publishing";
 import { documentInternationalization } from "@sanity/document-internationalization";
 import { assist } from "@sanity/assist";
 import { media } from "sanity-plugin-media";
@@ -28,7 +27,6 @@ export default defineConfig({
           ),
     }),
     dashboardTool(),
-    scheduledPublishing(),
     documentInternationalization({
       supportedLanguages: [
         { id: "en", title: "English" },
