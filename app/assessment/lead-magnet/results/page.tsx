@@ -1,6 +1,7 @@
 import { notFound, redirect } from "next/navigation";
 import { getToolSubmission } from "@/lib/assessment/queries";
 import LeadMagnetResults from "@/components/assessment/LeadMagnetResults";
+import AssessmentNextSteps from "@/components/assessment/AssessmentNextSteps";
 import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
@@ -39,13 +40,16 @@ export default async function LeadMagnetResultsPage({
   }
 
   return (
-    <LeadMagnetResults
-      submissionId={submission._id}
-      submittedAt={submission.submittedAt}
-      name={submission.name}
-      role={submission.role}
-      company={submission.company}
-      results={results}
-    />
+    <>
+      <LeadMagnetResults
+        submissionId={submission._id}
+        submittedAt={submission.submittedAt}
+        name={submission.name}
+        role={submission.role}
+        company={submission.company}
+        results={results}
+      />
+      <AssessmentNextSteps pillars={["services"]} currentSlug="lead-magnet" />
+    </>
   );
 }

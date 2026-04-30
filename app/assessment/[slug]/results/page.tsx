@@ -1,8 +1,12 @@
 import { notFound, redirect } from "next/navigation";
-import { getSubmission, getMaturityBands, getServiceRecommendations } from "@/lib/assessment/queries";
+import { getSubmission, getMaturityBands, getServiceRecommendations, getAssessmentPillars } from "@/lib/assessment/queries";
 import ResultsDashboard from "@/components/assessment/ResultsDashboard";
+import AssessmentNextSteps from "@/components/assessment/AssessmentNextSteps";
 import type { Metadata } from "next";
 import type { Recommendation } from "@/lib/assessment/types";
+
+type Pillar = "technology" | "services" | "localization";
+const VALID_PILLARS: readonly Pillar[] = ["technology", "services", "localization"];
 
 export const dynamic = "force-dynamic"; // always fetch fresh submission data
 
@@ -81,22 +85,32 @@ export default async function ResultsPage({
     }
   }
 
+  // Pillars for the matching assessment, used to cross-link the results
+  // page to the right service pillar / guides / case studies / assessments.
+  const rawPillars = await getAssessmentPillars(slug).catch(() => [] as string[]);
+  const pillars = rawPillars.filter((p): p is Pillar =>
+    VALID_PILLARS.includes(p as Pillar)
+  );
+
   return (
-    <ResultsDashboard
-      submissionId={sid}
-      firstName={submission.firstName || ""}
-      totalScore={submission.totalScore}
-      bandTitle={band?.title || submission.bandTitle || ""}
-      bandHeadline={band?.headline || ""}
-      bandDescription={band?.description || ""}
-      bandColor={band?.color || "#6B7280"}
-      bandLevel={submission.bandLevel}
-      dimensionScores={submission.dimensionScores || []}
-      weakAreas={weakAreas}
-      recommendations={mappedRecs}
-      resultsIntro={submission.assessment?.resultsIntro}
-      ctaHeading={submission.assessment?.resultsCtaHeading}
-      ctaBody={submission.assessment?.resultsCtaBody}
-    />
+    <>
+      <ResultsDashboard
+        submissionId={sid}
+        firstName={submission.firstName || ""}
+        totalScore={submission.totalScore}
+        bandTitle={band?.title || submission.bandTitle || ""}
+        bandHeadline={band?.headline || ""}
+        bandDescription={band?.description || ""}
+        bandColor={band?.color || "#6B7280"}
+        bandLevel={submission.bandLevel}
+        dimensionScores={submission.dimensionScores || []}
+        weakAreas={weakAreas}
+        recommendations={mappedRecs}
+        resultsIntro={submission.assessment?.resultsIntro}
+        ctaHeading={submission.assessment?.resultsCtaHeading}
+        ctaBody={submission.assessment?.resultsCtaBody}
+      />
+      <AssessmentNextSteps pillars={pillars} currentSlug={slug} />
+    </>
   );
 }
