@@ -288,3 +288,87 @@ export async function getGuidesByPillar(pillar: string, limit = 4) {
     { pillar, limit }
   );
 }
+
+// ─── Cross-type "one best match" helpers ──────────────────────────────────
+//
+// These power the MixedRelated component, which surfaces a 1-of-each-type
+// recommendation block at the foot of detail pages (a guide on a post,
+// a case study on a guide, etc.). Cross-type recommendations beat
+// same-type lists for crawl breadth and topical authority.
+//
+// The match logic prefers tag overlap (more specific) over pillar match
+// (broader) and returns the most recently published item that qualifies.
+// Returns null when nothing matches so the renderer can omit the slot.
+
+type CrossLinkArgs = {
+  excludeSlug?: string;
+  pillars?: string[];
+  tags?: string[];
+};
+
+export async function getOneRelatedGuide({
+  excludeSlug = "",
+  pillars = [],
+  tags = [],
+}: CrossLinkArgs) {
+  if (!pillars.length && !tags.length) return null;
+  return sanityFetch<any>(
+    `*[_type == "guide" && slug.current != $excludeSlug && (
+        count((tags[])[@ in $tags]) > 0 ||
+        count((pillars[])[@ in $pillars]) > 0
+      )]
+      | order(count((tags[])[@ in $tags]) desc, seriesNumber asc, guideNumber asc)[0]{
+        _id, title, subtitle, slug, series, guideNumber, excerpt, mainImage
+      }`,
+    { excludeSlug, pillars, tags }
+  );
+}
+
+export async function getOneRelatedCaseStudy({
+  excludeSlug = "",
+  pillars = [],
+  tags = [],
+}: CrossLinkArgs) {
+  if (!pillars.length && !tags.length) return null;
+  return sanityFetch<any>(
+    `*[_type == "caseStudy" && slug.current != $excludeSlug && (
+        count((pillars[])[@ in $pillars]) > 0 ||
+        count((tags[])[@ in $tags]) > 0
+      )]
+      | order(count((pillars[])[@ in $pillars]) desc, order asc)[0]{
+        _id, title, slug, client, description, image
+      }`,
+    { excludeSlug, pillars, tags }
+  );
+}
+
+export async function getOneRelatedPost({
+  excludeSlug = "",
+  pillars = [],
+  tags = [],
+}: CrossLinkArgs) {
+  if (!pillars.length && !tags.length) return null;
+  return sanityFetch<any>(
+    `*[_type == "post" && slug.current != $excludeSlug && (
+        count((tags[])[@ in $tags]) > 0 ||
+        count((pillars[])[@ in $pillars]) > 0
+      )]
+      | order(count((tags[])[@ in $tags]) desc, publishedAt desc)[0]{
+        _id, title, slug, excerpt, publishedAt, mainImage
+      }`,
+    { excludeSlug, pillars, tags }
+  );
+}
+
+export async function getOneRelatedAssessment({
+  pillars = [],
+}: Pick<CrossLinkArgs, "pillars">) {
+  if (!pillars.length) return null;
+  return sanityFetch<any>(
+    `*[_type == "assessment" && defined(slug.current) && count((pillars[])[@ in $pillars]) > 0]
+      | order(_createdAt desc)[0]{
+        _id, title, slug, subtitle, introText
+      }`,
+    { pillars }
+  );
+}

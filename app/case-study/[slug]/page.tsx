@@ -6,6 +6,7 @@ import { getCaseStudy, getAllCaseStudySlugs, getRelatedCaseStudies } from "@/lib
 import { urlFor } from "@/lib/sanity";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import RelatedContent from "@/components/RelatedContent";
+import MixedRelated from "@/components/MixedRelated";
 import { internalLinkHref } from "@/lib/internalLink";
 import { INDUSTRY_OPTIONS } from "@/sanity/schemas/taxonomyOptions";
 
@@ -363,6 +364,16 @@ export default async function CaseStudyDetailPage({
         heading="Related projects"
         items={relatedItems}
         hrefPrefix="/case-study"
+      />
+
+      {/* Mixed-type cross-links: one guide / post / intel topic /
+          assessment by shared tag or pillar. Case studies excluded since
+          the same-type RelatedContent above already covers them. */}
+      <MixedRelated
+        pillars={cs.pillars ?? []}
+        tags={cs.tags ?? []}
+        excludeType="caseStudy"
+        excludeSlug={slug}
       />
 
       {/* CTA */}

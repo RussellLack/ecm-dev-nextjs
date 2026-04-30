@@ -5,6 +5,7 @@ import { PortableText } from "@portabletext/react";
 import { getGuide, getAllGuideSlugs } from "@/lib/queries";
 import JsonLd from "@/components/JsonLd";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import MixedRelated from "@/components/MixedRelated";
 import { articleSchema } from "@/lib/structuredData";
 import { urlFor } from "@/lib/sanity";
 import { tagToSlug } from "@/lib/tags";
@@ -248,6 +249,16 @@ export default async function GuidePage({
           </div>
         </section>
       )}
+      {/* Mixed-type cross-links: one post / case study / intel topic /
+          assessment by shared tag or pillar. Guides excluded since the
+          curated relatedGuides block above already covers them. */}
+      <MixedRelated
+        pillars={(guide as any).pillars ?? []}
+        tags={guide.tags ?? []}
+        excludeType="guide"
+        excludeSlug={slug}
+      />
+
       {/* Back */}
       <section className="pb-16">
         <div className="max-w-3xl mx-auto px-6 text-center">

@@ -6,6 +6,7 @@ import { getPost, getRelatedPostsByTags } from "@/lib/queries";
 import JsonLd from "@/components/JsonLd";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import RelatedContent from "@/components/RelatedContent";
+import MixedRelated from "@/components/MixedRelated";
 import { articleSchema } from "@/lib/structuredData";
 import { urlFor } from "@/lib/sanity";
 import { tagToSlug } from "@/lib/tags";
@@ -259,6 +260,16 @@ export default async function PostPage({
 
       {/* Related posts — curated first, then tag-based fallback */}
       <RelatedContent items={relatedItems} hrefPrefix="/post" />
+
+      {/* Mixed-type cross-links: one guide / case study / intel topic /
+          assessment by shared tag or pillar. Posts excluded since the
+          same-type RelatedContent above already covers them. */}
+      <MixedRelated
+        pillars={post.pillars ?? []}
+        tags={post.tags ?? []}
+        excludeType="post"
+        excludeSlug={slug}
+      />
 
       {/* Back to blog */}
       <section className="pb-16">
