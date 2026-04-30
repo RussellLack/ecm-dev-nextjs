@@ -2,10 +2,13 @@ import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
 import { PortableText } from "@portabletext/react";
-import { getPost } from "@/lib/queries";
+import { getPost, getRelatedPostsByTags } from "@/lib/queries";
 import JsonLd from "@/components/JsonLd";
+import Breadcrumbs from "@/components/Breadcrumbs";
+import RelatedContent from "@/components/RelatedContent";
 import { articleSchema } from "@/lib/structuredData";
 import { urlFor } from "@/lib/sanity";
+import { tagToSlug } from "@/lib/tags";
 import { notFound } from "next/navigation";
 
 export async function generateMetadata({
@@ -137,21 +140,47 @@ export default async function PostPage({
       })
     : null;
 
+  // Curated relatedPosts override the tag-based fallback. When the editor
+  // picks fewer than three, we top up from posts sharing tags.
+  const curatedRelated = (post.relatedPosts ?? []).filter(Boolean);
+  const need = Math.max(0, 3 - curatedRelated.length);
+  const fallbackRelated =
+    need > 0 && post.tags?.length
+      ? await getRelatedPostsByTags(slug, post.tags, need + curatedRelated.length).catch(() => [])
+      : [];
+  const curatedSlugs = new Set(
+    curatedRelated.map((p: any) => p.slug?.current ?? p.slug)
+  );
+  const relatedItems = [
+    ...curatedRelated,
+    ...fallbackRelated.filter(
+      (p: any) => !curatedSlugs.has(p.slug?.current ?? p.slug)
+    ),
+  ].slice(0, 3);
+
   return (
     <>
       <JsonLd data={articleSchema(post, slug, "post")} />
-      {/* Hero with tags + title */}
-      <section className="bg-ecm-green py-16 lg:py-24">
-        <div className="max-w-3xl mx-auto px-6 text-center">
+      {/* Hero with breadcrumbs, tags + title */}
+      <section className="bg-ecm-green pt-2 pb-16 lg:pb-24">
+        <Breadcrumbs
+          items={[
+            { name: "Home", path: "/" },
+            { name: "Blog", path: "/blog" },
+            { name: post.title, path: null },
+          ]}
+        />
+        <div className="max-w-3xl mx-auto px-6 text-center pt-10 lg:pt-14">
           {post.tags?.length > 0 && (
             <div className="flex flex-wrap justify-center gap-2 mb-6">
-              {post.tags.map((tag: string, i: number) => (
-                <span
-                  key={i}
-                  className="bg-ecm-lime/20 text-ecm-lime text-xs font-barlow font-semibold px-3 py-1 rounded-full"
+              {post.tags.map((tag: string) => (
+                <Link
+                  key={tag}
+                  href={`/blog/tag/${tagToSlug(tag)}`}
+                  className="bg-ecm-lime/20 text-ecm-lime text-xs font-barlow font-semibold px-3 py-1 rounded-full hover:bg-ecm-lime/30 transition-colors"
                 >
                   {tag}
-                </span>
+                </Link>
               ))}
             </div>
           )}
@@ -200,19 +229,23 @@ export default async function PostPage({
                 Filed under
               </p>
               <div className="flex flex-wrap gap-2">
-                {post.tags.map((tag: string, i: number) => (
-                  <span
-                    key={i}
-                    className="inline-block border border-ecm-green/30 text-ecm-green text-xs font-barlow font-semibold px-4 py-1.5 rounded-full hover:bg-ecm-green hover:text-white transition-colors cursor-default"
+                {post.tags.map((tag: string) => (
+                  <Link
+                    key={tag}
+                    href={`/blog/tag/${tagToSlug(tag)}`}
+                    className="inline-block border border-ecm-green/30 text-ecm-green text-xs font-barlow font-semibold px-4 py-1.5 rounded-full hover:bg-ecm-green hover:text-white transition-colors"
                   >
                     {tag}
-                  </span>
+                  </Link>
                 ))}
               </div>
             </div>
           </div>
         </section>
       )}
+
+      {/* Related posts — curated first, then tag-based fallback */}
+      <RelatedContent items={relatedItems} hrefPrefix="/post" />
 
       {/* Back to blog */}
       <section className="pb-16">

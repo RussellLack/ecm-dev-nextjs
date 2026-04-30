@@ -107,3 +107,27 @@ export function serviceSchema(input: ServiceInput) {
     provider: ORG_REF,
   };
 }
+
+export type BreadcrumbItem = {
+  name: string;
+  // Path beginning with "/" or null for the current page (no link).
+  path: string | null;
+};
+
+/**
+ * BreadcrumbList JSON-LD. Pass an ordered list of crumbs ending with the
+ * current page; the current page typically has path: null and is rendered
+ * as un-linked text, but Google still expects it in the structured data.
+ */
+export function breadcrumbListSchema(items: BreadcrumbItem[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: item.name,
+      ...(item.path ? { item: `${SITE_URL}${item.path}` } : {}),
+    })),
+  };
+}

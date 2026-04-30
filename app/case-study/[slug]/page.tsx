@@ -2,8 +2,10 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { PortableText, type PortableTextComponents } from "@portabletext/react";
-import { getCaseStudy, getAllCaseStudySlugs } from "@/lib/queries";
+import { getCaseStudy, getAllCaseStudySlugs, getRelatedCaseStudies } from "@/lib/queries";
 import { urlFor } from "@/lib/sanity";
+import Breadcrumbs from "@/components/Breadcrumbs";
+import RelatedContent from "@/components/RelatedContent";
 
 const portableTextComponents: PortableTextComponents = {
   types: {
@@ -99,11 +101,42 @@ export default async function CaseStudyDetailPage({
 
   if (!cs) notFound();
 
+  // Curated relatedCaseStudies override fallback selection by shared
+  // pillar/industry/tags. Top up to three when curated is short.
+  const curatedRelated = (cs.relatedCaseStudies ?? []).filter(Boolean);
+  const need = Math.max(0, 3 - curatedRelated.length);
+  const fallbackRelated =
+    need > 0
+      ? await getRelatedCaseStudies(
+          slug,
+          cs.pillars ?? [],
+          cs.industry ?? null,
+          cs.tags ?? [],
+          need + curatedRelated.length
+        ).catch(() => [])
+      : [];
+  const curatedSlugs = new Set(
+    curatedRelated.map((c: any) => c.slug?.current ?? c.slug)
+  );
+  const relatedItems = [
+    ...curatedRelated,
+    ...fallbackRelated.filter(
+      (c: any) => !curatedSlugs.has(c.slug?.current ?? c.slug)
+    ),
+  ].slice(0, 3);
+
   return (
     <>
       {/* Hero */}
-      <section className="relative bg-ecm-green pt-12 sm:pt-16 lg:pt-24 pb-24 sm:pb-28 lg:pb-32 overflow-hidden">
-        <div className="max-w-4xl mx-auto px-6">
+      <section className="relative bg-ecm-green pt-2 pb-24 sm:pb-28 lg:pb-32 overflow-hidden">
+        <Breadcrumbs
+          items={[
+            { name: "Home", path: "/" },
+            { name: "Projects", path: "/case-study" },
+            { name: cs.title, path: null },
+          ]}
+        />
+        <div className="max-w-4xl mx-auto px-6 pt-8 sm:pt-12 lg:pt-16">
           {/* Back link */}
           <Link
             href="/case-study"
@@ -292,6 +325,13 @@ export default async function CaseStudyDetailPage({
           </div>
         </div>
       </section>
+
+      {/* Related case studies — curated first, then pillar/industry/tag fallback */}
+      <RelatedContent
+        heading="Related projects"
+        items={relatedItems}
+        hrefPrefix="/case-study"
+      />
 
       {/* CTA */}
       <section className="relative pt-28 pb-16 bg-ecm-green overflow-hidden">

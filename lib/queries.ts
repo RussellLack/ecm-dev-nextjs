@@ -54,10 +54,35 @@ export async function getCaseStudies() {
 export async function getCaseStudy(slug: string) {
   return sanityFetch(
     `*[_type == "caseStudy" && slug.current == $slug][0]{
-      title, slug, client, tags, description, image,
-      whoThisIsFor, theChallenge, whatWePropose, whyItMatters, body
+      title, slug, client, tags, pillars, industry, description, image,
+      whoThisIsFor, theChallenge, whatWePropose, whyItMatters, body,
+      relatedCaseStudies[]->{
+        _id, title, slug, client, tags, description, image
+      }
     }`,
     { slug }
+  );
+}
+
+// Related case studies: fallback selector by shared pillar/industry/tags.
+// Used by the case-study detail page when relatedCaseStudies is empty.
+export async function getRelatedCaseStudies(
+  slug: string,
+  pillars: string[] = [],
+  industry: string | null = null,
+  tags: string[] = [],
+  limit = 3
+) {
+  return sanityFetch(
+    `*[_type == "caseStudy" && slug.current != $slug && (
+        ($industry != null && industry == $industry) ||
+        count((pillars[])[@ in $pillars]) > 0 ||
+        count((tags[])[@ in $tags]) > 0
+      )]
+      | order(order asc)[0...$limit]{
+      _id, title, slug, client, tags, description, image
+    }`,
+    { slug, pillars, industry, tags, limit }
   );
 }
 
@@ -84,11 +109,52 @@ export async function getBlogPosts(limit = 10) {
 export async function getPost(slug: string) {
   return sanityFetch(
     `*[_type == "post" && slug.current == $slug][0]{
-      title, body, publishedAt, _updatedAt, _createdAt, mainImage, tags, excerpt,
-      seo { metaTitle, metaDescription, ogImage, noIndex }
+      title, body, publishedAt, _updatedAt, _createdAt, mainImage, tags, pillars, excerpt,
+      seo { metaTitle, metaDescription, ogImage, noIndex },
+      relatedPosts[]->{
+        _id, title, slug, excerpt, publishedAt, mainImage, tags
+      }
     }`,
     { slug }
   );
+}
+
+// Related posts: fallback selector by shared tags. Used by the post detail
+// page when curated relatedPosts is empty.
+export async function getRelatedPostsByTags(
+  slug: string,
+  tags: string[],
+  limit = 3
+) {
+  if (!tags?.length) return [];
+  return sanityFetch(
+    `*[_type == "post" && slug.current != $slug && count((tags[])[@ in $tags]) > 0]
+      | order(publishedAt desc)[0...$limit]{
+      _id, title, slug, excerpt, publishedAt, mainImage, tags
+    }`,
+    { slug, tags, limit }
+  );
+}
+
+// Posts filtered by a single tag (for /blog/tag/[tag] archive pages).
+// `tagName` (not `tag`) — `tag` is a reserved key on @sanity/client's
+// QueryParams interface (former fetch-option guard).
+export async function getPostsByTag(tag: string) {
+  return sanityFetch(
+    `*[_type == "post" && $tagName in tags[]] | order(publishedAt desc){
+      _id, title, slug, excerpt, publishedAt, mainImage, tags
+    }`,
+    { tagName: tag }
+  );
+}
+
+// Distinct list of tags used by any blog post (for tag archive
+// generateStaticParams + slug resolution).
+export async function getAllPostTags(): Promise<string[]> {
+  const tags = await sanityFetch<string[]>(
+    `array::unique(*[_type == "post" && defined(tags)].tags[])`
+  );
+  return (tags ?? []).filter(Boolean);
 }
 
 // All guides (for /guides page)
@@ -120,4 +186,23 @@ export async function getAllGuideSlugs() {
   return sanityFetch(
     `*[_type == "guide"]{ "slug": slug.current }`
   );
+}
+
+// Guides filtered by a single tag (for /guides/tag/[tag] archive pages).
+// See getPostsByTag re: the `tagName` rename.
+export async function getGuidesByTag(tag: string) {
+  return sanityFetch(
+    `*[_type == "guide" && $tagName in tags[]] | order(seriesNumber asc, guideNumber asc){
+      _id, title, subtitle, slug, series, seriesNumber, guideNumber, excerpt, tags, mainImage
+    }`,
+    { tagName: tag }
+  );
+}
+
+// Distinct list of tags used by any guide.
+export async function getAllGuideTags(): Promise<string[]> {
+  const tags = await sanityFetch<string[]>(
+    `array::unique(*[_type == "guide" && defined(tags)].tags[])`
+  );
+  return (tags ?? []).filter(Boolean);
 }

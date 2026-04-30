@@ -1,4 +1,5 @@
 import { defineType, defineField } from "sanity";
+import { PILLAR_OPTIONS } from "./taxonomyOptions";
 
 export default defineType({
   name: "guide",
@@ -54,6 +55,15 @@ export default defineType({
       type: "array",
       of: [{ type: "string" }],
       options: { layout: "tags" },
+    }),
+    defineField({
+      name: "pillars",
+      title: "Service Pillars",
+      description:
+        "Which service pillar(s) this guide supports. Drives cross-linking from /content-technology, /content-services, /content-localization.",
+      type: "array",
+      of: [{ type: "string" }],
+      options: { list: [...PILLAR_OPTIONS] },
     }),
     defineField({
       name: "mainImage",

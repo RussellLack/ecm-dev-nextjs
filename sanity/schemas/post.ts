@@ -1,4 +1,5 @@
 import { defineType, defineField } from "sanity";
+import { PILLAR_OPTIONS } from "./taxonomyOptions";
 
 export default defineType({
   name: "post",
@@ -41,6 +42,24 @@ export default defineType({
       type: "array",
       of: [{ type: "string" }],
       options: { layout: "tags" },
+    }),
+    defineField({
+      name: "pillars",
+      title: "Service Pillars",
+      description:
+        "Which service pillar(s) this post supports. Drives cross-linking from /content-technology, /content-services, /content-localization.",
+      type: "array",
+      of: [{ type: "string" }],
+      options: { list: [...PILLAR_OPTIONS] },
+    }),
+    defineField({
+      name: "relatedPosts",
+      title: "Related Posts",
+      description:
+        "Editor-curated related posts. Falls back to shared-tag matches when empty.",
+      type: "array",
+      of: [{ type: "reference", to: [{ type: "post" }] }],
+      validation: (rule) => rule.max(6),
     }),
     defineField({
       name: "body",

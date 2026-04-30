@@ -4,8 +4,10 @@ import type { Metadata } from "next";
 import { PortableText } from "@portabletext/react";
 import { getGuide, getAllGuideSlugs } from "@/lib/queries";
 import JsonLd from "@/components/JsonLd";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import { articleSchema } from "@/lib/structuredData";
 import { urlFor } from "@/lib/sanity";
+import { tagToSlug } from "@/lib/tags";
 import { notFound } from "next/navigation";
 
 export async function generateStaticParams() {
@@ -102,8 +104,18 @@ export default async function GuidePage({
     <>
       <JsonLd data={articleSchema(guide, slug, "guide")} />
       {/* Hero */}
-      <section className="bg-ecm-green py-16 lg:py-24">
-        <div className="max-w-3xl mx-auto px-6 text-center">
+      <section className="bg-ecm-green pt-2 pb-16 lg:pb-24">
+        <Breadcrumbs
+          items={[
+            { name: "Home", path: "/" },
+            { name: "Guides", path: "/guides" },
+            ...(guide.series
+              ? [{ name: guide.series, path: "/guides" as const }]
+              : []),
+            { name: guide.title, path: null },
+          ]}
+        />
+        <div className="max-w-3xl mx-auto px-6 text-center pt-10 lg:pt-14">
           <div className="flex items-center justify-center gap-3 mb-5">
             <span className="bg-ecm-lime/20 text-ecm-lime text-xs font-barlow font-bold px-3 py-1 rounded-full">
               {guide.series}
@@ -112,11 +124,14 @@ export default async function GuidePage({
           </div>
           {guide.tags?.length > 0 && (
             <div className="flex flex-wrap justify-center gap-2 mb-5">
-              {guide.tags.map((tag: string, i: number) => (
-                <span key={i}
-                  className="bg-ecm-lime/20 text-ecm-lime text-xs font-barlow font-semibold px-3 py-1 rounded-full">
+              {guide.tags.map((tag: string) => (
+                <Link
+                  key={tag}
+                  href={`/guides/tag/${tagToSlug(tag)}`}
+                  className="bg-ecm-lime/20 text-ecm-lime text-xs font-barlow font-semibold px-3 py-1 rounded-full hover:bg-ecm-lime/30 transition-colors"
+                >
                   {tag}
-                </span>
+                </Link>
               ))}
             </div>
           )}
@@ -163,11 +178,14 @@ export default async function GuidePage({
                 Filed under
               </p>
               <div className="flex flex-wrap gap-2">
-                {guide.tags.map((tag: string, i: number) => (
-                  <span key={i}
-                    className="inline-block border border-ecm-green/30 text-ecm-green text-xs font-barlow font-semibold px-4 py-1.5 rounded-full hover:bg-ecm-green hover:text-white transition-colors cursor-default">
+                {guide.tags.map((tag: string) => (
+                  <Link
+                    key={tag}
+                    href={`/guides/tag/${tagToSlug(tag)}`}
+                    className="inline-block border border-ecm-green/30 text-ecm-green text-xs font-barlow font-semibold px-4 py-1.5 rounded-full hover:bg-ecm-green hover:text-white transition-colors"
+                  >
                     {tag}
-                  </span>
+                  </Link>
                 ))}
               </div>
             </div>
