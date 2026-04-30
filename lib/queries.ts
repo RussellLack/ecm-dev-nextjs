@@ -425,3 +425,72 @@ export async function getOneRelatedAssessment({
     { pillars }
   );
 }
+
+// ─── Platforms (editorial vendor pages at /platforms/<slug>) ──────────────
+
+export async function getPlatforms() {
+  return sanityFetch(
+    `*[_type == "platform" && defined(slug.current)] | order(order asc, name asc){
+      _id, name, slug, category, summary, logo
+    }`
+  );
+}
+
+export async function getAllPlatformSlugs() {
+  return sanityFetch(
+    `*[_type == "platform" && defined(slug.current)]{ "slug": slug.current }`
+  );
+}
+
+export async function getPlatform(slug: string) {
+  return sanityFetch(
+    `*[_type == "platform" && slug.current == $slug][0]{
+      _id, name, slug, category, summary, heroDescription, logo,
+      pillars, tagAliases, intelVendorSlug, website,
+      body[]{
+        ...,
+        markDefs[]{
+          ...,
+          _type == "internalLink" => {
+            "reference": reference->{ _id, _type, "slug": slug.current, title }
+          }
+        }
+      },
+      seo { metaTitle, metaDescription, ogImage, noIndex }
+    }`,
+    { slug }
+  );
+}
+
+// Content tagged with any of a platform's tag aliases. Powers the auto-
+// populated cluster on the platform detail page so editors aren't on
+// the hook for hand-curating it.
+export async function getContentForPlatform(tagAliases: string[]) {
+  if (!tagAliases?.length) {
+    return { posts: [], guides: [], caseStudies: [] };
+  }
+  const [posts, guides, caseStudies] = await Promise.all([
+    sanityFetch<any[]>(
+      `*[_type == "post" && count((tags[])[@ in $aliases]) > 0]
+        | order(publishedAt desc)[0...6]{
+        _id, title, slug, excerpt, publishedAt, mainImage
+      }`,
+      { aliases: tagAliases }
+    ).catch(() => []),
+    sanityFetch<any[]>(
+      `*[_type == "guide" && count((tags[])[@ in $aliases]) > 0]
+        | order(seriesNumber asc, guideNumber asc)[0...4]{
+        _id, title, subtitle, slug, series, guideNumber, excerpt, mainImage
+      }`,
+      { aliases: tagAliases }
+    ).catch(() => []),
+    sanityFetch<any[]>(
+      `*[_type == "caseStudy" && count((tags[])[@ in $aliases]) > 0]
+        | order(order asc)[0...4]{
+        _id, title, slug, client, description, image
+      }`,
+      { aliases: tagAliases }
+    ).catch(() => []),
+  ]);
+  return { posts, guides, caseStudies };
+}

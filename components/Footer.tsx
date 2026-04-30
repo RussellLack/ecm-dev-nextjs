@@ -21,6 +21,7 @@ const resourceLinks = [
   { name: "Guides", href: "/guides" },
   { name: "Assessments", href: "/assessments" },
   { name: "Intel", href: "/intel" },
+  { name: "Platforms", href: "/platforms" },
 ];
 
 // Footer is a server component so it can fetch the dynamic Topics + Series
