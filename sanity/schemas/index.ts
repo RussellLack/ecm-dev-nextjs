@@ -12,6 +12,7 @@ import assessmentSubmission from "./assessmentSubmission";
 import toolSubmission from "./toolSubmission";
 import seo from "./seo";
 import internalLink from "./internalLink";
+import platform from "./platform";
 
 export const schemaTypes = [
   homePage,
@@ -20,6 +21,7 @@ export const schemaTypes = [
   caseStudy,
   post,
   guide,
+  platform,
   // Assessment system
   assessment,
   maturityDimension,

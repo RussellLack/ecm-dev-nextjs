@@ -22,6 +22,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${siteUrl}/guides`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
     { url: `${siteUrl}/intel`, lastModified: new Date(), changeFrequency: "daily", priority: 0.7 },
     { url: `${siteUrl}/industries`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
+    { url: `${siteUrl}/platforms`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
     { url: `${siteUrl}/contact`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.6 },
     { url: `${siteUrl}/privacy`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.3 },
   ];
@@ -180,6 +181,25 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.error("Sitemap: failed to fetch intel hubs", e);
   }
 
+  // Platform detail pages.
+  let platformEntries: MetadataRoute.Sitemap = [];
+  try {
+    const platforms = await sanityFetch<{ slug: string; _updatedAt: string }[]>(
+      `*[_type == "platform" && defined(slug.current)] | order(name asc) {
+        "slug": slug.current,
+        _updatedAt
+      }`
+    );
+    platformEntries = platforms.map((p) => ({
+      url: `${siteUrl}/platforms/${p.slug}`,
+      lastModified: new Date(p._updatedAt),
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    }));
+  } catch (e) {
+    console.error("Sitemap: failed to fetch platforms", e);
+  }
+
   return [
     ...staticPages,
     ...blogEntries,
@@ -189,5 +209,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...tagEntries,
     ...industryEntries,
     ...intelHubEntries,
+    ...platformEntries,
   ];
 }

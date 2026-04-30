@@ -289,6 +289,59 @@ export async function getGuidesByPillar(pillar: string, limit = 4) {
   );
 }
 
+// Distinct guide series names with seriesNumber (drives the footer Series
+// column and the /guides/series/<slug> hub pages later). Returns one row
+// per distinct series.
+export async function getDistinctGuideSeries(): Promise<
+  Array<{ series: string; seriesNumber: number; count: number }>
+> {
+  const rows = await sanityFetch<
+    Array<{ series: string; seriesNumber: number }>
+  >(
+    `*[_type == "guide" && defined(series)]{
+      series, seriesNumber
+    }`
+  ).catch(() => [] as Array<{ series: string; seriesNumber: number }>);
+
+  const map = new Map<string, { series: string; seriesNumber: number; count: number }>();
+  for (const r of rows ?? []) {
+    if (!r.series) continue;
+    const existing = map.get(r.series);
+    if (existing) {
+      existing.count += 1;
+    } else {
+      map.set(r.series, {
+        series: r.series,
+        seriesNumber: r.seriesNumber ?? 99,
+        count: 1,
+      });
+    }
+  }
+  return Array.from(map.values()).sort(
+    (a, b) => a.seriesNumber - b.seriesNumber
+  );
+}
+
+// Top N tags by usage across published posts. Drives the Topics row in
+// the footer. Sorts by usage frequency (descending).
+export async function getTopPostTags(
+  limit = 8
+): Promise<Array<{ tag: string; count: number }>> {
+  const allTags = await sanityFetch<string[]>(
+    `*[_type == "post" && defined(tags)].tags[]`
+  ).catch(() => [] as string[]);
+
+  const counts = new Map<string, number>();
+  for (const t of allTags ?? []) {
+    if (!t) continue;
+    counts.set(t, (counts.get(t) ?? 0) + 1);
+  }
+  return Array.from(counts.entries())
+    .map(([tag, count]) => ({ tag, count }))
+    .sort((a, b) => b.count - a.count || a.tag.localeCompare(b.tag))
+    .slice(0, limit);
+}
+
 // ─── Cross-type "one best match" helpers ──────────────────────────────────
 //
 // These power the MixedRelated component, which surfaces a 1-of-each-type
@@ -371,4 +424,73 @@ export async function getOneRelatedAssessment({
       }`,
     { pillars }
   );
+}
+
+// ─── Platforms (editorial vendor pages at /platforms/<slug>) ──────────────
+
+export async function getPlatforms() {
+  return sanityFetch(
+    `*[_type == "platform" && defined(slug.current)] | order(order asc, name asc){
+      _id, name, slug, category, summary, logo
+    }`
+  );
+}
+
+export async function getAllPlatformSlugs() {
+  return sanityFetch(
+    `*[_type == "platform" && defined(slug.current)]{ "slug": slug.current }`
+  );
+}
+
+export async function getPlatform(slug: string) {
+  return sanityFetch(
+    `*[_type == "platform" && slug.current == $slug][0]{
+      _id, name, slug, category, summary, heroDescription, logo,
+      pillars, tagAliases, intelVendorSlug, website,
+      body[]{
+        ...,
+        markDefs[]{
+          ...,
+          _type == "internalLink" => {
+            "reference": reference->{ _id, _type, "slug": slug.current, title }
+          }
+        }
+      },
+      seo { metaTitle, metaDescription, ogImage, noIndex }
+    }`,
+    { slug }
+  );
+}
+
+// Content tagged with any of a platform's tag aliases. Powers the auto-
+// populated cluster on the platform detail page so editors aren't on
+// the hook for hand-curating it.
+export async function getContentForPlatform(tagAliases: string[]) {
+  if (!tagAliases?.length) {
+    return { posts: [], guides: [], caseStudies: [] };
+  }
+  const [posts, guides, caseStudies] = await Promise.all([
+    sanityFetch<any[]>(
+      `*[_type == "post" && count((tags[])[@ in $aliases]) > 0]
+        | order(publishedAt desc)[0...6]{
+        _id, title, slug, excerpt, publishedAt, mainImage
+      }`,
+      { aliases: tagAliases }
+    ).catch(() => []),
+    sanityFetch<any[]>(
+      `*[_type == "guide" && count((tags[])[@ in $aliases]) > 0]
+        | order(seriesNumber asc, guideNumber asc)[0...4]{
+        _id, title, subtitle, slug, series, guideNumber, excerpt, mainImage
+      }`,
+      { aliases: tagAliases }
+    ).catch(() => []),
+    sanityFetch<any[]>(
+      `*[_type == "caseStudy" && count((tags[])[@ in $aliases]) > 0]
+        | order(order asc)[0...4]{
+        _id, title, slug, client, description, image
+      }`,
+      { aliases: tagAliases }
+    ).catch(() => []),
+  ]);
+  return { posts, guides, caseStudies };
 }
