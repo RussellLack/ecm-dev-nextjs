@@ -97,3 +97,41 @@ export async function getIntelArticlesByVendor(slug: string, limit = 100) {
     { slug, limit }
   );
 }
+
+/**
+ * Pick the best-matching intel topic for a given list of source tags.
+ *
+ * Used by MixedRelated to cross-link site content (post/guide/caseStudy)
+ * into the Intel feed. Match heuristic: lowercase, then any topic whose
+ * title equals or is a substring of any tag (or vice versa). Only
+ * considers topics that have at least one published article.
+ *
+ * Returns null when nothing matches — caller omits the slot.
+ */
+export async function findOneIntelTopicForTags(
+  tags: string[]
+): Promise<{ title: string; slug: string } | null> {
+  if (!tags?.length) return null;
+
+  const topics = await getActiveIntelTopics().catch(() => []);
+  if (!topics?.length) return null;
+
+  const normalisedTags = tags.map((t) => t.toLowerCase().trim()).filter(Boolean);
+
+  // Prefer exact match → contained → containing.
+  for (const t of topics) {
+    const title = t.title.toLowerCase().trim();
+    if (normalisedTags.includes(title)) return t;
+  }
+  for (const t of topics) {
+    const title = t.title.toLowerCase().trim();
+    if (normalisedTags.some((tag) => tag === title || tag.includes(title))) {
+      return t;
+    }
+  }
+  for (const t of topics) {
+    const title = t.title.toLowerCase().trim();
+    if (normalisedTags.some((tag) => title.includes(tag))) return t;
+  }
+  return null;
+}
