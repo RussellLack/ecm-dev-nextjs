@@ -51,11 +51,21 @@ export async function getCaseStudies() {
 }
 
 // Single case study
+// See getPost re: the markDefs walk for internalLink dereferencing.
 export async function getCaseStudy(slug: string) {
   return sanityFetch(
     `*[_type == "caseStudy" && slug.current == $slug][0]{
       title, slug, client, tags, pillars, industry, description, image,
-      whoThisIsFor, theChallenge, whatWePropose, whyItMatters, body,
+      whoThisIsFor, theChallenge, whatWePropose, whyItMatters,
+      body[]{
+        ...,
+        markDefs[]{
+          ...,
+          _type == "internalLink" => {
+            "reference": reference->{ _id, _type, "slug": slug.current, title }
+          }
+        }
+      },
       relatedCaseStudies[]->{
         _id, title, slug, client, tags, description, image
       }
@@ -135,11 +145,24 @@ export async function getBlogPosts(limit = 10) {
 }
 
 // Single blog post
+//
+// `body` walks each block and dereferences the `internalLink` markDef so the
+// renderer has the target's _type + slug at hand to build a route, without
+// needing a second round-trip per link.
 export async function getPost(slug: string) {
   return sanityFetch(
     `*[_type == "post" && slug.current == $slug][0]{
-      title, body, publishedAt, _updatedAt, _createdAt, mainImage, tags, pillars, excerpt,
+      title, publishedAt, _updatedAt, _createdAt, mainImage, tags, pillars, excerpt,
       seo { metaTitle, metaDescription, ogImage, noIndex },
+      body[]{
+        ...,
+        markDefs[]{
+          ...,
+          _type == "internalLink" => {
+            "reference": reference->{ _id, _type, "slug": slug.current, title }
+          }
+        }
+      },
       relatedPosts[]->{
         _id, title, slug, excerpt, publishedAt, mainImage, tags
       }
@@ -206,12 +229,22 @@ export async function getGuides() {
 }
 
 // Single guide
+// See getPost re: the markDefs walk for internalLink dereferencing.
 export async function getGuide(slug: string) {
   return sanityFetch(
     `*[_type == "guide" && slug.current == $slug][0]{
-      _id, title, subtitle, slug, series, seriesNumber, guideNumber, excerpt, tags, mainImage, body,
+      _id, title, subtitle, slug, series, seriesNumber, guideNumber, excerpt, tags, mainImage,
       _updatedAt, _createdAt, publishedAt,
       seo { metaTitle, metaDescription, ogImage, noIndex },
+      body[]{
+        ...,
+        markDefs[]{
+          ...,
+          _type == "internalLink" => {
+            "reference": reference->{ _id, _type, "slug": slug.current, title }
+          }
+        }
+      },
       relatedGuides[]->{
         _id, title, subtitle, slug, series, guideNumber, excerpt, tags, mainImage
       }

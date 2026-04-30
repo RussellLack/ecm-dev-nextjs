@@ -11,6 +11,7 @@ import serviceRecommendation from "./serviceRecommendation";
 import assessmentSubmission from "./assessmentSubmission";
 import toolSubmission from "./toolSubmission";
 import seo from "./seo";
+import internalLink from "./internalLink";
 
 export const schemaTypes = [
   homePage,
@@ -28,4 +29,5 @@ export const schemaTypes = [
   toolSubmission,
   // Shared objects
   seo,
+  internalLink,
 ];
