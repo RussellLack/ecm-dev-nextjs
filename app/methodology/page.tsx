@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { MODEL_VERSION, MODEL_LAST_REVIEWED } from "@/lib/estimator/coefficients";
+import AssessmentNextSteps from "@/components/assessment/AssessmentNextSteps";
 
 export const metadata: Metadata = {
   title: "Methodology — Localisation Cost Estimator | ECM.DEV",
@@ -14,7 +15,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function MethodologyPage() {
+export default async function MethodologyPage() {
   return (
     <>
       {/* Hero — matches Assessments landing page style */}
@@ -559,6 +560,16 @@ export default function MethodologyPage() {
           </div>
         </article>
       </section>
+
+      {/* Connectors: this methodology underlies the localisation pillar,
+          so surface the matching pillar / guides / case studies / next
+          assessments. Reuses the same component as the estimator results
+          page for visual consistency. */}
+      <AssessmentNextSteps
+        pillars={["localization"]}
+        currentSlug="localisation-cost"
+        heading="Where to take this next"
+      />
     </>
   );
 }
