@@ -1,5 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
+import { getTopPostTags, getDistinctGuideSeries } from "@/lib/queries";
+import { tagToSlug } from "@/lib/tags";
 
 const servicesLinks = [
   { name: "Content Technology", href: "/content-technology" },
@@ -21,7 +23,14 @@ const resourceLinks = [
   { name: "Intel", href: "/intel" },
 ];
 
-export default function Footer() {
+// Footer is a server component so it can fetch the dynamic Topics + Series
+// rows. The data is small (top 8 tags + a handful of guide series) and
+// caches with Sanity's normal revalidation.
+export default async function Footer() {
+  const [topTags, guideSeries] = await Promise.all([
+    getTopPostTags(8).catch(() => []),
+    getDistinctGuideSeries().catch(() => []),
+  ]);
   return (
     <footer className="bg-ecm-green-dark pt-16 pb-8">
       <div className="max-w-7xl mx-auto px-6">
@@ -124,6 +133,49 @@ export default function Footer() {
             </div>
           </div>
         </div>
+
+        {/* Topics + Series rows — drives crawl and gives every page an
+            internal link to each topic / series hub. */}
+        {(topTags.length > 0 || guideSeries.length > 0) && (
+          <div className="space-y-4 mb-10">
+            {topTags.length > 0 && (
+              <div className="flex flex-col sm:flex-row sm:items-baseline gap-3 sm:gap-6">
+                <h4 className="text-ecm-lime font-barlow font-semibold text-xs uppercase tracking-wider sm:flex-shrink-0 sm:w-32">
+                  Topics
+                </h4>
+                <div className="flex flex-wrap gap-x-3 gap-y-2">
+                  {topTags.map(({ tag }) => (
+                    <Link
+                      key={tag}
+                      href={`/blog/tag/${tagToSlug(tag)}`}
+                      className="text-white/60 text-xs hover:text-ecm-lime transition-colors"
+                    >
+                      {tag}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+            {guideSeries.length > 0 && (
+              <div className="flex flex-col sm:flex-row sm:items-baseline gap-3 sm:gap-6">
+                <h4 className="text-ecm-lime font-barlow font-semibold text-xs uppercase tracking-wider sm:flex-shrink-0 sm:w-32">
+                  Guide series
+                </h4>
+                <div className="flex flex-wrap gap-x-3 gap-y-2">
+                  {guideSeries.map(({ series }) => (
+                    <Link
+                      key={series}
+                      href={`/guides#series-${tagToSlug(series)}`}
+                      className="text-white/60 text-xs hover:text-ecm-lime transition-colors"
+                    >
+                      {series}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Divider */}
         <div className="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-2">

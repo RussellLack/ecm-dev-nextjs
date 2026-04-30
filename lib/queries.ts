@@ -289,6 +289,59 @@ export async function getGuidesByPillar(pillar: string, limit = 4) {
   );
 }
 
+// Distinct guide series names with seriesNumber (drives the footer Series
+// column and the /guides/series/<slug> hub pages later). Returns one row
+// per distinct series.
+export async function getDistinctGuideSeries(): Promise<
+  Array<{ series: string; seriesNumber: number; count: number }>
+> {
+  const rows = await sanityFetch<
+    Array<{ series: string; seriesNumber: number }>
+  >(
+    `*[_type == "guide" && defined(series)]{
+      series, seriesNumber
+    }`
+  ).catch(() => [] as Array<{ series: string; seriesNumber: number }>);
+
+  const map = new Map<string, { series: string; seriesNumber: number; count: number }>();
+  for (const r of rows ?? []) {
+    if (!r.series) continue;
+    const existing = map.get(r.series);
+    if (existing) {
+      existing.count += 1;
+    } else {
+      map.set(r.series, {
+        series: r.series,
+        seriesNumber: r.seriesNumber ?? 99,
+        count: 1,
+      });
+    }
+  }
+  return Array.from(map.values()).sort(
+    (a, b) => a.seriesNumber - b.seriesNumber
+  );
+}
+
+// Top N tags by usage across published posts. Drives the Topics row in
+// the footer. Sorts by usage frequency (descending).
+export async function getTopPostTags(
+  limit = 8
+): Promise<Array<{ tag: string; count: number }>> {
+  const allTags = await sanityFetch<string[]>(
+    `*[_type == "post" && defined(tags)].tags[]`
+  ).catch(() => [] as string[]);
+
+  const counts = new Map<string, number>();
+  for (const t of allTags ?? []) {
+    if (!t) continue;
+    counts.set(t, (counts.get(t) ?? 0) + 1);
+  }
+  return Array.from(counts.entries())
+    .map(([tag, count]) => ({ tag, count }))
+    .sort((a, b) => b.count - a.count || a.tag.localeCompare(b.tag))
+    .slice(0, limit);
+}
+
 // ─── Cross-type "one best match" helpers ──────────────────────────────────
 //
 // These power the MixedRelated component, which surfaces a 1-of-each-type

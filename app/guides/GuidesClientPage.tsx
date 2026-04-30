@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import Link from "next/link";
 import { urlFor } from "@/lib/sanity";
 import GuideIllustration from "@/components/guides/GuideIllustration";
+import { tagToSlug } from "@/lib/tags";
 
 type Guide = {
   _id: string;
@@ -64,7 +65,8 @@ export default function GuidesClientPage({ guides }: { guides: Guide[] }) {
       {seriesBands.map(({ series, guides }, bandIdx) => (
         <section
           key={series}
-          className={`${bandBg(bandIdx)} py-16 border-b border-gray-100`}
+          id={`series-${tagToSlug(series)}`}
+          className={`${bandBg(bandIdx)} py-16 border-b border-gray-100 scroll-mt-24`}
         >
           <div className="max-w-5xl mx-auto px-6">
             {/* Series header */}
