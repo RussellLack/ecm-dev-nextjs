@@ -8,16 +8,16 @@ import type {
 interface Props {
   result: CmsImplementationResult;
   inputs: CmsImplementationInputs;
-  onToggleTei: (value: boolean) => void;
 }
 
 /**
- * Phase 3 side-panel running total.
- * Phase 4 will replace this with a full result composition; for now this
- * provides the live-updating headline figures while the visitor edits the
- * form. Currency is applied at render time via the result.currencyMultiplier.
+ * Sticky side-panel summary that updates live as the visitor edits the
+ * form. The TEI toggle lives in the result section's BenefitPanel below
+ * (one source of truth) — this side panel just reflects whichever case is
+ * currently selected. Currency is applied at render time via
+ * result.currencyMultiplier.
  */
-export default function RunningTotal({ result, inputs, onToggleTei }: Props) {
+export default function RunningTotal({ result, inputs }: Props) {
   const m = result.currencyMultiplier;
   const sym = currencySymbol(result.currency);
   const horizon = inputs.runtime.horizon;
@@ -95,19 +95,8 @@ export default function RunningTotal({ result, inputs, onToggleTei }: Props) {
 
       <Separator />
 
-      <div className="mb-2">
-        <label className="flex items-center gap-2 text-xs text-ecm-gray-dark">
-          <input
-            type="checkbox"
-            checked={!!inputs.options?.useTeiBenefit}
-            onChange={(e) => onToggleTei(e.target.checked)}
-            className="accent-ecm-green"
-          />
-          Use vendor-cited TEI benchmark on benefit side
-        </label>
-      </div>
-
-      <Row label={`Benefit (${horizon}-yr value, ${inputs.options?.useTeiBenefit ? "TEI" : "conservative"})`}
+      <Row
+        label={`Benefit (${horizon}-yr, ${inputs.options?.useTeiBenefit ? "TEI" : "conservative"})`}
         low={benefitHorizon.low * m}
         mid={benefitHorizon.mid * m}
         high={benefitHorizon.high * m}

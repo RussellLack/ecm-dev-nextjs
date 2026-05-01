@@ -109,14 +109,16 @@ export default function CmsImplementationForm({ inputs, onChange, onReset }: Pro
             update("target", { tier: v as TargetTier, vendor: undefined });
           }}
         />
-        <SelectRow
-          label="Specific vendor (optional)"
-          value={inputs.target.vendor ?? ""}
-          options={vendorOptionsForTier(inputs.target.tier)}
-          onChange={(v) =>
-            update("target", { vendor: v === "" ? undefined : v })
-          }
-        />
+        {inputs.target.tier !== "unsure" && (
+          <SelectRow
+            label="Specific vendor (optional)"
+            value={inputs.target.vendor ?? ""}
+            options={vendorOptionsForTier(inputs.target.tier)}
+            onChange={(v) =>
+              update("target", { vendor: v === "" ? undefined : v })
+            }
+          />
+        )}
         <SelectRow
           label="Deployment model"
           value={inputs.target.deployment}
@@ -199,13 +201,15 @@ export default function CmsImplementationForm({ inputs, onChange, onReset }: Pro
           onChange={(v) => update("runtime", { teamSize: v as TeamSize })}
         />
         <NumberRow
-          label="Annual online revenue (optional)"
-          value={inputs.runtime.revenue ?? 0}
+          label="Annual online revenue"
+          value={inputs.runtime.revenue}
           min={0}
           max={1_000_000_000}
           step={100_000}
-          onChange={(v) => update("runtime", { revenue: v || undefined })}
-          hint="Leave blank to skip the revenue-uplift benefit row"
+          onChange={(v) => update("runtime", { revenue: v })}
+          hint="Optional — enables the revenue-uplift benefit row"
+          placeholder="optional"
+          optional
         />
         <SelectRow
           label="TCO horizon"
@@ -286,15 +290,21 @@ function NumberRow({
   step = 1,
   onChange,
   hint,
+  placeholder,
+  optional = false,
 }: {
   label: string;
-  value: number;
+  /** When `optional` is true, an undefined value renders as empty string. */
+  value: number | undefined;
   min: number;
   max: number;
   step?: number;
-  onChange: (v: number) => void;
+  onChange: (v: number | undefined) => void;
   hint?: string;
+  placeholder?: string;
+  optional?: boolean;
 }) {
+  const display = optional && (value === undefined || value === 0) ? "" : value;
   return (
     <div className="mb-2 text-sm">
       <div className="flex items-center justify-between gap-3">
@@ -304,8 +314,17 @@ function NumberRow({
           min={min}
           max={max}
           step={step}
-          value={value}
-          onChange={(e) => onChange(parseInt(e.target.value, 10) || 0)}
+          value={display}
+          placeholder={placeholder}
+          onChange={(e) => {
+            const raw = e.target.value;
+            if (raw === "" && optional) {
+              onChange(undefined);
+              return;
+            }
+            const parsed = parseInt(raw, 10);
+            onChange(Number.isNaN(parsed) ? (optional ? undefined : 0) : parsed);
+          }}
           className="w-[140px] rounded-md border border-gray-200 bg-white px-2 py-1.5 text-right text-sm text-ecm-gray-dark focus:border-ecm-green focus:outline-none"
         />
       </div>

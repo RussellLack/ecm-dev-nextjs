@@ -98,9 +98,9 @@ export default function CmsImplementationClient() {
       </section>
 
       {/* Form + running total */}
-      <section className="-mt-12 pb-16 sm:-mt-16 lg:-mt-20">
+      <section className="bg-white py-12 sm:py-16">
         <div className="mx-auto max-w-6xl px-6">
-          <div className="grid gap-6 lg:grid-cols-[1fr_360px]">
+          <div className="grid items-start gap-6 lg:grid-cols-[1fr_360px]">
             <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
               <Form
                 inputs={inputs}
@@ -108,11 +108,7 @@ export default function CmsImplementationClient() {
                 onReset={handleReset}
               />
             </div>
-            <RunningTotal
-              result={result}
-              inputs={inputs}
-              onToggleTei={handleToggleTei}
-            />
+            <RunningTotal result={result} inputs={inputs} />
           </div>
         </div>
       </section>
