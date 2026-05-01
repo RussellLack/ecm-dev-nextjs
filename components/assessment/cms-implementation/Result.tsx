@@ -5,6 +5,7 @@ import type {
   CmsImplementationResult,
   CmsImplementationInputs,
 } from "@/lib/assessment/cms-implementation/types";
+import EmailCaptureForm from "./EmailCaptureForm";
 
 interface Props {
   result: CmsImplementationResult;
@@ -89,8 +90,8 @@ export default function Result({ result, inputs, onToggleTei }: Props) {
           <Notes notes={result.flags.notes} salesGated={result.flags.salesGated} />
         )}
 
-        {/* 7. Methodology + shareable-link block */}
-        <ShareAndMethodology />
+        {/* 7. Methodology + shareable-link block + email capture */}
+        <ShareAndMethodology inputs={inputs} result={result} />
       </div>
     </section>
   );
@@ -473,7 +474,13 @@ function Notes({
   );
 }
 
-function ShareAndMethodology() {
+function ShareAndMethodology({
+  inputs,
+  result,
+}: {
+  inputs: CmsImplementationInputs;
+  result: CmsImplementationResult;
+}) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
@@ -491,21 +498,7 @@ function ShareAndMethodology() {
     <Section title="Take it away">
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="rounded-xl border border-gray-200 bg-white p-5">
-          <p className="mb-2 font-barlow text-sm font-semibold text-ecm-gray-dark">
-            Get the PDF take-away
-          </p>
-          <p className="mb-3 font-barlow text-xs text-ecm-gray">
-            We'll email a one-page summary plus a shareable link your CFO can
-            open without filling in the form. Email-gated only.
-          </p>
-          <button
-            type="button"
-            disabled
-            className="w-full cursor-not-allowed rounded-full bg-gray-100 px-4 py-2.5 font-barlow text-xs font-semibold uppercase tracking-wider text-ecm-gray"
-            title="Phase 5 — submit route + Resend email integration in progress"
-          >
-            Coming in next release
-          </button>
+          <EmailCaptureForm inputs={inputs} result={result} />
         </div>
 
         <div className="rounded-xl border border-gray-200 bg-white p-5">
@@ -513,8 +506,9 @@ function ShareAndMethodology() {
             Share this estimate
           </p>
           <p className="mb-3 font-barlow text-xs text-ecm-gray">
-            Copy this URL — your inputs are baked in. Anyone with the link
-            sees the same numbers.
+            Skip the email gate — copy this page's URL. The same calculation
+            renders for anyone with the link, with no contact details
+            captured.
           </p>
           <button
             type="button"
@@ -523,19 +517,19 @@ function ShareAndMethodology() {
           >
             {copied ? "Link copied" : "Copy shareable link"}
           </button>
+          <p className="mt-4 border-t border-gray-100 pt-3 font-barlow text-[11px] leading-relaxed text-ecm-gray">
+            Curious how the numbers are derived?{" "}
+            <a
+              href="/assessment/cms-implementation/methodology"
+              className="font-semibold text-ecm-green underline hover:text-ecm-green-dark"
+            >
+              Read the methodology and sources
+            </a>{" "}
+            — every coefficient with its analyst origin and confidence
+            rating.
+          </p>
         </div>
       </div>
-
-      <p className="mt-5 font-barlow text-xs text-ecm-gray">
-        Curious how the numbers are derived?{" "}
-        <a
-          href="/assessment/cms-implementation/methodology"
-          className="font-semibold text-ecm-green underline hover:text-ecm-green-dark"
-        >
-          Read the methodology and sources
-        </a>{" "}
-        — every coefficient with its analyst origin and confidence rating.
-      </p>
     </Section>
   );
 }
