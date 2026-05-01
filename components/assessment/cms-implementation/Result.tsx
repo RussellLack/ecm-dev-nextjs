@@ -5,6 +5,7 @@ import type {
   CmsImplementationResult,
   CmsImplementationInputs,
 } from "@/lib/assessment/cms-implementation/types";
+import { buildShareableUrl } from "@/lib/assessment/cms-implementation/url";
 import EmailCaptureForm from "./EmailCaptureForm";
 
 interface Props {
@@ -508,7 +509,13 @@ function ShareAndMethodology({
 
   const handleCopy = async () => {
     if (typeof window === "undefined") return;
-    const url = shareableUrl || window.location.href;
+    let url = shareableUrl;
+    if (!url) {
+      // No override (= calculator page). Bake current inputs into the URL
+      // so the recipient sees the same scenario without filling the form.
+      const base = `${window.location.origin}${window.location.pathname}`;
+      url = buildShareableUrl(base, inputs);
+    }
     try {
       await navigator.clipboard.writeText(url);
       setCopied(true);
@@ -541,7 +548,7 @@ function ShareAndMethodology({
           </p>
           <p className="mb-3 font-barlow text-xs text-ecm-gray">
             {showEmailCapture
-              ? "Skip the email gate — copy this page's URL. The same calculation renders for anyone with the link, with no contact details captured."
+              ? "Skip the email gate — your inputs are baked into the URL. Anyone with the link sees the same scenario, ready to tweak. No contact details captured."
               : "Anyone with this link sees the same numbers. No login, no email gate, no further contact details captured."}
           </p>
           <button

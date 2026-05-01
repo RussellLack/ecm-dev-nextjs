@@ -1,13 +1,16 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { calculate } from "@/lib/assessment/cms-implementation/engine";
 import { DEFAULT_INPUTS } from "@/lib/assessment/cms-implementation/defaults";
 import { MODEL_VERSION } from "@/lib/assessment/cms-implementation/coefficients";
+import { decodeInputs } from "@/lib/assessment/cms-implementation/url";
+import { SCENARIOS } from "@/lib/assessment/cms-implementation/scenarios";
 import type { CmsImplementationInputs } from "@/lib/assessment/cms-implementation/types";
 import Form from "./Form";
 import RunningTotal from "./RunningTotal";
 import Result from "./Result";
+import MobileStickyBar from "./MobileStickyBar";
 
 type DeepPartial<T> = { [K in keyof T]?: T[K] extends object ? DeepPartial<T[K]> : T[K] };
 
@@ -39,6 +42,13 @@ function deepMerge<T>(base: T, patch: DeepPartial<T>): T {
 export default function CmsImplementationClient() {
   const [inputs, setInputs] = useState<CmsImplementationInputs>(DEFAULT_INPUTS);
 
+  // Hydrate from ?d=... query param on first mount (shared-link case).
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const fromUrl = decodeInputs(window.location.search);
+    if (fromUrl) setInputs(fromUrl);
+  }, []);
+
   const result = useMemo(() => calculate(inputs), [inputs]);
 
   const handleChange = useCallback(
@@ -50,6 +60,11 @@ export default function CmsImplementationClient() {
 
   const handleReset = useCallback(() => {
     setInputs(DEFAULT_INPUTS);
+  }, []);
+
+  const handleScenario = useCallback((scenarioId: string) => {
+    const scenario = SCENARIOS.find((s) => s.id === scenarioId);
+    if (scenario) setInputs(scenario.inputs);
   }, []);
 
   const handleToggleTei = useCallback((useTei: boolean) => {
@@ -97,8 +112,41 @@ export default function CmsImplementationClient() {
         </div>
       </section>
 
+      {/* Sample-scenario quick-fill */}
+      <section className="bg-white pt-10 sm:pt-14">
+        <div className="mx-auto max-w-6xl px-6">
+          <div className="rounded-2xl border border-gray-100 bg-gradient-to-br from-ecm-green/5 to-ecm-lime/10 p-5 sm:p-6">
+            <p className="mb-1 font-barlow text-[11px] font-bold uppercase tracking-[0.16em] text-ecm-gray">
+              First time? Try a sample scenario
+            </p>
+            <p className="mb-4 font-barlow text-xs text-ecm-gray">
+              Loads a representative scenario into the form so you can see how
+              the model behaves before entering your own.
+            </p>
+            <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap">
+              {SCENARIOS.map((s) => (
+                <button
+                  key={s.id}
+                  type="button"
+                  onClick={() => handleScenario(s.id)}
+                  className="group flex-1 rounded-xl border border-gray-200 bg-white p-3 text-left transition-all hover:border-ecm-green hover:shadow-md"
+                  title={s.blurb}
+                >
+                  <p className="mb-0.5 font-barlow text-sm font-semibold text-ecm-green-dark group-hover:text-ecm-green">
+                    {s.label}
+                  </p>
+                  <p className="font-barlow text-[11px] leading-snug text-ecm-gray">
+                    {s.blurb}
+                  </p>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Form + running total */}
-      <section className="bg-white py-12 sm:py-16">
+      <section className="bg-white py-8 sm:py-10 pb-24 md:pb-16">
         <div className="mx-auto max-w-6xl px-6">
           <div className="grid items-start gap-6 lg:grid-cols-[1fr_360px]">
             <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
@@ -115,11 +163,17 @@ export default function CmsImplementationClient() {
 
       {/* Full result composition — breakdown table, year-by-year cash flow,
           risk-band visualiser, benefit panel, notes, share + methodology. */}
-      <Result
-        result={result}
-        inputs={inputs}
-        onToggleTei={handleToggleTei}
-      />
+      <div id="cms-result">
+        <Result
+          result={result}
+          inputs={inputs}
+          onToggleTei={handleToggleTei}
+        />
+      </div>
+
+      {/* Mobile sticky-bottom mini-bar — keeps headline TCO in view while
+          editing on narrow viewports. */}
+      <MobileStickyBar result={result} inputs={inputs} />
     </div>
   );
 }

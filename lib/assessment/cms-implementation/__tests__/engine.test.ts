@@ -13,6 +13,7 @@ import {
   DXP_LICENCE,
   CURRENCY_MULTIPLIERS,
 } from "../coefficients.ts";
+import { encodeInputs, decodeInputs, buildShareableUrl } from "../url.ts";
 
 /* ── Tiny test harness ─────────────────────────────────────────────────── */
 
@@ -289,6 +290,32 @@ console.log("\n12. Confidence cascade");
     headless.flags.confidence === "B");
   check("DXP tier confidence = C (worst-case)",
     dxp.flags.confidence === "C");
+}
+
+// 13. URL encode/decode round-trip
+console.log("\n13. URL encode/decode round-trip");
+{
+  const customScenario: CmsImplementationInputs = {
+    ...baseline,
+    org: { ...baseline.org, region: "US", currency: "USD" },
+    target: { tier: "dxp", vendor: "adobe-aem", deployment: "paas" },
+    scope: { ...baseline.scope, locales: 8, sites: 3 },
+  };
+  const encoded = encodeInputs(customScenario);
+  const decoded = decodeInputs(`?d=${encoded}`);
+  check("decoded result is non-null", decoded !== null);
+  check("region survives round-trip", decoded?.org.region === "US");
+  check("vendor survives round-trip", decoded?.target.vendor === "adobe-aem");
+  check("locales survives round-trip", decoded?.scope.locales === 8);
+
+  // Built URL contains ?d=
+  const url = buildShareableUrl("https://ecm.dev/assessment/cms-implementation", customScenario);
+  check("built URL contains ?d=", url.includes("?d="));
+  check("built URL is reasonable size (<1000 chars)", url.length < 1000);
+
+  // Invalid input → null (not throw)
+  check("decoding garbage returns null", decodeInputs("?d=not-base64!!!") === null);
+  check("decoding missing param returns null", decodeInputs("?other=value") === null);
 }
 
 /* ── Summary ───────────────────────────────────────────────────────────── */
