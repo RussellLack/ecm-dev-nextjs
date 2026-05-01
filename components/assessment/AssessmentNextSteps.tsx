@@ -6,6 +6,7 @@ import {
   getPostsByPillar,
 } from "@/lib/queries";
 import { getAssessmentsByPillar } from "@/lib/assessment/queries";
+import GuideIllustration from "@/components/guides/GuideIllustration";
 
 type Pillar = "technology" | "services" | "localization";
 
@@ -172,6 +173,12 @@ export default async function AssessmentNextSteps({
                 subtitle={g.subtitle || g.excerpt}
                 image={g.mainImage}
                 eyebrow={g.series}
+                fallback={
+                  <GuideIllustration
+                    slug={g.slug?.current}
+                    guideNumber={g.guideNumber ?? 0}
+                  />
+                }
               />
             ))}
           </Cluster>
@@ -287,19 +294,21 @@ function Card({
   subtitle,
   image,
   eyebrow,
+  fallback,
 }: {
   href: string;
   title: string;
   subtitle?: string;
   image?: any;
   eyebrow?: string;
+  fallback?: React.ReactNode;
 }) {
   return (
     <Link
       href={href}
       className="group bg-gray-50 rounded-xl border border-gray-100 hover:border-ecm-green/20 hover:shadow-lg transition-all overflow-hidden flex flex-col"
     >
-      {image && (
+      {image ? (
         <div className="h-32 overflow-hidden bg-ecm-green/5 flex items-center justify-center">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
@@ -309,7 +318,11 @@ function Card({
             loading="lazy"
           />
         </div>
-      )}
+      ) : fallback ? (
+        <div className="h-32 overflow-hidden bg-ecm-green/5 flex items-center justify-center">
+          {fallback}
+        </div>
+      ) : null}
       <div className="p-4 flex flex-col flex-1">
         {eyebrow && (
           <p className="text-[10px] font-barlow font-semibold uppercase tracking-widest text-ecm-lime-hover mb-1">

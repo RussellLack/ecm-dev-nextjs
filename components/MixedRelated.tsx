@@ -7,6 +7,7 @@ import {
   getOneRelatedAssessment,
 } from "@/lib/queries";
 import { findOneIntelTopicForTags } from "@/lib/intel/queries";
+import GuideIllustration from "@/components/guides/GuideIllustration";
 
 type Doctype = "post" | "guide" | "caseStudy" | "assessment" | "intelTopic";
 
@@ -17,6 +18,9 @@ type Item = {
   title: string;
   blurb?: string | null;
   image?: any;
+  // Rendered in the thumbnail slot when `image` is missing — used to keep
+  // guide cards on-brand with a SVG illustration matching /guides itself.
+  fallback?: React.ReactNode;
 };
 
 const EYEBROW: Record<Doctype, string> = {
@@ -77,6 +81,12 @@ export default async function MixedRelated({
       title: guide.title,
       blurb: guide.subtitle || guide.excerpt,
       image: guide.mainImage,
+      fallback: (
+        <GuideIllustration
+          slug={guide.slug.current}
+          guideNumber={guide.guideNumber ?? 0}
+        />
+      ),
     });
   }
   if (caseStudy?.slug?.current) {
@@ -143,6 +153,10 @@ export default async function MixedRelated({
                       className="w-full h-full object-cover"
                       loading="lazy"
                     />
+                  </div>
+                ) : item.fallback ? (
+                  <div className="h-28 overflow-hidden bg-ecm-green/5 flex items-center justify-center">
+                    {item.fallback}
                   </div>
                 ) : (
                   <div className="h-28 bg-ecm-green/5 flex items-center justify-center">
