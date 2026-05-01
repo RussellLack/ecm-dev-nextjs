@@ -7,6 +7,7 @@ import JsonLd from "@/components/JsonLd";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import RelatedContent from "@/components/RelatedContent";
 import MixedRelated from "@/components/MixedRelated";
+import PostIllustration from "@/components/post/PostIllustration";
 import { articleSchema } from "@/lib/structuredData";
 import { urlFor } from "@/lib/sanity";
 import { tagToSlug } from "@/lib/tags";
@@ -170,7 +171,12 @@ export default async function PostPage({
     ...fallbackRelated.filter(
       (p: any) => !curatedSlugs.has(p.slug?.current ?? p.slug)
     ),
-  ].slice(0, 3);
+  ]
+    .slice(0, 3)
+    .map((p: any) => ({
+      ...p,
+      fallback: <PostIllustration slug={p.slug?.current ?? p.slug} />,
+    }));
 
   return (
     <>

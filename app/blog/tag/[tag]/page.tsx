@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { urlFor } from "@/lib/sanity";
 import { getAllPostTags, getPostsByTag } from "@/lib/queries";
 import { tagFromSlug, tagToSlug } from "@/lib/tags";
+import PostIllustration from "@/components/post/PostIllustration";
 
 export const revalidate = 60;
 
@@ -122,7 +123,7 @@ export default async function BlogTagPage({
                         loading="lazy"
                       />
                     ) : (
-                      <div className="w-12 h-12 bg-ecm-green/20 rounded-lg" />
+                      <PostIllustration slug={post.slug?.current} />
                     )}
                   </div>
                   <div className="p-4 flex flex-col flex-1">

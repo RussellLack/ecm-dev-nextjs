@@ -3,6 +3,7 @@
 import { useState, useMemo } from "react";
 import Link from "next/link";
 import { urlFor } from "@/lib/sanity";
+import PostIllustration from "@/components/post/PostIllustration";
 
 type Post = {
   _id: string;
@@ -226,7 +227,7 @@ export default function BlogClientPage({ posts }: { posts: Post[] }) {
                         loading="lazy"
                       />
                     ) : (
-                      <div className="w-12 h-12 bg-ecm-green/20 rounded-lg" />
+                      <PostIllustration slug={post.slug?.current} />
                     )}
                   </div>
                   <div className="p-4 flex flex-col flex-1">

@@ -12,6 +12,7 @@ import { urlFor } from "@/lib/sanity";
 import { internalLinkHref } from "@/lib/internalLink";
 import GuideIllustration from "@/components/guides/GuideIllustration";
 import CaseStudyIllustration from "@/components/case-study/CaseStudyIllustration";
+import PostIllustration from "@/components/post/PostIllustration";
 
 export const revalidate = 60;
 
@@ -282,6 +283,7 @@ export default async function PlatformDetailPage({
                     title={p.title}
                     subtitle={p.excerpt}
                     image={p.mainImage}
+                    fallback={<PostIllustration slug={p.slug?.current} />}
                   />
                 ))}
               </Cluster>
