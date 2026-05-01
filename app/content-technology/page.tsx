@@ -1,10 +1,22 @@
+import type { Metadata } from "next";
 import ServicePageLayout from "@/components/ServicePageLayout";
 import PillarClusters from "@/components/PillarClusters";
 import { getServicePackages, getServiceHero } from "@/lib/queries";
+import { buildPillarMetadata } from "@/lib/pillarMetadata";
 import JsonLd from "@/components/JsonLd";
 import { serviceSchema } from "@/lib/structuredData";
 
 export const revalidate = 60;
+
+export async function generateMetadata(): Promise<Metadata> {
+  return buildPillarMetadata({
+    category: "technology",
+    fallbackTitle: "Content Technology",
+    fallbackDescription:
+      "CMS / DAM / DXP selection, MarTech integration, search and findability, content architecture — picking the right platforms and connecting them properly.",
+    canonical: "/content-technology",
+  });
+}
 
 const fallbackPackages = [
   { title: "Build a Better Navigation & Site Structure", description: "We redesign your navigation and site hierarchy so content is easy to find, logically organised, and aligned with how users actually search and browse." },

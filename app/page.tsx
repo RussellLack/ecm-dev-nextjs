@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import ContactForm from "@/components/ContactForm";
@@ -8,6 +9,51 @@ import { getHomePage, getBlogPosts } from "@/lib/queries";
 import { urlFor } from "@/lib/sanity";
 
 export const revalidate = 60;
+
+export async function generateMetadata(): Promise<Metadata> {
+  const home = await getHomePage().catch(() => null);
+  const seo = home?.seo || {};
+
+  // Title precedence: editor seo override → derived from heroHeading →
+  // root-layout default. We deliberately render the title as a literal
+  // (not template) when an editor has set seo.metaTitle so they have
+  // full control over the brand-name placement.
+  const title =
+    seo.metaTitle ||
+    `${home?.heroHeading || "Content Infrastructure for the AI Enterprise"} | ECM.DEV`;
+
+  // Description: seo override → first 155 chars of heroBody → fallback.
+  const heroBlurb = home?.heroBody
+    ? String(home.heroBody).split(/\n+/)[0].slice(0, 155).trim()
+    : null;
+  const description =
+    seo.metaDescription ||
+    heroBlurb ||
+    "We design the operating systems, governance frameworks, and structured workflows that turn content into a reliable, AI-ready asset.";
+
+  const ogImage = seo.ogImage
+    ? urlFor(seo.ogImage).width(1200).height(630).fit("crop").crop("center").url()
+    : undefined;
+
+  return {
+    title,
+    description,
+    alternates: { canonical: "/" },
+    ...(seo.noIndex ? { robots: { index: false, follow: false } } : {}),
+    openGraph: {
+      type: "website",
+      title,
+      description,
+      ...(ogImage ? { images: [{ url: ogImage, width: 1200, height: 630 }] } : {}),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      ...(ogImage ? { images: [ogImage] } : {}),
+    },
+  };
+}
 
 /* ─── Static fallback data (used when Sanity fields are empty) ─── */
 

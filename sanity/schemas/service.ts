@@ -53,5 +53,10 @@ export default defineType({
       title: "Display Order",
       type: "number",
     }),
+    defineField({
+      name: "seo",
+      title: "SEO",
+      type: "seo",
+    }),
   ],
 });

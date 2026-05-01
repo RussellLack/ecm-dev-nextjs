@@ -79,5 +79,15 @@ export default defineType({
       type: "string",
       initialValue: "CONTACT US",
     }),
+    defineField({
+      name: "seo",
+      title: "SEO",
+      type: "seo",
+      group: "seo",
+    }),
+  ],
+  groups: [
+    { name: "content", title: "Content", default: true },
+    { name: "seo", title: "SEO" },
   ],
 });
