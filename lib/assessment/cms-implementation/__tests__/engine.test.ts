@@ -253,6 +253,30 @@ console.log("\n11. Horizon");
     `actual ${actualDelta.toFixed(0)}, expected ${expectedDelta.toFixed(0)}`);
 }
 
+// 11b. Deployment model drives hosting cost
+console.log("\n11b. Deployment hosting modifier");
+{
+  const paas = calculate({
+    ...baseline,
+    target: { ...baseline.target, deployment: "paas" },
+  });
+  const saas = calculate({
+    ...baseline,
+    target: { ...baseline.target, deployment: "saas" },
+  });
+  const selfHosted = calculate({
+    ...baseline,
+    target: { ...baseline.target, deployment: "self-hosted" },
+  });
+  check("SaaS hosting < PaaS hosting (vendor bundles infra)",
+    saas.breakdown.hosting.mid < paas.breakdown.hosting.mid);
+  check("self-hosted hosting > PaaS hosting (buyer bears infra + ops)",
+    selfHosted.breakdown.hosting.mid > paas.breakdown.hosting.mid);
+  // SaaS hosting = 0.7× PaaS — verify ratio.
+  check("SaaS hosting = 0.7× PaaS",
+    approx(saas.breakdown.hosting.mid / paas.breakdown.hosting.mid, 0.7, 0.001));
+}
+
 // 12. Confidence rating cascades to worst-case
 console.log("\n12. Confidence cascade");
 {

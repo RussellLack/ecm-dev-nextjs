@@ -108,6 +108,14 @@ export default function CmsImplementationForm({ inputs, onChange, onReset }: Pro
             // Tier change resets vendor — they're tier-scoped.
             update("target", { tier: v as TargetTier, vendor: undefined });
           }}
+          hint={
+            <ul className="list-disc space-y-0.5 pl-4">
+              <li><strong>Headless / composable</strong> — separate content backend (Sanity, Contentful, Storyblok); your dev team builds the front-end</li>
+              <li><strong>Mid-market CMS</strong> — turnkey CMS with a built-in editor (Kentico, Umbraco, Sitefinity)</li>
+              <li><strong>DXP / enterprise platform</strong> — vendor suite with personalisation + commerce + experimentation (Sitecore, Optimizely, AEM, Acquia)</li>
+              <li><strong>ECM</strong> — document-centric records management (Hyland OnBase, OpenText, IBM FileNet)</li>
+            </ul>
+          }
         />
         {inputs.target.tier !== "unsure" && (
           <SelectRow
@@ -124,6 +132,13 @@ export default function CmsImplementationForm({ inputs, onChange, onReset }: Pro
           value={inputs.target.deployment}
           options={DEPLOYMENT_OPTIONS}
           onChange={(v) => update("target", { deployment: v as Deployment })}
+          hint={
+            <ul className="list-disc space-y-0.5 pl-4">
+              <li><strong>SaaS</strong> — vendor runs everything; you log in to edit. Lowest hosting + ops overhead (~30% cheaper run cost).</li>
+              <li><strong>PaaS / managed cloud</strong> — vendor manages cloud, you run the app team. Baseline.</li>
+              <li><strong>Self-hosted</strong> — you run infrastructure and ops in-house. Slightly higher run cost (~10%) on average — infra savings offset by larger DIY team.</li>
+            </ul>
+          }
         />
       </Group>
 
@@ -148,6 +163,14 @@ export default function CmsImplementationForm({ inputs, onChange, onReset }: Pro
           value={inputs.scope.pageBucket}
           options={PAGE_BUCKET_OPTIONS}
           onChange={(v) => update("scope", { pageBucket: v as PageBucket })}
+          hint={
+            <span>
+              Total pages plus migratable assets (images, PDFs, videos,
+              downloadable documents). Drives content-migration effort. Be
+              generous — count every URL and asset, not just the headline
+              page count.
+            </span>
+          }
         />
         <CheckRow
           label="Required integrations"
@@ -158,6 +181,14 @@ export default function CmsImplementationForm({ inputs, onChange, onReset }: Pro
               integrations: toggleArray(inputs.scope.integrations, v),
             })
           }
+          hint={
+            <span>
+              Each ticked integration adds <strong>~5%</strong> to
+              implementation cost (data mapping, auth, error handling, ongoing
+              maintenance). Capped at +40%. Five or more pushes the project
+              into the high-risk profile band.
+            </span>
+          }
         />
         <SelectRow
           label="Personalisation / AI"
@@ -165,6 +196,13 @@ export default function CmsImplementationForm({ inputs, onChange, onReset }: Pro
           options={PERSONALISATION_OPTIONS}
           onChange={(v) =>
             update("scope", { personalisation: v as Personalisation })
+          }
+          hint={
+            <ul className="list-disc space-y-0.5 pl-4">
+              <li><strong>None</strong> — same content for every visitor. No uplift.</li>
+              <li><strong>Light (rules-based)</strong> — IF/THEN logic: geo banners, logged-in vs anonymous variants, simple A/B tests. <strong>+10%</strong> on implementation.</li>
+              <li><strong>Heavy (AI / ML)</strong> — real-time content scoring, ML recommendations, dynamic AI chat, agentic content selection. <strong>+25%</strong> on implementation.</li>
+            </ul>
           }
         />
         <CheckRow
@@ -175,6 +213,17 @@ export default function CmsImplementationForm({ inputs, onChange, onReset }: Pro
             update("scope", {
               compliance: toggleArray(inputs.scope.compliance, v),
             })
+          }
+          hint={
+            <ul className="list-disc space-y-0.5 pl-4">
+              <li><strong>GDPR / UK-GDPR</strong> — data protection, cookie consent, right to erasure</li>
+              <li><strong>WCAG 2.2 AA</strong> — accessibility (UK Public Sector Bodies Regs, EU EAA)</li>
+              <li><strong>ISO 27001</strong> — information-security management system audit</li>
+              <li><strong>SOC 2</strong> — service-org controls audit (access control, audit trail)</li>
+              <li><strong>Public-sector procurement</strong> — government RFI/ITT-driven controls</li>
+              <li><strong>Sector-specific</strong> — financial services (FCA, PCI), healthcare (HIPAA, NHS DSPT), pharma (GxP)</li>
+              <li className="!mt-1.5 list-none text-ecm-gray"><em>Each ticked item adds ~3% to implementation. Capped at +15%.</em></li>
+            </ul>
           }
         />
       </Group>
@@ -250,6 +299,7 @@ interface SelectRowProps<T extends string | number> {
   value: T;
   options: { value: T; label: string }[];
   onChange: (v: T) => void;
+  hint?: React.ReactNode;
 }
 
 function SelectRow<T extends string | number>({
@@ -257,27 +307,35 @@ function SelectRow<T extends string | number>({
   value,
   options,
   onChange,
+  hint,
 }: SelectRowProps<T>) {
   return (
-    <div className="mb-2 flex items-start justify-between gap-3 text-sm">
-      <label className="flex-1 pt-1 text-ecm-gray-dark">{label}</label>
-      <select
-        value={value}
-        onChange={(e) => {
-          const raw = e.target.value;
-          const first = options[0]?.value;
-          onChange(
-            (typeof first === "number" ? parseInt(raw, 10) : raw) as T,
-          );
-        }}
-        className="w-[260px] max-w-full rounded-md border border-gray-200 bg-white px-2 py-1.5 text-sm text-ecm-gray-dark focus:border-ecm-green focus:outline-none"
-      >
-        {options.map((opt) => (
-          <option key={String(opt.value)} value={opt.value}>
-            {opt.label}
-          </option>
-        ))}
-      </select>
+    <div className="mb-3 text-sm">
+      <div className="flex items-start justify-between gap-3">
+        <label className="flex-1 pt-1 text-ecm-gray-dark">{label}</label>
+        <select
+          value={value}
+          onChange={(e) => {
+            const raw = e.target.value;
+            const first = options[0]?.value;
+            onChange(
+              (typeof first === "number" ? parseInt(raw, 10) : raw) as T,
+            );
+          }}
+          className="w-[260px] max-w-full rounded-md border border-gray-200 bg-white px-2 py-1.5 text-sm text-ecm-gray-dark focus:border-ecm-green focus:outline-none"
+        >
+          {options.map((opt) => (
+            <option key={String(opt.value)} value={opt.value}>
+              {opt.label}
+            </option>
+          ))}
+        </select>
+      </div>
+      {hint && (
+        <div className="mt-1 text-[11px] leading-relaxed text-ecm-gray">
+          {hint}
+        </div>
+      )}
     </div>
   );
 }
@@ -340,15 +398,22 @@ function CheckRow({
   options,
   values,
   onToggle,
+  hint,
 }: {
   label: string;
   options: { value: string; label: string }[];
   values: string[];
   onToggle: (value: string) => void;
+  hint?: React.ReactNode;
 }) {
   return (
     <div className="mb-3 text-sm">
-      <p className="mb-2 text-ecm-gray-dark">{label}</p>
+      <p className="mb-1 text-ecm-gray-dark">{label}</p>
+      {hint && (
+        <div className="mb-2 text-[11px] leading-relaxed text-ecm-gray">
+          {hint}
+        </div>
+      )}
       <div className="flex flex-wrap gap-1.5">
         {options.map((opt) => {
           const active = values.includes(opt.value);

@@ -111,6 +111,25 @@ export const RUN_COST: Record<string, Range> = {
 /** Vendor support % of licence (always added). */
 export const VENDOR_SUPPORT_PCT = 0.20;
 
+/**
+ * Deployment-model multiplier on the run-cost hosting bucket.
+ * SaaS → vendor bundles infra + much of ops into the licence, so the
+ *   buyer's hosting+team line is materially smaller.
+ * PaaS → baseline (cloud-managed but you run the app team).
+ * Self-hosted → infra + ops sit fully on the buyer (slightly higher
+ *   on average; some buyers save on infra but bear more headcount).
+ * Unsure → assume PaaS baseline.
+ */
+export const DEPLOYMENT_HOSTING_MULTIPLIER: Record<
+  "saas" | "paas" | "self-hosted" | "unsure",
+  number
+> = {
+  saas: 0.7,
+  paas: 1.0,
+  "self-hosted": 1.1,
+  unsure: 1.0,
+};
+
 /** Out-year enhancement = 60% of Year 1 implementation, recurring annually
  *  from Year 2. Real Story Group cite ~100%; we soften to keep conservative
  *  defaults principle. Bumps to 75% if 10+ years on legacy platform. */

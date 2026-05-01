@@ -22,6 +22,7 @@ import {
   COMPLIANCE_UPLIFT_CAP,
   RUN_COST,
   VENDOR_SUPPORT_PCT,
+  DEPLOYMENT_HOSTING_MULTIPLIER,
   OUT_YEAR_ENHANCEMENT_PCT,
   OUT_YEAR_ENHANCEMENT_LEGACY_PCT,
   EDITOR_HOURS_SAVED,
@@ -345,8 +346,14 @@ export function calculate(inputs: CmsImplementationInputs): CmsImplementationRes
   // 2. Implementation + contingency
   const { implementation, contingency } = calculateImplementation(inputs, highRisk);
 
-  // 3. Run cost — split into hosting/team chunk + vendor support
-  const hostingAndTeam = pickRunCost(inputs.org.size);
+  // 3. Run cost — split into hosting/team chunk + vendor support.
+  //    Deployment model scales the hosting+team line: SaaS bundles much of
+  //    the infra into the licence, self-hosted moves infra + ops onto the
+  //    buyer.
+  const hostingAndTeam = scaleRange(
+    pickRunCost(inputs.org.size),
+    DEPLOYMENT_HOSTING_MULTIPLIER[inputs.target.deployment],
+  );
   const vendorSupport = scaleRange(licence, VENDOR_SUPPORT_PCT);
 
   // 4. Out-year enhancement
