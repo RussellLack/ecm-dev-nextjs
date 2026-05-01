@@ -149,7 +149,7 @@ export default async function PlatformDetailPage({
         <div className="max-w-3xl mx-auto px-6 mt-8">
           <div className="flex items-center gap-4 mb-5">
             {platform.logo && (
-              <div className="flex-shrink-0 w-16 h-16 bg-white/10 rounded-lg p-2">
+              <div className="flex-shrink-0 w-16 h-16 bg-white rounded-lg p-2">
                 <Image
                   src={urlFor(platform.logo).width(160).height(160).url()}
                   alt={platform.name}
