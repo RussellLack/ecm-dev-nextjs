@@ -124,8 +124,7 @@ export default async function BlogTagPage({
                       <p className="text-ecm-gray text-xs mb-3">
                         {new Date(post.publishedAt).toLocaleDateString("en-GB", {
                           year: "numeric",
-                          month: "short",
-                          day: "numeric",
+                          month: "long",
                         })}
                       </p>
                     )}
