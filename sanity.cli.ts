@@ -6,4 +6,7 @@ export default defineCliConfig({
     dataset: "production",
   },
   studioHost: "ecm-assessment",
+  deployment: {
+    appId: "kcu99xg51h7woqnvm5t32olp",
+  },
 });
