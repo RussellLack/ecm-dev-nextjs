@@ -7,6 +7,7 @@ import { MODEL_VERSION } from "@/lib/assessment/cms-implementation/coefficients"
 import type { CmsImplementationInputs } from "@/lib/assessment/cms-implementation/types";
 import Form from "./Form";
 import RunningTotal from "./RunningTotal";
+import Result from "./Result";
 
 type DeepPartial<T> = { [K in keyof T]?: T[K] extends object ? DeepPartial<T[K]> : T[K] };
 
@@ -116,8 +117,13 @@ export default function CmsImplementationClient() {
         </div>
       </section>
 
-      {/* Phase 4 placeholder — full result composition will replace the
-          inline running-total once the design is approved. */}
+      {/* Full result composition — breakdown table, year-by-year cash flow,
+          risk-band visualiser, benefit panel, notes, share + methodology. */}
+      <Result
+        result={result}
+        inputs={inputs}
+        onToggleTei={handleToggleTei}
+      />
     </div>
   );
 }
