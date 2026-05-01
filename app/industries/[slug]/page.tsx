@@ -6,6 +6,7 @@ import {
   getCaseStudiesByIndustry,
 } from "@/lib/queries";
 import { urlFor } from "@/lib/sanity";
+import CaseStudyIllustration from "@/components/case-study/CaseStudyIllustration";
 import { INDUSTRY_OPTIONS } from "@/sanity/schemas/taxonomyOptions";
 
 export const revalidate = 60;
@@ -122,9 +123,7 @@ export default async function IndustryDetailPage({
                         loading="lazy"
                       />
                     ) : (
-                      <span className="text-ecm-green/30 text-xs font-barlow font-semibold tracking-widest">
-                        ECM
-                      </span>
+                      <CaseStudyIllustration slug={cs.slug?.current} />
                     )}
                   </div>
                   <div className="p-4 flex flex-col flex-1">

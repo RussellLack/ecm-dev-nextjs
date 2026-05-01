@@ -12,6 +12,10 @@ type RelatedItem = {
   image?: any;
   client?: string;
   tags?: string[];
+  // Optional fallback when no image is set — used by case-study callers to
+  // supply a CaseStudyIllustration so cards aren't blank when a case study
+  // has no editor-uploaded thumbnail.
+  fallback?: React.ReactNode;
 };
 
 function slugString(slug: RelatedItem["slug"]): string {
@@ -69,6 +73,8 @@ export default function RelatedContent({
                         className="w-full h-full object-cover"
                         loading="lazy"
                       />
+                    ) : item.fallback ? (
+                      item.fallback
                     ) : (
                       <span className="text-ecm-green/40 text-xs font-barlow font-semibold">
                         ECM

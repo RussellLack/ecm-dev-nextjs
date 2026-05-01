@@ -8,6 +8,7 @@ import {
 } from "@/lib/queries";
 import { findOneIntelTopicForTags } from "@/lib/intel/queries";
 import GuideIllustration from "@/components/guides/GuideIllustration";
+import CaseStudyIllustration from "@/components/case-study/CaseStudyIllustration";
 
 type Doctype = "post" | "guide" | "caseStudy" | "assessment" | "intelTopic";
 
@@ -97,6 +98,7 @@ export default async function MixedRelated({
       title: caseStudy.title,
       blurb: caseStudy.client || caseStudy.description,
       image: caseStudy.image,
+      fallback: <CaseStudyIllustration slug={caseStudy.slug.current} />,
     });
   }
   if (post?.slug?.current) {

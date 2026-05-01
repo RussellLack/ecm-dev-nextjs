@@ -11,6 +11,7 @@ import {
 import { urlFor } from "@/lib/sanity";
 import { internalLinkHref } from "@/lib/internalLink";
 import GuideIllustration from "@/components/guides/GuideIllustration";
+import CaseStudyIllustration from "@/components/case-study/CaseStudyIllustration";
 
 export const revalidate = 60;
 
@@ -267,6 +268,7 @@ export default async function PlatformDetailPage({
                     title={cs.title}
                     subtitle={cs.client || cs.description}
                     image={cs.image}
+                    fallback={<CaseStudyIllustration slug={cs.slug?.current} />}
                   />
                 ))}
               </Cluster>
