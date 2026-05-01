@@ -351,37 +351,38 @@ illustrative benchmarks** and never as guarantees.
 
 ---
 
-## Open questions for your review
+## Decisions (locked in for v1)
 
-1. **Currency.** USD-anchor coefficients with a UI selector for GBP (×0.79)
-   and EUR (×0.92), or hold separate GBP coefficient sets given the bulk of
-   ECM.dev clients are UK/EU? **Recommendation:** USD-anchor with a UI
-   selector — keeps the coefficient table single-sourced.
-2. **Sitecore / Optimizely / AEM ranges.** Confidence C is structurally
-   unavoidable for sales-gated DXPs. We should keep Sitecore and AEM in
-   the calculator but always flag *"these vendors don't publish prices —
-   the calculator uses analyst-broker estimates which can diverge ±40%
-   from your negotiated price."* Comfortable with that disclaimer?
-3. **Benefit-side defaults.** Forrester TEI numbers are real but
-   vendor-commissioned. **Recommendation:** the calculator defaults to
-   **mid** values for cost and **low** values for benefit — i.e. the
-   business case shown is the *conservative* one, with a checkbox to
-   "use vendor-cited benchmarks (TEI)" for the optimistic case.
-4. **TCO horizon.** 3 years is the analyst standard. Any reason to also
-   show a 5-year option? Most ECM contracts are 5-yr.
-5. **Out-year enhancement coefficient.** The Real Story Group claim that
-   "out-year enhancement spend ≈ Year 1 implementation, recurring" is
-   our single most consequential coefficient. Want to adopt it as-is or
-   soften to 60% of Year 1 to be conservative?
-6. **Industry verticalisation.** The article (and current ECM.dev industry
-   taxonomy) recognises FS / healthcare / manufacturing / public sector /
-   etc. Should the calculator apply industry-specific multipliers (e.g.
-   regulated industries +20% on implementation, public sector +30% on
-   procurement overhead)? **Recommendation:** v1 doesn't — too many
-   coefficients to defend simultaneously. Add as v2 once we have leads.
+1. **Currency.** **USD-anchor coefficients with a UI selector** —
+   GBP × 0.79, EUR × 0.92. Single source of truth in code; the UI
+   selector applies the multiplier at render time.
+2. **Sales-gated DXP disclaimer.** Sitecore, Optimizely, AEM, Acquia,
+   OpenText and Hyland always render with the warning:
+   *"Vendor doesn't publish prices — analyst-broker estimates can
+   diverge ±40% from negotiated price. Book a benchmarking call to
+   tighten the range."*
+3. **Conservative defaults.** Calculator defaults to **mid** cost
+   coefficients and **low** benefit coefficients. A
+   *"Use vendor-cited TEI benchmarks"* toggle lifts the benefit side
+   to mid (and is clearly labelled vendor-commissioned).
+4. **TCO horizon.** **3 years default, 5-year toggle.** ECM contracts
+   commonly run 5-yr so the toggle matters there; headless replatforms
+   pay back faster so 3-yr is the right primary.
+5. **Out-year enhancement.** **60% of Year 1 implementation, recurring**
+   (softer than Real Story Group's 100% claim — sticks with the
+   conservative-defaults principle but cites the more aggressive
+   benchmark in the methodology page).
+6. **Industry verticalisation.** **Not in v1.** Add as v2 once lead
+   volume justifies the additional coefficient surface.
 
-Once you sign off on the coefficient table and the open questions above, the
-next deliverable is the input form spec → the calculator engine →
-the result page + PDF generator. Estimated 3–5 dev days for v1 on the
-existing assessment infrastructure (`app/api/assessment/pdf/route.tsx`,
-already in place for the localisation estimator).
+---
+
+## Next deliverables
+
+1. **Input-form spec** → `docs/CMS-IMPLEMENTATION-ASSESSMENT-FORM.md` —
+   field-by-field, mapping each input to the coefficients above.
+2. Calculator engine (TypeScript module).
+3. Result page + PDF generator on the existing
+   `app/api/assessment/pdf/route.tsx` infrastructure.
+
+Estimated 3–5 dev days for v1.
