@@ -5,6 +5,7 @@ import ContactForm from "@/components/ContactForm";
 import TestimonialsClient from "@/components/TestimonialsClient";
 import LearnMoreSection from "@/components/LearnMoreSection";
 import LavaBlobs from "@/components/LavaBlobs";
+import PostIllustration from "@/components/post/PostIllustration";
 import { getHomePage, getBlogPosts } from "@/lib/queries";
 import { urlFor } from "@/lib/sanity";
 
@@ -365,30 +366,25 @@ export default async function HomePage() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
             {blogPosts.map((post: any, i: number) => (
               <Link
-                key={i}
+                key={post._id || i}
                 href={`/post/${post.slug?.current || post.slug}`}
-                className="bg-white rounded-xl overflow-hidden border border-gray-100 hover:border-ecm-lime/30 shadow-sm hover:shadow-md transition-all group"
+                className="bg-white rounded-xl overflow-hidden border border-gray-100 hover:shadow-lg shadow-sm transition-shadow group flex flex-col"
               >
-                {post.mainImage ? (
-                  <div className="relative h-32 sm:h-36 lg:h-40">
-                    <Image
-                      src={urlFor(post.mainImage).width(400).height(240).url()}
-                      alt={post.title}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                    />
-                  </div>
-                ) : (
-                  <div className="h-40 bg-ecm-green/10 flex items-center justify-center">
-                    <div className="w-12 h-12 bg-ecm-green/20 rounded-lg" />
-                  </div>
-                )}
-                <div className="p-4">
-                  <h3 className="text-ecm-green font-barlow font-semibold text-sm mb-2 group-hover:text-ecm-lime transition-colors leading-snug">
+                <div className="h-36 overflow-hidden bg-ecm-green/5 flex items-center justify-center border-b border-gray-100">
+                  <PostIllustration slug={post.slug?.current || post.slug} />
+                </div>
+                <div className="p-4 flex flex-col flex-1 bg-gray-50">
+                  <h3 className="text-ecm-green font-barlow font-semibold text-sm mb-2 group-hover:text-ecm-green-dark transition-colors leading-snug">
                     {post.title}
                   </h3>
-                  <p className="text-ecm-gray text-xs">{post.date}</p>
+                  {post.publishedAt && (
+                    <p className="text-ecm-gray text-xs">
+                      {new Date(post.publishedAt).toLocaleDateString("en-GB", {
+                        year: "numeric",
+                        month: "long",
+                      })}
+                    </p>
+                  )}
                 </div>
               </Link>
             ))}
