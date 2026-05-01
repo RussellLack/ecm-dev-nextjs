@@ -10,6 +10,7 @@ import {
 } from "@/lib/queries";
 import { urlFor } from "@/lib/sanity";
 import { internalLinkHref } from "@/lib/internalLink";
+import GuideIllustration from "@/components/guides/GuideIllustration";
 
 export const revalidate = 60;
 
@@ -247,6 +248,12 @@ export default async function PlatformDetailPage({
                     subtitle={g.subtitle || g.excerpt}
                     image={g.mainImage}
                     eyebrow={g.series}
+                    fallback={
+                      <GuideIllustration
+                        slug={g.slug?.current}
+                        guideNumber={g.guideNumber ?? 0}
+                      />
+                    }
                   />
                 ))}
               </Cluster>
@@ -319,19 +326,21 @@ function Card({
   subtitle,
   image,
   eyebrow,
+  fallback,
 }: {
   href: string;
   title: string;
   subtitle?: string;
   image?: any;
   eyebrow?: string;
+  fallback?: React.ReactNode;
 }) {
   return (
     <Link
       href={href}
       className="group bg-white rounded-xl border border-gray-100 hover:border-ecm-green/20 hover:shadow-lg transition-all overflow-hidden flex flex-col"
     >
-      {image && (
+      {image ? (
         <div className="h-32 overflow-hidden bg-ecm-green/5 flex items-center justify-center">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
@@ -341,7 +350,11 @@ function Card({
             loading="lazy"
           />
         </div>
-      )}
+      ) : fallback ? (
+        <div className="h-32 overflow-hidden bg-ecm-green/5 flex items-center justify-center">
+          {fallback}
+        </div>
+      ) : null}
       <div className="p-4 flex flex-col flex-1">
         {eyebrow && (
           <p className="text-[10px] font-barlow font-semibold uppercase tracking-widest text-ecm-lime-hover mb-1">

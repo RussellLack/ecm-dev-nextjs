@@ -6,6 +6,7 @@ import {
   getPostsByPillar,
 } from "@/lib/queries";
 import { getAssessmentsByPillar } from "@/lib/assessment/queries";
+import GuideIllustration from "@/components/guides/GuideIllustration";
 
 type Pillar = "technology" | "services" | "localization";
 
@@ -77,6 +78,12 @@ export default async function PillarClusters({ pillar }: { pillar: Pillar }) {
                 subtitle={g.subtitle}
                 image={g.mainImage}
                 eyebrow={g.series}
+                fallback={
+                  <GuideIllustration
+                    slug={g.slug?.current}
+                    guideNumber={g.guideNumber ?? 0}
+                  />
+                }
               />
             ))}
           </Cluster>
@@ -182,12 +189,14 @@ function Card({
   subtitle,
   image,
   eyebrow,
+  fallback,
 }: {
   href: string;
   title: string;
   subtitle?: string;
   image?: any;
   eyebrow?: string;
+  fallback?: React.ReactNode;
 }) {
   return (
     <Link
@@ -203,6 +212,8 @@ function Card({
             className="w-full h-full object-cover"
             loading="lazy"
           />
+        ) : fallback ? (
+          fallback
         ) : (
           <span className="text-ecm-green/30 text-xs font-barlow font-semibold tracking-widest">
             ECM
