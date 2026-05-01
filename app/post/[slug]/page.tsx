@@ -213,19 +213,14 @@ export default async function PostPage({
         </div>
       </section>
 
-      {/* Featured image */}
-      {post.mainImage && (
-        <div className="max-w-3xl mx-auto px-6 -mt-8">
-          <Image
-            src={urlFor(post.mainImage).width(800).height(450).url()}
-            alt={post.title || ""}
-            width={800}
-            height={450}
-            className="rounded-2xl w-full shadow-lg"
-            priority
-          />
+      {/* Featured illustration — replaces any editor mainImage on the
+          card surfaces; still rendered here as the hero so the page
+          composition holds together. */}
+      <div className="max-w-3xl mx-auto px-6 -mt-8">
+        <div className="rounded-2xl w-full shadow-lg bg-white border border-gray-100 aspect-[280/144] overflow-hidden">
+          <PostIllustration slug={slug} />
         </div>
-      )}
+      </div>
 
       {/* Body content */}
       <article className="py-16">

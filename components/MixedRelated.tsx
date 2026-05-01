@@ -148,7 +148,11 @@ export default async function MixedRelated({
                 href={item.href}
                 className="group bg-white rounded-xl border border-gray-100 hover:border-ecm-green/20 hover:shadow-md transition-all overflow-hidden flex flex-col"
               >
-                {item.image ? (
+                {item.fallback ? (
+                  <div className="h-28 overflow-hidden bg-ecm-green/5 flex items-center justify-center">
+                    {item.fallback}
+                  </div>
+                ) : item.image ? (
                   <div className="h-28 overflow-hidden bg-ecm-green/5 flex items-center justify-center">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
@@ -157,10 +161,6 @@ export default async function MixedRelated({
                       className="w-full h-full object-cover"
                       loading="lazy"
                     />
-                  </div>
-                ) : item.fallback ? (
-                  <div className="h-28 overflow-hidden bg-ecm-green/5 flex items-center justify-center">
-                    {item.fallback}
                   </div>
                 ) : (
                   <div className="h-28 bg-ecm-green/5 flex items-center justify-center">

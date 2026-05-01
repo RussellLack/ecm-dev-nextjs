@@ -114,17 +114,7 @@ export default async function IndustryDetailPage({
                   className="group bg-gray-50 rounded-xl border border-gray-100 hover:border-ecm-green/20 hover:shadow-lg transition-all overflow-hidden flex flex-col"
                 >
                   <div className="h-32 overflow-hidden bg-ecm-green/5 flex items-center justify-center">
-                    {cs.image ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={urlFor(cs.image).width(360).height(200).fit("crop").url()}
-                        alt=""
-                        className="w-full h-full object-cover"
-                        loading="lazy"
-                      />
-                    ) : (
-                      <CaseStudyIllustration slug={cs.slug?.current} />
-                    )}
+                    <CaseStudyIllustration slug={cs.slug?.current} />
                   </div>
                   <div className="p-4 flex flex-col flex-1">
                     <h2 className="text-ecm-green font-barlow font-semibold text-sm leading-snug mb-2 group-hover:text-ecm-green-dark transition-colors line-clamp-2">

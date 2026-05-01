@@ -208,7 +208,9 @@ function Card({
       className="group bg-gray-50 rounded-xl border border-gray-100 hover:border-ecm-green/20 hover:shadow-lg transition-all overflow-hidden flex flex-col"
     >
       <div className="h-32 overflow-hidden bg-ecm-green/5 flex items-center justify-center">
-        {image ? (
+        {fallback ? (
+          fallback
+        ) : image ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={urlFor(image).width(360).height(200).fit("crop").url()}
@@ -216,8 +218,6 @@ function Card({
             className="w-full h-full object-cover"
             loading="lazy"
           />
-        ) : fallback ? (
-          fallback
         ) : (
           <span className="text-ecm-green/30 text-xs font-barlow font-semibold tracking-widest">
             ECM

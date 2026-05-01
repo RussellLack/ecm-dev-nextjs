@@ -312,7 +312,11 @@ function Card({
       href={href}
       className="group bg-gray-50 rounded-xl border border-gray-100 hover:border-ecm-green/20 hover:shadow-lg transition-all overflow-hidden flex flex-col"
     >
-      {image ? (
+      {fallback ? (
+        <div className="h-32 overflow-hidden bg-ecm-green/5 flex items-center justify-center">
+          {fallback}
+        </div>
+      ) : image ? (
         <div className="h-32 overflow-hidden bg-ecm-green/5 flex items-center justify-center">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
@@ -321,10 +325,6 @@ function Card({
             className="w-full h-full object-cover"
             loading="lazy"
           />
-        </div>
-      ) : fallback ? (
-        <div className="h-32 overflow-hidden bg-ecm-green/5 flex items-center justify-center">
-          {fallback}
         </div>
       ) : null}
       <div className="p-4 flex flex-col flex-1">

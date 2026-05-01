@@ -114,17 +114,7 @@ export default async function BlogTagPage({
                   className="bg-gray-50 rounded-xl overflow-hidden hover:shadow-lg transition-shadow group border border-gray-100 flex flex-col"
                 >
                   <div className="h-36 overflow-hidden bg-gray-50 flex items-center justify-center">
-                    {post.mainImage ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={urlFor(post.mainImage).width(400).height(225).fit("crop").url()}
-                        alt={post.title || "Blog post image"}
-                        className="w-full h-full object-cover"
-                        loading="lazy"
-                      />
-                    ) : (
-                      <PostIllustration slug={post.slug?.current} />
-                    )}
+                    <PostIllustration slug={post.slug?.current} />
                   </div>
                   <div className="p-4 flex flex-col flex-1">
                     <h2 className="text-ecm-green font-barlow font-semibold text-sm mb-2 group-hover:text-ecm-green-dark transition-colors leading-snug">
