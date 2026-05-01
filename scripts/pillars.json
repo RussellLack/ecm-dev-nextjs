@@ -1287,5 +1287,49 @@
       ],
       "industry": "manufacturing"
     }
+  ],
+  "platformContent": [
+    {
+      "slug": "sitecore",
+      "summary": "Composable DXP for enterprise marketing operations and personalisation at scale. ECM.DEV plans, migrates, and tunes Sitecore environments — from XM Cloud through legacy XP — to make content infrastructure AI-ready.",
+      "heroDescription": "Sitecore is a composable digital experience platform optimised for enterprise marketing operations and personalisation at scale. ECM.DEV advises on architecture (XM Cloud vs XP), migration sequencing, content modelling for headless delivery, and the operational redesign that lets a Sitecore investment compound rather than ossify. Most engagements start with a content audit and a clear path off the legacy monolith.",
+      "website": "https://www.sitecore.com"
+    },
+    {
+      "slug": "sanity",
+      "summary": "Structured-content CMS for teams that want their content addressable by AI. ECM.DEV designs Sanity schemas, taxonomies, and editorial workflows that hold up under multi-channel and multi-language load.",
+      "heroDescription": "Sanity is a structured-content platform built around a typed content model and a real-time editing experience. Its strength — and its difficulty — is the same: content-modelling discipline. ECM.DEV designs schemas, taxonomies, and component libraries so editors stay productive while the model stays clean enough for AI retrieval, personalisation, and consistent cross-channel delivery.",
+      "website": "https://www.sanity.io"
+    },
+    {
+      "slug": "kentico",
+      "summary": "Mid-market DXP with a long-tail installed base. ECM.DEV plans Kentico Xperience to Xperience by Kentico migrations and the operational redesign that comes with them.",
+      "heroDescription": "Kentico Xperience is a mid-market DXP with a sizable installed base, and the current generation — Xperience by Kentico — is a major step forward. The migration off the legacy product is meaningful work: ECM.DEV plans the cadence, designs the new content model, and helps marketing and IT agree on what the upgrade actually changes about how content gets made and reviewed.",
+      "website": "https://www.kentico.com"
+    },
+    {
+      "slug": "contentful",
+      "summary": "API-first headless CMS that anchors most enterprise composable stacks. ECM.DEV designs the content model, governance, and AI-augmented workflows that keep Contentful tenants scaling cleanly.",
+      "heroDescription": "Contentful is the API-first headless CMS that anchors most enterprise composable stacks. The platform's flexibility is also its risk — without a disciplined content model, an editorial governance framework, and integration discipline, Contentful tenants accumulate debt fast. ECM.DEV designs the content model, governance flows, and AI-augmented workflows that compound rather than fragment.",
+      "website": "https://www.contentful.com"
+    },
+    {
+      "slug": "optimizely",
+      "summary": "Personalisation and experimentation DXP. ECM.DEV designs the content, audience, and decisioning architecture that makes Optimizely's optimisation engine actually optimise something.",
+      "heroDescription": "Optimizely is a DXP organised around experimentation and personalisation. The technology works; the limiting factor is almost always the content and audience architecture upstream. ECM.DEV designs the personalisation architecture — content components, audience signals, decisioning logic — that lets Optimizely's optimisation engine do its job, instead of recommending the same fragmented page to everyone.",
+      "website": "https://www.optimizely.com"
+    },
+    {
+      "slug": "ibexa",
+      "summary": "European DXP with a clear B2B focus. ECM.DEV plans Ibexa migrations and content operations for B2B commerce, configurable products, and account-based experiences.",
+      "heroDescription": "Ibexa is a European DXP with a clear B2B focus — configurable product catalogues, account-based experiences, and content operations designed around long buying cycles. ECM.DEV advises on Ibexa v5 migrations, content modelling for B2B catalogues, and the cross-functional operating model that B2B content actually needs.",
+      "website": "https://www.ibexa.co"
+    },
+    {
+      "slug": "hyland",
+      "summary": "Enterprise content services for regulated and document-heavy operations. ECM.DEV designs federation strategies that modernise without forcing a forklift migration.",
+      "heroDescription": "Hyland is the enterprise content services vendor for organisations with deep document and records management needs — financial services, healthcare, public sector. The Content Innovation Cloud lets large estates modernise via federation rather than migration. ECM.DEV plans the modernisation sequence: what to consolidate, what to leave in place, and how to layer AI retrieval across the lot without breaking compliance posture.",
+      "website": "https://www.hyland.com"
+    }
   ]
 }
