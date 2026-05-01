@@ -1,28 +1,1291 @@
 {
   "_comment": "Approved pillar / platform seed mappings. See scripts/apply-pillars.mjs for the runner. Approved by Russell on 2026-04-30/05-01 in PR session.",
   "postPatches": [
-    { "id": "post-1",  "title": "Kentico CMS Cadence Cuts Migration Risk",                                "pillars": ["technology"] },
-    { "id": "post-2",  "title": "Agentic CX: From Journeys to Agents",                                    "pillars": ["technology", "services"] },
-    { "id": "post-3",  "title": "Sanity CMS Upgrades Speed CX Delivery",                                  "pillars": ["technology", "services"] },
-    { "id": "post-4",  "title": "Unlocking Sitecore Productivity",                                        "pillars": ["technology", "services"] },
-    { "id": "post-5",  "title": "Ibexa v5: Europe's B2B DXP",                                              "pillars": ["technology"] },
-    { "id": "post-6",  "title": "Hyland Content Innovation Cloud",                                        "pillars": ["technology"] },
-    { "id": "post-7",  "title": "Contentful AI Workflows Boost Speed",                                    "pillars": ["technology", "services", "localization"] },
-    { "id": "post-8",  "title": "Optimizely AEO/GEO: AI Visibility",                                      "pillars": ["technology", "services"] },
-    { "id": "post-9",  "title": "Website Localization for Static and Dynamic Websites",                   "pillars": ["localization", "technology"] },
-    { "id": "post-10", "title": "The B2B DXP Adoption Playbook",                                          "pillars": ["technology", "services"] },
-    { "id": "post-11", "title": "10 Clues That Show Your CMS Requires Upgrading",                         "pillars": ["technology"] },
-    { "id": "post-12", "title": "Leveraging Local Social Media Trends for Effective Engagement",          "pillars": ["localization", "services"] },
-    { "id": "post-13", "title": "How Generative AI Is Changing Content Marketing",                        "pillars": ["services"] },
-    { "id": "post-14", "title": "Critical Success Factors for ECM/CMS Implementation",                    "pillars": ["technology", "services"] }
+    {
+      "id": "post-1",
+      "title": "Kentico CMS Cadence Cuts Migration Risk",
+      "pillars": [
+        "technology"
+      ]
+    },
+    {
+      "id": "post-2",
+      "title": "Agentic CX: From Journeys to Agents",
+      "pillars": [
+        "technology",
+        "services"
+      ]
+    },
+    {
+      "id": "post-3",
+      "title": "Sanity CMS Upgrades Speed CX Delivery",
+      "pillars": [
+        "technology",
+        "services"
+      ]
+    },
+    {
+      "id": "post-4",
+      "title": "Unlocking Sitecore Productivity",
+      "pillars": [
+        "technology",
+        "services"
+      ]
+    },
+    {
+      "id": "post-5",
+      "title": "Ibexa v5: Europe's B2B DXP",
+      "pillars": [
+        "technology"
+      ]
+    },
+    {
+      "id": "post-6",
+      "title": "Hyland Content Innovation Cloud",
+      "pillars": [
+        "technology"
+      ]
+    },
+    {
+      "id": "post-7",
+      "title": "Contentful AI Workflows Boost Speed",
+      "pillars": [
+        "technology",
+        "services",
+        "localization"
+      ]
+    },
+    {
+      "id": "post-8",
+      "title": "Optimizely AEO/GEO: AI Visibility",
+      "pillars": [
+        "technology",
+        "services"
+      ]
+    },
+    {
+      "id": "post-9",
+      "title": "Website Localization for Static and Dynamic Websites",
+      "pillars": [
+        "localization",
+        "technology"
+      ]
+    },
+    {
+      "id": "post-10",
+      "title": "The B2B DXP Adoption Playbook",
+      "pillars": [
+        "technology",
+        "services"
+      ]
+    },
+    {
+      "id": "post-11",
+      "title": "10 Clues That Show Your CMS Requires Upgrading",
+      "pillars": [
+        "technology"
+      ]
+    },
+    {
+      "id": "post-12",
+      "title": "Leveraging Local Social Media Trends for Effective Engagement",
+      "pillars": [
+        "localization",
+        "services"
+      ]
+    },
+    {
+      "id": "post-13",
+      "title": "How Generative AI Is Changing Content Marketing",
+      "pillars": [
+        "services"
+      ]
+    },
+    {
+      "id": "post-14",
+      "title": "Critical Success Factors for ECM/CMS Implementation",
+      "pillars": [
+        "technology",
+        "services"
+      ]
+    }
   ],
   "platforms": [
-    { "name": "Sitecore",   "slug": "sitecore",   "category": "DXP",   "pillars": ["technology"], "tagAliases": ["Sitecore XM Cloud", "Sitecore Productivity", "Sitecore Symposium"], "intelVendorSlug": "sitecore",   "order": 1 },
-    { "name": "Sanity",     "slug": "sanity",     "category": "CMS",   "pillars": ["technology"], "tagAliases": ["Sanity CMS"],                                                       "intelVendorSlug": "sanity",     "order": 2 },
-    { "name": "Kentico",    "slug": "kentico",    "category": "CMS",   "pillars": ["technology"], "tagAliases": ["Kentico Xperience Migration", "Kentico End of Life"],              "intelVendorSlug": "kentico",    "order": 3 },
-    { "name": "Contentful", "slug": "contentful", "category": "CMS",   "pillars": ["technology"], "tagAliases": ["Contentful"],                                                      "intelVendorSlug": "contentful", "order": 4 },
-    { "name": "Optimizely", "slug": "optimizely", "category": "DXP",   "pillars": ["technology"], "tagAliases": ["Optimizely"],                                                      "intelVendorSlug": "optimizely", "order": 5 },
-    { "name": "Ibexa",      "slug": "ibexa",      "category": "DXP",   "pillars": ["technology"], "tagAliases": ["Ibexa DXP"],                                                       "intelVendorSlug": "ibexa",      "order": 6 },
-    { "name": "Hyland",     "slug": "hyland",     "category": "Other", "pillars": ["technology"], "tagAliases": ["Hyland Content Innovation Cloud"],                                 "intelVendorSlug": "hyland",     "order": 7 }
+    {
+      "name": "Sitecore",
+      "slug": "sitecore",
+      "category": "DXP",
+      "pillars": [
+        "technology"
+      ],
+      "tagAliases": [
+        "Sitecore XM Cloud",
+        "Sitecore Productivity",
+        "Sitecore Symposium"
+      ],
+      "intelVendorSlug": "sitecore",
+      "order": 1
+    },
+    {
+      "name": "Sanity",
+      "slug": "sanity",
+      "category": "CMS",
+      "pillars": [
+        "technology"
+      ],
+      "tagAliases": [
+        "Sanity CMS"
+      ],
+      "intelVendorSlug": "sanity",
+      "order": 2
+    },
+    {
+      "name": "Kentico",
+      "slug": "kentico",
+      "category": "CMS",
+      "pillars": [
+        "technology"
+      ],
+      "tagAliases": [
+        "Kentico Xperience Migration",
+        "Kentico End of Life"
+      ],
+      "intelVendorSlug": "kentico",
+      "order": 3
+    },
+    {
+      "name": "Contentful",
+      "slug": "contentful",
+      "category": "CMS",
+      "pillars": [
+        "technology"
+      ],
+      "tagAliases": [
+        "Contentful"
+      ],
+      "intelVendorSlug": "contentful",
+      "order": 4
+    },
+    {
+      "name": "Optimizely",
+      "slug": "optimizely",
+      "category": "DXP",
+      "pillars": [
+        "technology"
+      ],
+      "tagAliases": [
+        "Optimizely"
+      ],
+      "intelVendorSlug": "optimizely",
+      "order": 5
+    },
+    {
+      "name": "Ibexa",
+      "slug": "ibexa",
+      "category": "DXP",
+      "pillars": [
+        "technology"
+      ],
+      "tagAliases": [
+        "Ibexa DXP"
+      ],
+      "intelVendorSlug": "ibexa",
+      "order": 6
+    },
+    {
+      "name": "Hyland",
+      "slug": "hyland",
+      "category": "Other",
+      "pillars": [
+        "technology"
+      ],
+      "tagAliases": [
+        "Hyland Content Innovation Cloud"
+      ],
+      "intelVendorSlug": "hyland",
+      "order": 7
+    }
+  ],
+  "guidePatches": [
+    {
+      "id": "guide-foundations-01",
+      "title": "The Content Infrastructure Imperative",
+      "pillars": [
+        "technology",
+        "services"
+      ]
+    },
+    {
+      "id": "bda7af79-edf7-41af-a269-1af1043cb57e",
+      "title": "The Anatomy of Content Infrastructure",
+      "pillars": [
+        "technology"
+      ]
+    },
+    {
+      "id": "guide-foundations-03",
+      "title": "Content Governance in the Age of AI",
+      "pillars": [
+        "services"
+      ]
+    },
+    {
+      "id": "guide-foundations-04",
+      "title": "The Content Lifecycle Redesigned",
+      "pillars": [
+        "services"
+      ]
+    },
+    {
+      "id": "guide-foundations-05",
+      "title": "Content as Organisational Intelligence",
+      "pillars": [
+        "technology",
+        "services"
+      ]
+    },
+    {
+      "id": "guide-foundations-06",
+      "title": "Building the Business Case for Content Infrastructure",
+      "pillars": [
+        "services"
+      ]
+    },
+    {
+      "id": "guide-process-07",
+      "title": "Process Architecture for Content Operations",
+      "pillars": [
+        "services"
+      ]
+    },
+    {
+      "id": "guide-process-08",
+      "title": "The Content Brief as System Input",
+      "pillars": [
+        "services"
+      ]
+    },
+    {
+      "id": "guide-process-09",
+      "title": "Workflow Automation for Content Teams",
+      "pillars": [
+        "services"
+      ]
+    },
+    {
+      "id": "guide-process-10",
+      "title": "Approval Flows That Don't Kill Momentum",
+      "pillars": [
+        "services"
+      ]
+    },
+    {
+      "id": "guide-process-11",
+      "title": "Cross-Functional Content Operations",
+      "pillars": [
+        "services"
+      ]
+    },
+    {
+      "id": "guide-process-12",
+      "title": "Content Operations Metrics That Matter",
+      "pillars": [
+        "services"
+      ]
+    },
+    {
+      "id": "guide-process-13",
+      "title": "Designing Content Operations for Regulated Industries",
+      "pillars": [
+        "services"
+      ]
+    },
+    {
+      "id": "guide-process-14",
+      "title": "The Content Operations Maturity Model",
+      "pillars": [
+        "services"
+      ]
+    },
+    {
+      "id": "guide-process-15",
+      "title": "Operationalising Content Strategy",
+      "pillars": [
+        "services"
+      ]
+    },
+    {
+      "id": "guide-ia-16",
+      "title": "Information Architecture for AI Systems",
+      "pillars": [
+        "technology"
+      ]
+    },
+    {
+      "id": "guide-ia-17",
+      "title": "Taxonomy Design for Scalable Content Systems",
+      "pillars": [
+        "technology",
+        "services"
+      ]
+    },
+    {
+      "id": "guide-ia-18",
+      "title": "Metadata Strategy for AI-Powered Enterprises",
+      "pillars": [
+        "technology"
+      ]
+    },
+    {
+      "id": "guide-ia-19",
+      "title": "Content Modelling for Enterprise AI",
+      "pillars": [
+        "technology"
+      ]
+    },
+    {
+      "id": "guide-ia-20",
+      "title": "Structured Authoring at Scale",
+      "pillars": [
+        "technology",
+        "services"
+      ]
+    },
+    {
+      "id": "guide-ia-21",
+      "title": "Knowledge Architecture for AI Enterprises",
+      "pillars": [
+        "technology"
+      ]
+    },
+    {
+      "id": "guide-ia-22",
+      "title": "Semantic Structure and Its Role in AI Content Systems",
+      "pillars": [
+        "technology"
+      ]
+    },
+    {
+      "id": "guide-ia-23",
+      "title": "CMS Architecture for AI-Driven Enterprises",
+      "pillars": [
+        "technology"
+      ]
+    },
+    {
+      "id": "guide-ia-24",
+      "title": "Content Findability as a System Capability",
+      "pillars": [
+        "technology"
+      ]
+    },
+    {
+      "id": "guide-ai-25",
+      "title": "Designing an AI Content Operating System",
+      "pillars": [
+        "technology",
+        "services"
+      ]
+    },
+    {
+      "id": "guide-ai-26",
+      "title": "Prompt Architecture for Content Teams",
+      "pillars": [
+        "services"
+      ]
+    },
+    {
+      "id": "guide-ai-27",
+      "title": "AI Quality Assurance for Content Operations",
+      "pillars": [
+        "services",
+        "technology"
+      ]
+    },
+    {
+      "id": "guide-ai-28",
+      "title": "AI Content Risk Management",
+      "pillars": [
+        "services",
+        "technology"
+      ]
+    },
+    {
+      "id": "guide-ai-29",
+      "title": "Content Velocity: Managing Speed Without Losing Quality",
+      "pillars": [
+        "services"
+      ]
+    },
+    {
+      "id": "guide-ai-30",
+      "title": "Retrieval-Augmented Content Systems",
+      "pillars": [
+        "technology"
+      ]
+    },
+    {
+      "id": "guide-ai-31",
+      "title": "AI-Powered Content Auditing",
+      "pillars": [
+        "technology",
+        "services"
+      ]
+    },
+    {
+      "id": "guide-ai-32",
+      "title": "Content Intelligence Platforms",
+      "pillars": [
+        "technology"
+      ]
+    },
+    {
+      "id": "guide-ai-33",
+      "title": "Operationalising Large Language Models for Content Teams",
+      "pillars": [
+        "services",
+        "technology"
+      ]
+    },
+    {
+      "id": "guide-ai-34",
+      "title": "Building an AI Content Feedback Loop",
+      "pillars": [
+        "technology",
+        "services"
+      ]
+    },
+    {
+      "id": "guide-pers-35",
+      "title": "Personalisation Architecture for AI Enterprises",
+      "pillars": [
+        "technology",
+        "services"
+      ]
+    },
+    {
+      "id": "guide-pers-36",
+      "title": "Content Modelling for Personalisation",
+      "pillars": [
+        "technology"
+      ]
+    },
+    {
+      "id": "guide-pers-37",
+      "title": "Audience Architecture: Designing Segments That Actually Work",
+      "pillars": [
+        "technology",
+        "services"
+      ]
+    },
+    {
+      "id": "guide-pers-38",
+      "title": "Decisioning Logic for Content Personalisation",
+      "pillars": [
+        "technology"
+      ]
+    },
+    {
+      "id": "guide-pers-39",
+      "title": "Personalisation at Scale in B2B Enterprises",
+      "pillars": [
+        "technology",
+        "services"
+      ]
+    },
+    {
+      "id": "guide-pers-40",
+      "title": "Real-Time Personalisation: Architecture and Trade-offs",
+      "pillars": [
+        "technology"
+      ]
+    },
+    {
+      "id": "guide-pers-41",
+      "title": "Privacy-First Personalisation",
+      "pillars": [
+        "services",
+        "technology"
+      ]
+    },
+    {
+      "id": "guide-pers-42",
+      "title": "Personalisation Operations: Running the Engine Day to Day",
+      "pillars": [
+        "services"
+      ]
+    },
+    {
+      "id": "guide-pers-43",
+      "title": "Measuring Personalisation Effectiveness",
+      "pillars": [
+        "services"
+      ]
+    },
+    {
+      "id": "guide-loc-44",
+      "title": "Localisation as a Content Operations Discipline",
+      "pillars": [
+        "localization",
+        "services"
+      ]
+    },
+    {
+      "id": "guide-loc-45",
+      "title": "AI-Powered Translation Operations",
+      "pillars": [
+        "localization",
+        "services"
+      ]
+    },
+    {
+      "id": "guide-loc-46",
+      "title": "Content Architecture for Multilingual Delivery",
+      "pillars": [
+        "localization",
+        "technology"
+      ]
+    },
+    {
+      "id": "guide-loc-47",
+      "title": "Localisation Workflow Design",
+      "pillars": [
+        "localization",
+        "services"
+      ]
+    },
+    {
+      "id": "guide-loc-48",
+      "title": "Terminology Management for Global Content Systems",
+      "pillars": [
+        "localization",
+        "services"
+      ]
+    },
+    {
+      "id": "guide-loc-49",
+      "title": "Global Content Strategy for AI Enterprises",
+      "pillars": [
+        "localization",
+        "services"
+      ]
+    },
+    {
+      "id": "guide-loc-50",
+      "title": "The Future of Content Infrastructure",
+      "pillars": [
+        "technology",
+        "services",
+        "localization"
+      ]
+    }
+  ],
+  "caseStudyPatches": [
+    {
+      "id": "cs-1",
+      "title": "Multilingual SEO & Content Localization",
+      "client": "Industry Export Association",
+      "pillars": [
+        "localization",
+        "services"
+      ],
+      "industry": "professional-services"
+    },
+    {
+      "id": "cs-2",
+      "title": "Data Operations Strategy",
+      "client": "Professional Association",
+      "pillars": [
+        "technology",
+        "services"
+      ],
+      "industry": "professional-services"
+    },
+    {
+      "id": "cs-3",
+      "title": "CRM Activation Program",
+      "client": "Nordic Digital Marketplace",
+      "pillars": [
+        "technology",
+        "services"
+      ],
+      "industry": "technology"
+    },
+    {
+      "id": "cs-4",
+      "title": "Intranet Content Migration for Food Manufacturer",
+      "client": "Food Manufacturer",
+      "pillars": [
+        "localization",
+        "technology",
+        "services"
+      ],
+      "industry": "manufacturing"
+    },
+    {
+      "id": "cs-5",
+      "title": "Enterprise Website Redesign & new Customer Services Portal",
+      "client": "Global Shipping Firm",
+      "pillars": [
+        "localization",
+        "technology"
+      ],
+      "industry": "manufacturing"
+    },
+    {
+      "id": "cs-6",
+      "title": "Service Prototyping",
+      "client": "European Real Estate Leader",
+      "pillars": [
+        "technology",
+        "services"
+      ],
+      "industry": "other"
+    },
+    {
+      "id": "cs-7",
+      "title": "Growth Strategy & New Website",
+      "client": "Engineering Consultancy",
+      "pillars": [
+        "technology",
+        "services"
+      ],
+      "industry": "professional-services"
+    },
+    {
+      "id": "cs-8",
+      "title": "CMS Migration",
+      "client": "Professional Association",
+      "pillars": [
+        "technology",
+        "services"
+      ],
+      "industry": "professional-services"
+    },
+    {
+      "id": "cs-9",
+      "title": "Advertising & Content Marketing Campaign",
+      "client": "Automotive Brand",
+      "pillars": [
+        "technology",
+        "services"
+      ],
+      "industry": "manufacturing"
+    },
+    {
+      "id": "cs-10",
+      "title": "Marketing Technology Due Diligence",
+      "client": "Nordic Private Equity Investor",
+      "pillars": [
+        "technology"
+      ],
+      "industry": "financial-services"
+    },
+    {
+      "id": "cs-11",
+      "title": "Digital Process Improvements",
+      "client": "European Equipment Rental Company",
+      "pillars": [
+        "technology",
+        "services"
+      ],
+      "industry": "manufacturing"
+    },
+    {
+      "id": "cs-12",
+      "title": "Digital Growth Strategy",
+      "client": "Nordic Hospitality & Retail Group",
+      "pillars": [
+        "services"
+      ],
+      "industry": "retail"
+    },
+    {
+      "id": "cs-13",
+      "title": "Content & Localization Services for National Tourism Portal",
+      "client": "National Tourism Portal",
+      "pillars": [
+        "localization",
+        "technology",
+        "services"
+      ],
+      "industry": "retail"
+    },
+    {
+      "id": "cs-14",
+      "title": "Redesigning Content Taxonomy for a Regional Bank",
+      "client": "Global paints & chemicals manufacturer",
+      "pillars": [
+        "technology",
+        "services"
+      ],
+      "industry": "manufacturing"
+    },
+    {
+      "id": "cs-15",
+      "title": "Industrial Robots Website",
+      "client": "Leading European RBP Consultancy",
+      "pillars": [
+        "services"
+      ],
+      "industry": "professional-services"
+    },
+    {
+      "id": "cs-16",
+      "title": "Content Strategy & Streamlined CMS Implementation",
+      "client": "Global shipping group",
+      "pillars": [
+        "localization",
+        "technology",
+        "services"
+      ],
+      "industry": "manufacturing"
+    },
+    {
+      "id": "cs-17",
+      "title": "Future State ECM Vision",
+      "client": "Investment bank",
+      "pillars": [
+        "localization",
+        "technology",
+        "services"
+      ],
+      "industry": "financial-services"
+    },
+    {
+      "id": "cs-18",
+      "title": "New Information Architecture",
+      "client": "US Medical Association",
+      "pillars": [
+        "technology",
+        "services"
+      ],
+      "industry": "healthcare"
+    },
+    {
+      "id": "cs-19",
+      "title": "Multichannel Brand Advertising",
+      "client": "Norwegian Broadband Service Provider",
+      "pillars": [
+        "services"
+      ],
+      "industry": "technology"
+    },
+    {
+      "id": "cs-20",
+      "title": "Digital Tools for Product Selection in PIM",
+      "client": "Global Paints & Coatings Manufacturer",
+      "pillars": [
+        "localization",
+        "technology",
+        "services"
+      ],
+      "industry": "manufacturing"
+    },
+    {
+      "id": "cs-21",
+      "title": "SharePoint Employee Portal",
+      "client": "Global Shipping & Logistics Firm",
+      "pillars": [
+        "localization",
+        "technology",
+        "services"
+      ],
+      "industry": "manufacturing"
+    },
+    {
+      "id": "cs-22",
+      "title": "Content Marketing Thought Leadership Strategy",
+      "client": "Global Shipping Company",
+      "pillars": [
+        "services"
+      ],
+      "industry": "manufacturing"
+    },
+    {
+      "id": "cs-23",
+      "title": "Global B2B website platform migration",
+      "client": "Global Paint Manufacturer",
+      "pillars": [
+        "services"
+      ],
+      "industry": "manufacturing"
+    },
+    {
+      "id": "cs-24",
+      "title": "Content Strategy & CMS Migration",
+      "client": "Thermal Imaging Equipment Distributor",
+      "pillars": [
+        "localization",
+        "technology",
+        "services"
+      ],
+      "industry": "manufacturing"
+    },
+    {
+      "id": "cs-25",
+      "title": "Multilingual Website for Hotel Chain",
+      "client": "Nordic Hospitality Group",
+      "pillars": [
+        "localization",
+        "technology",
+        "services"
+      ],
+      "industry": "retail"
+    },
+    {
+      "id": "cs-26",
+      "title": "New E-Commerce Platform for Automotive Group",
+      "client": "Italian Automotive Group",
+      "pillars": [
+        "technology",
+        "services"
+      ],
+      "industry": "manufacturing"
+    },
+    {
+      "id": "cs-27",
+      "title": "New Product Concepts",
+      "client": "Real Estate Tech Company",
+      "pillars": [
+        "technology",
+        "services"
+      ],
+      "industry": "technology"
+    },
+    {
+      "id": "cs-28",
+      "title": "Multitenant Retail Platform Strategy",
+      "client": "Private Equity owned Retail Group",
+      "pillars": [
+        "technology"
+      ],
+      "industry": "financial-services"
+    },
+    {
+      "id": "cs-29",
+      "title": "Customer Platform prototype",
+      "client": "Facilities Management Provider",
+      "pillars": [
+        "technology",
+        "services"
+      ],
+      "industry": "professional-services"
+    },
+    {
+      "id": "cs-30",
+      "title": "SharePoint Migration & Employee Communications",
+      "client": "Financial Services Group",
+      "pillars": [
+        "technology",
+        "services"
+      ],
+      "industry": "financial-services"
+    },
+    {
+      "id": "cs-31",
+      "title": "Website Redesign",
+      "client": "Nordic Digital Marketplace",
+      "pillars": [
+        "technology",
+        "services"
+      ],
+      "industry": "technology"
+    },
+    {
+      "id": "cs-32",
+      "title": "Digital Advertising for SaaS Vendor",
+      "client": "B2B SaaS",
+      "pillars": [
+        "localization",
+        "technology",
+        "services"
+      ],
+      "industry": "technology"
+    },
+    {
+      "id": "cs-33",
+      "title": "Marketing Technology Advisory",
+      "client": "Retail Group",
+      "pillars": [
+        "technology"
+      ],
+      "industry": "retail"
+    },
+    {
+      "id": "cs-34",
+      "title": "Conference Webcasting Dubai Energy Conference",
+      "client": "Leading UK Media Group",
+      "pillars": [
+        "localization",
+        "technology",
+        "services"
+      ],
+      "industry": "other"
+    },
+    {
+      "id": "cs-35",
+      "title": "Digital Advertising & Content Marketing",
+      "client": "Tour Operator",
+      "pillars": [
+        "technology",
+        "services"
+      ],
+      "industry": "retail"
+    },
+    {
+      "id": "cs-36",
+      "title": "GDPR-compliant Web Analytics migration",
+      "client": "B2C membership organization",
+      "pillars": [
+        "technology"
+      ],
+      "industry": "professional-services"
+    },
+    {
+      "id": "cs-37",
+      "title": "Content Strategy",
+      "client": "US Regional Rail Network",
+      "pillars": [
+        "technology",
+        "services"
+      ],
+      "industry": "public-sector"
+    },
+    {
+      "id": "cs-38",
+      "title": "Forms UX & Workflow Redesign",
+      "client": "US Insurance Provider",
+      "pillars": [
+        "technology",
+        "services"
+      ],
+      "industry": "financial-services"
+    },
+    {
+      "id": "cs-39",
+      "title": "Corporate Website",
+      "client": "Nordic M2M Technology Company",
+      "pillars": [
+        "localization",
+        "technology",
+        "services"
+      ],
+      "industry": "technology"
+    },
+    {
+      "id": "cs-40",
+      "title": "Content Localization 15+ countries/languages",
+      "client": "Global Seafood Council",
+      "pillars": [
+        "localization",
+        "technology",
+        "services"
+      ],
+      "industry": "manufacturing"
+    },
+    {
+      "id": "cs-41",
+      "title": "Digital Campaign Management",
+      "client": "Global NGO for Children",
+      "pillars": [
+        "services"
+      ],
+      "industry": "public-sector"
+    },
+    {
+      "id": "cs-42",
+      "title": "Intranet Upgrade for National Parliament",
+      "client": "Norwegian Parliament",
+      "pillars": [
+        "technology",
+        "services"
+      ],
+      "industry": "public-sector"
+    },
+    {
+      "id": "cs-43",
+      "title": "Enterprise Content Taxonomy",
+      "client": "Nordic Technology Company",
+      "pillars": [
+        "technology"
+      ],
+      "industry": "technology"
+    },
+    {
+      "id": "cs-44",
+      "title": "Digital Marketing Strategy",
+      "client": "Nordic Shipping Company",
+      "pillars": [
+        "services"
+      ],
+      "industry": "manufacturing"
+    },
+    {
+      "id": "casestudy-digital-b2b-strategy-global-paints-and-coatings-manufacturer",
+      "title": "Digital B2B Strategy",
+      "client": "Global Paints & Coatings Manufacturer",
+      "pillars": [
+        "technology",
+        "services"
+      ],
+      "industry": "manufacturing"
+    },
+    {
+      "id": "casestudy-sitecore-cms-migration-nordic-maritime-classification-societ",
+      "title": "Sitecore CMS Migration",
+      "client": "Nordic Maritime Classification Society",
+      "pillars": [
+        "technology",
+        "services"
+      ],
+      "industry": "manufacturing"
+    },
+    {
+      "id": "casestudy-global-intranet-migration-to-sharepoint-global-coatings-comp",
+      "title": "Global Intranet Migration to SharePoint",
+      "client": "Global Coatings Company",
+      "pillars": [
+        "localization",
+        "technology",
+        "services"
+      ],
+      "industry": "manufacturing"
+    },
+    {
+      "id": "casestudy-cms-migration-to-episerver-nordic-training-company",
+      "title": "CMS Migration to Episerver",
+      "client": "Nordic Training Company",
+      "pillars": [
+        "technology",
+        "services"
+      ],
+      "industry": "professional-services"
+    },
+    {
+      "id": "casestudy-website-optimization-programme-oil-and-gas-company",
+      "title": "Website Optimization Programme",
+      "client": "Oil & Gas Company",
+      "pillars": [
+        "technology",
+        "services"
+      ],
+      "industry": "energy"
+    },
+    {
+      "id": "casestudy-sharepoint-migration-and-employee-portal-design-global-paint",
+      "title": "SharePoint Migration & Employee Portal Design",
+      "client": "Global Paints and Coatings Manufacturer",
+      "pillars": [
+        "localization",
+        "technology",
+        "services"
+      ],
+      "industry": "manufacturing"
+    },
+    {
+      "id": "casestudy-digital-services-strategy-global-coatings-company",
+      "title": "Digital Services Strategy",
+      "client": "Global Coatings Company",
+      "pillars": [
+        "technology"
+      ],
+      "industry": "manufacturing"
+    },
+    {
+      "id": "casestudy-inbound-marketing-strategy-global-shipping-firm",
+      "title": "Inbound Marketing Strategy",
+      "client": "Global Shipping Firm",
+      "pillars": [
+        "services"
+      ],
+      "industry": "manufacturing"
+    },
+    {
+      "id": "casestudy-content-strategy-us-regional-rail-network",
+      "title": "Content Strategy",
+      "client": "US Regional Rail Network",
+      "pillars": [
+        "localization",
+        "technology",
+        "services"
+      ],
+      "industry": "public-sector"
+    },
+    {
+      "id": "casestudy-content-strategy-nordic-esg-consultancy",
+      "title": "Content Strategy",
+      "client": "Nordic ESG Consultancy",
+      "pillars": [
+        "services"
+      ],
+      "industry": "professional-services"
+    },
+    {
+      "id": "casestudy-corporate-website-nordic-m2m-technology-company",
+      "title": "Corporate Website",
+      "client": "Nordic M2M Technology Company",
+      "pillars": [
+        "technology",
+        "services"
+      ],
+      "industry": "technology"
+    },
+    {
+      "id": "casestudy-inbound-marketing-strategy-energy-consultancy",
+      "title": "Inbound Marketing Strategy",
+      "client": "Energy Consultancy",
+      "pillars": [
+        "technology",
+        "services"
+      ],
+      "industry": "professional-services"
+    },
+    {
+      "id": "casestudy-customer-segmentation-nordic-online-book-retailer",
+      "title": "Customer Segmentation",
+      "client": "Nordic Online Book Retailer",
+      "pillars": [
+        "technology",
+        "services"
+      ],
+      "industry": "retail"
+    },
+    {
+      "id": "69b88c2a-932f-4a21-99a3-9d2aa6f4fa5e",
+      "title": "SharePoint Intranet & Employee Portal",
+      "client": "Financial Services Group",
+      "pillars": [
+        "technology",
+        "services"
+      ],
+      "industry": "financial-services"
+    },
+    {
+      "id": "98a0b8bd-1489-4a46-bbe8-313d3af0a7b5",
+      "title": "Enterprise CMS Migration to Sitecore & Optimizely",
+      "client": "Nordic Industrial Organisation",
+      "pillars": [
+        "technology",
+        "services"
+      ],
+      "industry": "manufacturing"
+    },
+    {
+      "id": "f7b45ec9-9671-45ee-822b-e8f32eeb4215",
+      "title": "Enterprise Content Taxonomy & Metadata Architecture",
+      "client": "Nordic Technology Company",
+      "pillars": [
+        "technology"
+      ],
+      "industry": "technology"
+    },
+    {
+      "id": "b8803295-d37a-492e-963c-f4c9c7cc7b4b",
+      "title": "Digital B2B Strategy & Content Operations",
+      "client": "Global Manufacturing Group",
+      "pillars": [
+        "technology",
+        "services"
+      ],
+      "industry": "manufacturing"
+    },
+    {
+      "id": "de6fd594-4100-4dde-b348-4287185f32b8",
+      "title": "ECM Strategy & Governance for Financial Services",
+      "client": "Investment Bank",
+      "pillars": [
+        "technology",
+        "services"
+      ],
+      "industry": "financial-services"
+    },
+    {
+      "id": "7d9f1114-eebb-4d52-88ab-e27fd45156f9",
+      "title": "Customer Segmentation & Predictive Marketing",
+      "client": "Nordic Online Retailer",
+      "pillars": [
+        "technology",
+        "services"
+      ],
+      "industry": "retail"
+    },
+    {
+      "id": "b441e65d-71dc-4f45-a079-8295b6fd792b",
+      "title": "CRM Activation for B2B Sales Teams",
+      "client": "Nordic Digital Marketplace",
+      "pillars": [
+        "technology",
+        "services"
+      ],
+      "industry": "technology"
+    },
+    {
+      "id": "ddc3dae9-261d-41a2-a247-b8943115a7a2",
+      "title": "Content Strategy & E-Commerce for Automotive",
+      "client": "Italian Automotive Group",
+      "pillars": [
+        "technology",
+        "services"
+      ],
+      "industry": "manufacturing"
+    },
+    {
+      "id": "4d05ef76-46c7-4b2a-8d72-c306a77ab187",
+      "title": "Conference Webcasting & Event Content Production",
+      "client": "Leading UK Media Group",
+      "pillars": [
+        "technology",
+        "services"
+      ],
+      "industry": "other"
+    },
+    {
+      "id": "955e158f-1e8e-425e-8175-af0320919249",
+      "title": "Digital Campaign Management for NGOs",
+      "client": "Global NGO for Children",
+      "pillars": [
+        "services"
+      ],
+      "industry": "public-sector"
+    },
+    {
+      "id": "25589168-495d-48a8-91b8-56812b68fc84",
+      "title": "Multilingual Website for Hospitality & Tourism",
+      "client": "Nordic Hospitality Group",
+      "pillars": [
+        "localization",
+        "technology",
+        "services"
+      ],
+      "industry": "retail"
+    },
+    {
+      "id": "96435cd1-d4de-4397-9f5a-62bc512e2834",
+      "title": "Marketing Technology Due Diligence for Private Equity",
+      "client": "Nordic Private Equity Investor",
+      "pillars": [
+        "technology"
+      ],
+      "industry": "financial-services"
+    },
+    {
+      "id": "6b60a9c3-6658-4f63-8b0b-588e012579ca",
+      "title": "ESG & Sustainability Content Strategy",
+      "client": "Nordic ESG Consultancy",
+      "pillars": [
+        "services"
+      ],
+      "industry": "professional-services"
+    },
+    {
+      "id": "a06fff76-4bb0-4605-a28b-786cff8f971c",
+      "title": "Inbound Marketing & Thought Leadership Strategy",
+      "client": "Global Shipping Company",
+      "pillars": [
+        "services"
+      ],
+      "industry": "manufacturing"
+    }
   ]
 }

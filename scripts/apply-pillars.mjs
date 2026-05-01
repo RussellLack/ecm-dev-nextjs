@@ -1,6 +1,6 @@
 /**
- * Apply approved pillar mappings to existing posts and seed the seven
- * platform docs.
+ * Apply approved pillar (and industry) mappings to existing posts,
+ * guides, and case studies, and seed the seven platform docs.
  *
  * Used as a fallback for the Sanity MCP server when its origin is
  * unavailable. Talks to the Sanity HTTP API directly using the
@@ -15,12 +15,17 @@
  * same way scripts/seed-assessment.mjs does.
  *
  * Behaviour:
- * - Posts: patches the published doc and any existing draft so pillars
- *   stick regardless of which copy gets published next. Patches go
- *   live immediately (no separate publish step needed).
+ * - Posts / Guides: patches the published doc and any existing draft so
+ *   pillars stick regardless of which copy gets published next. Patches
+ *   go live immediately (no separate publish step needed).
+ * - Case studies: same as posts/guides, but the patch sets `pillars`
+ *   AND `industry` together.
  * - Platforms: creates DRAFT docs (drafts.platform-<slug>) so the
  *   editor can fill in summary / heroDescription / body / logo before
  *   publishing.
+ *
+ * Idempotent on re-run: post / guide / case-study patches just re-set
+ * the same fields; platforms use createIfNotExists.
  */
 
 import { readFileSync } from "node:fs";
@@ -129,6 +134,84 @@ for (const post of config.postPatches) {
   }
 }
 
+// ─── Guides: same pattern as posts ────────────────────────────────────
+let guidesPatched = 0;
+let guidesSkipped = 0;
+let guidesErrored = 0;
+
+for (const guide of config.guidePatches ?? []) {
+  for (const id of [guide.id, `drafts.${guide.id}`]) {
+    if (dryRun) {
+      console.log(
+        `[dry] patch ${id.padEnd(48)} pillars=${JSON.stringify(guide.pillars)}`
+      );
+      continue;
+    }
+    try {
+      await mutate([{ patch: { id, set: { pillars: guide.pillars } } }]);
+      console.log(`✓ patched ${id.padEnd(48)}  ${guide.title}`);
+      guidesPatched++;
+    } catch (e) {
+      const msg = String(e.message || "").toLowerCase();
+      const notFound =
+        e.statusCode === 404 ||
+        msg.includes("not found") ||
+        msg.includes("does not exist");
+      if (notFound) {
+        guidesSkipped++;
+      } else {
+        console.error(`✗ ${id}: ${e.message}`);
+        guidesErrored++;
+      }
+    }
+  }
+}
+
+// ─── Case studies: pillars + industry in one set per id ───────────────
+let caseStudiesPatched = 0;
+let caseStudiesSkipped = 0;
+let caseStudiesErrored = 0;
+
+for (const cs of config.caseStudyPatches ?? []) {
+  // Skip silently if the entry has no derived pillars (only happens on
+  // a case study with none of the three pillar tags — unusual).
+  if (!cs.pillars?.length && !cs.industry) continue;
+
+  const setOps = {};
+  if (cs.pillars?.length) setOps.pillars = cs.pillars;
+  if (cs.industry) setOps.industry = cs.industry;
+
+  for (const id of [cs.id, `drafts.${cs.id}`]) {
+    if (dryRun) {
+      const summary = [
+        cs.pillars?.length ? `pillars=${JSON.stringify(cs.pillars)}` : null,
+        cs.industry ? `industry=${cs.industry}` : null,
+      ]
+        .filter(Boolean)
+        .join("  ");
+      console.log(`[dry] patch ${id.padEnd(48)} ${summary}`);
+      continue;
+    }
+    try {
+      await mutate([{ patch: { id, set: setOps } }]);
+      console.log(`✓ patched ${id.padEnd(48)}  ${cs.title}`);
+      caseStudiesPatched++;
+    } catch (e) {
+      const msg = String(e.message || "").toLowerCase();
+      const notFound =
+        e.statusCode === 404 ||
+        msg.includes("not found") ||
+        msg.includes("does not exist");
+      if (notFound) {
+        caseStudiesSkipped++;
+      } else {
+        console.error(`✗ ${id}: ${e.message}`);
+        caseStudiesErrored++;
+      }
+    }
+  }
+}
+
 // ─── Platforms: createIfNotExists each draft ──────────────────────────
 let platformsCreated = 0;
 let platformsSkipped = 0;
@@ -166,13 +249,20 @@ for (const p of config.platforms) {
 // ─── Summary ──────────────────────────────────────────────────────────
 console.log(
   `\nSummary` +
-    `\n  posts patched:           ${postsPatched}` +
-    `\n  posts skipped (no doc):  ${postsSkipped}` +
-    `\n  post errors:             ${postsErrored}` +
-    `\n  platforms ensured:       ${platformsCreated}` +
-    `\n  platforms skipped:       ${platformsSkipped}` +
-    `\n  platform errors:         ${platformsErrored}`
+    `\n  posts patched:                  ${postsPatched}` +
+    `\n  posts skipped (no doc):         ${postsSkipped}` +
+    `\n  post errors:                    ${postsErrored}` +
+    `\n  guides patched:                 ${guidesPatched}` +
+    `\n  guides skipped (no doc):        ${guidesSkipped}` +
+    `\n  guide errors:                   ${guidesErrored}` +
+    `\n  case studies patched:           ${caseStudiesPatched}` +
+    `\n  case studies skipped (no doc):  ${caseStudiesSkipped}` +
+    `\n  case study errors:              ${caseStudiesErrored}` +
+    `\n  platforms ensured:              ${platformsCreated}` +
+    `\n  platforms skipped:              ${platformsSkipped}` +
+    `\n  platform errors:                ${platformsErrored}`
 );
 
-const totalErrors = postsErrored + platformsErrored;
+const totalErrors =
+  postsErrored + guidesErrored + caseStudiesErrored + platformsErrored;
 if (totalErrors > 0) process.exit(1);
