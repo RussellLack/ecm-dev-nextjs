@@ -111,12 +111,12 @@ export default async function BlogTagPage({
                 <Link
                   key={post._id}
                   href={`/post/${post.slug?.current}`}
-                  className="bg-gray-50 rounded-xl overflow-hidden hover:shadow-lg transition-shadow group border border-gray-100 flex flex-col"
+                  className="bg-white rounded-xl overflow-hidden hover:shadow-lg transition-shadow group border border-gray-100 flex flex-col"
                 >
-                  <div className="h-36 overflow-hidden bg-gray-50 flex items-center justify-center">
+                  <div className="h-36 overflow-hidden bg-ecm-green/5 flex items-center justify-center border-b border-gray-100">
                     <PostIllustration slug={post.slug?.current} />
                   </div>
-                  <div className="p-4 flex flex-col flex-1">
+                  <div className="p-4 flex flex-col flex-1 bg-gray-50">
                     <h2 className="text-ecm-green font-barlow font-semibold text-sm mb-2 group-hover:text-ecm-green-dark transition-colors leading-snug">
                       {post.title}
                     </h2>
