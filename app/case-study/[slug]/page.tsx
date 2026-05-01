@@ -7,6 +7,7 @@ import { urlFor } from "@/lib/sanity";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import RelatedContent from "@/components/RelatedContent";
 import MixedRelated from "@/components/MixedRelated";
+import CaseStudyIllustration from "@/components/case-study/CaseStudyIllustration";
 import { internalLinkHref } from "@/lib/internalLink";
 import { INDUSTRY_OPTIONS } from "@/sanity/schemas/taxonomyOptions";
 
@@ -142,7 +143,12 @@ export default async function CaseStudyDetailPage({
     ...fallbackRelated.filter(
       (c: any) => !curatedSlugs.has(c.slug?.current ?? c.slug)
     ),
-  ].slice(0, 3);
+  ]
+    .slice(0, 3)
+    .map((c: any) => ({
+      ...c,
+      fallback: <CaseStudyIllustration slug={c.slug?.current ?? c.slug} />,
+    }));
 
   return (
     <>

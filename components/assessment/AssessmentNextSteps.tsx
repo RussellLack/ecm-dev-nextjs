@@ -7,6 +7,7 @@ import {
 } from "@/lib/queries";
 import { getAssessmentsByPillar } from "@/lib/assessment/queries";
 import GuideIllustration from "@/components/guides/GuideIllustration";
+import CaseStudyIllustration from "@/components/case-study/CaseStudyIllustration";
 
 type Pillar = "technology" | "services" | "localization";
 
@@ -197,6 +198,7 @@ export default async function AssessmentNextSteps({
                 title={cs.title}
                 subtitle={cs.client || cs.description}
                 image={cs.image}
+                fallback={<CaseStudyIllustration slug={cs.slug?.current} />}
               />
             ))}
           </Cluster>
