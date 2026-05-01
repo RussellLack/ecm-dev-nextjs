@@ -141,8 +141,7 @@ function categoryToHref(category: string): string {
 
 function formatDate(dateString: string): string {
   return new Date(dateString).toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
+    month: "long",
     year: "numeric",
   });
 }

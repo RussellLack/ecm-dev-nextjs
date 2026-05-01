@@ -229,8 +229,7 @@ export default function BlogClientPage({ posts }: { posts: Post[] }) {
                       {post.publishedAt
                         ? new Date(post.publishedAt).toLocaleDateString("en-GB", {
                             year: "numeric",
-                            month: "short",
-                            day: "numeric",
+                            month: "long",
                           })
                         : ""}
                     </p>

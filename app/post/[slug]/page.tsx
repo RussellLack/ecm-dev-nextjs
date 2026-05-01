@@ -151,7 +151,6 @@ export default async function PostPage({
     ? new Date(post.publishedAt).toLocaleDateString("en-GB", {
         year: "numeric",
         month: "long",
-        day: "numeric",
       })
     : null;
 
