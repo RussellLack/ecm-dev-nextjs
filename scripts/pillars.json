@@ -1,0 +1,28 @@
+{
+  "_comment": "Approved pillar / platform seed mappings. See scripts/apply-pillars.mjs for the runner. Approved by Russell on 2026-04-30/05-01 in PR session.",
+  "postPatches": [
+    { "id": "post-1",  "title": "Kentico CMS Cadence Cuts Migration Risk",                                "pillars": ["technology"] },
+    { "id": "post-2",  "title": "Agentic CX: From Journeys to Agents",                                    "pillars": ["technology", "services"] },
+    { "id": "post-3",  "title": "Sanity CMS Upgrades Speed CX Delivery",                                  "pillars": ["technology", "services"] },
+    { "id": "post-4",  "title": "Unlocking Sitecore Productivity",                                        "pillars": ["technology", "services"] },
+    { "id": "post-5",  "title": "Ibexa v5: Europe's B2B DXP",                                              "pillars": ["technology"] },
+    { "id": "post-6",  "title": "Hyland Content Innovation Cloud",                                        "pillars": ["technology"] },
+    { "id": "post-7",  "title": "Contentful AI Workflows Boost Speed",                                    "pillars": ["technology", "services", "localization"] },
+    { "id": "post-8",  "title": "Optimizely AEO/GEO: AI Visibility",                                      "pillars": ["technology", "services"] },
+    { "id": "post-9",  "title": "Website Localization for Static and Dynamic Websites",                   "pillars": ["localization", "technology"] },
+    { "id": "post-10", "title": "The B2B DXP Adoption Playbook",                                          "pillars": ["technology", "services"] },
+    { "id": "post-11", "title": "10 Clues That Show Your CMS Requires Upgrading",                         "pillars": ["technology"] },
+    { "id": "post-12", "title": "Leveraging Local Social Media Trends for Effective Engagement",          "pillars": ["localization", "services"] },
+    { "id": "post-13", "title": "How Generative AI Is Changing Content Marketing",                        "pillars": ["services"] },
+    { "id": "post-14", "title": "Critical Success Factors for ECM/CMS Implementation",                    "pillars": ["technology", "services"] }
+  ],
+  "platforms": [
+    { "name": "Sitecore",   "slug": "sitecore",   "category": "DXP",   "pillars": ["technology"], "tagAliases": ["Sitecore XM Cloud", "Sitecore Productivity", "Sitecore Symposium"], "intelVendorSlug": "sitecore",   "order": 1 },
+    { "name": "Sanity",     "slug": "sanity",     "category": "CMS",   "pillars": ["technology"], "tagAliases": ["Sanity CMS"],                                                       "intelVendorSlug": "sanity",     "order": 2 },
+    { "name": "Kentico",    "slug": "kentico",    "category": "CMS",   "pillars": ["technology"], "tagAliases": ["Kentico Xperience Migration", "Kentico End of Life"],              "intelVendorSlug": "kentico",    "order": 3 },
+    { "name": "Contentful", "slug": "contentful", "category": "CMS",   "pillars": ["technology"], "tagAliases": ["Contentful"],                                                      "intelVendorSlug": "contentful", "order": 4 },
+    { "name": "Optimizely", "slug": "optimizely", "category": "DXP",   "pillars": ["technology"], "tagAliases": ["Optimizely"],                                                      "intelVendorSlug": "optimizely", "order": 5 },
+    { "name": "Ibexa",      "slug": "ibexa",      "category": "DXP",   "pillars": ["technology"], "tagAliases": ["Ibexa DXP"],                                                       "intelVendorSlug": "ibexa",      "order": 6 },
+    { "name": "Hyland",     "slug": "hyland",     "category": "Other", "pillars": ["technology"], "tagAliases": ["Hyland Content Innovation Cloud"],                                 "intelVendorSlug": "hyland",     "order": 7 }
+  ]
+}
