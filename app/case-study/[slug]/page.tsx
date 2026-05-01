@@ -219,6 +219,16 @@ export default async function CaseStudyDetailPage({
         </div>
       </section>
 
+      {/* Featured illustration — sits between the dark hero and the body
+          content, full-width within the content column at the canonical
+          280x144 aspect ratio of the SVG. Mirrors the post-detail hero
+          treatment. */}
+      <div className="max-w-4xl mx-auto px-6 -mt-12 sm:-mt-16 lg:-mt-20 relative z-10">
+        <div className="rounded-2xl w-full shadow-lg bg-ecm-green/5 border border-gray-100 aspect-[280/144] overflow-hidden">
+          <CaseStudyIllustration slug={slug} />
+        </div>
+      </div>
+
       {/* Content */}
       <section className="py-12 sm:py-16 lg:py-24 bg-white">
         <div className="max-w-4xl mx-auto px-6">
@@ -226,19 +236,12 @@ export default async function CaseStudyDetailPage({
             {/* Main content */}
             <div className="lg:col-span-2">
               <div className="prose prose-lg max-w-none">
-                <div className="flex gap-5">
-                  <div className="flex-shrink-0 w-[72px] h-[72px] sm:w-[84px] sm:h-[84px] mt-1 rounded-lg bg-ecm-green/5 overflow-hidden">
-                    <CaseStudyIllustration slug={slug} />
-                  </div>
-                  <div>
-                    <h2 className="text-ecm-green font-barlow font-bold text-2xl mb-3">
-                      Overview
-                    </h2>
-                    <p className="text-ecm-gray-dark leading-relaxed text-base lg:text-lg">
-                      {cs.description}
-                    </p>
-                  </div>
-                </div>
+                <h2 className="text-ecm-green font-barlow font-bold text-2xl mb-3">
+                  Overview
+                </h2>
+                <p className="text-ecm-gray-dark leading-relaxed text-base lg:text-lg">
+                  {cs.description}
+                </p>
 
                 {cs.whoThisIsFor && (
                   <div className="mt-10">
