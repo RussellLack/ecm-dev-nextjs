@@ -103,7 +103,7 @@ export default async function PillarClusters({ pillar }: { pillar: Pillar }) {
                 href={`/case-study/${cs.slug?.current}`}
                 title={cs.title}
                 subtitle={cs.client || cs.description}
-                image={cs.image}
+                /* image omitted — illustration always wins for case studies */
                 fallback={<CaseStudyIllustration slug={cs.slug?.current} />}
               />
             ))}
@@ -122,7 +122,7 @@ export default async function PillarClusters({ pillar }: { pillar: Pillar }) {
                 href={`/post/${p.slug?.current}`}
                 title={p.title}
                 subtitle={p.excerpt}
-                image={p.mainImage}
+                /* image omitted — illustration always wins for posts */
                 fallback={<PostIllustration slug={p.slug?.current} />}
               />
             ))}
@@ -208,6 +208,9 @@ function Card({
       className="group bg-gray-50 rounded-xl border border-gray-100 hover:border-ecm-green/20 hover:shadow-lg transition-all overflow-hidden flex flex-col"
     >
       <div className="h-32 overflow-hidden bg-ecm-green/5 flex items-center justify-center">
+        {/* image wins when present (guides still prefer editor mainImage);
+            else fallback (post / case-study call sites omit `image` so
+            the illustration always renders); else generic placeholder. */}
         {image ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img

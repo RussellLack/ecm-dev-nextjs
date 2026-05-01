@@ -65,7 +65,9 @@ export default function RelatedContent({
                   className="group flex gap-4 p-4 rounded-xl border border-gray-100 hover:border-ecm-green/20 hover:shadow-md transition-all bg-white"
                 >
                   <div className="flex-shrink-0 w-16 h-16 rounded-lg bg-ecm-green/8 overflow-hidden flex items-center justify-center">
-                    {img ? (
+                    {item.fallback ? (
+                      item.fallback
+                    ) : img ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
                         src={urlFor(img).width(128).height(128).fit("crop").url()}
@@ -73,8 +75,6 @@ export default function RelatedContent({
                         className="w-full h-full object-cover"
                         loading="lazy"
                       />
-                    ) : item.fallback ? (
-                      item.fallback
                     ) : (
                       <span className="text-ecm-green/40 text-xs font-barlow font-semibold">
                         ECM

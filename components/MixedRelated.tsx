@@ -98,7 +98,7 @@ export default async function MixedRelated({
       eyebrow: EYEBROW.caseStudy,
       title: caseStudy.title,
       blurb: caseStudy.client || caseStudy.description,
-      image: caseStudy.image,
+      // image intentionally omitted — illustration always wins for case studies.
       fallback: <CaseStudyIllustration slug={caseStudy.slug.current} />,
     });
   }
@@ -109,7 +109,7 @@ export default async function MixedRelated({
       eyebrow: EYEBROW.post,
       title: post.title,
       blurb: post.excerpt,
-      image: post.mainImage,
+      // image intentionally omitted — illustration always wins for posts.
       fallback: <PostIllustration slug={post.slug.current} />,
     });
   }
@@ -148,6 +148,10 @@ export default async function MixedRelated({
                 href={item.href}
                 className="group bg-white rounded-xl border border-gray-100 hover:border-ecm-green/20 hover:shadow-md transition-all overflow-hidden flex flex-col"
               >
+                {/* image wins when present (kept for guides which still
+                    prefer editor mainImage); else fallback (always set on
+                    posts and case studies, since their call sites omit
+                    `image`); else doctype label as a last resort. */}
                 {item.image ? (
                   <div className="h-28 overflow-hidden bg-ecm-green/5 flex items-center justify-center">
                     {/* eslint-disable-next-line @next/next/no-img-element */}

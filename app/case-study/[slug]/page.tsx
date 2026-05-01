@@ -227,17 +227,9 @@ export default async function CaseStudyDetailPage({
             <div className="lg:col-span-2">
               <div className="prose prose-lg max-w-none">
                 <div className="flex gap-5">
-                  {cs.image && (
-                    <div className="flex-shrink-0 w-[72px] h-[72px] sm:w-[84px] sm:h-[84px] mt-1">
-                      <Image
-                        src={urlFor(cs.image).width(90).height(90).url()}
-                        alt={cs.title}
-                        width={90}
-                        height={90}
-                        className="w-full h-full object-contain"
-                      />
-                    </div>
-                  )}
+                  <div className="flex-shrink-0 w-[72px] h-[72px] sm:w-[84px] sm:h-[84px] mt-1 rounded-lg bg-ecm-green/5 overflow-hidden">
+                    <CaseStudyIllustration slug={slug} />
+                  </div>
                   <div>
                     <h2 className="text-ecm-green font-barlow font-bold text-2xl mb-3">
                       Overview
