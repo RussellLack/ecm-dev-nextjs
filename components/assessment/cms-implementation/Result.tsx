@@ -11,6 +11,14 @@ interface Props {
   result: CmsImplementationResult;
   inputs: CmsImplementationInputs;
   onToggleTei: (value: boolean) => void;
+  /** Hide the email-capture form. Used on the shared-link result page,
+   *  where the original visitor has already submitted and the recipient
+   *  shouldn't be re-prompted. Defaults to true (capture form shown). */
+  showEmailCapture?: boolean;
+  /** Optional shareable-link URL override. Used by the shared-link page
+   *  so the "Copy shareable link" button copies the canonical URL even
+   *  if the page was opened from a different host (e.g. share preview). */
+  shareableUrl?: string;
 }
 
 /**
@@ -18,7 +26,13 @@ interface Props {
  * full report-style view that someone could screenshot or share with
  * their CFO. Phase 5 will add real PDF + email-gated shareable link.
  */
-export default function Result({ result, inputs, onToggleTei }: Props) {
+export default function Result({
+  result,
+  inputs,
+  onToggleTei,
+  showEmailCapture = true,
+  shareableUrl,
+}: Props) {
   const m = result.currencyMultiplier;
   const sym = currencySymbol(result.currency);
   const horizon = inputs.runtime.horizon;
@@ -91,7 +105,12 @@ export default function Result({ result, inputs, onToggleTei }: Props) {
         )}
 
         {/* 7. Methodology + shareable-link block + email capture */}
-        <ShareAndMethodology inputs={inputs} result={result} />
+        <ShareAndMethodology
+          inputs={inputs}
+          result={result}
+          showEmailCapture={showEmailCapture}
+          shareableUrl={shareableUrl}
+        />
       </div>
     </section>
   );
@@ -477,16 +496,21 @@ function Notes({
 function ShareAndMethodology({
   inputs,
   result,
+  showEmailCapture,
+  shareableUrl,
 }: {
   inputs: CmsImplementationInputs;
   result: CmsImplementationResult;
+  showEmailCapture: boolean;
+  shareableUrl?: string;
 }) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
     if (typeof window === "undefined") return;
+    const url = shareableUrl || window.location.href;
     try {
-      await navigator.clipboard.writeText(window.location.href);
+      await navigator.clipboard.writeText(url);
       setCopied(true);
       setTimeout(() => setCopied(false), 1800);
     } catch {
@@ -496,19 +520,29 @@ function ShareAndMethodology({
 
   return (
     <Section title="Take it away">
-      <div className="grid gap-4 sm:grid-cols-2">
-        <div className="rounded-xl border border-gray-200 bg-white p-5">
-          <EmailCaptureForm inputs={inputs} result={result} />
-        </div>
+      <div
+        className={
+          showEmailCapture
+            ? "grid gap-4 sm:grid-cols-2"
+            : "grid gap-4"
+        }
+      >
+        {showEmailCapture && (
+          <div className="rounded-xl border border-gray-200 bg-white p-5">
+            <EmailCaptureForm inputs={inputs} result={result} />
+          </div>
+        )}
 
         <div className="rounded-xl border border-gray-200 bg-white p-5">
           <p className="mb-2 font-barlow text-sm font-semibold text-ecm-gray-dark">
-            Share this estimate
+            {showEmailCapture
+              ? "Share this estimate"
+              : "Pass it on"}
           </p>
           <p className="mb-3 font-barlow text-xs text-ecm-gray">
-            Skip the email gate — copy this page's URL. The same calculation
-            renders for anyone with the link, with no contact details
-            captured.
+            {showEmailCapture
+              ? "Skip the email gate — copy this page's URL. The same calculation renders for anyone with the link, with no contact details captured."
+              : "Anyone with this link sees the same numbers. No login, no email gate, no further contact details captured."}
           </p>
           <button
             type="button"
@@ -528,6 +562,18 @@ function ShareAndMethodology({
             — every coefficient with its analyst origin and confidence
             rating.
           </p>
+          {!showEmailCapture && (
+            <p className="mt-3 font-barlow text-[11px] leading-relaxed text-ecm-gray">
+              Want to run your own scenario?{" "}
+              <a
+                href="/assessment/cms-implementation"
+                className="font-semibold text-ecm-green underline hover:text-ecm-green-dark"
+              >
+                Open the calculator
+              </a>{" "}
+              — same model, fresh inputs.
+            </p>
+          )}
         </div>
       </div>
     </Section>
