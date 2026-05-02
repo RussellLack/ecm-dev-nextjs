@@ -290,7 +290,7 @@ export default async function HomePage() {
                 <h3 className="text-ecm-lime font-barlow font-semibold text-lg mb-3">
                   {symptom.title}
                 </h3>
-                <p className="text-white/70 text-sm leading-relaxed">
+                <p className="text-white/85 text-sm leading-relaxed">
                   {symptom.description}
                 </p>
               </div>
@@ -324,7 +324,7 @@ export default async function HomePage() {
                 <h3 className="text-white font-barlow font-bold text-xl mb-4 group-hover:text-ecm-lime transition-colors">
                   {service.title}
                 </h3>
-                <p className="text-white/70 text-sm leading-relaxed">
+                <p className="text-white/85 text-sm leading-relaxed">
                   {service.description}
                 </p>
               </Link>

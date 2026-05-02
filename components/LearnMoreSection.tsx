@@ -42,7 +42,7 @@ export default function LearnMoreSection({ items }: LearnMoreSectionProps) {
               <h3 className="text-ecm-lime font-barlow font-semibold text-base mb-2">
                 {item.title}
               </h3>
-              <p className="text-white/60 text-sm mb-4">{item.subtitle}</p>
+              <p className="text-white/85 text-sm mb-4">{item.subtitle}</p>
               <span className="inline-block bg-ecm-lime text-ecm-green text-xs font-barlow font-semibold px-4 py-2 rounded-full group-hover:bg-ecm-lime-hover transition-colors">
                 {hasSlides ? "READ MORE" : "LEARN MORE"}
               </span>

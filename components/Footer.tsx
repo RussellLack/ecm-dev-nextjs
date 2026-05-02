@@ -64,7 +64,7 @@ export default async function Footer() {
                 <Link
                   key={link.name}
                   href={link.href}
-                  className="text-white/70 text-sm hover:text-ecm-lime transition-colors"
+                  className="block py-1.5 text-white/85 text-sm hover:text-ecm-lime transition-colors"
                 >
                   {link.name}
                 </Link>
@@ -82,7 +82,7 @@ export default async function Footer() {
                 <Link
                   key={link.name}
                   href={link.href}
-                  className="text-white/70 text-sm hover:text-ecm-lime transition-colors"
+                  className="block py-1.5 text-white/85 text-sm hover:text-ecm-lime transition-colors"
                 >
                   {link.name}
                 </Link>
@@ -100,7 +100,7 @@ export default async function Footer() {
                 <Link
                   key={link.name}
                   href={link.href}
-                  className="text-white/70 text-sm hover:text-ecm-lime transition-colors"
+                  className="block py-1.5 text-white/85 text-sm hover:text-ecm-lime transition-colors"
                 >
                   {link.name}
                 </Link>
@@ -149,7 +149,7 @@ export default async function Footer() {
                     <Link
                       key={tag}
                       href={`/blog/tag/${tagToSlug(tag)}`}
-                      className="text-white/75 text-xs hover:text-ecm-lime transition-colors"
+                      className="inline-flex items-center min-h-[32px] py-1 px-1 -mx-1 text-white/85 text-xs hover:text-ecm-lime transition-colors"
                     >
                       {tag}
                     </Link>
@@ -167,7 +167,7 @@ export default async function Footer() {
                     <Link
                       key={series}
                       href={`/guides#series-${tagToSlug(series)}`}
-                      className="text-white/75 text-xs hover:text-ecm-lime transition-colors"
+                      className="inline-flex items-center min-h-[32px] py-1 px-1 -mx-1 text-white/85 text-xs hover:text-ecm-lime transition-colors"
                     >
                       {series}
                     </Link>
