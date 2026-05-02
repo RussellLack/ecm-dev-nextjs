@@ -64,13 +64,13 @@ export default function CookieConsent() {
           <div className="flex items-center gap-3 flex-shrink-0">
             <button
               onClick={handleDecline}
-              className="font-barlow font-semibold text-xs px-5 py-2 rounded-full border border-white/30 text-white/80 hover:bg-white/10 transition-colors"
+              className="font-barlow font-semibold text-sm px-5 py-3 min-h-[44px] rounded-full border border-white/60 text-white hover:bg-white/10 transition-colors"
             >
               Decline
             </button>
             <button
               onClick={handleAccept}
-              className="font-barlow font-semibold text-xs px-5 py-2 rounded-full bg-ecm-lime text-ecm-green hover:bg-ecm-lime/90 transition-colors"
+              className="font-barlow font-semibold text-sm px-5 py-3 min-h-[44px] rounded-full bg-ecm-lime text-ecm-green hover:bg-ecm-lime/90 transition-colors"
             >
               Accept cookies
             </button>
