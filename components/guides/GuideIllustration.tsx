@@ -4,7 +4,7 @@ const G = '#316148';
 const L = '#AAF870';
 
 export const ContentInfrastructureImperative = () => (
-  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
     <rect x="40" y="30" width="200" height="84" stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.04)`} rx="2" />
     <g stroke={G} strokeWidth="1" fill="none" opacity="0.5">
       <line x1="50" y1="30" x2="50" y2="114" />
@@ -29,7 +29,7 @@ export const ContentInfrastructureImperative = () => (
 );
 
 export const ContentGovernanceAgeOfAi = () => (
-  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
     <g stroke={G} strokeWidth="1.2" fill="none">
       <circle cx="70" cy="72" r="28" />
       <path d="M 50 50 L 90 94" opacity="0.4" />
@@ -53,7 +53,7 @@ export const ContentGovernanceAgeOfAi = () => (
 );
 
 export const ContentLifecycleRedesigned = () => (
-  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
     <circle cx="50" cy="72" r="12" stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.08)`} />
     <circle cx="140" cy="50" r="12" stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.08)`} />
     <circle cx="140" cy="94" r="12" stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.08)`} />
@@ -66,7 +66,7 @@ export const ContentLifecycleRedesigned = () => (
 );
 
 export const ContentAsOrganisationalIntelligence = () => (
-  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
     <g stroke={G} strokeWidth="1.2" fill="none">
       <path d="M 40 72 L 100 50 L 160 70 L 220 45" strokeLinecap="round" />
     </g>
@@ -90,7 +90,7 @@ export const ContentAsOrganisationalIntelligence = () => (
 );
 
 export const BuildingBusinessCaseContentInfrastructure = () => (
-  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
     <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
       <rect x="30" y="40" width="50" height="28" rx="2" />
       <rect x="100" y="40" width="50" height="28" rx="2" />
@@ -110,7 +110,7 @@ export const BuildingBusinessCaseContentInfrastructure = () => (
 );
 
 export const ProcessArchitectureContentOperations = () => (
-  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
     <defs>
       <marker id="arrowHead" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
         <path d="M0,0 L0,6 L9,3 z" fill={G} />
@@ -131,7 +131,7 @@ export const ProcessArchitectureContentOperations = () => (
 );
 
 export const ContentBriefAsSystemInput = () => (
-  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
     <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
       <rect x="20" y="50" width="45" height="48" rx="2" />
       <line x1="20" y1="60" x2="65" y2="60" opacity="0.5" />
@@ -163,7 +163,7 @@ export const ContentBriefAsSystemInput = () => (
 );
 
 export const WorkflowAutomationContentTeams = () => (
-  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
     <g stroke={G} strokeWidth="1.2" fill="none">
       <path d="M 30 72 L 60 72 L 75 60 L 90 72 L 120 72" strokeLinecap="round" />
     </g>
@@ -186,7 +186,7 @@ export const WorkflowAutomationContentTeams = () => (
 );
 
 export const ApprovalFlowsThatDontKillMomentum = () => (
-  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
     <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
       <rect x="25" y="45" width="35" height="54" rx="2" />
       <line x1="25" y1="60" x2="60" y2="60" opacity="0.4" />
@@ -215,7 +215,7 @@ export const ApprovalFlowsThatDontKillMomentum = () => (
 );
 
 export const CrossFunctionalContentOperations = () => (
-  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
     <g stroke={G} strokeWidth="1.2" fill="none">
       <circle cx="50" cy="40" r="8" />
       <circle cx="50" cy="72" r="8" />
@@ -235,7 +235,7 @@ export const CrossFunctionalContentOperations = () => (
 );
 
 export const ContentOperationsMetricsThatMatter = () => (
-  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
     <g stroke={G} strokeWidth="1.2" fill="none">
       <line x1="40" y1="110" x2="240" y2="110" />
       <line x1="40" y1="110" x2="40" y2="30" />
@@ -257,7 +257,7 @@ export const ContentOperationsMetricsThatMatter = () => (
 );
 
 export const ContentOperationsRegulatedIndustries = () => (
-  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
     <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
       <rect x="30" y="50" width="50" height="48" rx="2" />
       <circle cx="55" cy="65" r="4" opacity="0.6" />
@@ -289,7 +289,7 @@ export const ContentOperationsRegulatedIndustries = () => (
 );
 
 export const ContentOperationsMaturityModel = () => (
-  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
     <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
       <rect x="40" y="85" width="30" height="25" />
       <rect x="80" y="70" width="30" height="40" />
@@ -309,7 +309,7 @@ export const ContentOperationsMaturityModel = () => (
 );
 
 export const OperationalisingContentStrategy = () => (
-  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
     <g stroke={G} strokeWidth="1.2" fill="none">
       <path d="M 50 40 L 140 40 L 140 104 L 50 104" strokeLinecap="round" strokeLinejoin="round" />
     </g>
@@ -330,7 +330,7 @@ export const OperationalisingContentStrategy = () => (
 );
 
 export const InformationArchitectureAiSystems = () => (
-  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
     <g stroke={G} strokeWidth="1.2" fill="none">
       <rect x="40" y="35" width="60" height="30" rx="2" />
       <line x1="50" y1="35" x2="50" y2="65" opacity="0.4" />
@@ -362,7 +362,7 @@ export const InformationArchitectureAiSystems = () => (
 );
 
 export const TaxonomyDesignScalableContentSystems = () => (
-  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
     <g stroke={G} strokeWidth="1.2" fill="none">
       <circle cx="70" cy="72" r="20" />
       <path d="M 55 50 L 85 50 M 55 72 L 85 72 M 55 94 L 85 94" opacity="0.4" />
@@ -384,7 +384,7 @@ export const TaxonomyDesignScalableContentSystems = () => (
 );
 
 export const MetadataStrategyAiPoweredEnterprises = () => (
-  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
     <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
       <rect x="25" y="45" width="50" height="54" rx="2" />
       <line x1="25" y1="60" x2="75" y2="60" opacity="0.5" strokeWidth="0.8" />
@@ -416,7 +416,7 @@ export const MetadataStrategyAiPoweredEnterprises = () => (
 );
 
 export const ContentModellingEnterpriseAi = () => (
-  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
     <g stroke={G} strokeWidth="1.2" fill="none">
       <path d="M 50 50 L 80 35 L 110 50 L 110 90 L 50 90 Z" strokeLinecap="round" strokeLinejoin="round" />
     </g>
@@ -441,7 +441,7 @@ export const ContentModellingEnterpriseAi = () => (
 );
 
 export const StructuredAuthoringAtScale = () => (
-  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
     <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
       <rect x="20" y="50" width="40" height="48" rx="2" />
       <line x1="20" y1="60" x2="60" y2="60" opacity="0.5" strokeWidth="0.8" />
@@ -469,7 +469,7 @@ export const StructuredAuthoringAtScale = () => (
 );
 
 export const KnowledgeArchitectureAiEnterprises = () => (
-  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
     <g stroke={G} strokeWidth="1.2" fill="none">
       <circle cx="80" cy="72" r="30" />
       <path d="M 55 50 L 105 50 M 55 72 L 105 72 M 55 94 L 105 94" opacity="0.3" strokeWidth="0.8" />
@@ -503,7 +503,7 @@ export const KnowledgeArchitectureAiEnterprises = () => (
 );
 
 export const SemanticStructureAiContentSystems = () => (
-  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
     <defs>
       <marker id="arrowSem" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
         <path d="M0,0 L0,6 L9,3 z" fill={L} />
@@ -530,7 +530,7 @@ export const SemanticStructureAiContentSystems = () => (
 );
 
 export const CmsArchitectureAiDrivenEnterprises = () => (
-  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
     <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`} rx="2">
       <rect x="30" y="35" width="70" height="74" />
     </g>
@@ -561,7 +561,7 @@ export const CmsArchitectureAiDrivenEnterprises = () => (
 );
 
 export const ContentFindabilitySystemCapability = () => (
-  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
     <g stroke={G} strokeWidth="1.2" fill="none">
       <circle cx="70" cy="72" r="25" />
       <circle cx="70" cy="72" r="15" opacity="0.5" />
@@ -591,7 +591,7 @@ export const ContentFindabilitySystemCapability = () => (
 );
 
 export const DesigningAiContentOperatingSystem = () => (
-  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
     <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
       <rect x="30" y="30" width="220" height="84" rx="4" />
       <rect x="50" y="50" width="50" height="30" rx="2" opacity="0.8" />
@@ -612,7 +612,7 @@ export const DesigningAiContentOperatingSystem = () => (
 );
 
 export const PromptArchitectureContentTeams = () => (
-  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
     <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
       <rect x="20" y="45" width="55" height="54" rx="2" />
       <line x1="20" y1="60" x2="75" y2="60" opacity="0.4" strokeWidth="0.8" />
@@ -643,7 +643,7 @@ export const PromptArchitectureContentTeams = () => (
 );
 
 export const AiQualityAssuranceContentOperations = () => (
-  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
     <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
       <rect x="30" y="40" width="50" height="64" rx="2" />
       <line x1="30" y1="55" x2="80" y2="55" opacity="0.4" strokeWidth="0.8" />
@@ -670,7 +670,7 @@ export const AiQualityAssuranceContentOperations = () => (
 );
 
 export const AiContentRiskManagement = () => (
-  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
     <g stroke={G} strokeWidth="1.2" fill="none">
       <circle cx="70" cy="72" r="20" />
     </g>
@@ -701,7 +701,7 @@ export const AiContentRiskManagement = () => (
 );
 
 export const ContentVelocityManagingSpeedQuality = () => (
-  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
     <g stroke={G} strokeWidth="1.2" fill="none">
       <line x1="30" y1="100" x2="250" y2="100" />
       <line x1="30" y1="100" x2="30" y2="20" />
@@ -724,7 +724,7 @@ export const ContentVelocityManagingSpeedQuality = () => (
 );
 
 export const RetrievalAugmentedContentSystems = () => (
-  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
     <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
       <rect x="20" y="50" width="40" height="48" rx="2" />
       <line x1="20" y1="62" x2="60" y2="62" opacity="0.5" strokeWidth="0.8" />
@@ -758,7 +758,7 @@ export const RetrievalAugmentedContentSystems = () => (
 );
 
 export const AiPoweredContentAuditing = () => (
-  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
     <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
       <rect x="30" y="45" width="50" height="54" rx="2" />
       <line x1="30" y1="60" x2="80" y2="60" opacity="0.4" strokeWidth="0.8" />
@@ -787,7 +787,7 @@ export const AiPoweredContentAuditing = () => (
 );
 
 export const ContentIntelligencePlatforms = () => (
-  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
     <g stroke={L} strokeWidth="1.2" fill={`rgba(170,248,112,.08)`}>
       <circle cx="60" cy="50" r="12" />
       <circle cx="60" cy="94" r="12" />
@@ -812,7 +812,7 @@ export const ContentIntelligencePlatforms = () => (
 );
 
 export const OperationalisingLlmsContentTeams = () => (
-  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
     <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
       <rect x="20" y="50" width="45" height="48" rx="2" />
       <circle cx="42" cy="62" r="2" opacity="0.6" />
@@ -848,7 +848,7 @@ export const OperationalisingLlmsContentTeams = () => (
 );
 
 export const AiContentFeedbackLoop = () => (
-  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
     <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
       <rect x="35" y="50" width="50" height="48" rx="2" />
       <line x1="35" y1="65" x2="85" y2="65" opacity="0.4" strokeWidth="0.8" />
@@ -876,7 +876,7 @@ export const AiContentFeedbackLoop = () => (
 );
 
 export const PersonalisationArchitectureAiEnterprises = () => (
-  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
     <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
       <rect x="30" y="30" width="220" height="84" rx="4" />
     </g>
@@ -894,7 +894,7 @@ export const PersonalisationArchitectureAiEnterprises = () => (
 );
 
 export const ContentModellingPersonalisation = () => (
-  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
     <g stroke={G} strokeWidth="1.2" fill="none">
       <circle cx="70" cy="50" r="12" />
       <circle cx="70" cy="94" r="12" />
@@ -922,7 +922,7 @@ export const ContentModellingPersonalisation = () => (
 );
 
 export const AudienceArchitectureDesigningSegments = () => (
-  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
     <g stroke={G} strokeWidth="1.2" fill="none">
       <circle cx="60" cy="50" r="10" />
       <circle cx="60" cy="72" r="10" />
@@ -955,7 +955,7 @@ export const AudienceArchitectureDesigningSegments = () => (
 );
 
 export const DecisioningLogicContentPersonalisation = () => (
-  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
     <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.08)`}>
       <circle cx="70" cy="72" r="20" />
     </g>
@@ -983,7 +983,7 @@ export const DecisioningLogicContentPersonalisation = () => (
 );
 
 export const PersonalisationScaleB2bEnterprises = () => (
-  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
     <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
       <rect x="20" y="50" width="40" height="48" rx="2" />
       <circle cx="40" cy="62" r="2.5" opacity="0.6" />
@@ -1022,7 +1022,7 @@ export const PersonalisationScaleB2bEnterprises = () => (
 );
 
 export const RealTimePersonalisationArchitecture = () => (
-  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
     <defs>
       <marker id="arrowRT" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
         <path d="M0,0 L0,6 L9,3 z" fill={L} />
@@ -1055,7 +1055,7 @@ export const RealTimePersonalisationArchitecture = () => (
 );
 
 export const PrivacyFirstPersonalisation = () => (
-  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
     <g stroke={G} strokeWidth="1.2" fill="none">
       <circle cx="70" cy="72" r="22" />
       <path d="M 52 72 L 88 72 M 70 50 L 70 94" opacity="0.4" strokeWidth="0.8" />
@@ -1089,7 +1089,7 @@ export const PrivacyFirstPersonalisation = () => (
 );
 
 export const PersonalisationOperations = () => (
-  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
     <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`}>
       <rect x="30" y="40" width="70" height="64" rx="2" />
       <line x1="30" y1="58" x2="100" y2="58" opacity="0.4" strokeWidth="0.8" />
@@ -1117,7 +1117,7 @@ export const PersonalisationOperations = () => (
 );
 
 export const MeasuringPersonalisationEffectiveness = () => (
-  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
     <g stroke={G} strokeWidth="1.2" fill="none">
       <line x1="40" y1="110" x2="240" y2="110" />
       <line x1="40" y1="110" x2="40" y2="30" />
@@ -1143,7 +1143,7 @@ export const MeasuringPersonalisationEffectiveness = () => (
 );
 
 export const LocalisationContentOperationsDiscipline = () => (
-  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
     {/* Globe with operational flow */}
     <circle cx="70" cy="72" r="32" stroke={G} strokeWidth="1.2" />
     {/* Latitude lines */}
@@ -1181,7 +1181,7 @@ export const LocalisationContentOperationsDiscipline = () => (
 );
 
 export const AIPoweredTranslationOperations = () => (
-  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
     {/* Left document stack */}
     <g>
       <rect x="20" y="50" width="22" height="32" stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`} />
@@ -1227,7 +1227,7 @@ export const AIPoweredTranslationOperations = () => (
 );
 
 export const ContentArchitectureMultilingual = () => (
-  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
     {/* Blueprint grid background accent */}
     <rect x="40" y="30" width="80" height="84" stroke={G} strokeWidth="0.6" fill={`rgba(49,97,72,.04)`} opacity="0.5" />
 
@@ -1280,7 +1280,7 @@ export const ContentArchitectureMultilingual = () => (
 );
 
 export const LocalisationWorkflowDesign = () => (
-  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
     {/* Main workflow pipeline - left to right */}
     <g stroke={G} strokeWidth="2.5" fill="none" opacity="0.7" strokeLinecap="round">
       <path d="M 20 72 L 70 72" />
@@ -1331,7 +1331,7 @@ export const LocalisationWorkflowDesign = () => (
 );
 
 export const TerminologyManagementGlobalContent = () => (
-  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
     {/* Central dictionary/glossary book */}
     <g>
       <rect x="50" y="40" width="40" height="64" stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.06)`} rx="2" />
@@ -1387,7 +1387,7 @@ export const TerminologyManagementGlobalContent = () => (
 );
 
 export const GlobalContentStrategyAIEnterprises = () => (
-  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
     {/* World map outline - simplified */}
     <g stroke={G} strokeWidth="1.2" fill={`rgba(49,97,72,.04)`} opacity="0.6">
       {/* Landmass silhouettes */}
@@ -1438,7 +1438,7 @@ export const GlobalContentStrategyAIEnterprises = () => (
 );
 
 export const FutureOfContentInfrastructure = () => (
-  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
     {/* Horizon line */}
     <line x1="10" y1="95" x2="270" y2="95" stroke={G} strokeWidth="1.2" opacity="0.5" />
 
@@ -1505,7 +1505,7 @@ export const FutureOfContentInfrastructure = () => (
 );
 
 const FallbackIllustration = () => (
-  <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
     {[0, 1, 2, 3, 4].map((col) =>
       [0, 1, 2].map((row) => (
         <circle

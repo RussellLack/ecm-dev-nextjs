@@ -59,7 +59,7 @@ function TaxonomyMotif({ seed }: { seed: number }) {
   const leafStart = (280 - leafSpread) / 2;
 
   return (
-    <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
       {/* root */}
       <circle
         cx={rootX}
@@ -131,7 +131,7 @@ function IntranetMotif({ seed }: { seed: number }) {
     };
   });
   return (
-    <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
       {/* outer frame */}
       <rect
         x="20"
@@ -176,7 +176,7 @@ function IntranetMotif({ seed }: { seed: number }) {
 function CmsMigrationMotif({ seed }: { seed: number }) {
   const accentSide = (seed & 1) === 0 ? "target" : "source";
   return (
-    <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
       {/* source platform */}
       <rect
         x="22"
@@ -252,7 +252,7 @@ function CmsMigrationMotif({ seed }: { seed: number }) {
 function EcommerceMotif({ seed }: { seed: number }) {
   const accentTile = seed % 6;
   return (
-    <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
       {/* product grid */}
       <g>
         {Array.from({ length: 6 }).map((_, i) => {
@@ -308,7 +308,7 @@ function LocalisationMotif({ seed }: { seed: number }) {
   const tagCount = 4 + (seed % 3); // 4, 5, 6 language tags
   const accent = seed % tagCount;
   return (
-    <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
       {/* globe */}
       <circle cx="100" cy="72" r="44" stroke={G} strokeWidth="1.2" fill={FILL_G} />
       <g stroke={G} strokeWidth="1" fill="none" opacity="0.45">
@@ -382,7 +382,7 @@ function ContentStrategyMotif({ seed }: { seed: number }) {
     i % 2 === 0 ? 50 + (seed % 7) : 96 - (seed % 9)
   );
   return (
-    <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
       {/* connectors */}
       <g stroke={G} strokeWidth="1.2" fill="none">
         {xs.slice(0, -1).map((x, i) => (
@@ -426,7 +426,7 @@ function WebsiteMotif({ seed }: { seed: number }) {
   const accent = (seed >> 2) % 4;
   const block = (i: number, base: string) => (i === accent ? FILL_L : base);
   return (
-    <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
       {/* browser frame */}
       <rect x="20" y="18" width="240" height="108" rx="3" stroke={G} strokeWidth="1.2" fill="white" />
       <line x1="20" y1="32" x2="260" y2="32" stroke={G} strokeWidth="1" />
@@ -481,7 +481,7 @@ function MarketingMotif({ seed }: { seed: number }) {
   const baseW = 200;
   const baseX = 140;
   return (
-    <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
       {/* megaphone abstraction at left */}
       <g stroke={G} strokeWidth="1.2" fill={FILL_G}>
         <path d="M 30 50 L 60 38 L 60 106 L 30 94 Z" />
@@ -528,7 +528,7 @@ function CrmMotif({ seed }: { seed: number }) {
     };
   });
   return (
-    <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
       {/* central CRM */}
       <rect
         x="118"
@@ -583,7 +583,7 @@ function EcmVisionMotif({ seed }: { seed: number }) {
   const gap = (totalW - pillarCount * pillarW) / (pillarCount - 1);
   const startX = (280 - totalW) / 2;
   return (
-    <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
       {/* horizon */}
       <line x1="20" y1={baseY} x2="260" y2={baseY} stroke={G} strokeWidth="1" />
       {/* pediment */}
@@ -645,7 +645,7 @@ function DataOpsMotif({ seed }: { seed: number }) {
     (_, i) => 30 + ((seed * (i + 1)) % 60)
   );
   return (
-    <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
       {/* axes */}
       <line x1={baseX} y1="20" x2={baseX} y2={baseY} stroke={G} strokeWidth="1.2" />
       <line x1={baseX} y1={baseY} x2="252" y2={baseY} stroke={G} strokeWidth="1.2" />
@@ -704,7 +704,7 @@ function WorkflowMotif({ seed }: { seed: number }) {
   const startX = 30;
   const stepW = (220 / steps) - 6;
   return (
-    <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
       {/* steps */}
       {Array.from({ length: steps }).map((_, i) => {
         const x = startX + i * (stepW + 6);
@@ -778,7 +778,7 @@ function WorkflowMotif({ seed }: { seed: number }) {
 function PrototypeMotif({ seed }: { seed: number }) {
   const offset = 6 + (seed % 4);
   return (
-    <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
       {/* layered cards */}
       {[2, 1, 0].map((layer) => {
         const x = 70 + layer * offset;
@@ -817,7 +817,7 @@ function PrototypeMotif({ seed }: { seed: number }) {
 function BroadcastMotif({ seed }: { seed: number }) {
   const ringCount = 3 + (seed % 2);
   return (
-    <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
       {/* tower */}
       <g stroke={G} strokeWidth="1.2" fill="none">
         <line x1="140" y1="34" x2="124" y2="116" />
@@ -853,7 +853,7 @@ function BroadcastMotif({ seed }: { seed: number }) {
 function GenericMotif({ seed }: { seed: number }) {
   const accent = seed % 3;
   return (
-    <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
       <rect x="40" y="22" width="200" height="100" rx="3" stroke={G} strokeWidth="1.2" fill={FILL_G} />
       <g stroke={G} strokeWidth="1" opacity="0.6">
         <line x1="60" y1="44" x2="220" y2="44" />

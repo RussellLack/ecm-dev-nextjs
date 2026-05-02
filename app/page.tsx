@@ -392,6 +392,7 @@ export default async function HomePage() {
           <div className="text-center">
             <Link
               href="/blog"
+              aria-label="Read more articles on the ECM.DEV blog"
               className="inline-block bg-ecm-green text-white font-barlow font-semibold px-8 py-3 rounded-full hover:bg-ecm-green-dark transition-colors"
             >
               READ MORE
