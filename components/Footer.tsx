@@ -56,9 +56,9 @@ export default async function Footer() {
 
           {/* Services column */}
           <div>
-            <h4 className="text-ecm-lime font-barlow font-semibold text-sm uppercase tracking-wider mb-4">
+            <h3 className="text-ecm-lime font-barlow font-semibold text-sm uppercase tracking-wider mb-4">
               Services
-            </h4>
+            </h3>
             <nav className="flex flex-col gap-2">
               {servicesLinks.map((link) => (
                 <Link
@@ -74,9 +74,9 @@ export default async function Footer() {
 
           {/* Resources column */}
           <div>
-            <h4 className="text-ecm-lime font-barlow font-semibold text-sm uppercase tracking-wider mb-4">
+            <h3 className="text-ecm-lime font-barlow font-semibold text-sm uppercase tracking-wider mb-4">
               Resources
-            </h4>
+            </h3>
             <nav className="flex flex-col gap-2">
               {resourceLinks.map((link) => (
                 <Link
@@ -92,9 +92,9 @@ export default async function Footer() {
 
           {/* Site links column */}
           <div>
-            <h4 className="text-ecm-lime font-barlow font-semibold text-sm uppercase tracking-wider mb-4">
+            <h3 className="text-ecm-lime font-barlow font-semibold text-sm uppercase tracking-wider mb-4">
               Site
-            </h4>
+            </h3>
             <nav className="flex flex-col gap-2">
               {siteLinks.map((link) => (
                 <Link
@@ -110,9 +110,9 @@ export default async function Footer() {
 
           {/* Connect column */}
           <div>
-            <h4 className="text-ecm-lime font-barlow font-semibold text-sm uppercase tracking-wider mb-4">
+            <h3 className="text-ecm-lime font-barlow font-semibold text-sm uppercase tracking-wider mb-4">
               Connect
-            </h4>
+            </h3>
             <a
               href="mailto:rl@ecm.dev"
               className="inline-block bg-ecm-lime text-ecm-green font-barlow font-semibold text-sm px-6 py-2.5 rounded-full hover:bg-ecm-lime-hover transition-colors mb-4"
@@ -141,9 +141,9 @@ export default async function Footer() {
           <div className="space-y-4 mb-10">
             {topTags.length > 0 && (
               <div className="flex flex-col sm:flex-row sm:items-baseline gap-3 sm:gap-6">
-                <h4 className="text-ecm-lime font-barlow font-semibold text-xs uppercase tracking-wider sm:flex-shrink-0 sm:w-32">
+                <h3 className="text-ecm-lime font-barlow font-semibold text-xs uppercase tracking-wider sm:flex-shrink-0 sm:w-32">
                   Topics
-                </h4>
+                </h3>
                 <div className="flex flex-wrap gap-x-3 gap-y-2">
                   {topTags.map(({ tag }) => (
                     <Link
@@ -159,9 +159,9 @@ export default async function Footer() {
             )}
             {guideSeries.length > 0 && (
               <div className="flex flex-col sm:flex-row sm:items-baseline gap-3 sm:gap-6">
-                <h4 className="text-ecm-lime font-barlow font-semibold text-xs uppercase tracking-wider sm:flex-shrink-0 sm:w-32">
+                <h3 className="text-ecm-lime font-barlow font-semibold text-xs uppercase tracking-wider sm:flex-shrink-0 sm:w-32">
                   Guide series
-                </h4>
+                </h3>
                 <div className="flex flex-wrap gap-x-3 gap-y-2">
                   {guideSeries.map(({ series }) => (
                     <Link

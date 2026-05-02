@@ -40,31 +40,36 @@ export default function TestimonialsClient({
         <div className="flex items-center justify-center gap-4">
           <button
             onClick={prev}
-            className="w-10 h-10 rounded-full border-2 border-ecm-green text-ecm-green hover:bg-ecm-green hover:text-white transition-colors flex items-center justify-center"
+            className="w-11 h-11 rounded-full border-2 border-ecm-green text-ecm-green hover:bg-ecm-green hover:text-white transition-colors flex items-center justify-center"
             aria-label="Previous testimonial"
           >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           </button>
-          <div className="flex gap-2">
+          <div className="flex gap-1">
             {testimonials.map((_, i) => (
               <button
                 key={i}
                 onClick={() => setCurrent(i)}
-                className={`w-2.5 h-2.5 rounded-full transition-colors ${
-                  i === current ? "bg-ecm-green" : "bg-gray-300"
-                }`}
+                className="w-9 h-9 rounded-full flex items-center justify-center group transition-colors"
                 aria-label={`Go to testimonial ${i + 1}`}
-              />
+              >
+                <span
+                  aria-hidden="true"
+                  className={`w-2.5 h-2.5 rounded-full transition-colors ${
+                    i === current ? "bg-ecm-green" : "bg-gray-400 group-hover:bg-ecm-green/60"
+                  }`}
+                />
+              </button>
             ))}
           </div>
           <button
             onClick={next}
-            className="w-10 h-10 rounded-full border-2 border-ecm-green text-ecm-green hover:bg-ecm-green hover:text-white transition-colors flex items-center justify-center"
+            className="w-11 h-11 rounded-full border-2 border-ecm-green text-ecm-green hover:bg-ecm-green hover:text-white transition-colors flex items-center justify-center"
             aria-label="Next testimonial"
           >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
           </button>

@@ -284,8 +284,8 @@ export default async function HomePage() {
                 key={i}
                 className="bg-ecm-green rounded-xl p-6 sm:p-8 border border-ecm-lime/20 hover:border-ecm-lime/50 transition-all hover:shadow-lg hover:shadow-ecm-lime/5 group"
               >
-                <div className="w-10 h-10 bg-ecm-lime/15 rounded-lg flex items-center justify-center mb-4">
-                  <span className="text-ecm-lime font-barlow font-bold text-lg">{String(i + 1).padStart(2, '0')}</span>
+                <div className="w-10 h-10 bg-ecm-lime rounded-lg flex items-center justify-center mb-4">
+                  <span className="text-ecm-green-dark font-barlow font-bold text-lg">{String(i + 1).padStart(2, '0')}</span>
                 </div>
                 <h3 className="text-ecm-lime font-barlow font-semibold text-lg mb-3">
                   {symptom.title}
