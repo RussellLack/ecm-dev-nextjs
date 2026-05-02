@@ -149,7 +149,7 @@ export default async function Footer() {
                     <Link
                       key={tag}
                       href={`/blog/tag/${tagToSlug(tag)}`}
-                      className="text-white/60 text-xs hover:text-ecm-lime transition-colors"
+                      className="text-white/75 text-xs hover:text-ecm-lime transition-colors"
                     >
                       {tag}
                     </Link>
@@ -167,7 +167,7 @@ export default async function Footer() {
                     <Link
                       key={series}
                       href={`/guides#series-${tagToSlug(series)}`}
-                      className="text-white/60 text-xs hover:text-ecm-lime transition-colors"
+                      className="text-white/75 text-xs hover:text-ecm-lime transition-colors"
                     >
                       {series}
                     </Link>
@@ -180,7 +180,7 @@ export default async function Footer() {
 
         {/* Divider */}
         <div className="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-2">
-          <p className="text-white/40 text-sm">
+          <p className="text-white/75 text-sm">
             &copy; {new Date().getFullYear()} ECM.DEV. All rights reserved.
             {" · "}
             <Link
@@ -190,11 +190,11 @@ export default async function Footer() {
               Privacy Policy
             </Link>
           </p>
-          <p className="text-white/30 text-xs font-barlow">
+          <p className="text-white/75 text-xs font-barlow">
             Web design by{" "}
             <a
               href="https://ecm.dev"
-              className="text-white/50 hover:text-ecm-lime transition-colors"
+              className="text-white/75 hover:text-ecm-lime transition-colors"
             >
               ECM.DEV
             </a>
@@ -203,7 +203,7 @@ export default async function Footer() {
               href="https://www.sanity.io"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-white/50 hover:text-ecm-lime transition-colors"
+              className="text-white/75 hover:text-ecm-lime transition-colors"
             >
               Sanity.io
             </a>

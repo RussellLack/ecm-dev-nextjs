@@ -83,50 +83,61 @@ export default function ContactForm() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-white text-sm mb-1">First name</label>
+              <label htmlFor="contact-first-name" className="block text-white text-sm mb-1">First name</label>
               <input
+                id="contact-first-name"
+                name="firstName"
                 type="text"
+                autoComplete="given-name"
                 value={formData.firstName}
                 onChange={(e) =>
                   setFormData({ ...formData, firstName: e.target.value })
                 }
-                className="w-full bg-transparent border-b border-white/40 text-white py-2 focus:border-ecm-lime outline-none transition-colors"
+                className="w-full bg-transparent border-b border-white/60 text-white py-2 focus:border-ecm-lime outline-none transition-colors"
               />
             </div>
             <div>
-              <label className="block text-white text-sm mb-1">Last name</label>
+              <label htmlFor="contact-last-name" className="block text-white text-sm mb-1">Last name</label>
               <input
+                id="contact-last-name"
+                name="lastName"
                 type="text"
+                autoComplete="family-name"
                 value={formData.lastName}
                 onChange={(e) =>
                   setFormData({ ...formData, lastName: e.target.value })
                 }
-                className="w-full bg-transparent border-b border-white/40 text-white py-2 focus:border-ecm-lime outline-none transition-colors"
+                className="w-full bg-transparent border-b border-white/60 text-white py-2 focus:border-ecm-lime outline-none transition-colors"
               />
             </div>
           </div>
           <div>
-            <label className="block text-white text-sm mb-1">Email *</label>
+            <label htmlFor="contact-email" className="block text-white text-sm mb-1">Email *</label>
             <input
+              id="contact-email"
+              name="email"
               type="email"
+              autoComplete="email"
               required
               value={formData.email}
               onChange={(e) =>
                 setFormData({ ...formData, email: e.target.value })
               }
-              className="w-full bg-transparent border-b border-white/40 text-white py-2 focus:border-ecm-lime outline-none transition-colors"
+              className="w-full bg-transparent border-b border-white/60 text-white py-2 focus:border-ecm-lime outline-none transition-colors"
             />
           </div>
           <div>
-            <label className="block text-white text-sm mb-1">Message *</label>
+            <label htmlFor="contact-message" className="block text-white text-sm mb-1">Message *</label>
             <textarea
+              id="contact-message"
+              name="message"
               required
               rows={4}
               value={formData.message}
               onChange={(e) =>
                 setFormData({ ...formData, message: e.target.value })
               }
-              className="w-full bg-transparent border-b border-white/40 text-white py-2 focus:border-ecm-lime outline-none transition-colors resize-none"
+              className="w-full bg-transparent border-b border-white/60 text-white py-2 focus:border-ecm-lime outline-none transition-colors resize-none"
             />
           </div>
           <button
