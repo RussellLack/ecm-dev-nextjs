@@ -14,7 +14,8 @@ export async function getHomePage() {
     learnMoreItems[]{title, subtitle},
     testimonials[]{name, role, quote, commentary},
     ctaHeading,
-    ctaSubheading
+    ctaSubheading,
+    seo
   }`);
 }
 
@@ -37,8 +38,23 @@ export async function getServicePackages(category: string) {
 
 // Service hero description by category
 export async function getServiceHero(category: string) {
-  return sanityFetch<{ heroDescription?: string } | null>(
-    `*[_type == "service" && category == $category][0]{heroDescription}`,
+  return sanityFetch<{
+    heroDescription?: string;
+    title?: string;
+    image?: any;
+    seo?: {
+      metaTitle?: string;
+      metaDescription?: string;
+      ogImage?: any;
+      noIndex?: boolean;
+    };
+  } | null>(
+    `*[_type == "service" && category == $category][0]{
+      heroDescription,
+      title,
+      image,
+      seo
+    }`,
     { category }
   );
 }

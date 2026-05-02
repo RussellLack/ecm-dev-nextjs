@@ -21,10 +21,13 @@ const config: Config = {
         },
       },
       fontFamily: {
-        barlow: ["Barlow", "sans-serif"],
-        "barlow-light": ["Barlow", "sans-serif"],
+        // Resolves to the next/font CSS variable defined in app/layout.tsx
+        // with Helvetica Neue as the cross-platform fallback the imported
+        // Google Fonts URL never had.
+        barlow: ["var(--font-barlow)", "Helvetica Neue", "Arial", "sans-serif"],
+        "barlow-light": ["var(--font-barlow)", "Helvetica Neue", "Arial", "sans-serif"],
         din: ["DIN Next W01", "sans-serif"],
-        display: ["Barlow", "sans-serif"],
+        display: ["var(--font-barlow)", "Helvetica Neue", "Arial", "sans-serif"],
         body: ["DIN Next W01", "Helvetica Neue", "sans-serif"],
       },
       animation: {

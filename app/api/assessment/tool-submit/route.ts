@@ -49,7 +49,7 @@ export async function POST(request: Request) {
       );
     }
 
-    if (!["process", "lead-magnet"].includes(body.toolType)) {
+    if (!["process", "lead-magnet", "cms-implementation"].includes(body.toolType)) {
       return NextResponse.json(
         { error: "Invalid toolType" },
         { status: 400 }

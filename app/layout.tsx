@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Barlow } from "next/font/google";
 import { headers } from "next/headers";
 import "./globals.css";
 import Header from "@/components/Header";
@@ -7,6 +8,17 @@ import CookieConsent from "@/components/CookieConsent";
 import Analytics from "@/components/Analytics";
 import JsonLd from "@/components/JsonLd";
 import { organizationSchema } from "@/lib/structuredData";
+
+// Self-hosted Barlow via next/font. Replaces the previous @import in
+// globals.css which was render-blocking and added ~1-2s to LCP.
+// next/font preloads the font, applies font-display: swap automatically,
+// and serves from the same origin (no DNS lookup, no chained request).
+const barlow = Barlow({
+  subsets: ["latin"],
+  weight: ["200", "300", "400", "500", "600", "700", "800"],
+  display: "swap",
+  variable: "--font-barlow",
+});
 
 const siteUrl = "https://ecm.dev";
 const siteName = "ECM.DEV";
@@ -71,7 +83,7 @@ export default async function RootLayout({
   await headers();
 
   return (
-    <html lang="en">
+    <html lang="en" className={barlow.variable}>
       <body className="antialiased">
         <JsonLd data={organizationSchema()} />
         <Header />

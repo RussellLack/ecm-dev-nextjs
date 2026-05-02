@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test:cms-engine": "node --experimental-strip-types lib/assessment/cms-implementation/__tests__/engine.test.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.90.0",

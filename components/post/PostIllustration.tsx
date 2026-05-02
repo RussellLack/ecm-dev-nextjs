@@ -34,7 +34,7 @@ const FILL_L = "rgba(170,248,112,0.18)";
 // ─── 01: Kentico cadence — release-train timeline ─────────────────────
 function KenticoCadence() {
   return (
-    <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
       {/* timeline rail */}
       <line x1="20" y1="72" x2="260" y2="72" stroke={G} strokeWidth="1.6" />
       {/* release stations */}
@@ -81,7 +81,7 @@ function KenticoCadence() {
 // ─── 02: Agentic CX — linear journey transforms into agent network ────
 function AgenticCx() {
   return (
-    <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
       {/* left side: linear journey (4 dots on a line) */}
       <line x1="22" y1="72" x2="118" y2="72" stroke={G} strokeWidth="1.6" />
       {[28, 60, 92, 118].map((x, i) => (
@@ -133,7 +133,7 @@ function AgenticCx() {
 // ─── 03: Sanity speed — CMS box with motion lines ─────────────────────
 function SanitySpeed() {
   return (
-    <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
       {/* speed lines behind */}
       <g stroke={L} strokeWidth="2" strokeLinecap="round" opacity="0.85">
         <line x1="20" y1="44" x2="80" y2="44" />
@@ -177,7 +177,7 @@ function SanitySpeed() {
 // ─── 04: Sitecore productivity — lock + ascending bars (unlocked ROI) ─
 function SitecoreProductivity() {
   return (
-    <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
       {/* padlock — body + shackle, unlocked */}
       <g>
         {/* shackle, raised (unlocked) */}
@@ -231,7 +231,7 @@ function SitecoreProductivity() {
 // ─── 05: Ibexa v5 — Europe B2B DXP, abstract map + B2B trade flow ─────
 function IbexaV5() {
   return (
-    <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
       {/* "Europe" abstracted — soft hex shape */}
       <path
         d="M 50 36 L 110 28 L 142 50 L 138 96 L 92 116 L 44 92 Z"
@@ -279,7 +279,7 @@ function IbexaV5() {
 // ─── 06: Hyland cloud federation — cloud over multiple repositories ───
 function HylandCloud() {
   return (
-    <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
       {/* cloud */}
       <path
         d="M 90 48 Q 86 32 110 30 Q 124 18 144 26 Q 158 22 168 36 Q 192 36 188 56 Q 196 64 188 74 L 96 74 Q 80 70 90 48 Z"
@@ -342,7 +342,7 @@ function HylandCloud() {
 // ─── 07: Contentful AI workflows — workflow with lightning bolt ───────
 function ContentfulAiWorkflows() {
   return (
-    <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
       {/* workflow steps */}
       {[0, 1, 2].map((i) => {
         const x = 24 + i * 76;
@@ -401,7 +401,7 @@ function ContentfulAiWorkflows() {
 // ─── 08: Optimizely AEO/GEO — magnifier over ranked AI results ────────
 function OptimizelyAeo() {
   return (
-    <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
       {/* ranked result list */}
       {[0, 1, 2, 3].map((i) => {
         const y = 28 + i * 24;
@@ -467,7 +467,7 @@ function OptimizelyAeo() {
 // ─── 09: Website localisation — browser with language flag tabs ───────
 function WebsiteLocalisation() {
   return (
-    <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
       {/* browser frame */}
       <rect x="20" y="32" width="200" height="96" rx="4" stroke={G} strokeWidth="2" fill="white" />
       {/* tab strip */}
@@ -513,7 +513,7 @@ function WebsiteLocalisation() {
 // ─── 10: B2B DXP playbook — open book with phase markers ──────────────
 function B2bDxpPlaybook() {
   return (
-    <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
       {/* open book — two pages */}
       <path
         d="M 30 36 Q 30 28 38 28 L 132 28 L 140 36 L 140 116 L 132 124 L 38 124 Q 30 124 30 116 Z"
@@ -580,7 +580,7 @@ function B2bDxpPlaybook() {
 // ─── 11: 10 clues your CMS — numbered grid (10 dots) with warning ─────
 function TenCluesUpgrade() {
   return (
-    <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
       {/* grid container */}
       <rect x="16" y="14" width="180" height="116" rx="4" stroke={G} strokeWidth="1.8" fill="white" />
       {/* 10 numbered circles in a 5x2 grid */}
@@ -634,7 +634,7 @@ function TenCluesUpgrade() {
 // ─── 12: Local social trends — chat bubbles + trending arrow ──────────
 function LocalSocialTrends() {
   return (
-    <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
       {/* trending up arrow on the left */}
       <g stroke={L} strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round">
         <polyline points="22,108 60,76 88,90 128,42" />
@@ -682,7 +682,7 @@ function LocalSocialTrends() {
 // ─── 13: Generative AI marketing — sparkle emitting content tiles ─────
 function GenerativeAiMarketing() {
   return (
-    <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
       {/* big AI sparkle on the left */}
       <g transform="translate(56, 72)">
         <path
@@ -746,7 +746,7 @@ function GenerativeAiMarketing() {
 // ─── 14: ECM/CMS CSF — classical pillars (foundations) ────────────────
 function EcmCsfs() {
   return (
-    <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
       {/* horizon */}
       <line x1="20" y1="120" x2="260" y2="120" stroke={G} strokeWidth="2" />
       {/* pediment (triangular roof) */}
@@ -791,7 +791,7 @@ function EcmCsfs() {
 // ─── Generic / fallback ────────────────────────────────────────────────
 function GenericMotif() {
   return (
-    <svg viewBox="0 0 280 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
       <rect x="50" y="20" width="180" height="104" rx="4" stroke={G} strokeWidth="2" fill={FILL_G} />
       <g stroke={G} strokeWidth="1.6" opacity="0.6">
         <line x1="68" y1="42" x2="212" y2="42" />

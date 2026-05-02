@@ -1,13 +1,60 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import ContactForm from "@/components/ContactForm";
 import TestimonialsClient from "@/components/TestimonialsClient";
 import LearnMoreSection from "@/components/LearnMoreSection";
 import LavaBlobs from "@/components/LavaBlobs";
+import PostIllustration from "@/components/post/PostIllustration";
 import { getHomePage, getBlogPosts } from "@/lib/queries";
 import { urlFor } from "@/lib/sanity";
 
 export const revalidate = 60;
+
+export async function generateMetadata(): Promise<Metadata> {
+  const home = await getHomePage().catch(() => null);
+  const seo = home?.seo || {};
+
+  // Title precedence: editor seo override → derived from heroHeading →
+  // root-layout default. We deliberately render the title as a literal
+  // (not template) when an editor has set seo.metaTitle so they have
+  // full control over the brand-name placement.
+  const title =
+    seo.metaTitle ||
+    `${home?.heroHeading || "Content Infrastructure for the AI Enterprise"} | ECM.DEV`;
+
+  // Description: seo override → first 155 chars of heroBody → fallback.
+  const heroBlurb = home?.heroBody
+    ? String(home.heroBody).split(/\n+/)[0].slice(0, 155).trim()
+    : null;
+  const description =
+    seo.metaDescription ||
+    heroBlurb ||
+    "We design the operating systems, governance frameworks, and structured workflows that turn content into a reliable, AI-ready asset.";
+
+  const ogImage = seo.ogImage
+    ? urlFor(seo.ogImage).width(1200).height(630).fit("crop").crop("center").url()
+    : undefined;
+
+  return {
+    title,
+    description,
+    alternates: { canonical: "/" },
+    ...(seo.noIndex ? { robots: { index: false, follow: false } } : {}),
+    openGraph: {
+      type: "website",
+      title,
+      description,
+      ...(ogImage ? { images: [{ url: ogImage, width: 1200, height: 630 }] } : {}),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      ...(ogImage ? { images: [ogImage] } : {}),
+    },
+  };
+}
 
 /* ─── Static fallback data (used when Sanity fields are empty) ─── */
 
@@ -319,30 +366,25 @@ export default async function HomePage() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
             {blogPosts.map((post: any, i: number) => (
               <Link
-                key={i}
+                key={post._id || i}
                 href={`/post/${post.slug?.current || post.slug}`}
-                className="bg-white rounded-xl overflow-hidden border border-gray-100 hover:border-ecm-lime/30 shadow-sm hover:shadow-md transition-all group"
+                className="bg-white rounded-xl overflow-hidden border border-gray-100 hover:shadow-lg shadow-sm transition-shadow group flex flex-col"
               >
-                {post.mainImage ? (
-                  <div className="relative h-32 sm:h-36 lg:h-40">
-                    <Image
-                      src={urlFor(post.mainImage).width(400).height(240).url()}
-                      alt={post.title}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                    />
-                  </div>
-                ) : (
-                  <div className="h-40 bg-ecm-green/10 flex items-center justify-center">
-                    <div className="w-12 h-12 bg-ecm-green/20 rounded-lg" />
-                  </div>
-                )}
-                <div className="p-4">
-                  <h3 className="text-ecm-green font-barlow font-semibold text-sm mb-2 group-hover:text-ecm-lime transition-colors leading-snug">
+                <div className="h-36 overflow-hidden bg-ecm-green/5 flex items-center justify-center border-b border-gray-100">
+                  <PostIllustration slug={post.slug?.current || post.slug} />
+                </div>
+                <div className="p-4 flex flex-col flex-1 bg-gray-50">
+                  <h3 className="text-ecm-green font-barlow font-semibold text-sm mb-2 group-hover:text-ecm-green-dark transition-colors leading-snug">
                     {post.title}
                   </h3>
-                  <p className="text-ecm-gray text-xs">{post.date}</p>
+                  {post.publishedAt && (
+                    <p className="text-ecm-gray text-xs">
+                      {new Date(post.publishedAt).toLocaleDateString("en-GB", {
+                        year: "numeric",
+                        month: "long",
+                      })}
+                    </p>
+                  )}
                 </div>
               </Link>
             ))}
@@ -350,6 +392,7 @@ export default async function HomePage() {
           <div className="text-center">
             <Link
               href="/blog"
+              aria-label="Read more articles on the ECM.DEV blog"
               className="inline-block bg-ecm-green text-white font-barlow font-semibold px-8 py-3 rounded-full hover:bg-ecm-green-dark transition-colors"
             >
               READ MORE

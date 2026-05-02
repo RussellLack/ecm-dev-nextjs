@@ -96,7 +96,7 @@ export interface ToolSubmissionRecord {
   _id: string;
   kind: "tool";
   _type: "toolSubmission";
-  toolType: "process" | "lead-magnet";
+  toolType: "process" | "lead-magnet" | "cms-implementation";
   submittedAt: string;
 
   name: string;

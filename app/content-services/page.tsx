@@ -1,10 +1,22 @@
+import type { Metadata } from "next";
 import ServicePageLayout from "@/components/ServicePageLayout";
 import PillarClusters from "@/components/PillarClusters";
 import { getServicePackages, getServiceHero } from "@/lib/queries";
+import { buildPillarMetadata } from "@/lib/pillarMetadata";
 import JsonLd from "@/components/JsonLd";
 import { serviceSchema } from "@/lib/structuredData";
 
 export const revalidate = 60;
+
+export async function generateMetadata(): Promise<Metadata> {
+  return buildPillarMetadata({
+    category: "services",
+    fallbackTitle: "Content Services",
+    fallbackDescription:
+      "Strategy, governance, training, workflow design, and measurement — the operating-system layer that turns content from output into infrastructure.",
+    canonical: "/content-services",
+  });
+}
 
 // Static fallback in case Sanity isn't connected yet
 const fallbackPackages = [

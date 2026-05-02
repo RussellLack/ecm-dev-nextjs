@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@200;300;400;500;600;700;800&display=swap');
+/* Barlow now self-hosted via next/font in app/layout.tsx — no Google
+   Fonts @import (was render-blocking, ~1-2s LCP penalty). */
 
 @tailwind base;
 @tailwind components;
@@ -19,7 +20,7 @@ html {
 }
 
 body {
-  font-family: 'Barlow', 'Helvetica Neue', sans-serif;
+  font-family: var(--font-barlow), 'Helvetica Neue', Arial, sans-serif;
   color: var(--ecm-gray-dark);
 }
 

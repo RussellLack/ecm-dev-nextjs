@@ -1,10 +1,22 @@
+import type { Metadata } from "next";
 import ServicePageLayout from "@/components/ServicePageLayout";
 import PillarClusters from "@/components/PillarClusters";
 import { getServicePackages, getServiceHero } from "@/lib/queries";
+import { buildPillarMetadata } from "@/lib/pillarMetadata";
 import JsonLd from "@/components/JsonLd";
 import { serviceSchema } from "@/lib/structuredData";
 
 export const revalidate = 60;
+
+export async function generateMetadata(): Promise<Metadata> {
+  return buildPillarMetadata({
+    category: "localization",
+    fallbackTitle: "Content Localization",
+    fallbackDescription:
+      "Multilingual content operations, translation management, regional findability, and AI-native localisation — making content scale across languages and markets.",
+    canonical: "/content-localization",
+  });
+}
 
 const fallbackPackages = [
   { title: "Fast Turnaround Translation \u2013 4 Hour Delivery", description: "Get urgent, premium translations in 4 business hours \u2014 every time. Our subscription lets teams rely on fast, consistent translations in fixed language pairs, with no drop in quality or tone." },

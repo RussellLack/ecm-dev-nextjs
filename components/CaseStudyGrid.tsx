@@ -77,6 +77,7 @@ export default function CaseStudyGrid({
           <Link
             key={cs._id || i}
             href={`/case-study/${cs.slug?.current || ""}`}
+            aria-label={`View case study: ${cs.title}`}
             className="block bg-ecm-green rounded-2xl p-8 hover:shadow-lg hover:shadow-ecm-lime/5 transition-all border border-ecm-lime/15 hover:border-ecm-lime/40 group"
           >
             <div className="flex flex-wrap gap-2 mb-4">

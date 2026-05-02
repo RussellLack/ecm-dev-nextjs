@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getToolSubmission, getSubmission, getMaturityBands } from "@/lib/assessment/queries";
+import type {
+  CmsImplementationInputs,
+  CmsImplementationResult,
+} from "@/lib/assessment/cms-implementation/types";
 
 /**
  * Minimal PDF generator — zero external dependencies.
@@ -625,6 +629,211 @@ function buildMaturityPdf(submission: any, band: any): Buffer {
   return pdf.build();
 }
 
+/* ─── Build CMS Implementation PDF ─── */
+
+function fmtCurrency(value: number, sym: string): string {
+  if (value === 0) return `${sym}0`;
+  if (Math.abs(value) >= 1_000_000) {
+    return `${value < 0 ? "-" : ""}${sym}${Math.abs(value / 1_000_000).toFixed(1)}M`;
+  }
+  if (Math.abs(value) >= 1_000) {
+    return `${value < 0 ? "-" : ""}${sym}${Math.round(Math.abs(value) / 1_000)}k`;
+  }
+  return `${value < 0 ? "-" : ""}${sym}${Math.round(Math.abs(value))}`;
+}
+
+function currencySymbol(c: "USD" | "GBP" | "EUR"): string {
+  return c === "USD" ? "$" : c === "GBP" ? "£" : "EUR ";
+}
+
+function confidenceLabel(c: "A" | "B" | "C"): string {
+  return c === "A" ? "High confidence" : c === "B" ? "Medium confidence" : "Indicative only";
+}
+
+function buildCmsImplementationPdf(
+  inputs: CmsImplementationInputs,
+  result: CmsImplementationResult,
+  name: string,
+  company: string,
+  role: string,
+  date: string,
+): Buffer {
+  const pdf = new SimplePdf();
+  const m = result.currencyMultiplier;
+  const sym = currencySymbol(result.currency);
+  const horizon = inputs.runtime.horizon;
+  const total =
+    horizon === 5 ? result.fiveYearTotal : result.threeYearTotal;
+  const benefit = inputs.options?.useTeiBenefit
+    ? result.benefit.tei
+    : result.benefit.conservative;
+  const benefitTotal =
+    horizon === 5 ? benefit.fiveYearValue : benefit.threeYearValue;
+
+  pdf.startPage();
+
+  pdf.brand(`ECM.DEV -- CMS Implementation TCO`);
+  pdf.title(`${horizon}-Year TCO Estimate`);
+  pdf.subtitle(
+    [name || "Anonymous", role, company].filter(Boolean).join(" | ") +
+      (date ? ` | ${date}` : ""),
+  );
+  pdf.divider();
+
+  /* Headline TCO */
+  const tcoBand = `${fmtCurrency(total.low * m, sym)} - ${fmtCurrency(total.high * m, sym)}`;
+  pdf.bigStat(tcoBand, `Indicative ${horizon}-year TCO`, pdf.getColorString("emerald"));
+  pdf.text(
+    `Mid case ${fmtCurrency(total.mid * m, sym)} | ${confidenceLabel(result.flags.confidence)}`,
+    pdf.getColorString("gray"),
+    9,
+  );
+  pdf.space(4);
+
+  const netLow = (total.low - benefitTotal.high) * m;
+  const netHigh = (total.high - benefitTotal.low) * m;
+  const netMid = (total.mid - benefitTotal.mid) * m;
+  pdf.bigStat(
+    `${fmtCurrency(netLow, sym)} - ${fmtCurrency(netHigh, sym)}`,
+    `Net of benefit (${horizon}-yr)`,
+    pdf.getColorString("emerald"),
+  );
+  pdf.text(
+    `Mid ${fmtCurrency(netMid, sym)} after editor + dev productivity savings`,
+    pdf.getColorString("gray"),
+    9,
+  );
+  pdf.space(6);
+
+  /* Scenario summary */
+  pdf.sectionTitle("Scenario");
+  pdf.row("Org size:", inputs.org.size);
+  pdf.row("Region:", inputs.org.region);
+  pdf.row("Currency:", inputs.org.currency);
+  pdf.row("Current platform:", inputs.current.platform);
+  pdf.row(
+    "Years on platform:",
+    inputs.current.yearsOnPlatform,
+  );
+  pdf.row("Target tier:", inputs.target.tier);
+  pdf.row("Specific vendor:", inputs.target.vendor || "Don't know yet");
+  pdf.row("Deployment:", inputs.target.deployment);
+  pdf.row(
+    "Sites / locales:",
+    `${inputs.scope.sites} / ${inputs.scope.locales}`,
+  );
+  pdf.row("Page bucket:", inputs.scope.pageBucket);
+  pdf.row(
+    "Integrations:",
+    inputs.scope.integrations.length > 0
+      ? inputs.scope.integrations.join(", ")
+      : "None",
+  );
+  pdf.row("Personalisation:", inputs.scope.personalisation);
+  pdf.row(
+    "Compliance:",
+    inputs.scope.compliance.length > 0
+      ? inputs.scope.compliance.join(", ")
+      : "None",
+  );
+  pdf.row("Editors:", String(inputs.runtime.editors));
+  pdf.row("Updates / week:", inputs.runtime.updateFreq);
+  pdf.row("Internal team:", inputs.runtime.teamSize);
+  pdf.space(6);
+
+  /* Cost breakdown */
+  pdf.sectionTitle("Cost breakdown");
+  const lines: { label: string; cadence: string; r: { low: number; mid: number; high: number } }[] = [
+    { label: "Year 1 implementation", cadence: "One-off", r: result.breakdown.implementation },
+    { label: "+ Contingency", cadence: "One-off", r: result.breakdown.contingency },
+    { label: "Annual licence", cadence: "Annual", r: result.breakdown.licence },
+    { label: "Annual hosting + run team", cadence: "Annual", r: result.breakdown.hosting },
+    { label: "Annual vendor support", cadence: "Annual", r: result.breakdown.vendorSupport },
+    { label: "Out-year enhancement", cadence: "Annual Y2+", r: result.breakdown.outYearEnhancement },
+  ];
+  for (const line of lines) {
+    pdf.row(
+      `${line.label} (${line.cadence}):`,
+      `${fmtCurrency(line.r.low * m, sym)} - ${fmtCurrency(line.r.high * m, sym)}`,
+    );
+  }
+  pdf.space(6);
+
+  /* Year-by-year totals */
+  pdf.sectionTitle(`${horizon}-year cash flow`);
+  for (const year of result.totalsByYear) {
+    pdf.row(
+      `Year ${year.year}:`,
+      `${fmtCurrency(year.low * m, sym)} - ${fmtCurrency(year.high * m, sym)}`,
+    );
+  }
+  pdf.space(6);
+
+  /* Benefit side */
+  pdf.sectionTitle(
+    `Benefit side (${inputs.options?.useTeiBenefit ? "vendor-cited TEI" : "conservative"})`,
+  );
+  pdf.row(
+    `${horizon}-year value:`,
+    `${fmtCurrency(benefitTotal.low * m, sym)} - ${fmtCurrency(benefitTotal.high * m, sym)}`,
+  );
+  pdf.row(
+    "Editor hours saved / yr:",
+    Math.round(benefit.editorHoursSaved).toLocaleString("en-GB"),
+  );
+  pdf.row(
+    "Dev hours saved / yr:",
+    Math.round(benefit.devHoursSaved).toLocaleString("en-GB"),
+  );
+  if (benefit.revenueUplift > 0) {
+    pdf.row(
+      "Revenue uplift / yr:",
+      fmtCurrency(benefit.revenueUplift * m, sym),
+    );
+  }
+  pdf.space(6);
+
+  /* Notes */
+  if (result.flags.notes.length > 0) {
+    pdf.sectionTitle("Notes");
+    for (const note of result.flags.notes) {
+      pdf.bullet(note);
+    }
+    pdf.space(4);
+  }
+
+  /* Risk flags */
+  if (result.flags.salesGated) {
+    pdf.flag(
+      "warning",
+      "Sales-gated vendor selected. Analyst-broker estimates can diverge plus or minus 40% from negotiated price. Book a 30-min benchmarking call to tighten the range.",
+    );
+  }
+  if (result.flags.highRiskProfile) {
+    pdf.flag(
+      "critical",
+      "High-risk profile detected. Two or more of: locales >= 6, integrations >= 5, heavy AI personalisation, >= 3 compliance constraints, or 50,000+ pages. The high band has been widened to 1.8x mid (vs 1.4x baseline) -- these scenarios historically overrun 200%+.",
+    );
+  }
+  pdf.space(4);
+
+  /* Methodology footer */
+  pdf.sectionTitle("Methodology");
+  pdf.text(
+    `Coefficients are anchored in USD with display conversion (GBP x 0.79, EUR x 0.92). Sources include vendor pricing pages, Forrester TEI studies (Contentstack 295% ROI, Kontent.ai 320%, Storyblok 582%), Real Story Group, ContractorUK, McKinsey IT-overrun research. Refreshed quarterly. Model version ${result.modelVersion}.`,
+    pdf.getColorString("gray"),
+    8,
+  );
+  pdf.space(2);
+  pdf.text(
+    "Full coefficient table and confidence ratings: ecm.dev/assessment/cms-implementation/methodology",
+    pdf.getColorString("emerald"),
+    8,
+  );
+
+  return pdf.build();
+}
+
 /* ─── Route handler ─── */
 
 export async function GET(request: NextRequest) {
@@ -640,7 +849,7 @@ export async function GET(request: NextRequest) {
     let pdfBuffer: Buffer;
     let filename: string;
 
-    if (type === "process" || type === "lead-magnet") {
+    if (type === "process" || type === "lead-magnet" || type === "cms-implementation") {
       const submission = await getToolSubmission(sid);
       if (!submission) {
         return NextResponse.json({ error: "Submission not found" }, { status: 404 });
@@ -668,7 +877,7 @@ export async function GET(request: NextRequest) {
           date
         );
         filename = `ECM-Process-Assessment-${date || sid.slice(0, 8)}.pdf`;
-      } else {
+      } else if (type === "lead-magnet") {
         pdfBuffer = buildLeadMagnetPdf(
           results,
           submission.name || "",
@@ -676,6 +885,25 @@ export async function GET(request: NextRequest) {
           date
         );
         filename = `ECM-Lead-Magnet-Analysis-${date || sid.slice(0, 8)}.pdf`;
+      } else {
+        // cms-implementation
+        if (submission.toolType !== "cms-implementation") {
+          return NextResponse.json({ error: "Submission type mismatch" }, { status: 400 });
+        }
+        const inputs =
+          typeof submission.answers === "string"
+            ? (JSON.parse(submission.answers) as CmsImplementationInputs)
+            : (submission.answers as unknown as CmsImplementationInputs);
+        const result = results as CmsImplementationResult;
+        pdfBuffer = buildCmsImplementationPdf(
+          inputs,
+          result,
+          submission.name || "",
+          submission.company || "",
+          submission.role || "",
+          date,
+        );
+        filename = `ECM-CMS-Implementation-TCO-${date || sid.slice(0, 8)}.pdf`;
       }
     } else {
       const submission = await getSubmission(sid);
