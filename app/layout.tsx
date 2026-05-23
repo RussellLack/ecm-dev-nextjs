@@ -79,7 +79,7 @@ export default async function RootLayout({
   // opts the whole app into dynamic rendering so Next.js stamps the nonce
   // onto its own inline bootstrap script at request time. Without this,
   // pages render statically at build time, no nonce reaches the HTML, and
-  // every script load is blocked by the strict-dynamic CSP at runtime.
+  await headers() → const nonce = (await headers()).get("x-nonce") ?? ""
   await headers();
 
   return (
@@ -95,7 +95,7 @@ export default async function RootLayout({
             title="Google Tag Manager"
           />
         </noscript>
-        <JsonLd data={organizationSchema()} />
+        <Analytics /> → <Analytics nonce={nonce} />
         <Header />
         <main>{children}</main>
         <Footer />
