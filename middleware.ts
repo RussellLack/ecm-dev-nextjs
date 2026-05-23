@@ -29,14 +29,17 @@ export function middleware(request: NextRequest) {
 
   // Next.js dev mode needs 'unsafe-eval' for fast refresh; we drop it in prod.
   const scriptSrc = [
-    "'self'",
-    `'nonce-${nonce}'`,
-    "'strict-dynamic'",
-    isDev ? "'unsafe-eval'" : "",
-  ]
-    .filter(Boolean)
-    .join(" ");
-
+    const scriptSrc = [
+  "'self'",
+  `'nonce-${nonce}'`,
+  isDev ? "'unsafe-eval'" : "",
+  // GTM loads scripts from these origins
+  "https://www.googletagmanager.com",
+  "https://ssl.google-analytics.com",
+  // Netlify RUM
+  "https://rum.netlify.com",
+  "'self'", // covers /.netlify/scripts/rum (same-origin)
+].filter(Boolean).join(" ");
   const cspHeader = [
     `default-src 'self'`,
     `script-src ${scriptSrc}`,
