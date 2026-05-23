@@ -4,10 +4,15 @@ import { useEffect } from "react";
 import Script from "next/script";
 
 /**
- * GTM + GA4 with Google Consent Mode v2 — loads on every visit.
+ * GTM with Google Consent Mode v2 — loads on every visit.
  *
- * A `consent default` is pushed to the dataLayer *before* the GTM container
- * and GA4 init, so every tag honours it from the first hit:
+ * GTM is the single tag manager. The GA4 Configuration tag lives *inside*
+ * the container (GTM-M7DKTZKC fires GA4 to G-33HFQC8STP), so we deliberately
+ * do NOT configure GA4 directly here — a second `gtag('config', ...)` would
+ * double-count pageviews at the property level.
+ *
+ * A `consent default` is pushed to the dataLayer before the container fires,
+ * so every GTM tag honours it from the first hit:
  *   - analytics_storage: granted (first-party analytics under legitimate
  *     interest) unless the visitor explicitly clicks Decline
  *   - ad_storage / ad_user_data / ad_personalization: denied until the
@@ -15,15 +20,13 @@ import Script from "next/script";
  *
  * CookieConsent.tsx dispatches `ecm:consent-granted` / `ecm:consent-denied`
  * on the banner buttons; we forward those as `gtag('consent','update',...)`
- * so tags waiting on `wait_for_update` fire with the new state, no reload.
+ * so GTM tags waiting on `wait_for_update` fire with the new state.
  *
  * The GTM <noscript> fallback lives in app/layout.tsx, immediately after
- * <body>, per Google's standard two-part snippet. Inline scripts pick up the
- * per-request nonce from the CSP header set in middleware.ts.
+ * <body>. Inline scripts pick up the per-request nonce set in middleware.ts.
  */
 
 const GTM_ID = "GTM-M7DKTZKC";
-const GA4_ID = "G-KWLEYMNW28";
 const STORAGE_KEY = "ecm-cookie-consent";
 
 const inlineInit = `
@@ -54,9 +57,6 @@ gtag('consent', 'default', {
 var f=d.getElementsByTagName(s)[0], j=d.createElement(s), dl=l!='dataLayer'?'&l='+l:'';
 j.async=true; j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
 f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${GTM_ID}');
-
-gtag('js', new Date());
-gtag('config', '${GA4_ID}');
 `;
 
 type ConsentValue = "granted" | "denied";
