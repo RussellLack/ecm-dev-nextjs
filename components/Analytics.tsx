@@ -74,7 +74,7 @@ function updateConsent(value: ConsentValue) {
   });
 }
 
-export default function Analytics() {
+export default function Analytics({ nonce }: { nonce: string }) {
   useEffect(() => {
     const onGranted = () => updateConsent("granted");
     const onDenied = () => updateConsent("denied");
@@ -87,7 +87,7 @@ export default function Analytics() {
   }, []);
 
   return (
-    <Script id="gtm-init" strategy="afterInteractive">
+        <Script id="gtm-init" strategy="afterInteractive" nonce={nonce}>
       {inlineInit}
     </Script>
   );
