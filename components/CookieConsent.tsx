@@ -33,6 +33,8 @@ export default function CookieConsent() {
     localStorage.setItem(STORAGE_KEY, "declined");
     setConsent("declined");
     setVisible(false);
+    // Notify Analytics so it can downgrade consent via gtag('consent','update').
+    window.dispatchEvent(new Event("ecm:consent-denied"));
   };
 
   // Don't render if already decided

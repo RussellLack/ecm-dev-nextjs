@@ -85,6 +85,16 @@ export default async function RootLayout({
   return (
     <html lang="en" className={barlow.variable}>
       <body className="antialiased">
+        {/* Google Tag Manager (noscript) — must be immediately after <body> */}
+        <noscript>
+          <iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-M7DKTZKC"
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+            title="Google Tag Manager"
+          />
+        </noscript>
         <JsonLd data={organizationSchema()} />
         <Header />
         <main>{children}</main>

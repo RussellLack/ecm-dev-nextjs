@@ -18,10 +18,8 @@ import { NextRequest, NextResponse } from "next/server";
  *   - fonts.googleapis.com  (Google Fonts stylesheet)
  *   - fonts.gstatic.com     (Google Fonts binary files)
  *   - cdn.sanity.io         (Sanity image CDN)
- *
- * If you add analytics later (GA, Plausible, PostHog, etc.), add the
- * script host to `script-src` and the collector endpoint to
- * `connect-src`.
+ *   - googletagmanager.com / google-analytics.com / tagmanager.google.com
+ *     (GTM + GA4 + Tag Assistant)
  */
 export function middleware(request: NextRequest) {
   // 128-bit base64 nonce per request.
@@ -46,8 +44,10 @@ export function middleware(request: NextRequest) {
     // 'unsafe-inline'. This is the standard Next.js App Router trade-off.
     `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com`,
     `font-src 'self' https://fonts.gstatic.com`,
-    `img-src 'self' data: blob: https://cdn.sanity.io https://*.google-analytics.com https://www.googletagmanager.com`,
-    `connect-src 'self' https://cdn.sanity.io https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com`,
+    `img-src 'self' data: blob: https://cdn.sanity.io https://*.google-analytics.com https://www.googletagmanager.com https://*.gstatic.com`,
+    `connect-src 'self' https://cdn.sanity.io https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://tagmanager.google.com`,
+    // GTM <noscript> iframe + Tag Assistant / Preview overlay load from these.
+    `frame-src 'self' https://www.googletagmanager.com https://tagmanager.google.com`,
     `frame-ancestors 'none'`,
     `form-action 'self'`,
     `base-uri 'self'`,
