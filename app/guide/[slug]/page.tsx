@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
 import { PortableText } from "@portabletext/react";
-import { getGuide, getAllGuideSlugs } from "@/lib/queries";
+import { getGuide, getAllGuideSlugs, getSeriesSiblings } from "@/lib/queries";
 import JsonLd from "@/components/JsonLd";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import MixedRelated from "@/components/MixedRelated";
@@ -114,6 +114,19 @@ export default async function GuidePage({
   const guide = await getGuide(slug);
   if (!guide) notFound();
 
+  const seriesSiblings = guide.series
+    ? ((await getSeriesSiblings(guide.series, slug).catch(() => [])) as Array<{
+        _id: string;
+        title: string;
+        subtitle?: string;
+        slug: { current: string };
+        guideNumber?: number;
+      }>)
+    : [];
+  const seriesHref = guide.series
+    ? `/guides/${tagToSlug(guide.series)}`
+    : "/guides";
+
   return (
     <>
       <JsonLd data={articleSchema(guide, slug, "guide")} />
@@ -124,17 +137,22 @@ export default async function GuidePage({
             { name: "Home", path: "/" },
             { name: "Guides", path: "/guides" },
             ...(guide.series
-              ? [{ name: guide.series, path: "/guides" as const }]
+              ? [{ name: guide.series, path: seriesHref }]
               : []),
             { name: guide.title, path: null },
           ]}
         />
         <div className="max-w-3xl mx-auto px-6 text-center pt-10 lg:pt-14">
           <div className="flex items-center justify-center gap-3 mb-5">
-            <span className="bg-ecm-lime/20 text-ecm-lime text-xs font-barlow font-bold px-3 py-1 rounded-full">
-              {guide.series}
-            </span>
-            <span className="text-white/40 text-xs font-barlow">Guide {guide.guideNumber}</span>
+            {guide.series && (
+              <Link
+                href={seriesHref}
+                className="bg-ecm-lime/20 text-ecm-lime text-xs font-barlow font-bold px-3 py-1 rounded-full hover:bg-ecm-lime/30 transition-colors"
+              >
+                {guide.series}
+              </Link>
+            )}
+            <span className="text-white/60 text-xs font-barlow">Guide {guide.guideNumber}</span>
           </div>
           {guide.tags?.length > 0 && (
             <div className="flex flex-wrap justify-center gap-2 mb-5">
@@ -207,6 +225,52 @@ export default async function GuidePage({
         </section>
       )}
 
+
+      {/* More from this series — in-series linking */}
+      {seriesSiblings.length > 0 && (
+        <section className="pb-10">
+          <div className="max-w-3xl mx-auto px-6">
+            <div className="border-t border-gray-100 pt-8">
+              <div className="flex items-baseline justify-between gap-4 mb-5">
+                <p className="text-ecm-gray text-xs font-barlow font-semibold uppercase tracking-widest">
+                  More from {guide.series}
+                </p>
+                <Link
+                  href={seriesHref}
+                  className="text-ecm-green text-xs font-barlow font-semibold hover:text-ecm-green-dark whitespace-nowrap"
+                >
+                  View series →
+                </Link>
+              </div>
+              <div className="grid sm:grid-cols-2 gap-4">
+                {seriesSiblings.map((sib) => (
+                  <Link
+                    key={sib._id}
+                    href={`/guide/${sib.slug?.current}`}
+                    className="group flex gap-4 p-4 rounded-xl border border-gray-100 hover:border-ecm-green/20 hover:shadow-md transition-all bg-white"
+                  >
+                    <div className="flex-shrink-0 w-10 h-10 rounded-full bg-ecm-green/8 flex items-center justify-center">
+                      <span className="text-ecm-green font-barlow font-bold text-xs">
+                        {String(sib.guideNumber ?? "").padStart(2, "0")}
+                      </span>
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-ecm-green font-barlow font-semibold text-sm leading-snug group-hover:text-ecm-green-dark transition-colors line-clamp-2">
+                        {sib.title}
+                      </p>
+                      {sib.subtitle && (
+                        <p className="text-ecm-gray text-xs italic mt-0.5 line-clamp-1">
+                          {sib.subtitle}
+                        </p>
+                      )}
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Related Guides */}
       {guide.relatedGuides?.length > 0 && (

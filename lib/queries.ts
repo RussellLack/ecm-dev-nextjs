@@ -338,6 +338,55 @@ export async function getDistinctGuideSeries(): Promise<
   );
 }
 
+/* ─── Guide series hub pages (/guides/[seriesSlug]) ─── */
+
+// All guide-series docs with a live guide count. Drives generateStaticParams,
+// the "Other series" grid, and the /guides index "View series →" links.
+export async function getAllGuideSeries(): Promise<
+  Array<{
+    _id: string;
+    title: string;
+    slug: { current: string };
+    order: number;
+    tagline?: string;
+    guideCount: number;
+  }>
+> {
+  return sanityFetch(
+    `*[_type == "guideSeries"] | order(order asc){
+      _id, title, slug, order, tagline,
+      "guideCount": count(*[_type == "guide" && series == ^.title])
+    }`
+  ).catch(() => []);
+}
+
+// One series doc by slug, with its guides (filtered by the matching series
+// string) and richer per-guide intro for the deeper series-page cards.
+export async function getGuideSeriesBySlug(slug: string) {
+  return sanityFetch(
+    `*[_type == "guideSeries" && slug.current == $slug][0]{
+      _id, title, slug, order, tagline, seoTitle, seoDescription,
+      intro,
+      "guides": *[_type == "guide" && series == ^.title] | order(guideNumber asc){
+        _id, title, subtitle, slug, series, guideNumber, excerpt, tags, mainImage
+      }
+    }`,
+    { slug }
+  );
+}
+
+// Sibling guides in the same series, excluding the current guide. Drives the
+// "More from this series" block on guide detail pages.
+export async function getSeriesSiblings(series: string, excludeSlug: string) {
+  return sanityFetch(
+    `*[_type == "guide" && series == $series && slug.current != $excludeSlug]
+      | order(guideNumber asc){
+      _id, title, subtitle, slug, series, guideNumber
+    }`,
+    { series, excludeSlug }
+  );
+}
+
 // Top N tags by usage across published posts. Drives the Topics row in
 // the footer. Sorts by usage frequency (descending).
 export async function getTopPostTags(

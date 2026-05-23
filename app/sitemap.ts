@@ -103,6 +103,27 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.error("Sitemap: failed to fetch guides", e);
   }
 
+  // Guide series hub pages — editorial entry points into each theme.
+  // Priority above individual guides (0.7) but below top-level service
+  // pages (0.9): set to 0.8.
+  let guideSeriesEntries: MetadataRoute.Sitemap = [];
+  try {
+    const seriesDocs = await sanityFetch<{ slug: string; _updatedAt: string }[]>(
+      `*[_type == "guideSeries" && defined(slug.current)] | order(order asc) {
+        "slug": slug.current,
+        _updatedAt
+      }`
+    );
+    guideSeriesEntries = seriesDocs.map((s) => ({
+      url: `${siteUrl}/guides/${s.slug}`,
+      lastModified: new Date(s._updatedAt),
+      changeFrequency: "weekly" as const,
+      priority: 0.8,
+    }));
+  } catch (e) {
+    console.error("Sitemap: failed to fetch guide series", e);
+  }
+
   // Tag archive hub pages — distinct tags across posts and guides.
   let tagEntries: MetadataRoute.Sitemap = [];
   try {
@@ -205,6 +226,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...blogEntries,
     ...caseStudyEntries,
     ...assessmentEntries,
+    ...guideSeriesEntries,
     ...guideEntries,
     ...tagEntries,
     ...industryEntries,
