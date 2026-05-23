@@ -37,7 +37,7 @@ export function middleware(request: NextRequest) {
 ]
   .filter(Boolean)
   .join(" ");
-].filter(Boolean).join(" ");
+
   const cspHeader = [
     `default-src 'self'`,
     `script-src ${scriptSrc}`,
