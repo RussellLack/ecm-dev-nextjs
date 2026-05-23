@@ -72,17 +72,30 @@ export default function GuidesClientPage({ guides }: { guides: Guide[] }) {
             {/* Series header */}
             <div className="flex items-baseline gap-4 mb-8">
               <div className="flex-shrink-0">
-                <p className="text-ecm-lime/60 font-barlow font-semibold text-xs uppercase tracking-widest mb-1">
+                <p className="text-ecm-green/50 font-barlow font-semibold text-xs uppercase tracking-widest mb-1">
                   Series
                 </p>
                 <h2 className="text-ecm-green font-barlow font-bold text-2xl sm:text-3xl">
-                  {series}
+                  <Link
+                    href={`/guides/${tagToSlug(series)}`}
+                    className="hover:text-ecm-green-dark transition-colors"
+                  >
+                    {series}
+                  </Link>
                 </h2>
               </div>
               <div className="flex-1 h-px bg-ecm-green/10 mb-1" />
-              <span className="text-ecm-gray text-xs font-barlow flex-shrink-0">
-                {guides.length} guide{guides.length !== 1 ? "s" : ""}
-              </span>
+              <div className="flex flex-col items-end gap-1 flex-shrink-0">
+                <span className="text-ecm-gray text-xs font-barlow">
+                  {guides.length} guide{guides.length !== 1 ? "s" : ""}
+                </span>
+                <Link
+                  href={`/guides/${tagToSlug(series)}`}
+                  className="text-ecm-green text-xs font-barlow font-semibold hover:text-ecm-green-dark transition-colors"
+                >
+                  View series →
+                </Link>
+              </div>
             </div>
 
             {/* Guide cards */}
