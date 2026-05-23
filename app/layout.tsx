@@ -79,8 +79,7 @@ export default async function RootLayout({
   // opts the whole app into dynamic rendering so Next.js stamps the nonce
   // onto its own inline bootstrap script at request time. Without this,
   // pages render statically at build time, no nonce reaches the HTML, and
-  await headers() → const nonce = (await headers()).get("x-nonce") ?? ""
-  await headers();
+    const nonce = (await headers()).get("x-nonce") ?? "";
 
   return (
     <html lang="en" className={barlow.variable}>
@@ -95,11 +94,10 @@ export default async function RootLayout({
             title="Google Tag Manager"
           />
         </noscript>
-        <Analytics /> → <Analytics nonce={nonce} />
+                <Analytics nonce={nonce} />
         <Header />
         <main>{children}</main>
         <Footer />
-        <Analytics />
         <CookieConsent />
       </body>
     </html>
