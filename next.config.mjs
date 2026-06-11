@@ -31,6 +31,10 @@ const nextConfig = {
                       source: "/gtm/collect",
                       destination: "https://www.google-analytics.com/g/collect",
             },
+              {
+                                  source: "/gtm/gtag",
+                                  destination: "https://www.googletagmanager.com/gtag/js",
+              },
                 ];
     },
 
