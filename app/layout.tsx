@@ -87,7 +87,7 @@ export default async function RootLayout({
         {/* Google Tag Manager (noscript) — must be immediately after <body> */}
         <noscript>
           <iframe
-            src="https://www.googletagmanager.com/ns.html?id=GTM-M7DKTZKC"
+            src="/gtm/ns.html?id=GTM-M7DKTZKC"
             height="0"
             width="0"
             style={{ display: "none", visibility: "hidden" }}
