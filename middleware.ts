@@ -14,80 +14,86 @@ import { NextRequest, NextResponse } from "next/server";
  * computation so there's no reason to pay the middleware cost for them.
  *
  * Allowed origins:
- *   - self (the ECM.dev origin)
- *   - fonts.googleapis.com  (Google Fonts stylesheet)
- *   - fonts.gstatic.com     (Google Fonts binary files)
- *   - cdn.sanity.io         (Sanity image CDN)
- *   - googletagmanager.com / google-analytics.com / tagmanager.google.com
- *     (GTM + GA4 + Tag Assistant)
+ * - self (the ECM.dev origin)
+ * - fonts.googleapis.com (Google Fonts stylesheet)
+ * - fonts.gstatic.com (Google Fonts binary files)
+ * - cdn.sanity.io (Sanity image CDN)
+ * - googletagmanager.com / google-analytics.com / tagmanager.google.com
+ *   (GTM images, GA4 connections, Tag Assistant frames)
+ *
+ * Note: GTM bootstrap script and GA4 gtag script are proxied through
+ * /gtm/* rewrites in next.config.mjs, so script-src only needs 'self'.
+ * googletagmanager.com is still needed for img-src, connect-src, frame-src.
  */
 export function middleware(request: NextRequest) {
-  // 128-bit base64 nonce per request.
+    // 128-bit base64 nonce per request.
   const nonce = Buffer.from(crypto.randomUUID()).toString("base64");
 
   const isDev = process.env.NODE_ENV !== "production";
 
   // Next.js dev mode needs 'unsafe-eval' for fast refresh; we drop it in prod.
+  // GTM and GA4 scripts are proxied through /gtm/* so no external script-src needed.
   const scriptSrc = [
-  "'self'",
-  `'nonce-${nonce}'`,
-  isDev ? "'unsafe-eval'" : "",
-  "https://www.googletagmanager.com",
-  "https://ssl.google-analytics.com",
-]
-  .filter(Boolean)
-  .join(" ");
+        "'self'",
+        `'nonce-${nonce}'`,
+        isDev ? "'unsafe-eval'" : "",
+        "https://ssl.google-analytics.com",
+      ]
+      .filter(Boolean)
+      .join(" ");
 
   const cspHeader = [
-    `default-src 'self'`,
-    `script-src ${scriptSrc}`,
-    // Tailwind / Next inject inline <style> tags — style-src needs
-    // 'unsafe-inline'. This is the standard Next.js App Router trade-off.
-    `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com`,
-    `font-src 'self' https://fonts.gstatic.com`,
-    `img-src 'self' data: blob: https://cdn.sanity.io https://*.google-analytics.com https://www.googletagmanager.com https://*.gstatic.com`,
-    `connect-src 'self' https://cdn.sanity.io https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://tagmanager.google.com`,
-    // GTM <noscript> iframe + Tag Assistant / Preview overlay load from these.
-    `frame-src 'self' https://www.googletagmanager.com https://tagmanager.google.com`,
-    `frame-ancestors 'none'`,
-    `form-action 'self'`,
-    `base-uri 'self'`,
-    `object-src 'none'`,
-    `upgrade-insecure-requests`,
-  ].join("; ");
+        `default-src 'self'`,
+        `script-src ${scriptSrc}`,
+        // Tailwind / Next inject inline <style> tags — style-src needs
+        // 'unsafe-inline'. This is the standard Next.js App Router trade-off.
+        `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com`,
+        `font-src 'self' https://fonts.gstatic.com`,
+        `img-src 'self' data: blob: https://cdn.sanity.io https://*.google-analytics.com https://www.googletagmanager.com https://*.gstatic.com`,
+        `connect-src 'self' https://cdn.sanity.io https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://tagmanager.google.com`,
+        // GTM <noscript> iframe + Tag Assistant / Preview overlay load from these.
+        `frame-src 'self' https://www.googletagmanager.com https://tagmanager.google.com`,
+        `frame-ancestors 'none'`,
+        `form-action 'self'`,
+        `base-uri 'self'`,
+        `object-src 'none'`,
+        `upgrade-insecure-requests`,
+      ].join("; ");
 
   // Forward the nonce so Server Components / Next's runtime can read it
   // off the incoming request headers.
   const requestHeaders = new Headers(request.headers);
-  requestHeaders.set("x-nonce", nonce);
-  requestHeaders.set("content-security-policy", cspHeader);
+    requestHeaders.set("x-nonce", nonce);
 
   const response = NextResponse.next({
-    request: { headers: requestHeaders },
+        request: { headers: requestHeaders },
   });
 
-  response.headers.set("content-security-policy", cspHeader);
+  // Attach the CSP. replaceAll strips any newlines that might slip in.
+  response.headers.set(
+        "Content-Security-Policy",
+        cspHeader.replaceAll("\n", "")
+      );
 
   return response;
 }
 
 export const config = {
-  matcher: [
-    /*
-     * Match all request paths except:
-     *   - /api/*           (JSON responses, no CSP needed)
-     *   - /_next/static/*  (static chunks, immutable)
-     *   - /_next/image/*   (image optimizer)
-     *   - favicon.ico
-     * Prefetch requests are skipped to avoid burning nonces on speculative
-     * navigations that never render HTML.
-     */
-    {
-      source: "/((?!api|_next/static|_next/image|favicon.ico).*)",
-      missing: [
-        { type: "header", key: "next-router-prefetch" },
-        { type: "header", key: "purpose", value: "prefetch" },
-      ],
-    },
-  ],
+    matcher: [
+          /*
+           * Match all request paths except for the ones starting with:
+           * - api (API routes)
+           * - _next/static (static files)
+           * - _next/image (image optimization files)
+           * - favicon.ico (favicon file)
+           */
+      {
+              source:
+                        "/((?!api|_next/static|_next/image|favicon.ico).*)",
+              missing: [
+                { type: "header", key: "next-action" },
+                { type: "header", key: "content-type", value: "text/x-component" },
+                      ],
+      },
+        ],
 };
