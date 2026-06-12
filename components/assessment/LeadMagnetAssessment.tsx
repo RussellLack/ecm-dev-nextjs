@@ -460,7 +460,7 @@ function Question({
   onChange: (v: string) => void;
 }) {
   return (
-    <div className="space-y-3">
+    <div className="space-y-3" data-testid="assessment-question-group">
       <p className="font-semibold text-sm text-white/60 leading-snug">{label}</p>
       <div className="space-y-2">
         {options.map((opt) => (
@@ -869,6 +869,7 @@ function Results({
         {/* GDPR consent */}
         <label className="flex items-start gap-3 cursor-pointer group">
           <div
+            data-testid="assessment-consent"
             onClick={() => setConsentGiven(!consentGiven)}
             className={`mt-0.5 flex-shrink-0 w-5 h-5 rounded border-2 transition-all flex items-center justify-center ${consentGiven ? "bg-ecm-lime border-ecm-lime" : "border-white/30 group-hover:border-white/50"}`}
           >
