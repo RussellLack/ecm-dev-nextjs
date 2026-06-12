@@ -1,0 +1,66 @@
+name: Assessment E2E (deploy-preview gate)
+
+# Runs the full Playwright suite (smoke + intercepted full-flow) against the
+# Netlify deploy preview for each PR, BEFORE it can merge. A failure blocks the
+# PR with a red check and emails the author.
+#
+# We poll the deterministic Netlify preview URL rather than relying on a
+# `deployment_status` event, so the gate works regardless of whether the
+# Netlify GitHub integration emits GitHub Deployments.
+
+on:
+  pull_request:
+    branches: [main]
+
+# A newer push to the same PR cancels the in-flight run, so we always test the
+# latest preview.
+concurrency:
+  group: assessment-e2e-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - run: npx playwright install --with-deps chromium
+
+      - name: Wait for Netlify deploy preview to be ready
+        id: preview
+        run: |
+          URL="https://deploy-preview-${{ github.event.pull_request.number }}--tangerine-blini-ad1e27.netlify.app"
+          echo "Preview URL: $URL"
+          # Give Netlify a head start so we don't latch onto a stale build.
+          sleep 60
+          for i in $(seq 1 60); do
+            code=$(curl -s -o /dev/null -w "%{http_code}" "$URL" || true)
+            echo "attempt $i: HTTP $code"
+            if [ "$code" = "200" ]; then
+              echo "url=$URL" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            sleep 15
+          done
+          echo "::error::Deploy preview did not become ready in time ($URL)"
+          exit 1
+
+      - name: Run E2E suite (smoke + full) against the preview
+        env:
+          BASE_URL: ${{ steps.preview.outputs.url }}
+        run: npm run test:e2e
+
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report-preview
+          path: playwright-report/
+          retention-days: 7

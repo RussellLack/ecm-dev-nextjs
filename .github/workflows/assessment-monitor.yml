@@ -1,0 +1,47 @@
+name: Assessment Monitor (production)
+
+# Smoke-tests every live assessment on ecm.dev every 15 minutes. Catches
+# breakage that bypasses a deploy (infra, env, CSP, Sanity outage). Smoke depth
+# only — never submits a form — so it is safe to run against production on a
+# schedule. A failure fails the workflow, which emails repo admins.
+#
+# Note: scheduled workflows only run from the default branch (main), so this
+# begins running once merged. GitHub may also disable the schedule after 60
+# days of repo inactivity (re-enable from the Actions tab if that happens).
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch: {}
+
+concurrency:
+  group: assessment-monitor
+  cancel-in-progress: true
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - run: npx playwright install --with-deps chromium
+
+      - name: Smoke-test production assessments
+        env:
+          BASE_URL: https://ecm.dev
+        run: npm run test:e2e:smoke
+
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report-prod
+          path: playwright-report/
+          retention-days: 7
