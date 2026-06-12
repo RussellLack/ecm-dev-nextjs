@@ -52,12 +52,35 @@ production.
 | Layer | Tool | Coverage | Runs where |
 | --- | --- | --- | --- |
 | Unit (keep) | existing `node --experimental-strip-types` | Scoring engine (`lib/assessment/cms-implementation/__tests__/engine.test.ts`) | Local + CI |
-| **E2E smoke** | Playwright (Chromium) | All 5 assessment flows become interactive and answerable; **no form submit** | Deploy preview **+** production |
+| **E2E smoke** | Playwright (Chromium) | **Every** assessment (dynamically discovered) becomes interactive and answerable; **no form submit** | Deploy preview **+** production |
 | **E2E full-flow** | Playwright (Chromium) | One representative flow (default: `lead-magnet`) end-to-end **including submit**, with the submission request **intercepted** (no real lead/email) | Deploy preview only |
 
-The 5 assessment flows under test:
-`/assessment/[slug]`, `/assessment/lead-magnet`, `/assessment/process`,
-`/assessment/localisation-cost`, `/assessment/cms-implementation`.
+### Target discovery (covering ALL assessments)
+
+The assessments under test are NOT a fixed list. There are two sources:
+
+1. **Bespoke routes** (hardcoded React flows): `/assessment/lead-magnet`,
+   `/assessment/process`, `/assessment/localisation-cost`,
+   `/assessment/cms-implementation`.
+2. **Sanity-authored assessments** rendered by the generic `/assessment/[slug]`
+   route via `AssessmentShell` — any number, growing over time as assessments
+   are published in the CMS.
+
+To cover all of them (including future ones) **without a hardcoded list or a
+Sanity token**, the smoke suite builds its target set at runtime:
+
+- the four bespoke routes above, **plus**
+- every `/assessment/<slug>` URL parsed from the target's **public
+  `/sitemap.xml`** (the sitemap already emits one entry per published
+  assessment — see `app/sitemap.ts`).
+
+The union is de-duplicated. A newly published assessment is therefore picked up
+automatically on the next run with zero test changes.
+
+> Runtime scales with the number of published assessments (~5–10s each).
+> Playwright parallel workers keep wall-clock roughly flat; if the catalogue
+> grows large, shard across workers or sample on the high-frequency monitor while
+> testing the full set on the deploy gate.
 
 ### Hydration-catch mechanism
 
@@ -91,7 +114,7 @@ backend changes are required.
 
 **`assessment-e2e.yml` — deploy-preview gate.**
 Triggers on the `deployment_status` event Netlify posts for PR previews. Runs the
-smoke suite (all 5 flows) + full-flow suite (1 flow, intercepted) against
+smoke suite (all discovered assessments) + full-flow suite (1 flow, intercepted) against
 `github.event.deployment_status.environment_url`. Failure → red ✗ check on the PR
 + email. Catches bad deploys before they are live.
 
@@ -124,9 +147,10 @@ synthetic-monitoring SaaS (e.g. Checkly) without rewrite.
 ```
 playwright.config.ts            # baseURL from env, chromium, retries=2, trace-on-failure
 tests/e2e/
-  assessments.smoke.spec.ts     # 5 flows × (start + answer + console/CSP guard)
+  assessments.smoke.spec.ts     # all discovered assessments × (start + answer + console/CSP guard)
   assessments.full.spec.ts      # 1 flow end-to-end, submit intercepted
   helpers/
+    targets.ts                  # build assessment URL list: bespoke routes + sitemap.xml discovery
     hydration.ts                # console/pageerror capture + CSP-violation assertion
     flows.ts                    # per-assessment selectors & steps
 .github/workflows/
@@ -150,6 +174,9 @@ tests/e2e/
   branch) MUST make the smoke suite fail — both on the behavioral assertion and
   the console/CSP guard.
 - A green run MUST create no `assessmentSubmission` documents and send no emails.
+- The smoke suite's discovered target set MUST include every `/assessment/<slug>`
+  URL present in the target's `sitemap.xml` plus the four bespoke routes;
+  publishing a new assessment in Sanity MUST add it to the run with no code change.
 - The monitor workflow MUST run on schedule against production and email on
   failure.
 
