@@ -105,14 +105,19 @@ project/tag selects smoke vs full.
 
 ### Cron frequency vs Actions minutes
 
-GitHub Actions minutes are unlimited for public repos but ~2,000 min/month free
-for private. A smoke run is ~2–3 min.
+The repo is **public** (confirmed 2026-06-12), so GitHub Actions minutes are
+**unlimited and free** — frequency is not cost-constrained.
 
-- Public repo → 15-min cron is fine.
-- Private repo → default to **30-min** cron (~1,440 min/mo) to stay within free
-  tier; the cron line is a one-liner that is trivially tunable.
+Default chosen: **every 15 minutes**, adjustable in the workflow (the cron line
+is a one-liner). This gives ~15-minute worst-case detection of a production
+breakage.
 
-Default chosen: **every 30 minutes**, adjustable in the workflow.
+Caveats of GitHub `schedule:` cron (accepted): the hard minimum interval is
+5 minutes; scheduled runs can be **delayed** under platform load (often 5–15 min
+late); and scheduled workflows are **auto-disabled after 60 days of no repo
+activity**. These make it a monitor, not a hard-SLA stopwatch. If sub-minute,
+guaranteed-cadence uptime is ever needed, move the same Playwright scripts to a
+synthetic-monitoring SaaS (e.g. Checkly) without rewrite.
 
 ## Repo structure
 
