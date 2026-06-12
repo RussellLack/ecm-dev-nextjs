@@ -5,6 +5,12 @@ node_modules/
 dist/
 tsconfig.tsbuildinfo
 
+# Playwright E2E
+playwright-report/
+test-results/
+blob-report/
+.playwright/
+
 # macOS finder metadata
 .DS_Store
 **/.DS_Store

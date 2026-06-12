@@ -7,7 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test:cms-engine": "node --experimental-strip-types lib/assessment/cms-implementation/__tests__/engine.test.ts"
+    "test:cms-engine": "node --experimental-strip-types lib/assessment/cms-implementation/__tests__/engine.test.ts",
+    "test:e2e": "playwright test",
+    "test:e2e:smoke": "playwright test assessments.smoke",
+    "test:e2e:full": "playwright test assessments.full"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.90.0",
@@ -35,6 +38,7 @@
     "styled-components": "^6.3.12"
   },
   "devDependencies": {
+    "@playwright/test": "^1.60.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
