@@ -146,32 +146,50 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }
 
   // Tag archive hub pages — distinct tags across posts and guides.
-  // A tag archive's freshness tracks the newest item of its parent type, so
-  // it only moves when posts/guides change — not on every deploy.
+  //
+  // Only tags applied to MIN_TAGGED_ITEMS+ items are listed. Single-item tag
+  // archives are thin, near-duplicate pages (a tag page wrapping one post is
+  // just a worse version of the post) that dilute crawl budget without
+  // ranking — they were the bulk of the sitemap and a likely cause of the
+  // "Discovered - currently not indexed" pile in Search Console. We count by
+  // SLUG (not raw tag) because that's what the /tag/[slug] archive groups on.
+  // A tag archive's freshness tracks the newest item of its parent type.
+  const MIN_TAGGED_ITEMS = 2;
   let tagEntries: MetadataRoute.Sitemap = [];
   try {
     const [postTags, guideTags] = await Promise.all([
       sanityFetch<string[]>(
-        `array::unique(*[_type == "post" && defined(tags)].tags[])`
+        `*[_type == "post" && defined(tags)].tags[]`
       ).catch(() => [] as string[]),
       sanityFetch<string[]>(
-        `array::unique(*[_type == "guide" && defined(tags)].tags[])`
+        `*[_type == "guide" && defined(tags)].tags[]`
       ).catch(() => [] as string[]),
     ]);
 
-    const blogTagEntries = (postTags ?? [])
-      .filter(Boolean)
-      .map((tag) => ({
-        url: `${siteUrl}/blog/tag/${tagToSlug(tag)}`,
+    // Slugs applied to at least `min` items, counted by archive slug.
+    const slugsWithMinItems = (tags: string[], min: number): string[] => {
+      const counts = new Map<string, number>();
+      for (const tag of tags) {
+        if (!tag) continue;
+        const slug = tagToSlug(tag);
+        counts.set(slug, (counts.get(slug) ?? 0) + 1);
+      }
+      return [...counts.entries()]
+        .filter(([, n]) => n >= min)
+        .map(([slug]) => slug);
+    };
+
+    const blogTagEntries = slugsWithMinItems(postTags ?? [], MIN_TAGGED_ITEMS)
+      .map((slug) => ({
+        url: `${siteUrl}/blog/tag/${slug}`,
         lastModified: postsMax,
         changeFrequency: "weekly" as const,
         priority: 0.5,
       }));
 
-    const guideTagEntries = (guideTags ?? [])
-      .filter(Boolean)
-      .map((tag) => ({
-        url: `${siteUrl}/guides/tag/${tagToSlug(tag)}`,
+    const guideTagEntries = slugsWithMinItems(guideTags ?? [], MIN_TAGGED_ITEMS)
+      .map((slug) => ({
+        url: `${siteUrl}/guides/tag/${slug}`,
         lastModified: guidesMax,
         changeFrequency: "weekly" as const,
         priority: 0.5,
