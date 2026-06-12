@@ -22,6 +22,9 @@ if (!baseURL) {
 
 export default defineConfig({
   testDir: "./tests/e2e",
+  // Discovers the assessment target list (bespoke routes + sitemap) once, up
+  // front, and writes it to test-results/targets.json for the smoke spec.
+  globalSetup: "./tests/e2e/global-setup.ts",
   // Tests hit a remote origin, so allow generous timeouts for cold edges.
   timeout: 30_000,
   expect: { timeout: 10_000 },
