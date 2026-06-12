@@ -232,6 +232,7 @@ export default function AssessmentShell({ assessment }: AssessmentShellProps) {
               </div>
             </div>
             <button
+              data-testid="assessment-start"
               onClick={goNext}
               className="bg-ecm-lime text-ecm-green font-barlow font-bold text-lg px-10 py-4 rounded-full hover:bg-ecm-lime-hover transition-colors mb-4"
             >
@@ -281,6 +282,7 @@ export default function AssessmentShell({ assessment }: AssessmentShellProps) {
               </button>
               {answers[currentVisible.question.questionId] && (
                 <button
+                  data-testid="assessment-next"
                   onClick={goNext}
                   className="bg-ecm-lime/20 text-ecm-lime font-barlow font-semibold text-sm px-6 py-2 rounded-full hover:bg-ecm-lime/30 transition-colors"
                 >

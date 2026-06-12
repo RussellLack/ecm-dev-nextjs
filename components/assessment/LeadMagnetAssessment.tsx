@@ -466,6 +466,7 @@ function Question({
         {options.map((opt) => (
           <button
             key={opt.id}
+            data-testid="assessment-option"
             onClick={() => onChange(opt.id)}
             className={`w-full text-left px-4 py-3 rounded-xl border transition-all duration-150 ${
               value === opt.id
@@ -541,6 +542,7 @@ function NavButtons({
         ← Back
       </button>
       <button
+        data-testid="assessment-next"
         onClick={onNext}
         disabled={!canNext}
         className="flex-1 py-3 px-5 bg-ecm-lime hover:bg-ecm-lime-hover active:bg-ecm-lime-hover disabled:bg-white/10 disabled:text-white/30/30 text-ecm-green font-barlow font-bold rounded-full transition-colors text-sm"
@@ -858,6 +860,7 @@ function Results({
         </div>
         <input
           type="email"
+          data-testid="assessment-email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="your@email.com"
@@ -884,6 +887,7 @@ function Results({
         {/* Save / Share actions */}
         <div className={`grid grid-cols-2 gap-3 transition-opacity ${consentGiven && email.includes("@") && email.includes(".") ? "opacity-100" : "opacity-30 pointer-events-none"}`}>
           <button
+            data-testid="assessment-submit"
             onClick={handleEmailResults}
             disabled={saving}
             className="bg-ecm-lime hover:bg-ecm-lime-hover text-ecm-green font-barlow font-bold py-3 rounded-xl text-sm transition-colors disabled:opacity-50"
@@ -1020,6 +1024,7 @@ export default function LeadMagnetAssessment() {
               ))}
             </div>
             <button
+              data-testid="assessment-start"
               onClick={() => setStep(1)}
               className="w-full bg-ecm-lime hover:bg-ecm-lime-hover text-ecm-green font-barlow font-bold py-4 px-6 rounded-full transition-colors text-base"
             >
@@ -1031,7 +1036,7 @@ export default function LeadMagnetAssessment() {
 
         {/* MARKET */}
         {currentStep === "market" && (
-          <div className="space-y-8">
+          <div className="space-y-8" data-testid="assessment-question">
             <SectionHeader step="1 of 4" title="Your market position" subtitle="The right lead magnet starts with knowing your audience and what they actually buy." />
             <Question label="What best describes your primary market?" options={MARKET_TYPES} value={answers.marketType} onChange={(v) => setAnswer("marketType", v)} />
             <Question label="Who is your primary decision-maker or buyer?" options={BUYER_TYPES} value={answers.buyerType} onChange={(v) => setAnswer("buyerType", v)} />

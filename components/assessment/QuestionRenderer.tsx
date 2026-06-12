@@ -14,7 +14,7 @@ export default function QuestionRenderer({
   onSelect,
 }: QuestionRendererProps) {
   return (
-    <div className="animate-fadeIn">
+    <div className="animate-fadeIn" data-testid="assessment-question">
       <h2 className="text-white font-barlow font-bold text-xl sm:text-2xl lg:text-3xl mb-3 leading-snug">
         {question.text}
       </h2>
@@ -29,6 +29,7 @@ export default function QuestionRenderer({
           return (
             <button
               key={option.optionId}
+              data-testid="assessment-option"
               onClick={() => onSelect(option.optionId)}
               className={`w-full text-left px-6 py-4 rounded-xl border-2 transition-all duration-200 font-barlow ${
                 isSelected

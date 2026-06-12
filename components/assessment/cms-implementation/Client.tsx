@@ -75,7 +75,7 @@ export default function CmsImplementationClient() {
   }, []);
 
   return (
-    <div className="bg-white">
+    <div className="bg-white" data-testid="assessment-interactive">
       {/* Hero */}
       <section className="relative overflow-hidden bg-ecm-green py-14 pb-24 sm:py-20 sm:pb-28 lg:py-28 lg:pb-36">
         <div className="mx-auto max-w-5xl px-6 text-center">
@@ -128,6 +128,7 @@ export default function CmsImplementationClient() {
                 <button
                   key={s.id}
                   type="button"
+                  data-testid="assessment-option"
                   onClick={() => handleScenario(s.id)}
                   className="group flex-1 rounded-xl border border-gray-200 bg-white p-3 text-left transition-all hover:border-ecm-green hover:shadow-md"
                   title={s.blurb}

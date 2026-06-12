@@ -378,6 +378,7 @@ function SingleOpt({
 }) {
   return (
     <div
+      data-testid="assessment-option"
       onClick={onSelect}
       className={`cursor-pointer border-2 rounded-xl p-4 bg-white/5 transition-all ${selected ? "border-ecm-lime bg-ecm-lime/10" : "border-white/15 hover:border-ecm-lime/50"}`}
     >
@@ -395,6 +396,7 @@ function MultiOpt({
 }) {
   return (
     <div
+      data-testid="assessment-option"
       onClick={onToggle}
       className={`cursor-pointer border-2 rounded-xl p-3.5 bg-white/5 flex items-start gap-3 transition-all ${selected ? "border-ecm-lime bg-ecm-lime/10" : "border-white/15 hover:border-ecm-lime/50"}`}
     >
@@ -809,6 +811,7 @@ export default function ProcessAssessment() {
             Your responses are processed in accordance with GDPR. No personal data is collected unless you choose to provide it at the end. Results are never shared with third parties.
           </p>
           <button
+            data-testid="assessment-start"
             onClick={() => { setView("stage"); setStage(1); }}
             className="w-full bg-ecm-lime hover:bg-ecm-lime-hover text-ecm-green font-barlow font-bold font-bold py-4 rounded-xl transition-colors"
           >
@@ -990,7 +993,7 @@ export default function ProcessAssessment() {
         </div>
       </div>
 
-      <div className="max-w-3xl mx-auto px-6 py-8 pb-24">
+      <div className="max-w-3xl mx-auto px-6 py-8 pb-24" data-testid="assessment-question">
         <ProgressBar stage={stage} />
 
         {/* STAGE 1 — About you */}
@@ -1180,6 +1183,7 @@ export default function ProcessAssessment() {
 
         {/* Nav buttons */}
         <button
+          data-testid="assessment-next"
           onClick={() => isLast ? submit() : goStage(stage + 1)}
           disabled={!valid}
           className={`w-full mt-8 py-4 rounded-xl font-semibold text-sm transition-colors ${valid ? "bg-ecm-lime hover:bg-ecm-lime-hover text-ecm-green font-barlow font-bold" : "bg-white/10 text-white/30 cursor-not-allowed"}`}

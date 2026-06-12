@@ -25,7 +25,7 @@ export default function EstimatorClient() {
   }, []);
 
   return (
-    <div className="bg-white">
+    <div className="bg-white" data-testid="assessment-interactive">
       {/* Hero — matches Assessments landing page style */}
       <section className="relative overflow-hidden bg-ecm-green py-14 pb-24 sm:py-20 sm:pb-28 lg:py-28 lg:pb-36">
         <div className="mx-auto max-w-5xl px-6 text-center">
