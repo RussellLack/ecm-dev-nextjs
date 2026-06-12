@@ -8,24 +8,40 @@ import { tagToSlug } from "@/lib/tags";
 
 const siteUrl = "https://ecm.dev";
 
+// Stable fallback for pages whose freshness isn't tied to a single Sanity
+// document (marketing/legal pages, hubs with no dated source). A FIXED date —
+// never `new Date()` — so the value doesn't churn on every deploy. Google
+// learns to ignore a `lastmod` that changes on every crawl, which suppresses
+// crawl priority. Bump this when the static pages are meaningfully edited.
+const STATIC_LAST_MODIFIED = new Date("2026-06-01T00:00:00.000Z");
+
+// Largest `_updatedAt` across a set of Sanity docs, or a stable fallback.
+// Used to give listing/archive/hub pages a freshness date that only moves
+// when their underlying content actually changes.
+function latestMod(
+  docs: { _updatedAt?: string }[],
+  fallback: Date = STATIC_LAST_MODIFIED,
+): Date {
+  const times = docs
+    .map((d) => (d._updatedAt ? new Date(d._updatedAt).getTime() : NaN))
+    .filter((t) => !Number.isNaN(t));
+  return times.length ? new Date(Math.max(...times)) : fallback;
+}
+
+function maxDate(...dates: Date[]): Date {
+  return new Date(Math.max(...dates.map((d) => d.getTime())));
+}
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  // Static pages — every public route owned by the app router.
-  const staticPages: MetadataRoute.Sitemap = [
-    { url: siteUrl, lastModified: new Date(), changeFrequency: "weekly", priority: 1 },
-    { url: `${siteUrl}/content-technology`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.9 },
-    { url: `${siteUrl}/content-services`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.9 },
-    { url: `${siteUrl}/content-localization`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.9 },
-    { url: `${siteUrl}/case-study`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
-    { url: `${siteUrl}/methodology`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
-    { url: `${siteUrl}/assessments`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
-    { url: `${siteUrl}/blog`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
-    { url: `${siteUrl}/guides`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
-    { url: `${siteUrl}/intel`, lastModified: new Date(), changeFrequency: "daily", priority: 0.7 },
-    { url: `${siteUrl}/industries`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
-    { url: `${siteUrl}/platforms`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
-    { url: `${siteUrl}/contact`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.6 },
-    { url: `${siteUrl}/privacy`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.3 },
-  ];
+  // Per-content-type freshness, derived from each type's newest `_updatedAt`.
+  // Initialised to the stable fallback so a failed fetch never produces a
+  // churning "now" date.
+  let postsMax = STATIC_LAST_MODIFIED;
+  let caseStudiesMax = STATIC_LAST_MODIFIED;
+  let assessmentsMax = STATIC_LAST_MODIFIED;
+  let guidesMax = STATIC_LAST_MODIFIED;
+  let guideSeriesMax = STATIC_LAST_MODIFIED;
+  let platformsMax = STATIC_LAST_MODIFIED;
 
   // Blog posts from Sanity
   let blogEntries: MetadataRoute.Sitemap = [];
@@ -36,6 +52,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         _updatedAt
       }`
     );
+    postsMax = latestMod(posts);
     blogEntries = posts.map((post) => ({
       url: `${siteUrl}/post/${post.slug}`,
       lastModified: new Date(post._updatedAt),
@@ -55,6 +72,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         _updatedAt
       }`
     );
+    caseStudiesMax = latestMod(caseStudies);
     caseStudyEntries = caseStudies.map((cs) => ({
       url: `${siteUrl}/case-study/${cs.slug}`,
       lastModified: new Date(cs._updatedAt),
@@ -74,6 +92,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         _updatedAt
       }`
     );
+    assessmentsMax = latestMod(assessments);
     assessmentEntries = assessments.map((a) => ({
       url: `${siteUrl}/assessment/${a.slug}`,
       lastModified: new Date(a._updatedAt),
@@ -93,6 +112,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         _updatedAt
       }`
     );
+    guidesMax = latestMod(guides);
     guideEntries = guides.map((g) => ({
       url: `${siteUrl}/guide/${g.slug}`,
       lastModified: new Date(g._updatedAt),
@@ -114,6 +134,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         _updatedAt
       }`
     );
+    guideSeriesMax = latestMod(seriesDocs);
     guideSeriesEntries = seriesDocs.map((s) => ({
       url: `${siteUrl}/guides/${s.slug}`,
       lastModified: new Date(s._updatedAt),
@@ -125,6 +146,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }
 
   // Tag archive hub pages — distinct tags across posts and guides.
+  // A tag archive's freshness tracks the newest item of its parent type, so
+  // it only moves when posts/guides change — not on every deploy.
   let tagEntries: MetadataRoute.Sitemap = [];
   try {
     const [postTags, guideTags] = await Promise.all([
@@ -140,7 +163,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       .filter(Boolean)
       .map((tag) => ({
         url: `${siteUrl}/blog/tag/${tagToSlug(tag)}`,
-        lastModified: new Date(),
+        lastModified: postsMax,
         changeFrequency: "weekly" as const,
         priority: 0.5,
       }));
@@ -149,7 +172,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       .filter(Boolean)
       .map((tag) => ({
         url: `${siteUrl}/guides/tag/${tagToSlug(tag)}`,
-        lastModified: new Date(),
+        lastModified: guidesMax,
         changeFrequency: "weekly" as const,
         priority: 0.5,
       }));
@@ -160,6 +183,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }
 
   // Industry hub pages — one per distinct industry actually in use.
+  // Derived from case studies, so they share the case-study freshness date.
   let industryEntries: MetadataRoute.Sitemap = [];
   try {
     const industries = await sanityFetch<string[]>(
@@ -169,7 +193,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       .filter(Boolean)
       .map((slug) => ({
         url: `${siteUrl}/industries/${slug}`,
-        lastModified: new Date(),
+        lastModified: caseStudiesMax,
         changeFrequency: "monthly" as const,
         priority: 0.6,
       }));
@@ -178,6 +202,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }
 
   // Intel topic + vendor hubs (only those with at least one published article).
+  // The active-hub helpers don't expose per-hub dates, so use the stable
+  // fallback rather than a churning `new Date()`.
   let intelHubEntries: MetadataRoute.Sitemap = [];
   try {
     const [topics, vendors] = await Promise.all([
@@ -187,13 +213,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     intelHubEntries = [
       ...(topics ?? []).map((t) => ({
         url: `${siteUrl}/intel/topic/${t.slug}`,
-        lastModified: new Date(),
+        lastModified: STATIC_LAST_MODIFIED,
         changeFrequency: "weekly" as const,
         priority: 0.6,
       })),
       ...(vendors ?? []).map((v) => ({
         url: `${siteUrl}/intel/vendor/${v.slug}`,
-        lastModified: new Date(),
+        lastModified: STATIC_LAST_MODIFIED,
         changeFrequency: "weekly" as const,
         priority: 0.6,
       })),
@@ -211,6 +237,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         _updatedAt
       }`
     );
+    platformsMax = latestMod(platforms);
     platformEntries = platforms.map((p) => ({
       url: `${siteUrl}/platforms/${p.slug}`,
       lastModified: new Date(p._updatedAt),
@@ -220,6 +247,38 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   } catch (e) {
     console.error("Sitemap: failed to fetch platforms", e);
   }
+
+  // Newest content anywhere on the site — the homepage surfaces latest items,
+  // so its freshness tracks the most recent content update.
+  const siteLatest = maxDate(
+    postsMax,
+    caseStudiesMax,
+    assessmentsMax,
+    guidesMax,
+    guideSeriesMax,
+    platformsMax,
+  );
+
+  // Static pages — every public route owned by the app router.
+  // Listing pages take their parent content type's freshness; genuinely
+  // static marketing/legal pages take the stable fixed date. None use
+  // `new Date()`, so deploys no longer reset every `lastmod` to "now".
+  const staticPages: MetadataRoute.Sitemap = [
+    { url: siteUrl, lastModified: siteLatest, changeFrequency: "weekly", priority: 1 },
+    { url: `${siteUrl}/content-technology`, lastModified: STATIC_LAST_MODIFIED, changeFrequency: "monthly", priority: 0.9 },
+    { url: `${siteUrl}/content-services`, lastModified: STATIC_LAST_MODIFIED, changeFrequency: "monthly", priority: 0.9 },
+    { url: `${siteUrl}/content-localization`, lastModified: STATIC_LAST_MODIFIED, changeFrequency: "monthly", priority: 0.9 },
+    { url: `${siteUrl}/case-study`, lastModified: caseStudiesMax, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${siteUrl}/methodology`, lastModified: STATIC_LAST_MODIFIED, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${siteUrl}/assessments`, lastModified: assessmentsMax, changeFrequency: "weekly", priority: 0.8 },
+    { url: `${siteUrl}/blog`, lastModified: postsMax, changeFrequency: "weekly", priority: 0.8 },
+    { url: `${siteUrl}/guides`, lastModified: maxDate(guidesMax, guideSeriesMax), changeFrequency: "weekly", priority: 0.8 },
+    { url: `${siteUrl}/intel`, lastModified: STATIC_LAST_MODIFIED, changeFrequency: "daily", priority: 0.7 },
+    { url: `${siteUrl}/industries`, lastModified: caseStudiesMax, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${siteUrl}/platforms`, lastModified: platformsMax, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${siteUrl}/contact`, lastModified: STATIC_LAST_MODIFIED, changeFrequency: "yearly", priority: 0.6 },
+    { url: `${siteUrl}/privacy`, lastModified: STATIC_LAST_MODIFIED, changeFrequency: "yearly", priority: 0.3 },
+  ];
 
   return [
     ...staticPages,
