@@ -60,20 +60,27 @@ export function middleware(request: NextRequest) {
         `upgrade-insecure-requests`,
       ].join("; ");
 
+  const cspValue = cspHeader.replaceAll("\n", "");
+
   // Forward the nonce so Server Components / Next's runtime can read it
   // off the incoming request headers.
   const requestHeaders = new Headers(request.headers);
     requestHeaders.set("x-nonce", nonce);
+    // Next.js discovers the nonce by parsing it out of the CSP header on the
+    // *request*. Without this line Next never stamps a nonce onto its own
+    // inline bootstrap + RSC/Flight (`self.__next_f`) scripts, so under a
+    // strict `script-src` (no 'unsafe-inline') the browser blocks them and
+    // React never hydrates — breaking all interactivity site-wide.
+    requestHeaders.set("Content-Security-Policy", cspValue);
 
   const response = NextResponse.next({
         request: { headers: requestHeaders },
   });
 
-  // Attach the CSP. replaceAll strips any newlines that might slip in.
-  response.headers.set(
-        "Content-Security-Policy",
-        cspHeader.replaceAll("\n", "")
-      );
+  // Attach the same CSP to the response. The request and response MUST carry
+  // identical policies so the nonce Next.js reads off the request matches the
+  // nonce the browser enforces against.
+  response.headers.set("Content-Security-Policy", cspValue);
 
   return response;
 }
