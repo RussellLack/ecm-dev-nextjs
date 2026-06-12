@@ -1,5 +1,3 @@
-import { fileURLToPath } from "node:url";
-
 /**
  * Discovers the full set of assessment URLs to test against a given origin.
  *
@@ -35,6 +33,16 @@ export async function getAssessmentTargets(
   const origin = baseURL.replace(/\/+$/, "");
   const map = new Map<string, AssessmentTarget>();
 
+  // Explicit override (e.g. ASSESSMENT_SLUGS=lead-magnet,process) — run only
+  // the named slugs and skip sitemap discovery. Handy for local/targeted runs.
+  const override = process.env.ASSESSMENT_SLUGS?.trim();
+  if (override) {
+    for (const slug of override.split(",").map((s) => s.trim()).filter(Boolean)) {
+      map.set(slug, { slug, url: `${origin}/assessment/${slug}` });
+    }
+    return [...map.values()].sort((a, b) => a.slug.localeCompare(b.slug));
+  }
+
   // 1. Bespoke routes are always covered.
   for (const slug of BESPOKE_SLUGS) {
     map.set(slug, { slug, url: `${origin}/assessment/${slug}` });
@@ -65,27 +73,4 @@ export async function getAssessmentTargets(
   }
 
   return [...map.values()].sort((a, b) => a.slug.localeCompare(b.slug));
-}
-
-// ── CLI: `node tests/e2e/helpers/targets.ts <baseURL>` — prints discovered targets.
-const isMain =
-  typeof process !== "undefined" &&
-  Array.isArray(process.argv) &&
-  process.argv[1] === fileURLToPath(import.meta.url);
-
-if (isMain) {
-  const baseURL = process.argv[2] || process.env.BASE_URL;
-  if (!baseURL) {
-    console.error("Usage: node tests/e2e/helpers/targets.ts <baseURL>");
-    process.exit(1);
-  }
-  getAssessmentTargets(baseURL)
-    .then((targets) => {
-      console.log(`Discovered ${targets.length} assessment target(s) at ${baseURL}:`);
-      for (const t of targets) console.log(`  - ${t.slug.padEnd(22)} ${t.url}`);
-    })
-    .catch((err) => {
-      console.error(err);
-      process.exit(1);
-    });
 }

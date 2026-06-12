@@ -22,6 +22,7 @@ export default async function globalSetup(): Promise<void> {
   fs.mkdirSync(path.dirname(TARGETS_FILE), { recursive: true });
   fs.writeFileSync(TARGETS_FILE, JSON.stringify(targets, null, 2));
   console.log(
-    `[global-setup] discovered ${targets.length} assessment target(s) at ${baseURL}`,
+    `[global-setup] discovered ${targets.length} assessment target(s) at ${baseURL}:`,
   );
+  for (const t of targets) console.log(`  - ${t.slug.padEnd(26)} ${t.url}`);
 }
