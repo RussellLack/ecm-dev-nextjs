@@ -1,0 +1,11 @@
+# Canonical author identities.
+#
+# Collapses alternate names/emails that appear in history under a single
+# identity so `git log`, `git shortlog -sne`, and GitHub's contributor views
+# show one person. Format:
+#   Proper Name <proper@email> <other@email>
+#   Proper Name <proper@email> Other Name <other@email>
+
+Russell Lack <62655965+RussellLack@users.noreply.github.com> <russlack@gmail.com>
+Russell Lack <62655965+RussellLack@users.noreply.github.com> <russell.lack@innofactor.com>
+Russell Lack <62655965+RussellLack@users.noreply.github.com> Russell  Lack <62655965+RussellLack@users.noreply.github.com>
