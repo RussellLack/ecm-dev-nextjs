@@ -66,12 +66,8 @@ export function middleware(request: NextRequest) {
   // off the incoming request headers.
   const requestHeaders = new Headers(request.headers);
     requestHeaders.set("x-nonce", nonce);
-    // Next.js discovers the nonce by parsing it out of the CSP header on the
-    // *request*. Without this line Next never stamps a nonce onto its own
-    // inline bootstrap + RSC/Flight (`self.__next_f`) scripts, so under a
-    // strict `script-src` (no 'unsafe-inline') the browser blocks them and
-    // React never hydrates — breaking all interactivity site-wide.
-    requestHeaders.set("Content-Security-Policy", cspValue);
+    // NEGATIVE TEST ONLY — request-header CSP intentionally removed to
+    // re-introduce the June 2026 hydration regression. DO NOT MERGE.
 
   const response = NextResponse.next({
         request: { headers: requestHeaders },
