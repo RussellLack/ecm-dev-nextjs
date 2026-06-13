@@ -110,13 +110,19 @@ gtag('consent', 'default', {
                 });
                 (function(w,d,s,l,i){
                   w[l].push({'gtm.start': new Date().getTime(), event: 'gtm.js'});
-                    var f=d.getElementsByTagName(s)[0],
-                          j=d.createElement(s),
-                                dl=l!='dataLayer'?'&l='+l:'';
-                                  j.async=true;
-                                    j.src='/gtm/js?id='+i+dl;
-                                      f.parentNode.insertBefore(j,f);
-                                      })(window,document,'script','dataLayer','${GTM_ID}');
+                  var f=d.getElementsByTagName(s)[0],
+                      j=d.createElement(s),
+                      dl=l!='dataLayer'?'&l='+l:'';
+                  // Forward gtm_debug from the page URL so Tag Assistant /
+                  // GTM Preview can attach. Without this, the proxy /gtm/js
+                  // call strips it and gtm.js never enters debug mode.
+                  var dbg='';
+                  var m=w.location.search.match(/[?&]gtm_debug=([^&]+)/);
+                  if(m){dbg='&gtm_debug='+m[1];}
+                  j.async=true;
+                  j.src='/gtm/js?id='+i+dl+dbg;
+                  f.parentNode.insertBefore(j,f);
+                })(window,document,'script','dataLayer','${GTM_ID}');
                                       `;
 
 export default async function RootLayout({
