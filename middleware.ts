@@ -54,8 +54,7 @@ export function middleware(request: NextRequest) {
         `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://www.googletagmanager.com`,
         `font-src 'self' https://fonts.gstatic.com`,
         `img-src 'self' data: blob: https://cdn.sanity.io https://*.google-analytics.com https://www.googletagmanager.com https://*.gstatic.com`,
-        // ingesteer.services-prod.nsvcs.net is Netlify's Real User Monitoring (RUM) collector.
-        `connect-src 'self' https://cdn.sanity.io https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://tagmanager.google.com https://ingesteer.services-prod.nsvcs.net`,
+        `connect-src 'self' https://cdn.sanity.io https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://tagmanager.google.com`,
         // GTM <noscript> iframe + Tag Assistant / Preview overlay load from these.
         `frame-src 'self' https://www.googletagmanager.com https://tagmanager.google.com`,
         // Allow tagassistant.google.com to embed ecm.dev for Preview mode.
