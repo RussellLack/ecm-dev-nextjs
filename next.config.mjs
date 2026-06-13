@@ -45,16 +45,17 @@ const nextConfig = {
      * request in `middleware.ts` so each response gets a fresh nonce. Everything
      * below is static and doesn't need per-request computation, so serving it
      * from next.config.mjs is cheaper than doing it in middleware.
+     *
+     * Note: X-Frame-Options is intentionally NOT set here. Clickjacking is
+     * handled by `frame-ancestors` in the per-request CSP (middleware.ts),
+     * which can scope-allow tagassistant.google.com for GTM Preview —
+     * something X-Frame-Options (DENY/SAMEORIGIN only) cannot do.
      */
     async headers() {
           return [
             {
                       source: "/:path*",
                       headers: [
-                        {
-                                      key: "X-Frame-Options",
-                                      value: "DENY",
-                        },
                         {
                                       key: "X-Content-Type-Options",
                                       value: "nosniff",

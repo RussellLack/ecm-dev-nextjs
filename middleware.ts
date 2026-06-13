@@ -32,10 +32,14 @@ export function middleware(request: NextRequest) {
   const isDev = process.env.NODE_ENV !== "production";
 
   // Next.js dev mode needs 'unsafe-eval' for fast refresh; we drop it in prod.
-  // GTM and GA4 scripts are proxied through /gtm/* so no external script-src needed.
+  // 'strict-dynamic' is required so GTM's container (loaded via our nonced
+  // gtm-init Script) can in turn inject its own inline tags (GA4 config, custom
+  // HTML tags, conversion pixels). Without it, those child injections are
+  // CSP-blocked and most GTM tags silently fail to fire.
   const scriptSrc = [
         "'self'",
         `'nonce-${nonce}'`,
+        "'strict-dynamic'",
         isDev ? "'unsafe-eval'" : "",
         "https://ssl.google-analytics.com",
       ]
@@ -46,14 +50,16 @@ export function middleware(request: NextRequest) {
         `default-src 'self'`,
         `script-src ${scriptSrc}`,
         // Tailwind / Next inject inline <style> tags — style-src needs
-        // 'unsafe-inline'. This is the standard Next.js App Router trade-off.
-        `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com`,
+        // 'unsafe-inline'. googletagmanager.com is the GTM Preview debug badge.
+        `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://www.googletagmanager.com`,
         `font-src 'self' https://fonts.gstatic.com`,
         `img-src 'self' data: blob: https://cdn.sanity.io https://*.google-analytics.com https://www.googletagmanager.com https://*.gstatic.com`,
         `connect-src 'self' https://cdn.sanity.io https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://tagmanager.google.com`,
         // GTM <noscript> iframe + Tag Assistant / Preview overlay load from these.
         `frame-src 'self' https://www.googletagmanager.com https://tagmanager.google.com`,
-        `frame-ancestors 'none'`,
+        // Allow tagassistant.google.com to embed ecm.dev for Preview mode.
+        // No third-party can frame ecm.dev otherwise (clickjacking protection).
+        `frame-ancestors 'self' https://tagassistant.google.com`,
         `form-action 'self'`,
         `base-uri 'self'`,
         `object-src 'none'`,
