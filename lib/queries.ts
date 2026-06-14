@@ -559,3 +559,36 @@ export async function getContentForPlatform(tagAliases: string[]) {
   ]);
   return { posts, guides, caseStudies };
 }
+
+// ── PR #4 service-page queries (reconciled with main: category-based) ──
+// Switched from PR #4's slug lookup to category, matching getServiceHero /
+// getServicePackages. The existing service helpers above stay as fallbacks.
+
+export const getServicePageQuery = `
+  *[_type == "service" && category == $category][0] {
+    title,
+    category,
+    heroDescription,
+    problemIntro,
+    diagnosisItems,
+    reframeStatement,
+    ctaText,
+    ctaUrl,
+    "packages": *[_type == "servicePackage" && category == ^.category] | order(order asc) {
+      title,
+      description,
+      features,
+      order
+    }
+  }
+`;
+
+export const getAllServicesQuery = `
+  *[_type == "service"] | order(order asc) {
+    title,
+    summary,
+    heroDescription,
+    "slug": slug.current,
+    category
+  }
+`;
