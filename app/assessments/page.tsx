@@ -17,7 +17,7 @@ export default async function AssessmentsPage() {
   const showEditorControls = process.env.NODE_ENV === "development";
   const studioUrl =
     process.env.NEXT_PUBLIC_SANITY_STUDIO_URL ||
-    "https://ecm-assessment.sanity.studio";
+    "https://ecm-dev.sanity.studio";
 
   return (
     <>

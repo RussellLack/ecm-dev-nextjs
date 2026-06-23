@@ -57,18 +57,26 @@ type ArticleInput = {
  * `pathPrefix` is the URL segment ("post" or "guide") so we can construct
  * the canonical mainEntityOfPage @id without the page having to pass us a
  * fully-qualified URL.
+ *
+ * `imageFallbackPath` is an optional site-relative path (e.g.
+ * "/api/og/guide?title=…") used for the JSON-LD image when the document has
+ * no mainImage. It's resolved against SITE_URL so the output is always an
+ * absolute URL, as schema.org requires.
  */
 export function articleSchema(
   doc: ArticleInput,
   slug: string,
-  pathPrefix: "post" | "guide"
+  pathPrefix: "post" | "guide",
+  imageFallbackPath?: string
 ) {
   const url = `${SITE_URL}/${pathPrefix}/${slug}`;
   const datePublished = doc.publishedAt ?? doc._createdAt;
   const dateModified = doc._updatedAt;
   const imageUrl = doc.mainImage
     ? urlFor(doc.mainImage).width(1200).height(630).url()
-    : undefined;
+    : imageFallbackPath
+      ? `${SITE_URL}${imageFallbackPath}`
+      : undefined;
 
   return {
     "@context": "https://schema.org",

@@ -35,7 +35,7 @@ export async function generateMetadata({
     ? urlFor(seo.ogImage).width(1200).height(630).fit("crop").crop("center").url()
     : guide.mainImage
       ? urlFor(guide.mainImage).width(1200).height(630).fit("crop").crop("top").url()
-      : undefined;
+      : guideOgFallbackUrl(guide);
 
   return {
     title,
@@ -44,15 +44,31 @@ export async function generateMetadata({
     openGraph: {
       title,
       description,
-      ...(ogImage ? { images: [{ url: ogImage, width: 1200, height: 630 }] } : {}),
+      images: [{ url: ogImage, width: 1200, height: 630 }],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      ...(ogImage ? { images: [ogImage] } : {}),
+      images: [ogImage],
     },
   };
+}
+
+// Build the /api/og/guide URL with the guide's title / series / number so the
+// dynamic OG renderer can produce a branded card when no image is set on the
+// document. Returned as a relative path; Next resolves it against
+// metadataBase (https://ecm.dev).
+function guideOgFallbackUrl(guide: {
+  title?: string;
+  series?: string;
+  guideNumber?: number;
+}) {
+  const params = new URLSearchParams();
+  if (guide.title) params.set("title", guide.title);
+  if (guide.series) params.set("series", guide.series);
+  if (guide.guideNumber != null) params.set("number", String(guide.guideNumber));
+  return `/api/og/guide?${params.toString()}`;
 }
 
 const ptComponents = {
@@ -129,7 +145,7 @@ export default async function GuidePage({
 
   return (
     <>
-      <JsonLd data={articleSchema(guide, slug, "guide")} />
+      <JsonLd data={articleSchema(guide, slug, "guide", guideOgFallbackUrl(guide))} />
       {/* Hero */}
       <section className="bg-ecm-green pt-2 pb-16 lg:pb-24">
         <Breadcrumbs
