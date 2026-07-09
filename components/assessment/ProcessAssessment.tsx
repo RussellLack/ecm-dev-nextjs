@@ -12,6 +12,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useCsrf } from "@/lib/useCsrf";
+import { pushLeadEvent, TOOL_NAME, LEAD_TYPE } from "@/lib/analytics";
 import { CONSENT_TEXT, CONSENT_VERSION } from "@/lib/consent";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -592,7 +593,7 @@ function BriefView({ assessment, onBack }: { assessment: Assessment; onBack: () 
             Book your discovery session now.
           </p>
           <Link
-            href="/contact"
+            href="/contact?from=process"
             className="inline-block bg-ecm-lime text-ecm-green font-barlow font-bold px-8 py-3.5 rounded-full hover:bg-ecm-lime-hover transition-colors"
           >
             Book a discovery call →
@@ -720,6 +721,11 @@ export default function ProcessAssessment() {
         });
         if (res.ok) {
           alert("Results sent to " + assessment.email.trim());
+          // Completed AND ordered an emailed PDF copy — a lead submission.
+          pushLeadEvent("lead_submit", {
+            tool_name: TOOL_NAME.process,
+            lead_type: LEAD_TYPE.pdfEmailed,
+          });
         } else {
           // Fallback: open results page
           window.open(`/assessment/process/results?sid=${sid}`, "_blank");
@@ -765,6 +771,11 @@ export default function ProcessAssessment() {
   function submit() {
     setAssessment(prev => ({ ...prev, status: "submitted", submittedAt: new Date().toISOString() }));
     setView("complete");
+    // Assessment completed (no PDF ordered yet) — the qualified-lead moment.
+    pushLeadEvent("qualify_lead", {
+      tool_name: TOOL_NAME.process,
+      lead_type: LEAD_TYPE.qualified,
+    });
     window.scrollTo(0, 0);
   }
 
@@ -868,7 +879,7 @@ export default function ProcessAssessment() {
             View Pre-Diagnostic Brief →
           </button>
           <Link
-            href="/contact"
+            href="/contact?from=process"
             className="block w-full bg-white/10 hover:bg-white/15 text-white font-semibold py-3.5 rounded-xl text-sm transition-colors text-center mb-8"
           >
             Book a discovery call
