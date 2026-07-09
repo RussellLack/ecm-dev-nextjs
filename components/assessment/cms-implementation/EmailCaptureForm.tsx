@@ -35,6 +35,8 @@ type Status =
  *            patches the existing Blobs record and re-pushes to Snov.
  *            Visitor can skip and just leave with the link.
  */
+import { trackLeadSubmit } from "@/lib/analytics/track";
+
 export default function EmailCaptureForm({ inputs, result }: Props) {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<Status>({ kind: "idle" });
@@ -88,6 +90,8 @@ export default function EmailCaptureForm({ inputs, result }: Props) {
           throw new Error(errBody?.error || "Failed to send email");
         }
         const sendBody = await sendRes.json();
+        // Email gate cleared: PDF queued. lead_type "email_gate".
+        trackLeadSubmit("cms_implementation", "email_gate");
         setStatus({
           kind: "sent",
           submissionId,

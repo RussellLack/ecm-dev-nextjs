@@ -1,10 +1,16 @@
 "use client";
 
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import { useRouter } from "next/navigation";
 import ProgressBar from "./ProgressBar";
 import QuestionRenderer from "./QuestionRenderer";
 import { useCsrf } from "@/lib/useCsrf";
+import {
+  trackAssessmentStart,
+  trackAssessmentStepComplete,
+  trackAssessmentComplete,
+  type AssessmentTool,
+} from "@/lib/analytics/track";
 import type {
   SanityAssessment,
   SanityQuestion,
@@ -28,6 +34,12 @@ export default function AssessmentShell({ assessment }: AssessmentShellProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [startTime] = useState(() => Date.now());
+  const toolName = useMemo(
+    () => assessment.slug.current.replace(/-/g, "_") as AssessmentTool,
+    [assessment.slug]
+  );
+  const startedRef = useRef(false);
+  const completedRef = useRef(false);
 
   // Flatten all questions with their section context
   const flatQuestions = useMemo(() => {
@@ -119,6 +131,10 @@ export default function AssessmentShell({ assessment }: AssessmentShellProps) {
       }
 
       const result = await res.json();
+      if (!completedRef.current) {
+        completedRef.current = true;
+        trackAssessmentComplete(toolName, timeToComplete);
+      }
       router.push(
         `/assessment/${assessment.slug.current}/results?sid=${result.submissionId}`
       );
@@ -126,11 +142,15 @@ export default function AssessmentShell({ assessment }: AssessmentShellProps) {
       setError(err.message || "Something went wrong. Please try again.");
       setIsSubmitting(false);
     }
-  }, [answers, assessment, tracking, startTime, router, withCsrf]);
+  }, [answers, assessment, tracking, startTime, router, withCsrf, toolName]);
 
   // Navigate to next visible question or auto-submit
   const goNext = useCallback(() => {
     if (step.type === "intro") {
+      if (!startedRef.current) {
+        startedRef.current = true;
+        trackAssessmentStart(toolName);
+      }
       if (visibleQuestions.length > 0) {
         const first = visibleQuestions[0];
         setStep({
@@ -146,6 +166,11 @@ export default function AssessmentShell({ assessment }: AssessmentShellProps) {
 
     if (step.type === "question" && currentQuestionIndex >= 0) {
       const nextIndex = currentQuestionIndex + 1;
+      trackAssessmentStepComplete(
+        toolName,
+        currentQuestionIndex + 1,
+        totalQuestions
+      );
       if (nextIndex < visibleQuestions.length) {
         const next = visibleQuestions[nextIndex];
         setStep({
@@ -160,7 +185,7 @@ export default function AssessmentShell({ assessment }: AssessmentShellProps) {
         submitAssessment();
       }
     }
-  }, [step, currentQuestionIndex, visibleQuestions, assessment, submitAssessment]);
+  }, [step, currentQuestionIndex, visibleQuestions, assessment, submitAssessment, toolName, totalQuestions]);
 
   // Navigate to previous visible question
   const goBack = useCallback(() => {

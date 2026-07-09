@@ -8,9 +8,15 @@
  * uses a pure SVG radar chart. Drop into any Next.js App Router page.
  */
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { useCsrf } from "@/lib/useCsrf";
+import {
+  trackAssessmentStart,
+  trackAssessmentStepComplete,
+  trackAssessmentComplete,
+  trackLeadSubmit,
+} from "@/lib/analytics/track";
 import { CONSENT_TEXT, CONSENT_VERSION } from "@/lib/consent";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -710,6 +716,7 @@ function Results({
     if (sid) {
       const url = `${window.location.origin}/assessment/lead-magnet/results?sid=${sid}`;
       await navigator.clipboard.writeText(url);
+      trackLeadSubmit("lead_magnet", "share_link");
     }
   }
 
@@ -735,6 +742,7 @@ function Results({
           }),
         });
         if (res.ok) {
+          trackLeadSubmit("lead_magnet", "email_gate");
           alert("Results sent to " + email.trim());
         } else {
           window.open(`/assessment/lead-magnet/results?sid=${sid}`, "_blank");
@@ -953,6 +961,35 @@ export default function LeadMagnetAssessment() {
 
   const currentStep = STEPS[step];
 
+  // Analytics (tool_name "lead_magnet"). 6 steps; start->results timing.
+  const startTimeRef = useRef<number>(Date.now());
+  const startedRef = useRef(false);
+  const completedRef = useRef(false);
+
+  // Single instrumentation point for step navigation. Fires assessment_start
+  // the first time the user leaves the welcome screen, and
+  // assessment_step_complete for the step being left when moving forward.
+  const goToStep = (next: number) => {
+    if (!startedRef.current) {
+      startedRef.current = true;
+      startTimeRef.current = Date.now();
+      trackAssessmentStart("lead_magnet");
+    }
+    if (next > step) {
+      trackAssessmentStepComplete("lead_magnet", step + 1, STEPS.length);
+    }
+    setStep(next);
+  };
+
+  // Fire assessment_complete once when the results view is reached.
+  useEffect(() => {
+    if (currentStep === "results" && !completedRef.current) {
+      completedRef.current = true;
+      const seconds = Math.round((Date.now() - startTimeRef.current) / 1000);
+      trackAssessmentComplete("lead_magnet", seconds);
+    }
+  }, [currentStep]);
+
   const setAnswer = (key: keyof Answers, val: string) =>
     setAnswers((prev) => ({ ...prev, [key]: val }));
   const setCap = (key: string, val: number) =>
@@ -1026,7 +1063,7 @@ export default function LeadMagnetAssessment() {
             </div>
             <button
               data-testid="assessment-start"
-              onClick={() => setStep(1)}
+              onClick={() => goToStep(1)}
               className="w-full bg-ecm-lime hover:bg-ecm-lime-hover text-ecm-green font-barlow font-bold py-4 px-6 rounded-full transition-colors text-base"
             >
               Start the assessment →
@@ -1042,7 +1079,7 @@ export default function LeadMagnetAssessment() {
             <Question label="What best describes your primary market?" options={MARKET_TYPES} value={answers.marketType} onChange={(v) => setAnswer("marketType", v)} />
             <Question label="Who is your primary decision-maker or buyer?" options={BUYER_TYPES} value={answers.buyerType} onChange={(v) => setAnswer("buyerType", v)} />
             <Question label="What core outcome do you deliver to your market?" options={CORE_VALUES} value={answers.coreValue} onChange={(v) => setAnswer("coreValue", v)} />
-            <NavButtons onBack={() => setStep(0)} onNext={() => setStep(2)} canNext={canAdvance()} />
+            <NavButtons onBack={() => setStep(0)} onNext={() => goToStep(2)} canNext={canAdvance()} />
           </div>
         )}
 
@@ -1053,7 +1090,7 @@ export default function LeadMagnetAssessment() {
             <Question label="How would you describe your current thought leadership activity?" options={THOUGHT_LEADERSHIP_STATES} value={answers.thoughtLeadership} onChange={(v) => setAnswer("thoughtLeadership", v)} />
             <Question label="Do you have proprietary frameworks, methodologies, or original data?" options={PROPRIETARY_IP} value={answers.proprietaryIP} onChange={(v) => setAnswer("proprietaryIP", v)} />
             <Question label="What do your best clients say you are uniquely good at?" options={UNIQUE_VALUE} value={answers.uniqueValue} onChange={(v) => setAnswer("uniqueValue", v)} />
-            <NavButtons onBack={() => setStep(1)} onNext={() => setStep(3)} canNext={canAdvance()} />
+            <NavButtons onBack={() => setStep(1)} onNext={() => goToStep(3)} canNext={canAdvance()} />
           </div>
         )}
 
@@ -1066,7 +1103,7 @@ export default function LeadMagnetAssessment() {
                 <CapabilitySlider key={dim.id} label={dim.label} desc={dim.desc} value={capabilities[dim.id]} onChange={(v) => setCap(dim.id, v)} />
               ))}
             </div>
-            <NavButtons onBack={() => setStep(2)} onNext={() => setStep(4)} canNext={true} />
+            <NavButtons onBack={() => setStep(2)} onNext={() => goToStep(4)} canNext={true} />
           </div>
         )}
 
@@ -1075,7 +1112,7 @@ export default function LeadMagnetAssessment() {
           <div className="space-y-8">
             <SectionHeader step="4 of 4" title="Your competitive context" subtitle="One last question — this shapes which formats will help you stand out rather than blend in." />
             <Question label="How would you describe the content / lead magnet landscape in your space?" options={COMPETITION_LEVEL} value={answers.competition} onChange={(v) => setAnswer("competition", v)} />
-            <NavButtons onBack={() => setStep(3)} onNext={() => setStep(5)} canNext={canAdvance()} />
+            <NavButtons onBack={() => setStep(3)} onNext={() => goToStep(5)} canNext={canAdvance()} />
           </div>
         )}
 

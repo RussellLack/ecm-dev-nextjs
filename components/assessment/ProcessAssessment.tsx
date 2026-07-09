@@ -9,9 +9,15 @@
  * No external dependencies — pure React + Tailwind.
  */
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Link from "next/link";
 import { useCsrf } from "@/lib/useCsrf";
+import {
+  trackAssessmentStart,
+  trackAssessmentStepComplete,
+  trackAssessmentComplete,
+  trackLeadSubmit,
+} from "@/lib/analytics/track";
 import { CONSENT_TEXT, CONSENT_VERSION } from "@/lib/consent";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -618,6 +624,11 @@ export default function ProcessAssessment() {
   const [consentGiven, setConsentGiven] = useState(false);
   const [saving, setSaving] = useState(false);
   const [submissionId, setSubmissionId] = useState<string | null>(null);
+  // Analytics (tool_name "process"). 6 stages, start->submit timing.
+  const TOTAL_STAGES = 6;
+  const startTimeRef = useRef<number>(Date.now());
+  const startedRef = useRef(false);
+  const completedRef = useRef(false);
 
   /** Resolve assessment values to display labels and save to Sanity */
   async function saveSubmission(): Promise<string | null> {
@@ -694,6 +705,7 @@ export default function ProcessAssessment() {
     if (sid) {
       const url = `${window.location.origin}/assessment/process/results?sid=${sid}`;
       await navigator.clipboard.writeText(url);
+      trackLeadSubmit("process", "share_link");
     }
   }
 
@@ -719,6 +731,7 @@ export default function ProcessAssessment() {
           }),
         });
         if (res.ok) {
+          trackLeadSubmit("process", "email_gate");
           alert("Results sent to " + assessment.email.trim());
         } else {
           // Fallback: open results page
@@ -764,6 +777,11 @@ export default function ProcessAssessment() {
 
   function submit() {
     setAssessment(prev => ({ ...prev, status: "submitted", submittedAt: new Date().toISOString() }));
+    if (!completedRef.current) {
+      completedRef.current = true;
+      const seconds = Math.round((Date.now() - startTimeRef.current) / 1000);
+      trackAssessmentComplete("process", seconds);
+    }
     setView("complete");
     window.scrollTo(0, 0);
   }
@@ -812,7 +830,15 @@ export default function ProcessAssessment() {
           </p>
           <button
             data-testid="assessment-start"
-            onClick={() => { setView("stage"); setStage(1); }}
+            onClick={() => {
+              if (!startedRef.current) {
+                startedRef.current = true;
+                startTimeRef.current = Date.now();
+                trackAssessmentStart("process");
+              }
+              setView("stage");
+              setStage(1);
+            }}
             className="w-full bg-ecm-lime hover:bg-ecm-lime-hover text-ecm-green font-barlow font-bold font-bold py-4 rounded-xl transition-colors"
           >
             Start Assessment →
@@ -1184,7 +1210,14 @@ export default function ProcessAssessment() {
         {/* Nav buttons */}
         <button
           data-testid="assessment-next"
-          onClick={() => isLast ? submit() : goStage(stage + 1)}
+          onClick={() => {
+            trackAssessmentStepComplete("process", stage, TOTAL_STAGES);
+            if (isLast) {
+              submit();
+            } else {
+              goStage(stage + 1);
+            }
+          }}
           disabled={!valid}
           className={`w-full mt-8 py-4 rounded-xl font-semibold text-sm transition-colors ${valid ? "bg-ecm-lime hover:bg-ecm-lime-hover text-ecm-green font-barlow font-bold" : "bg-white/10 text-white/30 cursor-not-allowed"}`}
         >

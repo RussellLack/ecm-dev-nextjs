@@ -7,6 +7,7 @@ import type {
 } from "@/lib/assessment/cms-implementation/types";
 import { buildShareableUrl } from "@/lib/assessment/cms-implementation/url";
 import EmailCaptureForm from "./EmailCaptureForm";
+import { trackLeadSubmit } from "@/lib/analytics/track";
 
 interface Props {
   result: CmsImplementationResult;
@@ -518,6 +519,7 @@ function ShareAndMethodology({
     }
     try {
       await navigator.clipboard.writeText(url);
+      trackLeadSubmit("cms_implementation", "share_link");
       setCopied(true);
       setTimeout(() => setCopied(false), 1800);
     } catch {

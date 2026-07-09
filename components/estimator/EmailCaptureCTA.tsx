@@ -6,6 +6,7 @@ import { useCsrf } from "@/lib/useCsrf";
 import { CONSENT_TEXT, CONSENT_VERSION } from "@/lib/consent";
 import { MODEL_VERSION } from "@/lib/estimator/coefficients";
 import type { EstimatorInputs, EstimatorResult } from "@/lib/estimator/types";
+import { trackLeadSubmit } from "@/lib/analytics/track";
 
 interface Props {
   inputs: EstimatorInputs;
@@ -50,6 +51,8 @@ export default function EmailCaptureCTA({ inputs, result }: Props) {
       if (!res.ok || !data.ok) {
         throw new Error(data.error ?? "Could not save email");
       }
+      // Email-gated PDF/breakdown request for the localisation_cost tool.
+      trackLeadSubmit("localisation_cost", "pdf");
       setView("sent");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");

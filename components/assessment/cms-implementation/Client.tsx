@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { calculate } from "@/lib/assessment/cms-implementation/engine";
 import { DEFAULT_INPUTS } from "@/lib/assessment/cms-implementation/defaults";
 import { MODEL_VERSION } from "@/lib/assessment/cms-implementation/coefficients";
@@ -11,6 +11,22 @@ import Form from "./Form";
 import RunningTotal from "./RunningTotal";
 import Result from "./Result";
 import MobileStickyBar from "./MobileStickyBar";
+import {
+  trackAssessmentStart,
+  trackAssessmentStepComplete,
+  trackAssessmentComplete,
+} from "@/lib/analytics/track";
+
+// Map each top-level input section to a stable form "Group" (1-based),
+// mirroring the five <Group> sections rendered by Form.
+const CMS_GROUPS = 5;
+const SECTION_GROUP: Record<string, number> = {
+  org: 1,
+  current: 2,
+  target: 3,
+  scope: 4,
+  runtime: 5,
+};
 
 type DeepPartial<T> = { [K in keyof T]?: T[K] extends object ? DeepPartial<T[K]> : T[K] };
 
@@ -42,6 +58,28 @@ function deepMerge<T>(base: T, patch: DeepPartial<T>): T {
 export default function CmsImplementationClient() {
   const [inputs, setInputs] = useState<CmsImplementationInputs>(DEFAULT_INPUTS);
 
+  // Analytics (tool_name "cms_implementation"): assessment_start on first
+  // interaction, step_complete the first time each form Group is touched, and
+  // assessment_complete once the user has engaged with >=3 groups (a genuine
+  // result), or immediately when a sample scenario is loaded.
+  const startedRef = useRef(false);
+  const completedRef = useRef(false);
+  const touchedGroupsRef = useRef<Set<number>>(new Set());
+
+  const markStarted = useCallback(() => {
+    if (!startedRef.current) {
+      startedRef.current = true;
+      trackAssessmentStart("cms_implementation");
+    }
+  }, []);
+
+  const markComplete = useCallback(() => {
+    if (!completedRef.current) {
+      completedRef.current = true;
+      trackAssessmentComplete("cms_implementation");
+    }
+  }, []);
+
   // Hydrate from ?d=... query param on first mount (shared-link case).
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -53,19 +91,35 @@ export default function CmsImplementationClient() {
 
   const handleChange = useCallback(
     (patch: DeepPartial<CmsImplementationInputs>) => {
+      markStarted();
+      for (const key of Object.keys(patch)) {
+        const group = SECTION_GROUP[key];
+        if (group && !touchedGroupsRef.current.has(group)) {
+          touchedGroupsRef.current.add(group);
+          trackAssessmentStepComplete("cms_implementation", group, CMS_GROUPS);
+        }
+      }
+      if (touchedGroupsRef.current.size >= 3) markComplete();
       setInputs((prev) => deepMerge(prev, patch));
     },
-    [],
+    [markStarted, markComplete],
   );
 
   const handleReset = useCallback(() => {
     setInputs(DEFAULT_INPUTS);
   }, []);
 
-  const handleScenario = useCallback((scenarioId: string) => {
-    const scenario = SCENARIOS.find((s) => s.id === scenarioId);
-    if (scenario) setInputs(scenario.inputs);
-  }, []);
+  const handleScenario = useCallback(
+    (scenarioId: string) => {
+      const scenario = SCENARIOS.find((s) => s.id === scenarioId);
+      if (scenario) {
+        markStarted();
+        markComplete();
+        setInputs(scenario.inputs);
+      }
+    },
+    [markStarted, markComplete],
+  );
 
   const handleToggleTei = useCallback((useTei: boolean) => {
     setInputs((prev) => ({

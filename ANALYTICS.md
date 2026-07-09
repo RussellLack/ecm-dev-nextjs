@@ -160,3 +160,62 @@ and response headers in `middleware.ts` (see CSP & Nonce above).
 ---
 
 _Last updated: June 2026_
+
+## Assessment funnel events
+
+The five assessment tools push funnel events to `window.dataLayer` via the
+shared helper `lib/analytics/track.ts`. **These are dataLayer pushes, not
+`gtag('event', …)` calls** — GA4 lives inside the GTM container and does not
+forward gtag events, so GTM keys off the `event` field of each dataLayer object.
+No new inline scripts or `next/script` tags are added; all calls are plain
+bundled JS inside existing `"use client"` components (CSP-safe).
+
+### `tool_name` values
+
+| Tool | `tool_name` | Component |
+| --- | --- | --- |
+| Process assessment | `process` | `components/assessment/ProcessAssessment.tsx` |
+| Lead magnet | `lead_magnet` | `components/assessment/LeadMagnetAssessment.tsx` |
+| Localisation cost estimator | `localisation_cost` | `components/estimator/EstimatorClient.tsx` |
+| CMS implementation estimator | `cms_implementation` | `components/assessment/cms-implementation/Client.tsx` |
+| Sanity-driven assessments | `content_ops_maturity` (derived from `assessment.slug.current`, `-` → `_`) | `components/assessment/AssessmentShell.tsx` |
+
+### The 6 events
+
+| `event` | When it fires | Params |
+| --- | --- | --- |
+| `assessment_start` | Once per session, at first meaningful interaction (Start click / first input) | `tool_name`, `source_page` (`document.referrer` or `"direct"` when not supplied) |
+| `assessment_step_complete` | When the user advances past a step / section / question / input-group milestone | `tool_name`, `step_number` (1-based index of the step just completed), `total_steps`, plus any tool-specific `extra` |
+| `assessment_complete` | Once, when the results/summary view is reached or submission succeeds | `tool_name`, `completion_time_seconds` (omitted when unknown) |
+| `qualify_lead` | Immediately after `assessment_complete` (same helper call) | `tool_name` |
+| `lead_submit` | On successful email submit / PDF request / save-results / share-link copy | `tool_name`, `lead_type` (`email_gate` \| `save_results` \| `share_link` \| `pdf`) |
+| `close_convert_lead` | Immediately after `lead_submit` (same helper call) | `tool_name` |
+
+### Required GTM setup
+
+For **each** of the six event names above, create in the GTM container
+(`GTM-M7DKTZKC`):
+
+1. A **Custom Event** trigger whose "Event name" matches the `event` string
+   exactly (e.g. `assessment_step_complete`).
+2. A **GA4 Event** tag that fires on that trigger, sends to the in-container GA4
+   config (measurement ID `G-33HFQC8STP`), uses the same event name, and maps
+   the dataLayer params to GA4 event parameters. Create matching Data Layer
+   Variables for `tool_name`, `source_page`, `step_number`, `total_steps`,
+   `completion_time_seconds`, and `lead_type`, and pass them through as event
+   parameters.
+
+Register **`qualify_lead`** and **`close_convert_lead`** as GA4 **Key Events**
+(Admin → Events → Key events) so they can be used as conversions.
+
+Do **not** add a second GA4 config tag or load `gtag.js` — the config already
+lives in the container (see the top of this file).
+
+### DebugView QA
+
+Append `?gtm_debug=1` to any assessment URL to open GTM Preview / GA4 DebugView.
+Walk a tool end to end and confirm the events arrive in order:
+`assessment_start` → one `assessment_step_complete` per advance →
+`assessment_complete` immediately followed by `qualify_lead` → (on a lead
+action) `lead_submit` immediately followed by `close_convert_lead`. Verify the
+`tool_name` and other params are present on each hit.

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useRef } from "react";
 import Link from "next/link";
 import { calculate, calculateScenario } from "@/lib/estimator/calc";
 import { DEFAULT_INPUTS } from "@/lib/estimator/defaults";
@@ -9,6 +9,29 @@ import type { EstimatorInputs } from "@/lib/estimator/types";
 import EstimatorForm from "./EstimatorForm";
 import EstimatorResult from "./EstimatorResult";
 import FeedbackWidget from "./FeedbackWidget";
+import {
+  trackAssessmentStart,
+  trackAssessmentStepComplete,
+  trackAssessmentComplete,
+} from "@/lib/analytics/track";
+
+// Map each estimator input key to a stable form "Group" (1-based). These
+// mirror the six <Group> sections rendered by EstimatorForm.
+const ESTIMATOR_GROUPS = 6;
+const INPUT_KEY_GROUP: Record<string, number> = {
+  volume: 1,
+  aiShare: 1,
+  languages: 1,
+  contentMix: 2,
+  maturity: 3,
+  cadence: 3,
+  rework: 4,
+  fragmentation: 4,
+  aiCoordGap: 4,
+  channelMix: 5,
+  regulated: 6,
+  displayCurrency: 6,
+};
 
 export default function EstimatorClient() {
   const [inputs, setInputs] = useState<EstimatorInputs>(DEFAULT_INPUTS);
@@ -16,7 +39,30 @@ export default function EstimatorClient() {
   const result = useMemo(() => calculate(inputs), [inputs]);
   const scenario = useMemo(() => calculateScenario(inputs), [inputs]);
 
+  // Analytics: fire assessment_start once on first interaction, a
+  // step_complete the first time each form Group is touched, and
+  // assessment_complete once the user has engaged with >=3 groups (a genuine
+  // result). tool_name is "localisation_cost".
+  const startedRef = useRef(false);
+  const completedRef = useRef(false);
+  const touchedGroupsRef = useRef<Set<number>>(new Set());
+
   const handleChange = useCallback((patch: Partial<EstimatorInputs>) => {
+    if (!startedRef.current) {
+      startedRef.current = true;
+      trackAssessmentStart("localisation_cost");
+    }
+    for (const key of Object.keys(patch)) {
+      const group = INPUT_KEY_GROUP[key];
+      if (group && !touchedGroupsRef.current.has(group)) {
+        touchedGroupsRef.current.add(group);
+        trackAssessmentStepComplete("localisation_cost", group, ESTIMATOR_GROUPS);
+      }
+    }
+    if (!completedRef.current && touchedGroupsRef.current.size >= 3) {
+      completedRef.current = true;
+      trackAssessmentComplete("localisation_cost");
+    }
     setInputs((prev) => ({ ...prev, ...patch }));
   }, []);
 
