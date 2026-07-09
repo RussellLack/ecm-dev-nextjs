@@ -20,12 +20,14 @@
  *   go live immediately (no separate publish step needed).
  * - Case studies: same as posts/guides, but the patch sets `pillars`
  *   AND `industry` together.
- * - Platforms: creates DRAFT docs (drafts.platform-<slug>) so the
- *   editor can fill in summary / heroDescription / body / logo before
- *   publishing.
+ * - Platforms: creates DRAFT docs (drafts.platform-<slug>) and seeds
+ *   summary / heroDescription / website via setIfMissing so the
+ *   editor's manual edits in Studio are preserved on re-run. Logo,
+ *   body, and other fields are still left for the editor.
  *
  * Idempotent on re-run: post / guide / case-study patches just re-set
- * the same fields; platforms use createIfNotExists.
+ * the same fields; platforms use createIfNotExists; platform content
+ * uses setIfMissing.
  */
 
 import { readFileSync } from "node:fs";
@@ -246,6 +248,50 @@ for (const p of config.platforms) {
   }
 }
 
+// ─── Platform editorial seed: setIfMissing on summary/hero/website ───
+//
+// Uses setIfMissing rather than set so re-runs don't overwrite copy the
+// editor has tweaked in Studio. Only fields that are still empty get
+// populated with the seed values from pillars.json.
+let platformContentSeeded = 0;
+let platformContentSkipped = 0;
+let platformContentErrored = 0;
+
+for (const c of config.platformContent ?? []) {
+  const draftId = `drafts.platform-${c.slug}`;
+  const setIfMissing = {};
+  if (c.summary) setIfMissing.summary = c.summary;
+  if (c.heroDescription) setIfMissing.heroDescription = c.heroDescription;
+  if (c.website) setIfMissing.website = c.website;
+  if (Object.keys(setIfMissing).length === 0) continue;
+
+  if (dryRun) {
+    const fields = Object.keys(setIfMissing).join(", ");
+    console.log(`[dry] setIfMissing ${draftId}  fields=[${fields}]`);
+    continue;
+  }
+
+  try {
+    await mutate([{ patch: { id: draftId, setIfMissing } }]);
+    console.log(`✓ seeded ${draftId}  (only empty fields touched)`);
+    platformContentSeeded++;
+  } catch (e) {
+    const msg = String(e.message || "").toLowerCase();
+    if (
+      e.statusCode === 404 ||
+      msg.includes("not found") ||
+      msg.includes("does not exist")
+    ) {
+      // Draft doesn't exist yet — run the platforms loop above first.
+      console.log(`- ${draftId}  draft missing, run platforms loop first`);
+      platformContentSkipped++;
+    } else {
+      console.error(`✗ ${draftId}: ${e.message}`);
+      platformContentErrored++;
+    }
+  }
+}
+
 // ─── Summary ──────────────────────────────────────────────────────────
 console.log(
   `\nSummary` +
@@ -260,9 +306,16 @@ console.log(
     `\n  case study errors:              ${caseStudiesErrored}` +
     `\n  platforms ensured:              ${platformsCreated}` +
     `\n  platforms skipped:              ${platformsSkipped}` +
-    `\n  platform errors:                ${platformsErrored}`
+    `\n  platform errors:                ${platformsErrored}` +
+    `\n  platform content seeded:        ${platformContentSeeded}` +
+    `\n  platform content skipped:       ${platformContentSkipped}` +
+    `\n  platform content errors:        ${platformContentErrored}`
 );
 
 const totalErrors =
-  postsErrored + guidesErrored + caseStudiesErrored + platformsErrored;
+  postsErrored +
+  guidesErrored +
+  caseStudiesErrored +
+  platformsErrored +
+  platformContentErrored;
 if (totalErrors > 0) process.exit(1);
