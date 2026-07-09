@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useCsrf } from "@/lib/useCsrf";
+import { pushLeadEvent, referringToolName, LEAD_TYPE } from "@/lib/analytics";
 
 export default function ContactForm() {
   const { withCsrf } = useCsrf();
@@ -29,6 +30,13 @@ export default function ContactForm() {
       if (!res.ok) throw new Error("Failed to send");
 
       setStatus("sent");
+
+      // Contact form submitted successfully = a confirmed conversion
+      // (books a call). tool_name reflects the referring assessment, if any.
+      pushLeadEvent("close_convert_lead", {
+        tool_name: referringToolName(),
+        lead_type: LEAD_TYPE.bookedCall,
+      });
       setFormData({ firstName: "", lastName: "", email: "", message: "" });
     } catch {
       setStatus("error");
