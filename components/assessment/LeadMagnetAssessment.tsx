@@ -8,9 +8,10 @@
  * uses a pure SVG radar chart. Drop into any Next.js App Router page.
  */
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useCsrf } from "@/lib/useCsrf";
+import { pushLeadEvent, TOOL_NAME, LEAD_TYPE } from "@/lib/analytics";
 import { CONSENT_TEXT, CONSENT_VERSION } from "@/lib/consent";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -736,6 +737,11 @@ function Results({
         });
         if (res.ok) {
           alert("Results sent to " + email.trim());
+          // Completed AND ordered an emailed PDF copy — a lead submission.
+          pushLeadEvent("lead_submit", {
+            tool_name: TOOL_NAME.leadMagnet,
+            lead_type: LEAD_TYPE.pdfEmailed,
+          });
         } else {
           window.open(`/assessment/lead-magnet/results?sid=${sid}`, "_blank");
         }
@@ -914,7 +920,7 @@ function Results({
           and AI-powered distribution that turn content into a consistent growth engine.
         </p>
         <Link
-          href="/contact"
+          href="/contact?from=lead-magnet"
           className="inline-block bg-ecm-lime text-ecm-green font-barlow font-bold px-8 py-3.5 rounded-full hover:bg-ecm-lime-hover active:bg-white/5 transition-colors"
         >
           Talk to the team →
@@ -952,6 +958,19 @@ export default function LeadMagnetAssessment() {
   const [email, setEmail] = useState("");
 
   const currentStep = STEPS[step];
+
+  // Fire qualify_lead once when the results are shown (assessment completed,
+  // no PDF ordered yet). The results screen IS the qualification outcome.
+  const qualifyFired = useRef(false);
+  useEffect(() => {
+    if (currentStep === "results" && !qualifyFired.current) {
+      qualifyFired.current = true;
+      pushLeadEvent("qualify_lead", {
+        tool_name: TOOL_NAME.leadMagnet,
+        lead_type: LEAD_TYPE.qualified,
+      });
+    }
+  }, [currentStep]);
 
   const setAnswer = (key: keyof Answers, val: string) =>
     setAnswers((prev) => ({ ...prev, [key]: val }));
