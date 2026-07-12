@@ -253,6 +253,14 @@ export async function POST(req: Request) {
       tags: article.topics.map((t) => t.title),
       pillars: pillarsFor(article.topics),
       body: buildBody(article),
+      seo: {
+        // Cap at 70 chars (schema's soft-warning limit is 60, hard limit 70).
+        metaTitle: article.title.slice(0, 70),
+        // Cap at 170 chars (schema's soft-warning limit is 160, hard limit 170).
+        metaDescription: (article.summary ?? "").slice(0, 170),
+        // ogImage left unset — editor either uploads a social-specific
+        // image or the site falls back to mainImage in OG rendering.
+      },
     };
 
     let created;
