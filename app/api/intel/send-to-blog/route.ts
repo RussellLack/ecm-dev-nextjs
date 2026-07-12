@@ -68,6 +68,7 @@ type IntelArticle = {
   summary: string | null;
   keyInsight: string | null;
   contentAngle: string | null;
+  visualConcept: string | null;
   topics: { title: string; slug: string }[];
   sourceTitle: string | null;
 };
@@ -80,6 +81,7 @@ const INTEL_QUERY = `*[_type == "intelArticle" && _id == $id][0]{
   summary,
   keyInsight,
   contentAngle,
+  visualConcept,
   "topics": topics[]->{ "title": title, "slug": slug.current },
   "sourceTitle": source->title
 }`;
@@ -250,6 +252,7 @@ export async function POST(req: Request) {
       slug: { _type: "slug", current: slug },
       publishedAt: new Date().toISOString(),
       excerpt: article.summary ?? "",
+      visualConcept: article.visualConcept ?? "",
       tags: article.topics.map((t) => t.title),
       pillars: pillarsFor(article.topics),
       body: buildBody(article),

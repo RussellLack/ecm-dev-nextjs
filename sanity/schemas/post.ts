@@ -31,6 +31,14 @@ export default defineType({
       options: { hotspot: true },
     }),
     defineField({
+      name: "visualConcept",
+      title: "Visual concept (illustration hint)",
+      type: "text",
+      rows: 2,
+      description:
+        "Auto-populated by the intel → blog send-to-blog action. 2-3 concrete objects to paste into AI Assist when generating the Main Image. Doesn't render on the public site — safe to leave in place or delete after use.",
+    }),
+    defineField({
       name: "excerpt",
       title: "Excerpt",
       type: "text",
