@@ -92,21 +92,22 @@ const INTEL_QUERY = `*[_type == "intelArticle" && _id == $id][0]{
 // assets/blog-cover-fallback.svg in the ecm-dev-intel-studio repo, re-run
 // `npm run set-blog-fallback` (idempotent), and paste the new ID here.
 const FALLBACK_COVER_ASSET_ID =
-  "image-9103be1eccd7247e96ea2b94f534b1e7b29e0c4e-1536x1024-svg";
+  "image-28546d1ac2630d56f59271c5be27e8c5673ac4d1-1536x1024-svg";
 
 // ECM.DEV house-style prompt template — kept in sync with the copy in
-// scripts/illustrate.ts in the intel-studio repo. The article's title
-// (and visualConcept if present) is appended below as the subject.
+// scripts/illustrate.ts in the intel-studio repo. Colors extracted
+// from ecm.dev's CSS custom properties (--ecm-green, --ecm-lime,
+// --ecm-gray-light) so covers sit natively alongside site imagery.
 const STYLE_TEMPLATE = `
 Minimalist diagrammatic cover illustration in flat vector style.
 Extremely sparse — 3-5 elements maximum with generous whitespace and
 empty margins around the composition.
 
-Colors: ONLY two colors — bright neon lime green (#B8E92C) for accents
-(dots, connection lines, key strokes) and a darker muted olive-green
-(#4A5F3A) for structural lines (lanes, rectangle outlines).
-Everything else on a clean off-white or very pale gray background
-(#F5F5F0). No gradients, no shadows, no depth effects.
+Colors: ONLY two colors — bright neon lime green (#aaf870) for accents
+(dots, connection lines, key strokes) and a deep forest green
+(#316148) for structural lines (lanes, rectangle outlines, arrow
+tails). Everything else on a clean off-white background (#f5f5f5).
+Absolutely no other colors. No gradients, no shadows, no depth effects.
 
 No text, no labels, no logos, no photorealism. Abstract technical
 infographic feel — like an engineering RFC diagram or a whitepaper
