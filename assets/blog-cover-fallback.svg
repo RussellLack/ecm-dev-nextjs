@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1536 1024" preserveAspectRatio="xMidYMid meet">
+  <!-- ECM.DEV blog cover fallback. Diagrammatic pipeline in house style:
+       vertical lanes representing content flow through stages, with green
+       arrows moving material rightward between them, and highlight dots
+       marking the active nodes. Vector so it stays crisp at any size. -->
+
+  <!-- Off-white background -->
+  <rect width="1536" height="1024" fill="#f5f5f5"/>
+
+  <!-- Six evenly-spaced vertical structural lanes (olive-green) -->
+  <g stroke="#316148" stroke-width="3" stroke-linecap="round">
+    <line x1="256" y1="256" x2="256" y2="768"/>
+    <line x1="448" y1="256" x2="448" y2="768"/>
+    <line x1="640" y1="256" x2="640" y2="768"/>
+    <line x1="832" y1="256" x2="832" y2="768"/>
+    <line x1="1024" y1="256" x2="1024" y2="768"/>
+    <line x1="1216" y1="256" x2="1216" y2="768"/>
+  </g>
+
+  <!-- Neon lime arrows moving rightward across lanes, staggered vertically -->
+  <g stroke="#aaf870" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <!-- Top arrow: lane 1 → lane 2 -->
+    <path d="M 288 384 L 416 384"/>
+    <path d="M 396 372 L 416 384 L 396 396"/>
+    <!-- Middle arrow: lane 3 → lane 4 -->
+    <path d="M 672 512 L 800 512"/>
+    <path d="M 780 500 L 800 512 L 780 524"/>
+    <!-- Lower arrow: lane 5 → lane 6 -->
+    <path d="M 1056 640 L 1184 640"/>
+    <path d="M 1164 628 L 1184 640 L 1164 652"/>
+  </g>
+
+  <!-- Highlight dots at the arrow origins (active-node markers) -->
+  <g fill="#aaf870">
+    <circle cx="256" cy="384" r="12"/>
+    <circle cx="640" cy="512" r="12"/>
+    <circle cx="1024" cy="640" r="12"/>
+  </g>
+</svg>

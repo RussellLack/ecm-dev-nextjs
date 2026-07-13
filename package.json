@@ -10,7 +10,9 @@
     "test:cms-engine": "node --experimental-strip-types lib/assessment/cms-implementation/__tests__/engine.test.ts",
     "test:e2e": "playwright test",
     "test:e2e:smoke": "playwright test assessments.smoke",
-    "test:e2e:full": "playwright test assessments.full"
+    "test:e2e:full": "playwright test assessments.full",
+    "illustrate": "tsx --env-file-if-exists=.env.local scripts/illustrate.ts",
+    "set-blog-fallback": "tsx --env-file-if-exists=.env.local scripts/set-blog-fallback-image.ts"
   },
   "dependencies": {
     "@netlify/blobs": "^8.2.0",
@@ -42,6 +44,7 @@
     "autoprefixer": "^10.4.20",
     "postcss": "^8.4.47",
     "tailwindcss": "^3.4.13",
+    "tsx": "^4.19.0",
     "typescript": "^5"
   }
 }
