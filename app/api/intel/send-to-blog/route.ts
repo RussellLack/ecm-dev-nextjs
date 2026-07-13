@@ -86,6 +86,17 @@ const INTEL_QUERY = `*[_type == "intelArticle" && _id == $id][0]{
   "sourceTitle": source->title
 }`;
 
+// House-style SVG cover applied to every intel-sourced draft unless the
+// editor overrides with a custom mainImage. Uploaded once via
+// `npm run set-blog-fallback` in the ecm-dev-intel-studio repo — the
+// script prints this ID to the console. Stable (Sanity asset IDs don't
+// rotate) so it's fine to hardcode. To swap the fallback: edit
+// assets/blog-cover-fallback.svg in the studio repo, re-run
+// set-blog-fallback (idempotent — reuses the asset by filename), and
+// paste the new ID here.
+const FALLBACK_COVER_ASSET_ID =
+  "image-9103be1eccd7247e96ea2b94f534b1e7b29e0c4e-1536x1024-svg";
+
 // Which service pillar each topic aligns to. Absent topics → no pillar.
 const TOPIC_TO_PILLAR: Record<string, "technology" | "services"> = {
   CMS: "technology",
@@ -256,6 +267,12 @@ export async function POST(req: Request) {
       tags: article.topics.map((t) => t.title),
       pillars: pillarsFor(article.topics),
       body: buildBody(article),
+      // House-style fallback cover. Editor overrides by uploading a
+      // custom mainImage in Studio; their upload wins.
+      mainImage: {
+        _type: "image",
+        asset: { _type: "reference", _ref: FALLBACK_COVER_ASSET_ID },
+      },
       seo: {
         // Cap at 70 chars (schema's soft-warning limit is 60, hard limit 70).
         metaTitle: article.title.slice(0, 70),
