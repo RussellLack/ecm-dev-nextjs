@@ -86,16 +86,127 @@ const INTEL_QUERY = `*[_type == "intelArticle" && _id == $id][0]{
   "sourceTitle": source->title
 }`;
 
-// House-style SVG cover applied to every intel-sourced draft unless the
-// editor overrides with a custom mainImage. Uploaded once via
-// `npm run set-blog-fallback` in the ecm-dev-intel-studio repo — the
-// script prints this ID to the console. Stable (Sanity asset IDs don't
-// rotate) so it's fine to hardcode. To swap the fallback: edit
-// assets/blog-cover-fallback.svg in the studio repo, re-run
-// set-blog-fallback (idempotent — reuses the asset by filename), and
-// paste the new ID here.
+// Emergency fallback SVG cover — used only if gpt-image-1 generation
+// fails or times out. Every draft otherwise gets a unique per-article
+// illustration generated below. To swap the fallback: edit
+// assets/blog-cover-fallback.svg in the ecm-dev-intel-studio repo, re-run
+// `npm run set-blog-fallback` (idempotent), and paste the new ID here.
 const FALLBACK_COVER_ASSET_ID =
   "image-9103be1eccd7247e96ea2b94f534b1e7b29e0c4e-1536x1024-svg";
+
+// ECM.DEV house-style prompt template — kept in sync with the copy in
+// scripts/illustrate.ts in the intel-studio repo. The article's title
+// (and visualConcept if present) is appended below as the subject.
+const STYLE_TEMPLATE = `
+Minimalist diagrammatic cover illustration in flat vector style.
+Extremely sparse — 3-5 elements maximum with generous whitespace and
+empty margins around the composition.
+
+Colors: ONLY two colors — bright neon lime green (#B8E92C) for accents
+(dots, connection lines, key strokes) and a darker muted olive-green
+(#4A5F3A) for structural lines (lanes, rectangle outlines).
+Everything else on a clean off-white or very pale gray background
+(#F5F5F0). No gradients, no shadows, no depth effects.
+
+No text, no labels, no logos, no photorealism. Abstract technical
+infographic feel — like an engineering RFC diagram or a whitepaper
+figure, not decorative illustration.
+`.trim();
+
+// Hard timeout for gpt-image-1. Netlify serverless functions run at
+// 10s default, 26s on Pro — the AbortSignal keeps us safely under
+// either. On timeout or any generation error the endpoint falls back
+// to the emergency SVG so send-to-blog never breaks on OpenAI hiccups.
+const IMAGE_GEN_TIMEOUT_MS = 22_000;
+
+/**
+ * Generate a per-article cover via gpt-image-1 and upload it to Sanity.
+ * Returns the new asset ID on success, or null on any failure — caller
+ * uses the SVG fallback when this returns null.
+ */
+async function generateAndUploadCover(
+  concept: string,
+  filename: string
+): Promise<string | null> {
+  const apiKey = process.env.OPENAI_API_KEY;
+  if (!apiKey) {
+    console.warn("[send-to-blog] OPENAI_API_KEY not set — using SVG fallback");
+    return null;
+  }
+
+  const prompt = `${STYLE_TEMPLATE}\n\nConcept for this specific illustration:\n${concept}`;
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), IMAGE_GEN_TIMEOUT_MS);
+  try {
+    const openaiResp = await fetch(
+      "https://api.openai.com/v1/images/generations",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify({
+          model: "gpt-image-1",
+          prompt,
+          n: 1,
+          size: "1536x1024",
+          // "low" keeps the whole request inside Netlify's 10s tier —
+          // "medium" would look nicer but risks the timeout. Editor can
+          // regenerate a nicer one manually via the intel-studio's
+          // `npm run illustrate -- ... --attach` script.
+          quality: "low",
+          output_format: "png",
+        }),
+        signal: controller.signal,
+      }
+    );
+    if (!openaiResp.ok) {
+      const errBody = await openaiResp.text().catch(() => "");
+      console.error(
+        `[send-to-blog] gpt-image-1 ${openaiResp.status}: ${errBody.slice(0, 300)}`
+      );
+      return null;
+    }
+    const openaiData = (await openaiResp.json()) as {
+      data: Array<{ b64_json?: string; url?: string }>;
+    };
+    const item = openaiData.data[0];
+    if (!item) {
+      console.error("[send-to-blog] gpt-image-1 returned no image");
+      return null;
+    }
+    let buffer: Buffer;
+    if (item.b64_json) {
+      buffer = Buffer.from(item.b64_json, "base64");
+    } else if (item.url) {
+      const dlResp = await fetch(item.url, { signal: controller.signal });
+      if (!dlResp.ok) {
+        console.error(
+          `[send-to-blog] failed to download generated image (${dlResp.status})`
+        );
+        return null;
+      }
+      buffer = Buffer.from(await dlResp.arrayBuffer());
+    } else {
+      console.error(
+        "[send-to-blog] gpt-image-1 returned neither b64_json nor url"
+      );
+      return null;
+    }
+    const uploaded = await mainWriteClient.assets.upload("image", buffer, {
+      filename,
+      contentType: "image/png",
+    });
+    return uploaded._id;
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    console.error(`[send-to-blog] cover generation failed: ${msg}`);
+    return null;
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}
 
 // Which service pillar each topic aligns to. Absent topics → no pillar.
 const TOPIC_TO_PILLAR: Record<string, "technology" | "services"> = {
@@ -256,6 +367,18 @@ export async function POST(req: Request) {
     const slug = slugify(article.title);
     const draftId = `drafts.post-intel-${slug}-${randomUUID().slice(0, 8)}`;
 
+    // Per-article cover generation: prefer the enricher's visualConcept
+    // (concrete objects meant for image gen), fall back to title +
+    // truncated summary if it's empty. Emergency SVG fallback if
+    // gpt-image-1 fails or times out.
+    const conceptRaw = (article.visualConcept ?? "").trim();
+    const cover = await generateAndUploadCover(
+      conceptRaw ||
+        `${article.title}. ${(article.summary ?? "").slice(0, 200)}`,
+      `intel-cover-${slug.slice(0, 32)}.png`
+    );
+    const coverAssetRef = cover ?? FALLBACK_COVER_ASSET_ID;
+
     const doc = {
       _id: draftId,
       _type: "post",
@@ -267,11 +390,11 @@ export async function POST(req: Request) {
       tags: article.topics.map((t) => t.title),
       pillars: pillarsFor(article.topics),
       body: buildBody(article),
-      // House-style fallback cover. Editor overrides by uploading a
-      // custom mainImage in Studio; their upload wins.
+      // Per-article cover in the house style. Editor overrides by
+      // uploading a custom mainImage in Studio; their upload wins.
       mainImage: {
         _type: "image",
-        asset: { _type: "reference", _ref: FALLBACK_COVER_ASSET_ID },
+        asset: { _type: "reference", _ref: coverAssetRef },
       },
       seo: {
         // Cap at 70 chars (schema's soft-warning limit is 60, hard limit 70).
