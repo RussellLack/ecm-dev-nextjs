@@ -1,0 +1,48 @@
+name: Deploy Sanity Studio
+
+# Auto-deploys ecm-dev.sanity.studio whenever Studio source changes on
+# main. Same pattern as the sibling ecm-dev-intel-studio repo — no more
+# manual `npx sanity deploy` after schema/plugin edits.
+#
+# Path-filtered so pushes that only touch app/, components/, lib/,
+# tests/, netlify/, docs/, etc. don't trigger a Studio rebuild.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "sanity/**"
+      - "sanity.config.ts"
+      - "sanity.cli.ts"
+      - "package.json"
+      - "package-lock.json"
+      - ".github/workflows/studio-deploy.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: studio-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - run: npm ci
+
+      - name: Deploy Studio
+        env:
+          # projectId/dataset are hardcoded in sanity.cli.ts with a
+          # fallback in sanity.config.ts, so no bundled env vars needed
+          # — the deploy CLI reads them from sanity.cli.ts directly.
+          # Auth: needs `Deploy Studio (Token only)` scope on the
+          # 0dep7ult ecm-dev project. Distinct from the intel token.
+          SANITY_AUTH_TOKEN: ${{ secrets.SANITY_AUTH_TOKEN }}
+        run: npx sanity deploy
