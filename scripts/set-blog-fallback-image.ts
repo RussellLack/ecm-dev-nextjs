@@ -34,7 +34,7 @@ async function main(): Promise<void> {
   const token = process.env.SANITY_MAIN_WRITE_TOKEN;
   if (!token) {
     console.error(
-      "Missing SANITY_MAIN_WRITE_TOKEN. Add it to the ecm-dev-intel LastPass note and run `npm run env:pull`."
+      "Missing SANITY_MAIN_WRITE_TOKEN. Add it to .env.local (value lives in LastPass note `ecm-dev-intel`)."
     );
     process.exit(1);
   }

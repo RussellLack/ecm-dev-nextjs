@@ -114,7 +114,7 @@ async function generateImage(opts: CliOptions): Promise<Buffer> {
   const apiKey = process.env.OPENAI_API_KEY;
   if (!apiKey) {
     console.error(
-      "Missing OPENAI_API_KEY. Add it to the ecm-dev-intel LastPass note and run `npm run env:pull`."
+      "Missing OPENAI_API_KEY. Add it to .env.local (value lives in LastPass note `ecm-dev-intel`)."
     );
     process.exit(1);
   }
@@ -174,7 +174,7 @@ async function attachToSanity(image: Buffer, docId: string): Promise<string> {
   const token = process.env.SANITY_MAIN_WRITE_TOKEN;
   if (!token) {
     throw new Error(
-      "Missing SANITY_MAIN_WRITE_TOKEN. Add it to the ecm-dev-intel LastPass note and run `npm run env:pull`."
+      "Missing SANITY_MAIN_WRITE_TOKEN. Add it to .env.local (value lives in LastPass note `ecm-dev-intel`)."
     );
   }
 
