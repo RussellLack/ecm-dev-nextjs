@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@sanity/client";
-import { createHash, randomUUID } from "node:crypto";
+import { randomUUID } from "node:crypto";
 
 /**
  * Bridge from an enriched intelArticle (ecm-dev-intel project) to a draft
@@ -116,12 +116,11 @@ infographic feel — like an engineering RFC diagram or a whitepaper
 figure, not decorative illustration.
 `.trim();
 
-// Compositional grammars. Deterministic pick per articleId means the
-// same article regenerating gets the same grammar, but a sequence of
-// articles cycles through visibly different layouts — network mesh,
-// stacked slabs, one dominant motif, left-to-right flow — instead of
-// gpt-image-1 collapsing every prompt to "flat vector icons on
-// off-white". Add new grammars freely; hash mod length picks one.
+// Compositional grammars. Picked in cyclic order per send (index mod
+// length), where the index is the count of existing intel-derived posts
+// in the main dataset — so consecutive sends land on consecutive frames
+// and the blog listing never shows two identical grammars back to back.
+// Add new grammars freely; the modulo just widens the cycle.
 const COMPOSITION_FRAMES: { name: string; guidance: string }[] = [
   {
     name: "network-mesh",
@@ -148,8 +147,8 @@ const COMPOSITION_FRAMES: { name: string; guidance: string }[] = [
 // Background tints. Kept close enough in value that any two consecutive
 // posts on the blog listing still look like siblings, but distinguishable
 // enough that a scan of six thumbnails doesn't read as "same picture".
-// Warm-cool alternation is intentional — random pick from a hash tends
-// to cluster; this ordering + hash-mod ensures visual variety in the feed.
+// Ordering matters: warm → mint → sage → bone → cool cycles through the
+// warm-cool spectrum so adjacent picks are always visually distinct.
 const BACKGROUND_TINTS: { name: string; hex: string }[] = [
   { name: "cream off-white", hex: "#f5f0e6" },
   { name: "pale mint", hex: "#eaf1e8" },
@@ -158,15 +157,35 @@ const BACKGROUND_TINTS: { name: string; hex: string }[] = [
   { name: "cool paper", hex: "#eef1f2" },
 ];
 
-function pickForArticle(articleId: string): {
+function pickForIndex(index: number): {
   frame: (typeof COMPOSITION_FRAMES)[number];
   bg: (typeof BACKGROUND_TINTS)[number];
 } {
-  const h = createHash("sha1").update(articleId).digest();
+  // 4 frames × 5 tints = 20-post cycle before the exact pair repeats.
   return {
-    frame: COMPOSITION_FRAMES[h[0] % COMPOSITION_FRAMES.length],
-    bg: BACKGROUND_TINTS[h[1] % BACKGROUND_TINTS.length],
+    frame: COMPOSITION_FRAMES[index % COMPOSITION_FRAMES.length],
+    bg: BACKGROUND_TINTS[index % BACKGROUND_TINTS.length],
   };
+}
+
+// Count of intel-derived posts (drafts + published) already in the main
+// dataset. Used as the cycle index so the Nth send gets the Nth frame/tint.
+// Falls back to 0 on any error — worst case we don't advance the cycle
+// for one article; still gives distinct visuals via the STYLE_TEMPLATE.
+async function nextPickIndex(
+  client: ReturnType<typeof createClient>
+): Promise<number> {
+  try {
+    const n = (await client.fetch<number>(
+      `count(*[_type=="post" && (string::startsWith(_id, "post-intel-") || string::startsWith(_id, "drafts.post-intel-"))])`
+    )) as number;
+    return typeof n === "number" && n >= 0 ? n : 0;
+  } catch (e) {
+    console.warn(
+      `[send-to-blog] pick-index count failed, defaulting to 0: ${e instanceof Error ? e.message : String(e)}`
+    );
+    return 0;
+  }
 }
 
 // Hard timeout for gpt-image-1. Requires the Netlify Pro tier (26s
@@ -184,7 +203,7 @@ const IMAGE_GEN_TIMEOUT_MS = 24_000;
 async function generateAndUploadCover(
   concept: string,
   filename: string,
-  articleId: string
+  index: number
 ): Promise<string | null> {
   const apiKey = process.env.OPENAI_API_KEY;
   if (!apiKey) {
@@ -192,7 +211,7 @@ async function generateAndUploadCover(
     return null;
   }
 
-  const { frame, bg } = pickForArticle(articleId);
+  const { frame, bg } = pickForIndex(index);
   const prompt = `${STYLE_TEMPLATE}
 
 Background: solid ${bg.name} (${bg.hex}) filling the entire canvas edge-to-edge. Keep the two-green line-art palette exactly as specified above.
@@ -202,7 +221,7 @@ ${frame.guidance}
 Concept for this specific illustration:
 ${concept}`;
   console.log(
-    `[send-to-blog] gpt-image-1 pick frame=${frame.name} bg=${bg.name}`
+    `[send-to-blog] gpt-image-1 pick index=${index} frame=${frame.name} bg=${bg.name}`
   );
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), IMAGE_GEN_TIMEOUT_MS);
@@ -442,11 +461,12 @@ export async function POST(req: Request) {
     // truncated summary if it's empty. Emergency SVG fallback if
     // gpt-image-1 fails or times out.
     const conceptRaw = (article.visualConcept ?? "").trim();
+    const pickIndex = await nextPickIndex(mainWriteClient);
     const cover = await generateAndUploadCover(
       conceptRaw ||
         `${article.title}. ${(article.summary ?? "").slice(0, 200)}`,
       `intel-cover-${slug.slice(0, 32)}.png`,
-      article._id
+      pickIndex
     );
     const coverAssetRef = cover ?? FALLBACK_COVER_ASSET_ID;
 
