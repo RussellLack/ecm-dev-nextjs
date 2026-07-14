@@ -1,5 +1,5 @@
 import { defineType, defineField } from "sanity";
-import { PILLAR_OPTIONS } from "./taxonomyOptions";
+import { PILLAR_OPTIONS, TOPIC_OPTIONS } from "./taxonomyOptions";
 
 export default defineType({
   name: "post",
@@ -45,11 +45,34 @@ export default defineType({
       rows: 3,
     }),
     defineField({
-      name: "tags",
-      title: "Tags",
+      name: "topics",
+      title: "Topics",
+      description:
+        "Canonical topic tags. Pick from the fixed list — the intel enricher uses these same 12 topics so filtering on /blog stays consistent. For company / product mentions (Sitecore, Umbraco, etc.), use Vendors below instead.",
+      type: "array",
+      of: [{ type: "string", options: { list: [...TOPIC_OPTIONS] } }],
+      options: { layout: "tags" },
+    }),
+    defineField({
+      name: "vendors",
+      title: "Vendors / Products",
+      description:
+        "Named companies or products mentioned in the post (e.g. Sitecore, Umbraco, Kentico Xperience). Free-form — type and press Enter. Do NOT put generic category words (CMS, DXP) here; those go in Topics.",
       type: "array",
       of: [{ type: "string" }],
       options: { layout: "tags" },
+    }),
+    defineField({
+      name: "tags",
+      title: "Tags (deprecated — use Topics + Vendors instead)",
+      description:
+        "Legacy field. Migrated data lives in Topics + Vendors. Kept read-only for one release cycle before removal.",
+      type: "array",
+      of: [{ type: "string" }],
+      options: { layout: "tags" },
+      readOnly: true,
+      hidden: ({ document }) =>
+        !document?.tags || (document.tags as string[]).length === 0,
     }),
     defineField({
       name: "pillars",

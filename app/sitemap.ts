@@ -159,7 +159,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   try {
     const [postTags, guideTags] = await Promise.all([
       sanityFetch<string[]>(
-        `*[_type == "post" && defined(tags)].tags[]`
+        // Post tags now live in topics + vendors; fall back to legacy
+        // tags for any un-migrated doc. Matches lib/queries.ts POST_TAGS.
+        `*[_type == "post"]{
+          "t": select(
+            count(coalesce(topics, []) + coalesce(vendors, [])) > 0
+            => coalesce(topics, []) + coalesce(vendors, []),
+            coalesce(tags, [])
+          )
+        }.t[]`
       ).catch(() => [] as string[]),
       sanityFetch<string[]>(
         `*[_type == "guide" && defined(tags)].tags[]`

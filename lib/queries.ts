@@ -1,6 +1,20 @@
 import "server-only";
 import { sanityFetch } from "./sanity.server";
 
+// GROQ expression: joined array of topic + vendor tags on a post.
+// Post storage split: `topics` (canonical enum) + `vendors` (free-form
+// company/product names). Frontend keeps reading `.tags` — this
+// expression stitches them back into one array in the projection.
+//
+// Fallback to legacy `tags` field for any post that hasn't been
+// migrated yet — belt-and-braces so a mistimed deploy doesn't blank
+// out the blog tag chips.
+const POST_TAGS = `select(
+  count(coalesce(topics, []) + coalesce(vendors, [])) > 0
+  => coalesce(topics, []) + coalesce(vendors, []),
+  coalesce(tags, [])
+)`;
+
 // Homepage
 export async function getHomePage() {
   return sanityFetch(`*[_type == "homePage"][0]{
@@ -154,7 +168,7 @@ export async function getAllUsedIndustries(): Promise<string[]> {
 export async function getBlogPosts(limit = 10) {
   return sanityFetch(
     `*[_type == "post"] | order(publishedAt desc)[0...$limit]{
-      title, slug, excerpt, publishedAt, mainImage, tags
+      title, slug, excerpt, publishedAt, mainImage, "tags": ${POST_TAGS}
     }`,
     { limit }
   );
@@ -168,7 +182,8 @@ export async function getBlogPosts(limit = 10) {
 export async function getPost(slug: string) {
   return sanityFetch(
     `*[_type == "post" && slug.current == $slug][0]{
-      title, publishedAt, _updatedAt, _createdAt, mainImage, tags, pillars, excerpt,
+      title, publishedAt, _updatedAt, _createdAt, mainImage, pillars, excerpt,
+      "tags": ${POST_TAGS},
       seo { metaTitle, metaDescription, ogImage, noIndex },
       body[]{
         ...,
@@ -180,7 +195,8 @@ export async function getPost(slug: string) {
         }
       },
       relatedPosts[]->{
-        _id, title, slug, excerpt, publishedAt, mainImage, tags
+        _id, title, slug, excerpt, publishedAt, mainImage,
+        "tags": ${POST_TAGS}
       }
     }`,
     { slug }
@@ -196,9 +212,11 @@ export async function getRelatedPostsByTags(
 ) {
   if (!tags?.length) return [];
   return sanityFetch(
-    `*[_type == "post" && slug.current != $slug && count((tags[])[@ in $tags]) > 0]
+    `*[_type == "post" && slug.current != $slug
+        && count((${POST_TAGS})[@ in $tags]) > 0]
       | order(publishedAt desc)[0...$limit]{
-      _id, title, slug, excerpt, publishedAt, mainImage, tags
+      _id, title, slug, excerpt, publishedAt, mainImage,
+      "tags": ${POST_TAGS}
     }`,
     { slug, tags, limit }
   );
@@ -209,8 +227,10 @@ export async function getRelatedPostsByTags(
 // QueryParams interface (former fetch-option guard).
 export async function getPostsByTag(tag: string) {
   return sanityFetch(
-    `*[_type == "post" && $tagName in tags[]] | order(publishedAt desc){
-      _id, title, slug, excerpt, publishedAt, mainImage, tags
+    `*[_type == "post" && $tagName in (${POST_TAGS})]
+      | order(publishedAt desc){
+      _id, title, slug, excerpt, publishedAt, mainImage,
+      "tags": ${POST_TAGS}
     }`,
     { tagName: tag }
   );
@@ -220,7 +240,7 @@ export async function getPostsByTag(tag: string) {
 // generateStaticParams + slug resolution).
 export async function getAllPostTags(): Promise<string[]> {
   const tags = await sanityFetch<string[]>(
-    `array::unique(*[_type == "post" && defined(tags)].tags[])`
+    `array::unique(*[_type == "post"]{ "t": ${POST_TAGS} }.t[])`
   );
   return (tags ?? []).filter(Boolean);
 }
@@ -229,7 +249,8 @@ export async function getAllPostTags(): Promise<string[]> {
 export async function getPostsByPillar(pillar: string, limit = 4) {
   return sanityFetch(
     `*[_type == "post" && $pillar in pillars[]] | order(publishedAt desc)[0...$limit]{
-      _id, title, slug, excerpt, publishedAt, mainImage, tags
+      _id, title, slug, excerpt, publishedAt, mainImage,
+      "tags": ${POST_TAGS}
     }`,
     { pillar, limit }
   );
@@ -393,7 +414,7 @@ export async function getTopPostTags(
   limit = 8
 ): Promise<Array<{ tag: string; count: number }>> {
   const allTags = await sanityFetch<string[]>(
-    `*[_type == "post" && defined(tags)].tags[]`
+    `*[_type == "post"]{ "t": ${POST_TAGS} }.t[]`
   ).catch(() => [] as string[]);
 
   const counts = new Map<string, number>();
@@ -468,10 +489,10 @@ export async function getOneRelatedPost({
   if (!pillars.length && !tags.length) return null;
   return sanityFetch<any>(
     `*[_type == "post" && slug.current != $excludeSlug && (
-        count((tags[])[@ in $tags]) > 0 ||
+        count((${POST_TAGS})[@ in $tags]) > 0 ||
         count((pillars[])[@ in $pillars]) > 0
       )]
-      | order(count((tags[])[@ in $tags]) desc, publishedAt desc)[0]{
+      | order(count((${POST_TAGS})[@ in $tags]) desc, publishedAt desc)[0]{
         _id, title, slug, excerpt, publishedAt, mainImage
       }`,
     { excludeSlug, pillars, tags }
@@ -536,7 +557,7 @@ export async function getContentForPlatform(tagAliases: string[]) {
   }
   const [posts, guides, caseStudies] = await Promise.all([
     sanityFetch<any[]>(
-      `*[_type == "post" && count((tags[])[@ in $aliases]) > 0]
+      `*[_type == "post" && count((${POST_TAGS})[@ in $aliases]) > 0]
         | order(publishedAt desc)[0...6]{
         _id, title, slug, excerpt, publishedAt, mainImage
       }`,

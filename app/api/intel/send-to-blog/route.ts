@@ -390,14 +390,12 @@ export async function POST(req: Request) {
       publishedAt: new Date().toISOString(),
       excerpt: article.summary ?? "",
       visualConcept: article.visualConcept ?? "",
-      // Tags are the 12 allowed topics PLUS any specific companies /
-      // products the enricher extracted from the article. Same shape as
-      // the intel article's topic + vendor split, flattened into one
-      // tag list on the blog post.
-      tags: [
-        ...article.topics.map((t) => t.title),
-        ...(article.vendors ?? []).map((v) => v.name),
-      ],
+      // Two-field tag storage: canonical topics (12-item enum) and
+      // vendor / product names (free-form). Frontend queries stitch
+      // them back into a single `tags` list for display via a GROQ
+      // projection in lib/queries.ts (POST_TAGS).
+      topics: article.topics.map((t) => t.title),
+      vendors: (article.vendors ?? []).map((v) => v.name),
       pillars: pillarsFor(article.topics),
       body: buildBody(article),
       // Per-article cover in the house style. Editor overrides by

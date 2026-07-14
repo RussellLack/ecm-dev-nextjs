@@ -9,6 +9,27 @@ export const PILLAR_OPTIONS = [
   { title: "Content Localization", value: "localization" },
 ] as const;
 
+// Canonical topic taxonomy for blog posts. Must stay in sync with:
+//   - workers/enrich.ts ALLOWED_TOPICS in ecm-dev-intel-studio
+//   - scripts/backfill-blog-tags.ts ALLOWED_TOPICS in ecm-dev-intel-studio
+// These 12 topics are the ONLY values allowed in post.topics. Named
+// vendor / product mentions (Sitecore, Umbraco, etc.) go into
+// post.vendors as free-form strings.
+export const TOPIC_OPTIONS = [
+  { title: "ContentOps", value: "ContentOps" },
+  { title: "AI", value: "AI" },
+  { title: "CMS", value: "CMS" },
+  { title: "Governance", value: "Governance" },
+  { title: "DAM", value: "DAM" },
+  { title: "PIM", value: "PIM" },
+  { title: "DXP", value: "DXP" },
+  { title: "Workflow", value: "Workflow" },
+  { title: "Personalization", value: "Personalization" },
+  { title: "Analytics", value: "Analytics" },
+  { title: "Search", value: "Search" },
+  { title: "Compliance", value: "Compliance" },
+] as const;
+
 export const INDUSTRY_OPTIONS = [
   { title: "Financial Services", value: "financial-services" },
   { title: "Healthcare & Life Sciences", value: "healthcare" },
