@@ -788,6 +788,128 @@ function EcmCsfs() {
   );
 }
 
+// ─── 15: Two Phils / Umbraco AI, MCP, agentic future ─────────────────
+// Two open-source content branches converging into an MCP hub, feeding
+// out to agent satellites — captures Umbraco's open architecture bet on
+// AI/MCP integration.
+function TwoPhilsUmbraco() {
+  return (
+    <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+      {/* Two parallel content branches on the left */}
+      <g stroke={G} strokeWidth="1.8">
+        <line x1="30" y1="26" x2="30" y2="118" />
+        <line x1="60" y1="26" x2="60" y2="118" />
+      </g>
+      {/* Content nodes on the branches (staggered) */}
+      <circle cx="30" cy="48" r="5" fill={L} />
+      <circle cx="60" cy="72" r="5" fill={L} />
+      <circle cx="30" cy="96" r="5" fill={L} />
+      {/* Branch-to-hub converging paths */}
+      <g stroke={L} strokeWidth="1.6" fill="none" strokeLinecap="round">
+        <path d="M 30 48 Q 90 48 130 72" />
+        <path d="M 60 72 L 130 72" />
+        <path d="M 30 96 Q 90 96 130 72" />
+      </g>
+      {/* Central hexagonal MCP hub */}
+      <path
+        d="M 158 52 L 180 62 L 180 82 L 158 92 L 136 82 L 136 62 Z"
+        stroke={G}
+        strokeWidth="2"
+        fill={FILL_G}
+      />
+      <circle cx="158" cy="72" r="4" fill={L} />
+      {/* Agent satellites on the right */}
+      <g>
+        {[
+          { x: 216, y: 40 },
+          { x: 246, y: 72 },
+          { x: 216, y: 104 },
+        ].map((s, i) => (
+          <g key={i}>
+            <line
+              x1="184"
+              y1="72"
+              x2={s.x}
+              y2={s.y}
+              stroke={L}
+              strokeWidth="1.4"
+              strokeDasharray="3 3"
+            />
+            <circle cx={s.x} cy={s.y} r="7" stroke={G} strokeWidth="1.6" fill={FILL_L} />
+            <circle cx={s.x} cy={s.y} r="2.5" fill={G} />
+          </g>
+        ))}
+      </g>
+    </svg>
+  );
+}
+
+// ─── 16: What Is a DXP in 2026 — monolith → distributed agents ────────
+// Legacy monolithic DXP on the left, transformation arrow, and a
+// distributed hub-and-spoke composable architecture on the right.
+function WhatIsADxp2026() {
+  return (
+    <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+      {/* Left: monolithic DXP block with content lines */}
+      <rect x="24" y="34" width="64" height="76" rx="3" stroke={G} strokeWidth="2" fill={FILL_G} />
+      <g stroke={G} strokeWidth="1.4" opacity="0.55">
+        <line x1="34" y1="52" x2="78" y2="52" />
+        <line x1="34" y1="64" x2="78" y2="64" />
+        <line x1="34" y1="76" x2="78" y2="76" />
+        <line x1="34" y1="88" x2="78" y2="88" />
+        <line x1="34" y1="100" x2="78" y2="100" />
+      </g>
+      {/* Transformation arrow across the middle */}
+      <line x1="100" y1="72" x2="140" y2="72" stroke={L} strokeWidth="3" strokeLinecap="round" />
+      <path
+        d="M 130 62 L 140 72 L 130 82"
+        stroke={L}
+        strokeWidth="3"
+        fill="none"
+        strokeLinejoin="round"
+        strokeLinecap="round"
+      />
+      {/* Right: composable hub with satellite service nodes */}
+      <g>
+        {/* Central hub */}
+        <circle cx="200" cy="72" r="14" stroke={G} strokeWidth="2" fill={FILL_G} />
+        <circle cx="200" cy="72" r="4" fill={L} />
+        {/* Satellite service tiles */}
+        {[
+          { x: 178, y: 42 },
+          { x: 244, y: 42 },
+          { x: 244, y: 102 },
+          { x: 178, y: 102 },
+        ].map((s, i) => (
+          <g key={i}>
+            <line
+              x1="200"
+              y1="72"
+              x2={s.x}
+              y2={s.y}
+              stroke={L}
+              strokeWidth="1.4"
+              strokeDasharray="3 3"
+            />
+            <rect
+              x={s.x - 11}
+              y={s.y - 9}
+              width="22"
+              height="18"
+              rx="2"
+              stroke={G}
+              strokeWidth="1.6"
+              fill="white"
+            />
+            <line x1={s.x - 6} y1={s.y - 3} x2={s.x + 6} y2={s.y - 3} stroke={G} strokeWidth="1.2" opacity="0.55" />
+            <line x1={s.x - 6} y1={s.y + 3} x2={s.x + 4} y2={s.y + 3} stroke={G} strokeWidth="1.2" opacity="0.55" />
+          </g>
+        ))}
+      </g>
+    </svg>
+  );
+}
+
 // ─── Generic / fallback ────────────────────────────────────────────────
 function GenericMotif() {
   return (
@@ -826,6 +948,10 @@ const SLUG_TO_ILLUSTRATION: Record<string, () => React.JSX.Element> = {
     GenerativeAiMarketing,
   // "Critical Success Factors for ECM/CMS Implementation"
   "unlocking-business-potential-with-tailored-cloud-solutions": EcmCsfs,
+  // Intel-sourced posts:
+  "exploring-umbraco-s-open-source-vision-for-ai-mcp-and-the-agentic-future-of-":
+    TwoPhilsUmbraco,
+  "what-is-a-dxp-in-2026": WhatIsADxp2026,
 };
 
 export default function PostIllustration({ slug }: { slug?: string }) {
