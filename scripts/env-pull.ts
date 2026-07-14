@@ -87,14 +87,20 @@ function fetchEnv(): Record<string, string> {
   const out: Record<string, string> = {};
   if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
     for (const [k, v] of Object.entries(parsed as Record<string, unknown>)) {
+      let raw: string | undefined;
       if (typeof v === "string") {
-        out[k] = v;
+        raw = v;
       } else if (v && typeof v === "object" && "values" in v) {
         const entry = v as NetlifyEnvEntry;
-        const val =
+        raw =
           entry.values?.find((x) => x.context === "production")?.value ??
           entry.values?.[0]?.value;
-        if (typeof val === "string") out[k] = val;
+      }
+      if (typeof raw === "string") {
+        // Strip any CR/LF and trim edges — trailing newlines from
+        // copy-paste get stored in Netlify verbatim, then break bash
+        // `source .env.local` and every downstream env loader.
+        out[k] = raw.replace(/[\r\n]+/g, "").trim();
       }
     }
   }
