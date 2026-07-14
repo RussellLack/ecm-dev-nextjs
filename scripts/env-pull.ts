@@ -13,8 +13,26 @@
  */
 
 import { spawnSync } from "node:child_process";
-import { writeFileSync } from "node:fs";
+import { writeFileSync, readFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
+
+// Netlify CLI masks values for env vars flagged as "sensitive" —
+// returns 4 asterisks + last 16 chars = 20-char string. Detect this
+// so we don't overwrite a real .env.local value with a mask.
+const MASK_RE = /^\*{4}[A-Za-z0-9+/=]{16}$/;
+function looksMasked(v: string): boolean {
+  return v.length === 20 && MASK_RE.test(v);
+}
+
+function loadExistingLocal(path: string): Record<string, string> {
+  if (!existsSync(path)) return {};
+  const out: Record<string, string> = {};
+  for (const line of readFileSync(path, "utf8").split("\n")) {
+    const m = line.match(/^([A-Z_][A-Z0-9_]*)=(.*)$/);
+    if (m) out[m[1]] = m[2];
+  }
+  return out;
+}
 
 const NETLIFY_SITE_ID = "f7e70ebb-aad2-4c0f-a0e1-b3b4ef0b6ead"; // ecm.dev
 
@@ -110,14 +128,34 @@ function fetchEnv(): Record<string, string> {
 function main(): void {
   checkNetlifyCli();
   const env = fetchEnv();
+  const existingLocal = loadExistingLocal(OUT);
 
   const pairs: [string, string][] = [];
   const missing: string[] = [];
+  const preservedFromLocal: string[] = [];
+  const stillMasked: string[] = [];
 
   for (const key of NEEDED_KEYS) {
     const v = env[key];
-    if (v) pairs.push([key, v]);
-    else missing.push(key);
+    if (!v) {
+      if (existingLocal[key]) {
+        pairs.push([key, existingLocal[key]]);
+        preservedFromLocal.push(key);
+      } else {
+        missing.push(key);
+      }
+      continue;
+    }
+    if (looksMasked(v)) {
+      if (existingLocal[key] && !looksMasked(existingLocal[key])) {
+        pairs.push([key, existingLocal[key]]);
+        preservedFromLocal.push(key);
+      } else {
+        stillMasked.push(key);
+      }
+      continue;
+    }
+    pairs.push([key, v]);
   }
 
   if (missing.length) {
@@ -134,7 +172,20 @@ function main(): void {
   writeFileSync(OUT, contents, { mode: 0o600 });
 
   console.log(`Wrote ${pairs.length} vars to ${OUT} (mode 600):`);
-  for (const [k] of pairs) console.log(`  ${k}`);
+  for (const [k] of pairs) {
+    const flag = preservedFromLocal.includes(k) ? " (from local — Netlify masked)" : "";
+    console.log(`  ${k}${flag}`);
+  }
+  if (stillMasked.length) {
+    console.log("");
+    console.log("⚠ These keys are MASKED in Netlify (flagged as sensitive)");
+    console.log("  AND have no usable value in .env.local yet:");
+    for (const k of stillMasked) console.log(`    - ${k}`);
+    console.log("");
+    console.log("  Fix: paste the real value into .env.local by hand ONCE — env:pull will");
+    console.log("  preserve it on future runs. Or unmark the var as sensitive in Netlify UI.");
+    process.exit(2);
+  }
 }
 
 main();
