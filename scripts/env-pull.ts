@@ -57,14 +57,18 @@ type NetlifyEnvEntry = {
 };
 
 function fetchEnv(): Record<string, string> {
-  // Omit --context: some CLI versions only return values set for that
-  // specific context, which excludes vars set with the default
-  // "all contexts" scope. Without the flag we get everything.
-  const r = spawnSync("netlify", ["env:list", "--json"], {
-    stdio: ["ignore", "pipe", "pipe"],
-    encoding: "utf8",
-    env: { ...process.env, NETLIFY_SITE_ID },
-  });
+  // --context production is required — without it, Netlify CLI returns
+  // env var KEYS with empty VALUES. Values set for "all contexts"
+  // still appear under production.
+  const r = spawnSync(
+    "netlify",
+    ["env:list", "--json", "--context", "production"],
+    {
+      stdio: ["ignore", "pipe", "pipe"],
+      encoding: "utf8",
+      env: { ...process.env, NETLIFY_SITE_ID },
+    }
+  );
   if (r.status !== 0) {
     const stderr = r.stderr.trim();
     if (/not logged in|Unauthorized/i.test(stderr)) {
