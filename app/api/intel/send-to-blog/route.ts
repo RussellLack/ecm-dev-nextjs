@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@sanity/client";
-import { randomUUID } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
 
 /**
  * Bridge from an enriched intelArticle (ecm-dev-intel project) to a draft
@@ -96,31 +96,85 @@ const INTEL_QUERY = `*[_type == "intelArticle" && _id == $id][0]{
 const FALLBACK_COVER_ASSET_ID =
   "image-28546d1ac2630d56f59271c5be27e8c5673ac4d1-1536x1024-svg";
 
-// ECM.DEV house-style prompt template — kept in sync with the copy in
-// scripts/illustrate.ts in the intel-studio repo. Colors extracted
-// from ecm.dev's CSS custom properties (--ecm-green, --ecm-lime,
-// --ecm-gray-light) so covers sit natively alongside site imagery.
+// ECM.DEV house-style prompt template. The two brand greens are fixed
+// (extracted from ecm.dev's --ecm-green / --ecm-lime CSS vars). The
+// background color is now picked per-article from BACKGROUND_TINTS so
+// consecutive covers on the blog listing don't visually blur together.
 const STYLE_TEMPLATE = `
 Minimalist diagrammatic cover illustration in flat vector style.
 Extremely sparse — 3-5 elements maximum with generous whitespace and
 empty margins around the composition.
 
-Colors: ONLY two colors — bright neon lime green (#aaf870) for accents
-(dots, connection lines, key strokes) and a deep forest green
-(#316148) for structural lines (lanes, rectangle outlines, arrow
-tails). Everything else on a clean off-white background (#f5f5f5).
-Absolutely no other colors. No gradients, no shadows, no depth effects.
+Line-art palette: ONLY two colors — bright neon lime green (#aaf870)
+for accents (dots, connection lines, key strokes) and a deep forest
+green (#316148) for structural lines (lanes, rectangle outlines,
+arrow tails). No other colors in the line art. No gradients, no
+shadows, no depth effects.
 
 No text, no labels, no logos, no photorealism. Abstract technical
 infographic feel — like an engineering RFC diagram or a whitepaper
 figure, not decorative illustration.
 `.trim();
 
-// Hard timeout for gpt-image-1. Netlify serverless functions run at
-// 10s default, 26s on Pro — the AbortSignal keeps us safely under
-// either. On timeout or any generation error the endpoint falls back
-// to the emergency SVG so send-to-blog never breaks on OpenAI hiccups.
-const IMAGE_GEN_TIMEOUT_MS = 22_000;
+// Compositional grammars. Deterministic pick per articleId means the
+// same article regenerating gets the same grammar, but a sequence of
+// articles cycles through visibly different layouts — network mesh,
+// stacked slabs, one dominant motif, left-to-right flow — instead of
+// gpt-image-1 collapsing every prompt to "flat vector icons on
+// off-white". Add new grammars freely; hash mod length picks one.
+const COMPOSITION_FRAMES: { name: string; guidance: string }[] = [
+  {
+    name: "network-mesh",
+    guidance:
+      "Composition: a network of 4-6 small circular nodes connected by straight lines forming a mesh or graph. Nodes sit at asymmetric positions across the canvas. One or two connection lines use the lime accent; the rest are forest-green. No central focal point — the whole graph is the subject.",
+  },
+  {
+    name: "isometric-stack",
+    guidance:
+      "Composition: 3-4 rectangular slabs stacked as isometric layers (viewed from ~30° above), with thin arrows connecting adjacent layers. Slabs are outlined in forest green, transparent inside. One arrow or one small marker uses the lime accent. Centered composition with the stack occupying the middle third.",
+  },
+  {
+    name: "hero-motif",
+    guidance:
+      "Composition: one large central iconic object (occupying ~50% of the canvas) with 2-3 small satellite elements orbiting it at the edges. The central object is drawn in forest-green outline; one satellite uses the lime accent. Strong asymmetry — this is a single-subject illustration, not a diagram.",
+  },
+  {
+    name: "flow-lane",
+    guidance:
+      "Composition: horizontal left-to-right flow of 3-4 shapes (rectangles, circles, hexagons) connected by arrows, with one branching or looping arrow returning backward. Whole flow occupies the horizontal middle band; top and bottom margins are empty. Arrows are forest-green; the branching arrow and one node use the lime accent.",
+  },
+];
+
+// Background tints. Kept close enough in value that any two consecutive
+// posts on the blog listing still look like siblings, but distinguishable
+// enough that a scan of six thumbnails doesn't read as "same picture".
+// Warm-cool alternation is intentional — random pick from a hash tends
+// to cluster; this ordering + hash-mod ensures visual variety in the feed.
+const BACKGROUND_TINTS: { name: string; hex: string }[] = [
+  { name: "cream off-white", hex: "#f5f0e6" },
+  { name: "pale mint", hex: "#eaf1e8" },
+  { name: "pale sage grey", hex: "#eef0ea" },
+  { name: "pale bone", hex: "#f2ebd9" },
+  { name: "cool paper", hex: "#eef1f2" },
+];
+
+function pickForArticle(articleId: string): {
+  frame: (typeof COMPOSITION_FRAMES)[number];
+  bg: (typeof BACKGROUND_TINTS)[number];
+} {
+  const h = createHash("sha1").update(articleId).digest();
+  return {
+    frame: COMPOSITION_FRAMES[h[0] % COMPOSITION_FRAMES.length],
+    bg: BACKGROUND_TINTS[h[1] % BACKGROUND_TINTS.length],
+  };
+}
+
+// Hard timeout for gpt-image-1. Requires the Netlify Pro tier (26s
+// function timeout); the AbortSignal keeps us safely under it while
+// leaving budget for the Sanity read + write around this call. On
+// timeout or any generation error the endpoint falls back to the
+// emergency SVG so send-to-blog never breaks on OpenAI hiccups.
+const IMAGE_GEN_TIMEOUT_MS = 24_000;
 
 /**
  * Generate a per-article cover via gpt-image-1 and upload it to Sanity.
@@ -129,7 +183,8 @@ const IMAGE_GEN_TIMEOUT_MS = 22_000;
  */
 async function generateAndUploadCover(
   concept: string,
-  filename: string
+  filename: string,
+  articleId: string
 ): Promise<string | null> {
   const apiKey = process.env.OPENAI_API_KEY;
   if (!apiKey) {
@@ -137,7 +192,18 @@ async function generateAndUploadCover(
     return null;
   }
 
-  const prompt = `${STYLE_TEMPLATE}\n\nConcept for this specific illustration:\n${concept}`;
+  const { frame, bg } = pickForArticle(articleId);
+  const prompt = `${STYLE_TEMPLATE}
+
+Background: solid ${bg.name} (${bg.hex}) filling the entire canvas edge-to-edge. Keep the two-green line-art palette exactly as specified above.
+
+${frame.guidance}
+
+Concept for this specific illustration:
+${concept}`;
+  console.log(
+    `[send-to-blog] gpt-image-1 pick frame=${frame.name} bg=${bg.name}`
+  );
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), IMAGE_GEN_TIMEOUT_MS);
   try {
@@ -154,11 +220,12 @@ async function generateAndUploadCover(
           prompt,
           n: 1,
           size: "1536x1024",
-          // "low" keeps the whole request inside Netlify's 10s tier —
-          // "medium" would look nicer but risks the timeout. Editor can
-          // regenerate a nicer one manually via the intel-studio's
-          // `npm run illustrate -- ... --attach` script.
-          quality: "low",
+          // "medium" gives cleaner line rendering and more per-prompt
+          // variation than "low"; still fits inside the 24s abort on
+          // Netlify Pro's 26s function tier. If timeouts start showing
+          // in logs, drop to "low" — that costs distinctness but is
+          // still much better than the pre-variant single-look output.
+          quality: "medium",
           output_format: "png",
         }),
         signal: controller.signal,
@@ -378,7 +445,8 @@ export async function POST(req: Request) {
     const cover = await generateAndUploadCover(
       conceptRaw ||
         `${article.title}. ${(article.summary ?? "").slice(0, 200)}`,
-      `intel-cover-${slug.slice(0, 32)}.png`
+      `intel-cover-${slug.slice(0, 32)}.png`,
+      article._id
     );
     const coverAssetRef = cover ?? FALLBACK_COVER_ASSET_ID;
 
