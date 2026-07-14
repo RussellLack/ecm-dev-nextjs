@@ -116,7 +116,7 @@ function main(): void {
       `Missing keys in Netlify env for site ${NETLIFY_SITE_ID}:\n` +
         missing.map((k) => `  - ${k}`).join("\n") +
         `\n\nAdd them via the Netlify UI or CLI:\n` +
-        `  netlify env:set <KEY> "<value>" --scope=all\n` +
+        `  netlify env:set <KEY> "<value>" --force\n` +
         `(after \`export NETLIFY_SITE_ID=${NETLIFY_SITE_ID}\`)`
     );
   }
