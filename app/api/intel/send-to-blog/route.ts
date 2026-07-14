@@ -70,6 +70,7 @@ type IntelArticle = {
   contentAngle: string | null;
   visualConcept: string | null;
   topics: { title: string; slug: string }[];
+  vendors: { name: string }[];
   sourceTitle: string | null;
 };
 
@@ -83,6 +84,7 @@ const INTEL_QUERY = `*[_type == "intelArticle" && _id == $id][0]{
   contentAngle,
   visualConcept,
   "topics": topics[]->{ "title": title, "slug": slug.current },
+  "vendors": vendors[]->{ "name": name },
   "sourceTitle": source->title
 }`;
 
@@ -388,7 +390,14 @@ export async function POST(req: Request) {
       publishedAt: new Date().toISOString(),
       excerpt: article.summary ?? "",
       visualConcept: article.visualConcept ?? "",
-      tags: article.topics.map((t) => t.title),
+      // Tags are the 12 allowed topics PLUS any specific companies /
+      // products the enricher extracted from the article. Same shape as
+      // the intel article's topic + vendor split, flattened into one
+      // tag list on the blog post.
+      tags: [
+        ...article.topics.map((t) => t.title),
+        ...(article.vendors ?? []).map((v) => v.name),
+      ],
       pillars: pillarsFor(article.topics),
       body: buildBody(article),
       // Per-article cover in the house style. Editor overrides by
