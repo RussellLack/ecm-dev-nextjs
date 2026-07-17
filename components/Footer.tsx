@@ -37,7 +37,7 @@ export default async function Footer() {
       <div className="max-w-7xl mx-auto px-6">
         {/* Top row: 4 columns */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10 mb-12">
-          {/* Brand + address */}
+          {/* Brand */}
           <div>
             <Link href="/">
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -47,11 +47,6 @@ export default async function Footer() {
                 className="h-7 sm:h-8 lg:h-9 w-auto"
               />
             </Link>
-            <div className="text-white/70 text-sm mt-4 space-y-1 leading-relaxed">
-              <p>Sognsveien 118C</p>
-              <p>Oslo 0860</p>
-              <p>Norway</p>
-            </div>
           </div>
 
           {/* Services column */}
