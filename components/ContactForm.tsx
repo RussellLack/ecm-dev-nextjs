@@ -51,11 +51,6 @@ export default function ContactForm() {
           <h2 className="text-ecm-lime font-barlow font-bold text-2xl sm:text-3xl mb-8">
             GET IN TOUCH
           </h2>
-          <div className="text-white space-y-1 mb-8">
-            <p>Sognsveien 118C</p>
-            <p>Oslo 0860</p>
-            <p>Norway</p>
-          </div>
           <a
             href="https://www.linkedin.com/company/ecm-dev"
             target="_blank"
