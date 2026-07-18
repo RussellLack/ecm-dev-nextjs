@@ -8,7 +8,9 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import RelatedContent from "@/components/RelatedContent";
 import MixedRelated from "@/components/MixedRelated";
 import CaseStudyIllustration from "@/components/case-study/CaseStudyIllustration";
+import JsonLd from "@/components/JsonLd";
 import { internalLinkHref } from "@/lib/internalLink";
+import { caseStudySchema } from "@/lib/structuredData";
 import { INDUSTRY_OPTIONS } from "@/sanity/schemas/taxonomyOptions";
 
 const INDUSTRY_LABEL: Record<string, string> = Object.fromEntries(
@@ -152,6 +154,19 @@ export default async function CaseStudyDetailPage({
 
   return (
     <>
+      <JsonLd
+        data={caseStudySchema({
+          title: cs.title,
+          slug,
+          description: cs.description,
+          client: cs.client,
+          industry: cs.industry ?? null,
+          tags: cs.tags,
+          image: cs.image,
+          _createdAt: cs._createdAt,
+          _updatedAt: cs._updatedAt,
+        })}
+      />
       {/* Hero */}
       <section className="relative bg-ecm-green pt-2 pb-24 sm:pb-28 lg:pb-32 overflow-hidden">
         <Breadcrumbs

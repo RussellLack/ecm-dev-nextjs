@@ -8,7 +8,7 @@ import Footer from "@/components/Footer";
 import CookieConsent from "@/components/CookieConsent";
 import Analytics from "@/components/Analytics";
 import JsonLd from "@/components/JsonLd";
-import { organizationSchema } from "@/lib/structuredData";
+import { organizationSchema, websiteSchema } from "@/lib/structuredData";
 
 // Self-hosted Barlow via next/font. Replaces the previous @import in
 // globals.css which was render-blocking and added ~1-2s to LCP.
@@ -161,6 +161,12 @@ export default async function RootLayout({
                                               />
                         </noscript>
                         <Analytics nonce={nonce} />
+                        {/* Sitewide Organization + WebSite JSON-LD. Individual
+                                            pages layer additional Article / Service / Case Study
+                                            schemas on top; these two carry the who-we-are triple
+                                            (name, url, publisher) that AI agents need on every page. */}
+                        <JsonLd data={organizationSchema()} />
+                        <JsonLd data={websiteSchema()} />
                         <Header />
                         <main>{children}</main>
                         <Footer />
