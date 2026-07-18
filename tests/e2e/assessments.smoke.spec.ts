@@ -45,6 +45,13 @@ test("every assessment hydrates and is interactive", async ({ browser }) => {
     try {
       await test.step(`${target.slug} — ${target.url}`, async () => {
         const context = await browser.newContext();
+        // The assessment tools sit behind the registration gate. Grant access
+        // via the gate cookie so the suite reaches the tool itself — otherwise
+        // every target would only ever see the gate form. Same cookie the gate
+        // sets on real registration (see lib/assessment/gate.ts).
+        await context.addCookies([
+          { name: "ecm_assess_access", value: "1", url: target.url },
+        ]);
         const page = await context.newPage();
         const guard = attachConsoleGuard(page);
         try {

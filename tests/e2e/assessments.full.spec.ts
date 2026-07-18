@@ -66,6 +66,17 @@ test("lead-magnet completes end-to-end with submission intercepted", async ({
     await dialog.accept();
   });
 
+  // Grant registration-gate access so the tool renders (the gate itself is
+  // exercised separately; here we test the assessment flow behind it). Same
+  // cookie the gate sets on real registration (see lib/assessment/gate.ts).
+  await page.context().addCookies([
+    {
+      name: "ecm_assess_access",
+      value: "1",
+      url: new URL(LEAD_MAGNET_PATH, process.env.BASE_URL).toString(),
+    },
+  ]);
+
   await page.goto(LEAD_MAGNET_PATH, { waitUntil: "domcontentloaded" });
 
   // ── Welcome → start

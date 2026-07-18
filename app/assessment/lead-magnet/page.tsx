@@ -1,4 +1,5 @@
 import LeadMagnetAssessment from "@/components/assessment/LeadMagnetAssessment";
+import AssessmentGate from "@/components/assessment/AssessmentGate";
 
 export const metadata = {
   title: "Lead Magnet Ideation Tool | ECM.DEV",
@@ -7,5 +8,9 @@ export const metadata = {
 };
 
 export default function LeadMagnetPage() {
-  return <LeadMagnetAssessment />;
+  return (
+    <AssessmentGate slug="lead-magnet" title="Lead Magnet Ideation Tool">
+      <LeadMagnetAssessment />
+    </AssessmentGate>
+  );
 }

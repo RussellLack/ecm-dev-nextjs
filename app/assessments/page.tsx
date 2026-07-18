@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getAllAssessments } from "@/lib/assessment/queries";
 import ShareLinkButton from "@/components/assessments/ShareLinkButton";
+import PreviewButton from "@/components/assessments/PreviewButton";
 
 export const revalidate = 60;
 
@@ -8,6 +9,28 @@ export const metadata = {
   title: "Assessments | ECM.DEV",
   description:
     "Diagnostic assessments to benchmark your content operations maturity, AI readiness, and more.",
+};
+
+/**
+ * Demo videos shown behind the "Preview" button on each card. Keyed by
+ * assessment slug/id. Add an entry here when a new assessment gets a demo clip;
+ * Sanity-authored assessments only show a preview if their slug is listed.
+ */
+const PREVIEW_VIDEOS: Record<string, { src: string; dur: string }> = {
+  process: { src: "/assessment-previews/process.mp4", dur: "71s" },
+  "lead-magnet": { src: "/assessment-previews/lead-magnet.mp4", dur: "34s" },
+  "localisation-cost": {
+    src: "/assessment-previews/localisation-cost.mp4",
+    dur: "35s",
+  },
+  "cms-implementation": {
+    src: "/assessment-previews/cms-implementation.mp4",
+    dur: "35s",
+  },
+  "content-operations-maturity": {
+    src: "/assessment-previews/content-operations-maturity.mp4",
+    dur: "64s",
+  },
 };
 
 export default async function AssessmentsPage() {
@@ -86,7 +109,13 @@ export default async function AssessmentsPage() {
                       <ShareLinkButton anchor="process" />
                     </div>
                   </div>
-                  <div className="flex-shrink-0 lg:pt-2">
+                  <div className="flex-shrink-0 lg:pt-2 flex flex-col gap-3">
+                    <PreviewButton
+                      slug="process"
+                      title="Process Assessment"
+                      src="/assessment-previews/process.mp4"
+                      durationLabel="71s"
+                    />
                     <Link
                       href="/assessment/process"
                       className="inline-flex items-center gap-2 bg-ecm-green text-white font-barlow font-semibold text-sm px-8 py-3.5 rounded-full hover:bg-ecm-green-dark transition-colors"
@@ -131,7 +160,13 @@ export default async function AssessmentsPage() {
                       <ShareLinkButton anchor="lead-magnet" />
                     </div>
                   </div>
-                  <div className="flex-shrink-0 lg:pt-2">
+                  <div className="flex-shrink-0 lg:pt-2 flex flex-col gap-3">
+                    <PreviewButton
+                      slug="lead-magnet"
+                      title="Lead Magnet Ideation Tool"
+                      src="/assessment-previews/lead-magnet.mp4"
+                      durationLabel="34s"
+                    />
                     <Link
                       href="/assessment/lead-magnet"
                       className="inline-flex items-center gap-2 bg-ecm-green text-white font-barlow font-semibold text-sm px-8 py-3.5 rounded-full hover:bg-ecm-green-dark transition-colors"
@@ -177,7 +212,13 @@ export default async function AssessmentsPage() {
                       <ShareLinkButton anchor="localisation-cost" />
                     </div>
                   </div>
-                  <div className="flex-shrink-0 lg:pt-2">
+                  <div className="flex-shrink-0 lg:pt-2 flex flex-col gap-3">
+                    <PreviewButton
+                      slug="localisation-cost"
+                      title="Localisation Cost Estimator"
+                      src="/assessment-previews/localisation-cost.mp4"
+                      durationLabel="35s"
+                    />
                     <Link
                       href="/assessment/localisation-cost"
                       className="inline-flex items-center gap-2 bg-ecm-green text-white font-barlow font-semibold text-sm px-8 py-3.5 rounded-full hover:bg-ecm-green-dark transition-colors"
@@ -223,7 +264,13 @@ export default async function AssessmentsPage() {
                       <ShareLinkButton anchor="cms-implementation" />
                     </div>
                   </div>
-                  <div className="flex-shrink-0 lg:pt-2">
+                  <div className="flex-shrink-0 lg:pt-2 flex flex-col gap-3">
+                    <PreviewButton
+                      slug="cms-implementation"
+                      title="CMS Implementation Cost Estimator"
+                      src="/assessment-previews/cms-implementation.mp4"
+                      durationLabel="35s"
+                    />
                     <Link
                       href="/assessment/cms-implementation"
                       className="inline-flex items-center gap-2 bg-ecm-green text-white font-barlow font-semibold text-sm px-8 py-3.5 rounded-full hover:bg-ecm-green-dark transition-colors"
@@ -307,7 +354,15 @@ export default async function AssessmentsPage() {
                       </div>
 
                       {/* CTA */}
-                      <div className="flex-shrink-0 lg:pt-2">
+                      <div className="flex-shrink-0 lg:pt-2 flex flex-col gap-3">
+                        {a.slug?.current && PREVIEW_VIDEOS[a.slug.current] && (
+                          <PreviewButton
+                            slug={a.slug.current}
+                            title={a.title}
+                            src={PREVIEW_VIDEOS[a.slug.current].src}
+                            durationLabel={PREVIEW_VIDEOS[a.slug.current].dur}
+                          />
+                        )}
                         <Link
                           href={`/assessment/${a.slug?.current}`}
                           className="inline-flex items-center gap-2 bg-ecm-green text-white font-barlow font-semibold text-sm px-8 py-3.5 rounded-full hover:bg-ecm-green-dark transition-colors"

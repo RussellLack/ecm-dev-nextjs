@@ -21,6 +21,20 @@ export async function detectFlowType(page: Page): Promise<FlowType> {
  * rendered but is not actually interactive — i.e. the hydration-failure case.
  */
 export async function exerciseAssessment(page: Page): Promise<void> {
+  // The assessment tools sit behind the registration gate (AssessmentGate),
+  // which reveals the tool client-side only after reading the access cookie in
+  // an effect. That extra async reveal races the one-shot flow-type detection
+  // below: for a "qa" tool the start button isn't in the DOM yet at detect
+  // time, so it would misclassify as "calculator" and then wait for an element
+  // that never appears. Wait for the tool itself to surface first — either the
+  // qa start button or the calculator root — before detecting its shape.
+  await page
+    .locator(
+      '[data-testid="assessment-start"], [data-testid="assessment-interactive"]',
+    )
+    .first()
+    .waitFor({ state: "visible", timeout: 20_000 });
+
   const type = await detectFlowType(page);
 
   if (type === "qa") {

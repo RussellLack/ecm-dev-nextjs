@@ -1,4 +1,5 @@
 import ProcessAssessment from "@/components/assessment/ProcessAssessment";
+import AssessmentGate from "@/components/assessment/AssessmentGate";
 
 export const metadata = {
   title: "Process Assessment | ECM.DEV",
@@ -7,5 +8,9 @@ export const metadata = {
 };
 
 export default function ProcessAssessmentPage() {
-  return <ProcessAssessment />;
+  return (
+    <AssessmentGate slug="process" title="Process Assessment">
+      <ProcessAssessment />
+    </AssessmentGate>
+  );
 }
