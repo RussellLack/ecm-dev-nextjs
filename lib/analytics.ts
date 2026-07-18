@@ -93,3 +93,53 @@ export function referringToolName(): string {
   if (from === TOOL_NAME.leadMagnet) return TOOL_NAME.leadMagnet;
   return TOOL_NAME.contact;
 }
+
+// ---------------------------------------------------------------------------
+// Assessment gate + preview funnel
+// ---------------------------------------------------------------------------
+//
+// The email gate added a new step in front of every assessment. These events
+// let GA4 measure the gate funnel: how many visitors see the gate, how many
+// preview a tool, and how many register (and with which optional choices).
+//
+// GTM wiring (configure in the container UI — see ANALYTICS.md):
+//   - Custom Event triggers for: assessment_preview, gate_view, gate_register
+//   - A GA4 event tag forwarding each with the params below. Register
+//     `consult_requested` and `marketing_opt_in` as GA4 custom dimensions if
+//     you want to segment on them.
+
+/** Gate + preview event names the GTM triggers listen for. */
+export type GateEventName =
+  | "assessment_preview" // visitor opened a demo preview from the listing
+  | "gate_view" // the registration gate was shown for a tool
+  | "gate_register"; // visitor completed registration and unlocked the tool
+
+export interface GateEventParams {
+  /** Assessment slug/id, e.g. "process", "content-operations-maturity". */
+  tool_name: string;
+  source_page: string;
+  /** gate_register only — whether the consultant read-through was requested. */
+  consult_requested: boolean | null;
+  /** gate_register only — whether the marketing opt-in was ticked. */
+  marketing_opt_in: boolean | null;
+}
+
+/**
+ * Push a gate / preview funnel event to the dataLayer. Safe on the server
+ * (no-ops). Booleans are sent through unchanged so GTM can map them to GA4
+ * params; the two register-only flags default to null for the other events.
+ */
+export function pushGateEvent(
+  event: GateEventName,
+  params: Pick<GateEventParams, "tool_name"> & Partial<GateEventParams>
+): void {
+  if (typeof window === "undefined") return;
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({
+    event,
+    tool_name: params.tool_name,
+    source_page: params.source_page ?? window.location.pathname,
+    consult_requested: params.consult_requested ?? null,
+    marketing_opt_in: params.marketing_opt_in ?? null,
+  });
+}

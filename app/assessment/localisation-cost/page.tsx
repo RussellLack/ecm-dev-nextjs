@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import EstimatorClient from "@/components/estimator/EstimatorClient";
 import AssessmentNextSteps from "@/components/assessment/AssessmentNextSteps";
+import AssessmentGate from "@/components/assessment/AssessmentGate";
 
 export const metadata: Metadata = {
   title: "Localisation Cost Estimator | ECM.DEV",
@@ -17,7 +18,9 @@ export const metadata: Metadata = {
 export default function LocalisationCostPage() {
   return (
     <>
-      <EstimatorClient />
+      <AssessmentGate slug="localisation-cost" title="Localisation Cost Estimator">
+        <EstimatorClient />
+      </AssessmentGate>
       <AssessmentNextSteps
         pillars={["localization"]}
         currentSlug="localisation-cost"

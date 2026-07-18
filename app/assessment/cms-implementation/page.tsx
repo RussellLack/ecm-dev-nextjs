@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import CmsImplementationClient from "@/components/assessment/cms-implementation/Client";
 import AssessmentNextSteps from "@/components/assessment/AssessmentNextSteps";
+import AssessmentGate from "@/components/assessment/AssessmentGate";
 
 export const metadata: Metadata = {
   title: "CMS Implementation Cost Estimator | ECM.DEV",
@@ -18,7 +19,12 @@ export const metadata: Metadata = {
 export default function CmsImplementationAssessmentPage() {
   return (
     <>
-      <CmsImplementationClient />
+      <AssessmentGate
+        slug="cms-implementation"
+        title="CMS Implementation Cost Estimator"
+      >
+        <CmsImplementationClient />
+      </AssessmentGate>
       <AssessmentNextSteps
         pillars={["technology", "services"]}
         currentSlug="cms-implementation"

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getAssessment } from "@/lib/assessment/queries";
 import AssessmentShell from "@/components/assessment/AssessmentShell";
+import AssessmentGate from "@/components/assessment/AssessmentGate";
 import { notFound } from "next/navigation";
 
 export const revalidate = 60;
@@ -42,5 +43,9 @@ export default async function AssessmentPage({
     notFound();
   }
 
-  return <AssessmentShell assessment={assessment} />;
+  return (
+    <AssessmentGate slug={slug} title={assessment.title}>
+      <AssessmentShell assessment={assessment} />
+    </AssessmentGate>
+  );
 }

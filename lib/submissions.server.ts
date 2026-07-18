@@ -28,7 +28,7 @@ import type { TrackingData } from "./assessment/types";
 
 const STORE_NAME = "submissions";
 
-export type SubmissionKind = "assessment" | "tool";
+export type SubmissionKind = "assessment" | "tool" | "gate";
 
 /**
  * Denormalised submission record written to Blobs. Fields map 1:1 to the
@@ -125,9 +125,48 @@ export interface ToolSubmissionRecord {
   };
 }
 
+/**
+ * Registration-gate lead. Created when a visitor registers to start an
+ * assessment (the consent moment), before any answers exist. Access is granted
+ * via cookie; this record is the GDPR audit trail + the notification/CRM source.
+ */
+export interface GateSubmissionRecord {
+  _id: string;
+  kind: "gate";
+  _type: "gateRegistration";
+  toolSlug: string;
+  toolTitle: string;
+  submittedAt: string;
+
+  firstName: string;
+  email: string;
+  company: string;
+
+  tracking: Record<string, unknown>;
+
+  consent: {
+    given: boolean;
+    text: string | null;
+    version: string | null;
+    capturedAt: string | null;
+  };
+
+  /** Optional future-communications opt-in (GDPR marketing consent). */
+  marketingOptIn: boolean;
+  /** Optional request for a consultant to walk through the results. */
+  consultRequested: boolean;
+
+  activation: {
+    pushedToCrm: boolean;
+    pushedAt: string | null;
+    error: string | null;
+  };
+}
+
 export type SubmissionRecord =
   | AssessmentSubmissionRecord
-  | ToolSubmissionRecord;
+  | ToolSubmissionRecord
+  | GateSubmissionRecord;
 
 function key(id: string): string {
   return `submissions/${id}.json`;
