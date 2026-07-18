@@ -28,7 +28,7 @@ export function organizationSchema() {
     "@type": "Organization",
     name: SITE_NAME,
     url: SITE_URL,
-    logo: `${SITE_URL}/ecm-logo.svg`,
+    logo: `${SITE_URL}/favicon-512.png`,
     description: SITE_DESCRIPTION,
     contactPoint: {
       "@type": "ContactPoint",
