@@ -28,12 +28,24 @@ export function organizationSchema() {
     "@type": "Organization",
     name: SITE_NAME,
     url: SITE_URL,
+    logo: `${SITE_URL}/ecm-logo.svg`,
     description: SITE_DESCRIPTION,
     contactPoint: {
       "@type": "ContactPoint",
       email: CONTACT_EMAIL,
       contactType: "customer support",
     },
+  };
+}
+
+export function websiteSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: SITE_NAME,
+    url: SITE_URL,
+    description: SITE_DESCRIPTION,
+    publisher: ORG_REF,
   };
 }
 
@@ -113,6 +125,59 @@ export function serviceSchema(input: ServiceInput) {
     serviceType: input.serviceType,
     areaServed: "Worldwide",
     provider: ORG_REF,
+  };
+}
+
+type CaseStudyInput = {
+  title: string;
+  slug: string;
+  description?: string;
+  client?: string;
+  industry?: string | null;
+  tags?: string[];
+  image?: SanityImage;
+  _createdAt?: string;
+  _updatedAt?: string;
+};
+
+/**
+ * CaseStudy JSON-LD. Modelled as a schema.org Article (the closest first-party
+ * type — Google surfaces case studies as long-form editorial content), with
+ * about:Organization when we know the client. Agents parsing the page get a
+ * clean who/what/when triple without having to infer it from the DOM.
+ */
+export function caseStudySchema(cs: CaseStudyInput) {
+  const url = `${SITE_URL}/case-study/${cs.slug}`;
+  const imageUrl = cs.image
+    ? urlFor(cs.image).width(1200).height(630).url()
+    : undefined;
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "@id": url,
+    headline: cs.title,
+    ...(cs.description ? { description: cs.description } : {}),
+    ...(imageUrl ? { image: [imageUrl] } : {}),
+    ...(cs._createdAt ? { datePublished: cs._createdAt } : {}),
+    ...(cs._updatedAt ? { dateModified: cs._updatedAt } : {}),
+    author: ORG_REF,
+    publisher: ORG_REF,
+    ...(cs.client
+      ? {
+          about: {
+            "@type": "Organization",
+            name: cs.client,
+          },
+        }
+      : {}),
+    ...(cs.industry ? { articleSection: cs.industry } : {}),
+    ...(cs.tags && cs.tags.length > 0 ? { keywords: cs.tags.join(", ") } : {}),
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": url,
+    },
+    url,
   };
 }
 
