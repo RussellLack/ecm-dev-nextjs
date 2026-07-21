@@ -239,12 +239,15 @@ ${concept}`;
           prompt,
           n: 1,
           size: "1536x1024",
-          // "medium" gives cleaner line rendering and more per-prompt
-          // variation than "low"; still fits inside the 24s abort on
-          // Netlify Pro's 26s function tier. If timeouts start showing
-          // in logs, drop to "low" — that costs distinctness but is
-          // still much better than the pre-variant single-look output.
-          quality: "medium",
+          // Was "medium" briefly — but by 2026-07-21 every request was
+          // hitting the 24s abort and falling back to the SVG (see the
+          // "cover generation failed: This operation was aborted" line
+          // in Netlify function logs). "low" reliably completes in
+          // ~8-12s inside the 24s budget. We lose some line detail vs.
+          // medium but keep frame+tint cycling, so covers still read as
+          // distinct on the blog listing. Revisit if OpenAI's medium
+          // latency drops back under ~20s.
+          quality: "low",
           output_format: "png",
         }),
         signal: controller.signal,
