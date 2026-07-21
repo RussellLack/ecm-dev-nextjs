@@ -282,8 +282,9 @@ export default async function PlatformDetailPage({
                     href={`/post/${p.slug?.current}`}
                     title={p.title}
                     subtitle={p.excerpt}
-                    /* image omitted — illustration always wins for posts */
-                    fallback={<PostIllustration slug={p.slug?.current} />}
+                    /* image omitted — PostIllustration picks bespoke SVG,
+                       else mainImage, else GenericMotif. */
+                    fallback={<PostIllustration slug={p.slug?.current} mainImage={p.mainImage} />}
                   />
                 ))}
               </Cluster>

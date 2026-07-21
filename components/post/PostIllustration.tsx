@@ -1,4 +1,5 @@
 import React from "react";
+import { urlFor } from "@/lib/sanity";
 
 /**
  * Per-blog-post line illustrations.
@@ -954,10 +955,47 @@ const SLUG_TO_ILLUSTRATION: Record<string, () => React.JSX.Element> = {
   "what-is-a-dxp-in-2026": WhatIsADxp2026,
 };
 
-export default function PostIllustration({ slug }: { slug?: string }) {
-  if (!slug) return <GenericMotif />;
-  const Illustration = SLUG_TO_ILLUSTRATION[slug] ?? GenericMotif;
-  return <Illustration />;
+/**
+ * Picking order for the card / hero visual:
+ *   1. Bespoke SVG mapped by slug (hand-drawn — always wins where one exists)
+ *   2. `mainImage` from Sanity (per-article gpt-image-1 cover, if provided)
+ *   3. GenericMotif (shared placeholder — signals "no cover yet")
+ *
+ * Before this, missing bespoke SVGs went straight to GenericMotif, so
+ * every intel-derived post on the blog listing rendered the same generic
+ * "document with green line" — even though each post had a unique
+ * AI-generated cover sitting in Sanity, unused. Threading mainImage
+ * through here surfaces those covers on cards without disturbing the
+ * hand-drawn SVGs that already exist.
+ */
+export default function PostIllustration({
+  slug,
+  mainImage,
+}: {
+  slug?: string;
+  mainImage?: unknown;
+}) {
+  if (slug && slug in SLUG_TO_ILLUSTRATION) {
+    const Illustration = SLUG_TO_ILLUSTRATION[slug];
+    return <Illustration />;
+  }
+  if (mainImage) {
+    const src = urlFor(mainImage).width(560).height(288).fit("crop").url();
+    return (
+      // Plain <img> keeps this component drop-in compatible with every
+      // caller — some pass it as `fallback` into non-Next surfaces. The
+      // aspect-fill class matches GenericMotif's viewBox so cards
+      // don't shift height when the source flips between motif and photo.
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        src={src}
+        alt=""
+        loading="lazy"
+        className="w-full h-full object-cover"
+      />
+    );
+  }
+  return <GenericMotif />;
 }
 
 export function hasPostIllustration(slug: string): boolean {
