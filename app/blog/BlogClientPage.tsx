@@ -219,7 +219,10 @@ export default function BlogClientPage({ posts }: { posts: Post[] }) {
                   className="bg-white rounded-xl overflow-hidden hover:shadow-lg transition-shadow group border border-gray-100 flex flex-col"
                 >
                   <div className="h-36 overflow-hidden bg-ecm-green/5 flex items-center justify-center border-b border-gray-100">
-                    <PostIllustration slug={post.slug?.current} />
+                    <PostIllustration
+                      slug={post.slug?.current}
+                      mainImage={post.mainImage}
+                    />
                   </div>
                   <div className="p-4 flex flex-col flex-1 bg-gray-50">
                     <h2 className="text-ecm-green font-barlow font-semibold text-sm mb-2 group-hover:text-ecm-green-dark transition-colors leading-snug">

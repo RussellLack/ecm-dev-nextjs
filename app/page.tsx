@@ -371,7 +371,10 @@ export default async function HomePage() {
                 className="bg-white rounded-xl overflow-hidden border border-gray-100 hover:shadow-lg shadow-sm transition-shadow group flex flex-col"
               >
                 <div className="h-36 overflow-hidden bg-ecm-green/5 flex items-center justify-center border-b border-gray-100">
-                  <PostIllustration slug={post.slug?.current || post.slug} />
+                  <PostIllustration
+                    slug={post.slug?.current || post.slug}
+                    mainImage={post.mainImage}
+                  />
                 </div>
                 <div className="p-4 flex flex-col flex-1 bg-gray-50">
                   <h3 className="text-ecm-green font-barlow font-semibold text-sm mb-2 group-hover:text-ecm-green-dark transition-colors leading-snug">

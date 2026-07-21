@@ -109,8 +109,11 @@ export default async function MixedRelated({
       eyebrow: EYEBROW.post,
       title: post.title,
       blurb: post.excerpt,
-      // image intentionally omitted — illustration always wins for posts.
-      fallback: <PostIllustration slug={post.slug.current} />,
+      // image intentionally omitted — PostIllustration picks bespoke SVG,
+      // else mainImage, else GenericMotif.
+      fallback: (
+        <PostIllustration slug={post.slug.current} mainImage={post.mainImage} />
+      ),
     });
   }
   if (intelTopic?.slug) {

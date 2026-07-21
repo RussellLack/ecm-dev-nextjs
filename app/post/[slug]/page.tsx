@@ -174,7 +174,12 @@ export default async function PostPage({
     .slice(0, 3)
     .map((p: any) => ({
       ...p,
-      fallback: <PostIllustration slug={p.slug?.current ?? p.slug} />,
+      fallback: (
+        <PostIllustration
+          slug={p.slug?.current ?? p.slug}
+          mainImage={p.mainImage}
+        />
+      ),
     }));
 
   return (
@@ -212,12 +217,11 @@ export default async function PostPage({
         </div>
       </section>
 
-      {/* Featured illustration — replaces any editor mainImage on the
-          card surfaces; still rendered here as the hero so the page
-          composition holds together. */}
+      {/* Hero visual — bespoke slug SVG → editor mainImage → GenericMotif,
+          picked inside PostIllustration. */}
       <div className="max-w-3xl mx-auto px-6 -mt-8">
         <div className="rounded-2xl w-full shadow-lg bg-white border border-gray-100 aspect-[280/144] overflow-hidden">
-          <PostIllustration slug={slug} />
+          <PostIllustration slug={slug} mainImage={post.mainImage} />
         </div>
       </div>
 
