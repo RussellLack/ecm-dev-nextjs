@@ -48,25 +48,25 @@ export default defineType({
       name: "topics",
       title: "Topics",
       description:
-        "Canonical topic tags. Pick from the fixed list — the intel enricher uses these same 12 topics so filtering on /blog stays consistent. For company / product mentions (Sitecore, Umbraco, etc.), use Vendors below instead.",
+        "Canonical topic tags. Pick from the fixed list — the intel enricher uses these same 12 topics so filtering on /blog stays consistent. For product / platform / vendor mentions (Sitecore, Umbraco, n8n, etc.), use Platforms below instead.",
       type: "array",
       of: [{ type: "string", options: { list: [...TOPIC_OPTIONS] } }],
       options: { layout: "tags" },
     }),
     defineField({
-      name: "vendors",
-      title: "Vendors / Products",
+      name: "platforms",
+      title: "Platforms / Products",
       description:
-        "Named companies or products mentioned in the post (e.g. Sitecore, Umbraco, Kentico Xperience). Free-form — type and press Enter. Do NOT put generic category words (CMS, DXP) here; those go in Topics.",
+        "Named platforms, products, or vendors mentioned in the post (e.g. Sitecore, Umbraco, Contentful, n8n, Claude Code). Free-form — type and press Enter. Blog filter categorises each entry: real CMS/DXP platforms show under \"CMS & Platforms\"; automation/AI tools show under \"AI & Automation\" — see CMS_PLATFORMS and AI_TOOLS in app/blog/BlogClientPage.tsx. Do NOT put generic category words (CMS, DXP) here; those go in Topics.",
       type: "array",
       of: [{ type: "string" }],
       options: { layout: "tags" },
     }),
     defineField({
       name: "tags",
-      title: "Tags (deprecated — use Topics + Vendors instead)",
+      title: "Tags (deprecated — use Topics + Platforms instead)",
       description:
-        "Legacy field. Migrated data lives in Topics + Vendors. Kept read-only for one release cycle before removal.",
+        "Legacy field. Migrated data lives in Topics + Platforms. Kept read-only for one release cycle before removal.",
       type: "array",
       of: [{ type: "string" }],
       options: { layout: "tags" },

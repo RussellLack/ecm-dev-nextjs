@@ -482,11 +482,14 @@ export async function POST(req: Request) {
       excerpt: article.summary ?? "",
       visualConcept: article.visualConcept ?? "",
       // Two-field tag storage: canonical topics (12-item enum) and
-      // vendor / product names (free-form). Frontend queries stitch
-      // them back into a single `tags` list for display via a GROQ
-      // projection in lib/queries.ts (POST_TAGS).
+      // platform / product / vendor names (free-form). Frontend
+      // queries stitch them back into a single `tags` list for display
+      // via a GROQ projection in lib/queries.ts (POST_TAGS).
+      // NOTE: `article.vendors` on the RIGHT is intelArticle.vendors[]->
+      // references from the ecm-dev-intel dataset, unrelated to the
+      // post.platforms field being written on the LEFT.
       topics: article.topics.map((t) => t.title),
-      vendors: (article.vendors ?? []).map((v) => v.name),
+      platforms: (article.vendors ?? []).map((v) => v.name),
       pillars: pillarsFor(article.topics),
       body: buildBody(article),
       // Per-article cover in the house style. Editor overrides by
