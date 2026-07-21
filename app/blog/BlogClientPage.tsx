@@ -16,54 +16,89 @@ type Post = {
 
 /* ── Tag group definitions ────────────────────────────────────────────────── */
 
-const TAG_GROUPS: { label: string; match: (tag: string) => boolean }[] = [
-  {
-    label: "CMS & Platforms",
-    match: (t) =>
-      /kentico|sitecore|sanity|contentful|optimizely|ibexa|hyland|headless|dxp|cms(?!\s+workflow)|b2b.*(?:commerce|digital|platform)|european dxp|content.*repository|content.*federation/i.test(t) &&
-      !/migration|upgrade|modernisation|replace|legacy|performance|implement|selection/i.test(t),
-  },
-  {
-    label: "AI & Automation",
-    match: (t) =>
-      /\bai\b|agentic|automation|generative|content.*agent|llm/i.test(t),
-  },
-  {
-    label: "Content Operations",
-    match: (t) =>
-      /content.*(?:operations|ops|strategy|management|scaling|marketing|publishing)|cms.*(?:workflow|roi|publishing)|brand.*community|b2b.*(?:content|buyer)/i.test(t),
-  },
-  {
-    label: "Localisation & Search",
-    match: (t) =>
-      /locali[sz]ation|multilingual|internationalisation|geo.*seo|search.*visib|answer.*engine|generative.*engine|regional|social.*media.*local|website.*locali/i.test(t),
-  },
-  {
-    label: "Migration & Modernisation",
-    match: (t) =>
-      /migrat|upgrade|modernis|legacy|end.*of.*life|replace.*cms|performance.*issue|implement|selection.*criteria/i.test(t),
-  },
-];
+// Explicit allowlists — retired the previous regex heuristic that was
+// dropping half the vendor names (Umbraco, WordPress, Drupal, Palmata,
+// Claude Code, n8n…) into "Other" because they weren't spelled out in
+// the regex. The lists below name every vendor / product / topic that
+// currently appears in Sanity; edit here when new ones are added. Any
+// tag that appears in Sanity but isn't in either list still falls to
+// "Other", making an unclassified new entry loud instead of silent.
+//
+// CMS_PLATFORMS = real content platforms (CMSes, DXPs, discovery/AI-
+// discovery products tied to a CMS).
+// AI_TOOLS      = AI assistants, agent frameworks, automation tools —
+// anything mentioned in a post as a build/agent/automation building
+// block rather than a content platform.
+const CMS_PLATFORMS = new Set<string>([
+  "Kentico",
+  "Sitecore",
+  "Sanity",
+  "Contentful",
+  "Optimizely",
+  "Ibexa",
+  "Hyland",
+  "Umbraco",
+  "WordPress",
+  "Drupal",
+  "Acquia",
+  "Palmata",
+]);
+
+const AI_TOOLS = new Set<string>([
+  "Claude Code",
+  "Cursor",
+  "Salesforce Agentforce",
+  "n8n",
+  "Activepieces",
+  "ECA",
+  "FlowDrop",
+  "Maestro",
+]);
+
+// Canonical topic enum (sanity/schemas/taxonomyOptions.ts) →
+// which filter group each topic belongs under. Data-driven, no regex.
+const TOPIC_GROUP: Record<string, string> = {
+  CMS: "CMS & Platforms",
+  DXP: "CMS & Platforms",
+  DAM: "CMS & Platforms",
+  PIM: "CMS & Platforms",
+  Search: "CMS & Platforms",
+  Personalization: "CMS & Platforms",
+  Analytics: "CMS & Platforms",
+  AI: "AI & Automation",
+  ContentOps: "Content Operations",
+  Workflow: "Content Operations",
+  Governance: "Content Operations",
+  Compliance: "Content Operations",
+};
+
+// Preserve display order: groups appear in the filter bar in this order
+// no matter what order they get populated.
+const GROUP_ORDER = [
+  "CMS & Platforms",
+  "AI & Automation",
+  "Content Operations",
+  "Other",
+] as const;
+
+function tagGroup(tag: string): string {
+  if (CMS_PLATFORMS.has(tag)) return "CMS & Platforms";
+  if (AI_TOOLS.has(tag)) return "AI & Automation";
+  if (tag in TOPIC_GROUP) return TOPIC_GROUP[tag];
+  return "Other";
+}
 
 function groupTags(allTags: string[]): { label: string; tags: string[] }[] {
-  const assigned = new Set<string>();
-  const groups: { label: string; tags: string[] }[] = [];
-
-  for (const group of TAG_GROUPS) {
-    const matched = allTags.filter((t) => !assigned.has(t) && group.match(t));
-    matched.forEach((t) => assigned.add(t));
-    if (matched.length > 0) {
-      groups.push({ label: group.label, tags: matched });
-    }
+  const buckets = new Map<string, string[]>();
+  for (const tag of allTags) {
+    const label = tagGroup(tag);
+    const list = buckets.get(label);
+    if (list) list.push(tag);
+    else buckets.set(label, [tag]);
   }
-
-  // Anything unmatched goes into "Other"
-  const remaining = allTags.filter((t) => !assigned.has(t));
-  if (remaining.length > 0) {
-    groups.push({ label: "Other", tags: remaining });
-  }
-
-  return groups;
+  return GROUP_ORDER
+    .filter((label) => buckets.has(label))
+    .map((label) => ({ label, tags: buckets.get(label)! }));
 }
 
 /* ── Component ────────────────────────────────────────────────────────────── */

@@ -1,17 +1,19 @@
 import "server-only";
 import { sanityFetch } from "./sanity.server";
 
-// GROQ expression: joined array of topic + vendor tags on a post.
-// Post storage split: `topics` (canonical enum) + `vendors` (free-form
-// company/product names). Frontend keeps reading `.tags` — this
-// expression stitches them back into one array in the projection.
+// GROQ expression: joined array of topic + platform tags on a post.
+// Post storage split: `topics` (canonical enum) + `platforms` (free-form
+// product / platform / vendor names). Frontend keeps reading `.tags` —
+// this expression stitches them back into one array in the projection.
 //
-// Fallback to legacy `tags` field for any post that hasn't been
-// migrated yet — belt-and-braces so a mistimed deploy doesn't blank
-// out the blog tag chips.
+// coalesce(platforms, vendors, []) reads the new field first but falls
+// through to the legacy `vendors` field for any post whose migration
+// hasn't landed yet — belt-and-braces so a mistimed deploy doesn't
+// blank out the blog tag chips. Once every doc is migrated we can drop
+// the vendors leg. Falls back further to legacy `tags` for old posts.
 const POST_TAGS = `select(
-  count(coalesce(topics, []) + coalesce(vendors, [])) > 0
-  => coalesce(topics, []) + coalesce(vendors, []),
+  count(coalesce(topics, []) + coalesce(platforms, vendors, [])) > 0
+  => coalesce(topics, []) + coalesce(platforms, vendors, []),
   coalesce(tags, [])
 )`;
 

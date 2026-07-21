@@ -13,8 +13,8 @@ export const PILLAR_OPTIONS = [
 //   - workers/enrich.ts ALLOWED_TOPICS in ecm-dev-intel-studio
 //   - scripts/backfill-blog-tags.ts ALLOWED_TOPICS in ecm-dev-intel-studio
 // These 12 topics are the ONLY values allowed in post.topics. Named
-// vendor / product mentions (Sitecore, Umbraco, etc.) go into
-// post.vendors as free-form strings.
+// platform / product / vendor mentions (Sitecore, Umbraco, n8n, etc.)
+// go into post.platforms as free-form strings.
 export const TOPIC_OPTIONS = [
   { title: "ContentOps", value: "ContentOps" },
   { title: "AI", value: "AI" },
