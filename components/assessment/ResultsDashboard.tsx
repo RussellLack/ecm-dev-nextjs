@@ -100,6 +100,37 @@ export default function ResultsDashboard({
     { level: 4, label: "Optimised" },
   ];
 
+  // Executive readout: translate the weakest dimensions into the commercial
+  // consequence a marketing leader actually feels. Keyed by dimension key.
+  const dimensionCost: Record<string, string> = {
+    strategy:
+      "Content isn't tied to business outcomes, so effort goes into work that can't be defended or measured.",
+    workflow:
+      "Every campaign waits on manual handoffs, so time-to-market slips and the team reworks instead of shipping.",
+    technology:
+      "The platforms you've paid for underperform, so licence spend outruns the value they return.",
+    governance:
+      "Quality and consistency depend on individuals, which is where exposure and rework accumulate as you scale.",
+    measurement:
+      "You can't connect content to pipeline or conversion, so budget gets defended on volume, not value.",
+    "ai-readiness":
+      "Content isn't structured for AI, so AI initiatives produce unreliable results and stall.",
+  };
+
+  // Overall commercial framing by maturity band.
+  const bandCost: Record<number, string> = {
+    1: "At this level, marketing runs on individual effort rather than a system. That caps how fast you can move and how much you can scale without adding people.",
+    2: "You have pockets of good practice, but the inconsistency between teams is where time, cost, and quality quietly leak.",
+    3: "The foundations are solid. The opportunity now is to turn a good operation into an integrated system that compounds, especially for AI.",
+    4: "You're operating at the frontier. The work now is consolidating the advantage and holding it as AI raises the bar.",
+  };
+
+  const weakDims = dimensionScores.filter((d) =>
+    weakAreas.includes(d.dimensionKey)
+  );
+  const topStep = recommendations[0];
+  const otherSteps = recommendations.slice(1);
+
   return (
     <div className="min-h-screen bg-ecm-green">
       {/* Topbar */}
@@ -113,7 +144,7 @@ export default function ResultsDashboard({
               ← Assessments
             </Link>
             <div className="text-xs font-bold text-ecm-lime tracking-widest uppercase font-barlow">
-              Maturity Results
+              Executive Readout
             </div>
           </div>
           <a
@@ -135,8 +166,11 @@ export default function ResultsDashboard({
           )}
 
           <h1 className="text-white font-barlow font-bold text-2xl sm:text-3xl lg:text-4xl mb-2">
-            {firstName ? `${firstName}, your` : "Your"} content operations maturity:
+            {firstName ? `${firstName}, your` : "Your"} content infrastructure readout
           </h1>
+          <p className="text-white/60 font-barlow text-sm sm:text-base mb-2 max-w-xl">
+            Where your content infrastructure is helping or holding back marketing performance, and the one thing to do first.
+          </p>
 
           {/* Score + Band */}
           <div className="mt-8 mb-6 flex items-end gap-6">
@@ -190,6 +224,76 @@ export default function ResultsDashboard({
         </div>
       </section>
 
+      {/* What this is costing you */}
+      <section className="pb-16">
+        <div className="max-w-3xl mx-auto px-6">
+          <div className="bg-white/5 border border-white/10 rounded-2xl px-8 py-10">
+            <h3 className="text-white font-barlow font-bold text-xl mb-2">
+              What this is costing you
+            </h3>
+            <p className="text-white/70 font-barlow leading-relaxed mb-6">
+              {bandCost[bandLevel] || bandCost[1]}
+            </p>
+            {weakDims.length > 0 && (
+              <ul className="space-y-4">
+                {weakDims.map((dim) => (
+                  <li key={dim.dimensionKey} className="flex gap-3">
+                    <span
+                      className="mt-1 flex-shrink-0 w-2 h-2 rounded-full"
+                      style={{ backgroundColor: "#F59E0B" }}
+                    />
+                    <span className="text-white/70 font-barlow text-sm leading-relaxed">
+                      <span className="text-white font-semibold">
+                        {dim.dimensionTitle}:
+                      </span>{" "}
+                      {dimensionCost[dim.dimensionKey] ||
+                        "This dimension is holding back marketing performance and is a priority to address."}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* Your recommended next step */}
+      {topStep && (
+        <section className="pb-16">
+          <div className="max-w-3xl mx-auto px-6">
+            <div className="bg-ecm-lime/10 border border-ecm-lime/30 rounded-2xl px-8 py-10">
+              <p className="text-ecm-lime font-barlow text-xs uppercase tracking-widest font-bold mb-2">
+                Your recommended next step
+              </p>
+              <h3 className="text-white font-barlow font-bold text-xl sm:text-2xl mb-2">
+                {topStep.title}
+              </h3>
+              {topStep.summary && (
+                <p className="text-white/70 font-barlow leading-relaxed mb-6 max-w-2xl">
+                  {topStep.summary}
+                </p>
+              )}
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Link
+                  href="/contact"
+                  className="inline-flex items-center justify-center bg-ecm-lime text-ecm-green font-barlow font-bold px-8 py-3 rounded-full hover:bg-ecm-lime-hover transition-colors"
+                >
+                  Book a strategy session
+                </Link>
+                {topStep.serviceHref && (
+                  <Link
+                    href={topStep.serviceHref}
+                    className="inline-flex items-center justify-center border border-ecm-lime/40 text-ecm-lime font-barlow font-semibold px-8 py-3 rounded-full hover:bg-ecm-lime/10 transition-colors"
+                  >
+                    See how we fix this
+                  </Link>
+                )}
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Dimension Scores */}
       <section className="pb-16">
         <div className="max-w-3xl mx-auto px-6">
@@ -230,18 +334,18 @@ export default function ResultsDashboard({
         </div>
       </section>
 
-      {/* Recommendations */}
-      {recommendations.length > 0 && (
+      {/* Recommendations (beyond the first, highlighted step) */}
+      {otherSteps.length > 0 && (
         <section className="pb-16">
           <div className="max-w-3xl mx-auto px-6">
             <h3 className="text-white font-barlow font-bold text-xl mb-2">
-              Where to focus next
+              The rest of the picture
             </h3>
             <p className="text-white/50 font-barlow text-sm mb-6">
-              Based on your weakest dimensions, here is where we would start.
+              Once the first step is underway, these are the next areas we would address.
             </p>
             <div className="grid gap-4">
-              {recommendations.map((rec, i) => (
+              {otherSteps.map((rec, i) => (
                 <div
                   key={i}
                   className="bg-white/5 border border-white/10 rounded-xl p-6 hover:border-ecm-lime/30 transition-all"
@@ -379,18 +483,17 @@ export default function ResultsDashboard({
         <div className="max-w-3xl mx-auto px-6">
           <div className="bg-ecm-green-dark/60 border border-ecm-lime/15 rounded-2xl px-8 py-10 text-center">
             <h3 className="text-ecm-lime font-barlow font-bold text-2xl sm:text-3xl mb-3">
-              {ctaHeading || "Ready to move up?"}
+              {ctaHeading || "Review your readout with us"}
             </h3>
-            {ctaBody && (
-              <p className="text-white/60 font-barlow mb-6 max-w-lg mx-auto">
-                {ctaBody}
-              </p>
-            )}
+            <p className="text-white/60 font-barlow mb-6 max-w-lg mx-auto">
+              {ctaBody ||
+                "Bring this readout to a 30-minute strategy session. We'll talk through where your marketing operation is leaking time, cost, and quality, and what fixing it looks like. No pitch, no obligation."}
+            </p>
             <Link
               href="/contact"
               className="inline-block bg-ecm-lime text-ecm-green font-barlow font-bold text-lg px-10 py-4 rounded-full hover:bg-ecm-lime-hover transition-colors"
             >
-              Talk to us
+              Book a strategy session
             </Link>
           </div>
         </div>
