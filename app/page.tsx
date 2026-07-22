@@ -220,8 +220,10 @@ export default async function HomePage() {
   const testimonials =
     homePage?.testimonials?.length ? homePage.testimonials : fallbackTestimonials;
 
-  const ctaHeading = homePage?.ctaHeading || "Find out where your content infrastructure";
-  const ctaSubheading = homePage?.ctaSubheading || "is holding marketing back.";
+  const ctaHeading =
+    homePage?.ctaHeading || "Find out where content infrastructure is holding your marketing back.";
+  const ctaSubheading =
+    homePage?.ctaSubheading || "The ten-minute assessment shows you where to start.";
 
   // Blog posts: use Sanity data if available, map to display format
   const blogPosts =
@@ -535,12 +537,14 @@ export default async function HomePage() {
         <LavaBlobs variant="lime" opacity={0.35} count={5} />
         <div className="relative z-10 max-w-4xl mx-auto px-6">
           <div className="bg-ecm-green-dark/60 backdrop-blur-sm rounded-2xl border border-ecm-lime/15 px-8 sm:px-12 py-12 sm:py-16">
-            <h2 className="text-ecm-lime font-barlow font-bold text-3xl sm:text-4xl lg:text-5xl mb-2">
+            <h2 className="text-ecm-lime font-barlow font-bold text-3xl sm:text-4xl lg:text-5xl mb-4">
               {ctaHeading}
             </h2>
-            <h2 className="text-ecm-lime font-barlow font-bold text-3xl sm:text-4xl lg:text-5xl mb-8">
-              {ctaSubheading}
-            </h2>
+            {ctaSubheading && (
+              <p className="text-white/85 font-barlow font-light text-lg sm:text-xl mb-8 max-w-xl mx-auto">
+                {ctaSubheading}
+              </p>
+            )}
             <Link
               href="/assessments"
               className="inline-block bg-ecm-lime text-ecm-green font-barlow font-bold text-xl px-12 py-4 rounded-full hover:bg-ecm-lime-hover transition-colors"
