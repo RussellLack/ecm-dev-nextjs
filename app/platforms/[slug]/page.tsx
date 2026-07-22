@@ -14,7 +14,7 @@ import GuideIllustration from "@/components/guides/GuideIllustration";
 import CaseStudyIllustration from "@/components/case-study/CaseStudyIllustration";
 import PostIllustration from "@/components/post/PostIllustration";
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 const PILLAR_HREF: Record<string, string> = {
   technology: "/content-technology",

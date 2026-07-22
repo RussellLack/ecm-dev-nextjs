@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { getProblemPage, getAllProblemSlugs } from "@/lib/queries";
 import ProblemPage, { type ProblemPageData } from "@/components/ProblemPage";
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 export async function generateStaticParams() {
   const slugs = await getAllProblemSlugs().catch(() => []);

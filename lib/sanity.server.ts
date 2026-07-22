@@ -9,20 +9,27 @@ import { createClient, type QueryParams } from "next-sanity";
  * component ever tries to import this file, so we can't accidentally ship
  * the read token to the browser.
  *
- * The read token lets us set the Sanity dataset ACL to Private
- * (Project → API → Datasets → Edit → Private) so unauthenticated GROQ
- * requests return 401. When the dataset is public, anyone can introspect
- * the entire schema and dump every document via the Sanity API directly —
- * which is what we're closing off.
+ * The read token lets us keep the Sanity dataset ACL Private
+ * (Project, API, Datasets, Edit, Private) so unauthenticated GROQ requests
+ * return 401. When the dataset is public, anyone can introspect the entire
+ * schema and dump every document via the Sanity API directly, which is what
+ * we are closing off.
  *
- * `useCdn` MUST be `false` when using a token; next-sanity will throw
- * otherwise.
+ * `useCdn: true` serves reads from the CDN endpoint (apicdn.sanity.io), the
+ * large end-user request bucket, cached at the edge. This keeps day-to-day
+ * traffic and build-time reads off the small, uncached API-request quota,
+ * which is what previously exhausted the plan limit. The token is still
+ * sent, so the Private dataset ACL is honoured (unauthenticated requests
+ * still get 401). @sanity/client 6.x supports a token together with
+ * `useCdn: true` and routes to the CDN host. This client is read-only;
+ * any writes must use a separate `useCdn: false` client so mutations never
+ * touch the CDN.
  */
 export const serverClient = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "",
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || "production",
   apiVersion: "2026-04-01",
-  useCdn: false,
+  useCdn: true,
   token: process.env.SANITY_API_READ_TOKEN,
   perspective: "published",
 });

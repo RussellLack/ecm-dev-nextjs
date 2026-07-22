@@ -9,7 +9,7 @@ import { urlFor } from "@/lib/sanity";
 import CaseStudyIllustration from "@/components/case-study/CaseStudyIllustration";
 import { INDUSTRY_OPTIONS } from "@/sanity/schemas/taxonomyOptions";
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 const INDUSTRY_LABEL: Record<string, string> = Object.fromEntries(
   INDUSTRY_OPTIONS.map((o) => [o.value, o.title])

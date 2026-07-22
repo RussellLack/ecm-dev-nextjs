@@ -7,7 +7,7 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import GuideIllustration from "@/components/guides/GuideIllustration";
 import { urlFor } from "@/lib/sanity";
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 const siteUrl = "https://ecm.dev";
 

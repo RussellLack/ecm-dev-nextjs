@@ -3,7 +3,7 @@ import Link from "next/link";
 import { sanityFetch } from "@/lib/sanity.server";
 import { INDUSTRY_OPTIONS } from "@/sanity/schemas/taxonomyOptions";
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "Industries — Case studies by sector | ECM.DEV",

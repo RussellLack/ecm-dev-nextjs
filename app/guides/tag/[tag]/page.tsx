@@ -6,7 +6,7 @@ import { getAllGuideTags, getGuidesByTag } from "@/lib/queries";
 import { tagFromSlug, tagToSlug } from "@/lib/tags";
 import GuideIllustration from "@/components/guides/GuideIllustration";
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 export async function generateStaticParams() {
   const tags = await getAllGuideTags().catch(() => []);

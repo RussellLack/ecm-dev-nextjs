@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { getCornerstone, getAllCornerstoneSlugs } from "@/lib/queries";
 import Cornerstone, { type CornerstoneData } from "@/components/Cornerstone";
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 export async function generateStaticParams() {
   const slugs = await getAllCornerstoneSlugs().catch(() => []);

@@ -8,7 +8,7 @@ import JsonLd from "@/components/JsonLd";
 import { serviceSchema } from "@/lib/structuredData";
 import type { ServicePageData } from "@/lib/serviceTypes";
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 // Editor-managed metadata (kept from main's May 1 work).
 export async function generateMetadata(): Promise<Metadata> {

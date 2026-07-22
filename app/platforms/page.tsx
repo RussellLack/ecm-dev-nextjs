@@ -3,7 +3,7 @@ import Link from "next/link";
 import { getPlatforms } from "@/lib/queries";
 import { urlFor } from "@/lib/sanity";
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "Platforms — CMS, DAM, DXP, AI | ECM.DEV",

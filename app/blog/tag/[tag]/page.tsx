@@ -6,7 +6,7 @@ import { getAllPostTags, getPostsByTag } from "@/lib/queries";
 import { tagFromSlug, tagToSlug } from "@/lib/tags";
 import PostIllustration from "@/components/post/PostIllustration";
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 export async function generateStaticParams() {
   const tags = await getAllPostTags().catch(() => []);

@@ -3,7 +3,7 @@ import { getAllAssessments } from "@/lib/assessment/queries";
 import ShareLinkButton from "@/components/assessments/ShareLinkButton";
 import PreviewButton from "@/components/assessments/PreviewButton";
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 export const metadata = {
   title: "Assessments | ECM.DEV",

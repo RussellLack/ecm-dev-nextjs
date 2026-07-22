@@ -9,7 +9,7 @@ import PostIllustration from "@/components/post/PostIllustration";
 import { getHomePage, getBlogPosts } from "@/lib/queries";
 import { urlFor } from "@/lib/sanity";
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 export async function generateMetadata(): Promise<Metadata> {
   const home = await getHomePage().catch(() => null);

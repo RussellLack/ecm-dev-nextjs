@@ -86,7 +86,7 @@ const portableTextComponents: PortableTextComponents = {
   },
 };
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 const tagColors: Record<string, string> = {
   "Content Localization": "bg-blue-100 text-blue-800",

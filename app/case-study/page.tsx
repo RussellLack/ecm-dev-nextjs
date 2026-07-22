@@ -1,7 +1,7 @@
 import { getCaseStudies } from "@/lib/queries";
 import CaseStudyGrid from "@/components/CaseStudyGrid";
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 export const metadata = {
   title: "Projects | ECM.DEV",

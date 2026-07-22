@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { getSolutionPage, getAllSolutionSlugs } from "@/lib/queries";
 import SolutionPage, { type SolutionPageData } from "@/components/SolutionPage";
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 export async function generateStaticParams() {
   const slugs = await getAllSolutionSlugs().catch(() => []);
