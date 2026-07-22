@@ -103,21 +103,21 @@ const outcomeCards = [
     title: "Scale Marketing Operations",
     description:
       "Ship more, faster, with the team you already have. We find where your content operation leaks time and value, then rebuild that part of the system.",
-    href: "/content-services",
+    href: "/solutions/improve-campaign-velocity",
     icon: 1,
   },
   {
     title: "Accelerate Global Marketing",
     description:
       "Enter new markets without the cost spiral. We fix the system around translation, from source content to in-market findability.",
-    href: "/content-localization",
+    href: "/solutions/scale-global-marketing",
     icon: 2,
   },
   {
     title: "Unlock AI & MarTech Value",
     description:
       "Make the platforms and AI you have already paid for finally perform. We fix the operational layer that decides whether they deliver.",
-    href: "/content-technology",
+    href: "/solutions/increase-cms-roi",
     icon: 0,
   },
 ];
@@ -198,6 +198,45 @@ function formatDate(dateString: string): string {
   });
 }
 
+/* Route each homepage symptom to the matching Problems We Solve page. */
+function symptomHref(title: string): string {
+  const t = (title || "").toLowerCase();
+  if (t.includes("cms")) return "/problems/our-cms-isnt-creating-value";
+  if (t.includes("localis")) return "/problems/localisation-costs-keep-growing";
+  if (t.includes("team") || t.includes("governance")) return "/problems/our-teams-work-in-silos";
+  if (t.includes("ai") || t.includes("personalis")) return "/problems/ai-isnt-delivering";
+  return "/problems";
+}
+
+/* Map an outcome-card icon (Sanity string, or legacy number) to a ServiceIcon index. */
+function iconIndex(icon: any): number {
+  if (typeof icon === "number") return icon;
+  const map: Record<string, number> = { technology: 0, services: 1, localization: 2 };
+  return map[icon] ?? 1;
+}
+
+/* Fallback ticker phrases (used when Sanity tickerPhrases is empty). */
+const fallbackTicker = [
+  "Content is infrastructure now.",
+  "You don't have a content problem.",
+  "Transformation fails at the content layer.",
+  "Content friction is customer friction.",
+  "The bottleneck is the workflow.",
+  "Broken inputs. Broken outputs. Always.",
+  "Faster campaigns start upstream.",
+  "Every market shouldn't cost more than the last.",
+  "Your platform isn't the problem.",
+  "AI without governance is chaos.",
+  "Velocity without governance is liability.",
+  "Structure today. Intelligence tomorrow.",
+  "Localisation is system design.",
+  "Knowledge is only as good as retrieval.",
+  "Content that can't scale, won't.",
+  "Good architecture is invisible.",
+  "Information flows before AI wins.",
+  "Unfindable information doesn't exist.",
+];
+
 /* ─── Page Component ─── */
 
 export default async function HomePage() {
@@ -224,6 +263,48 @@ export default async function HomePage() {
     homePage?.ctaHeading || "Find out where content infrastructure is holding your marketing back.";
   const ctaSubheading =
     homePage?.ctaSubheading || "The ten-minute assessment shows you where to start.";
+
+  // Hero buttons
+  const heroCtaPrimaryLabel = homePage?.heroCta?.primaryLabel || "Assess your content infrastructure";
+  const heroCtaPrimaryUrl = homePage?.heroCta?.primaryUrl || "/assessments";
+  const heroCtaPrimaryNote = homePage?.heroCta?.primaryNote ?? "10 min";
+  const heroCtaSecondaryLabel = homePage?.heroCta?.secondaryLabel || "Explore the guides";
+  const heroCtaSecondaryUrl = homePage?.heroCta?.secondaryUrl || "/guides";
+
+  // Symptoms section headings
+  const symptomsHeading =
+    homePage?.symptomsHeading || "You probably recognise at least one of these.";
+  const symptomsSubhead =
+    homePage?.symptomsSubhead ||
+    "Six symptoms. One underlying cause: content was never built as infrastructure.";
+
+  // Outcome cards
+  const cards = homePage?.outcomeCards?.length ? homePage.outcomeCards : outcomeCards;
+
+  // Proof band
+  const proofHeading = homePage?.proofHeading || "Fix the system, and the results follow.";
+  const proofSubhead =
+    homePage?.proofSubhead ||
+    "Real outcomes from enterprise teams who fixed the operation underneath their content, not just the content itself.";
+  const proof = homePage?.proofTiles?.length ? homePage.proofTiles : proofTiles;
+
+  // Diagnostic band
+  const diagnosticHeading =
+    homePage?.diagnosticHeading || "Not sure where your infrastructure is costing you most?";
+  const diagnosticBody =
+    homePage?.diagnosticBody ||
+    "In about ten minutes, the assessment scores your marketing operation across strategy, workflow, technology, governance, measurement, and AI readiness, then shows you the weakest link and what to do about it. You get an executive-ready readout, not a sales call.";
+  const diagnosticCtaLabel = homePage?.diagnosticCtaLabel || "Start the assessment";
+  const diagnosticCtaUrl = homePage?.diagnosticCtaUrl || "/assessments";
+
+  // Ticker
+  const tickerPhrases = homePage?.tickerPhrases?.length ? homePage.tickerPhrases : fallbackTicker;
+
+  // Closing CTA
+  const closingCtaLabel = homePage?.closingCtaLabel || "Assess your content infrastructure";
+  const closingCtaUrl = homePage?.closingCtaUrl || "/assessments";
+  const closingSecondaryLabel = homePage?.closingSecondaryLabel ?? "or book a strategy session";
+  const closingSecondaryUrl = homePage?.closingSecondaryUrl || "/contact";
 
   // Blog posts: use Sanity data if available, map to display format
   const blogPosts =
@@ -263,18 +344,22 @@ export default async function HomePage() {
               {/* Hero calls to action */}
               <div className="mt-8 flex flex-col sm:flex-row gap-4">
                 <Link
-                  href="/assessments"
+                  href={heroCtaPrimaryUrl}
                   className="inline-flex items-center justify-center bg-ecm-lime text-ecm-green font-barlow font-bold text-base sm:text-lg px-8 py-4 rounded-full hover:bg-ecm-lime-hover transition-colors"
                 >
-                  Assess your content infrastructure
-                  <span className="ml-2 text-ecm-green/70 font-medium text-sm">10 min</span>
+                  {heroCtaPrimaryLabel}
+                  {heroCtaPrimaryNote && (
+                    <span className="ml-2 text-ecm-green/70 font-medium text-sm">{heroCtaPrimaryNote}</span>
+                  )}
                 </Link>
-                <Link
-                  href="/guides"
-                  className="inline-flex items-center justify-center border-2 border-ecm-lime text-ecm-lime font-barlow font-semibold text-base sm:text-lg px-8 py-4 rounded-full hover:bg-ecm-lime hover:text-ecm-green transition-colors"
-                >
-                  Explore the guides
-                </Link>
+                {heroCtaSecondaryLabel && (
+                  <Link
+                    href={heroCtaSecondaryUrl}
+                    className="inline-flex items-center justify-center border-2 border-ecm-lime text-ecm-lime font-barlow font-semibold text-base sm:text-lg px-8 py-4 rounded-full hover:bg-ecm-lime hover:text-ecm-green transition-colors"
+                  >
+                    {heroCtaSecondaryLabel}
+                  </Link>
+                )}
               </div>
             </div>
           </div>
@@ -291,16 +376,19 @@ export default async function HomePage() {
       <section className="py-20 bg-white">
         <div className="max-w-6xl mx-auto px-6">
           <h2 className="text-ecm-green font-barlow font-bold text-3xl lg:text-4xl text-center mb-4">
-            You probably recognise at least one of these.
+            {symptomsHeading}
           </h2>
-          <p className="text-ecm-gray-dark text-center text-base mb-16 max-w-2xl mx-auto">
-            Six symptoms. One underlying cause: content was never built as infrastructure.
-          </p>
+          {symptomsSubhead && (
+            <p className="text-ecm-gray-dark text-center text-base mb-16 max-w-2xl mx-auto">
+              {symptomsSubhead}
+            </p>
+          )}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {symptoms.map((symptom: any, i: number) => (
-              <div
+              <Link
                 key={i}
-                className="bg-ecm-green rounded-xl p-6 sm:p-8 border border-ecm-lime/20 hover:border-ecm-lime/50 transition-all hover:shadow-lg hover:shadow-ecm-lime/5 group"
+                href={symptomHref(symptom.title)}
+                className="block bg-ecm-green rounded-xl p-6 sm:p-8 border border-ecm-lime/20 hover:border-ecm-lime/50 transition-all hover:shadow-lg hover:shadow-ecm-lime/5 group"
               >
                 <div className="w-10 h-10 bg-ecm-lime rounded-lg flex items-center justify-center mb-4">
                   <span className="text-ecm-green-dark font-barlow font-bold text-lg">{String(i + 1).padStart(2, '0')}</span>
@@ -311,7 +399,10 @@ export default async function HomePage() {
                 <p className="text-white/85 text-sm leading-relaxed">
                   {symptom.description}
                 </p>
-              </div>
+                <span className="mt-4 inline-flex items-center gap-1 text-ecm-lime/70 font-barlow font-semibold text-xs group-hover:text-ecm-lime transition-colors">
+                  See how we fix it <span aria-hidden="true">&rarr;</span>
+                </span>
+              </Link>
             ))}
           </div>
         </div>
@@ -330,14 +421,14 @@ export default async function HomePage() {
             {servicesHeading}
           </h2>
           <div className="grid md:grid-cols-3 gap-8 mb-12">
-            {outcomeCards.map((card, i) => (
+            {cards.map((card: any, i: number) => (
               <Link
                 key={i}
-                href={card.href}
+                href={card.url ?? card.href ?? "/solutions"}
                 className="service-card bg-white/10 backdrop-blur rounded-2xl p-8 text-center group border border-white/10 hover:border-ecm-lime/30 transition-all hover:shadow-lg hover:shadow-ecm-lime/5"
               >
                 <div className="w-16 h-16 bg-ecm-lime/20 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <ServiceIcon index={card.icon} />
+                  <ServiceIcon index={iconIndex(card.icon)} />
                 </div>
                 <h3 className="text-white font-barlow font-bold text-xl mb-4 group-hover:text-ecm-lime transition-colors">
                   {card.title}
@@ -369,16 +460,18 @@ export default async function HomePage() {
       <section className="py-20 bg-white">
         <div className="max-w-6xl mx-auto px-6">
           <h2 className="text-ecm-green font-barlow font-bold text-3xl lg:text-4xl text-center mb-4">
-            Enterprise marketing teams have already done this.
+            {proofHeading}
           </h2>
-          <p className="text-ecm-gray-dark text-center text-base mb-16 max-w-2xl mx-auto">
-            Every result below started with the same problem: the system underneath the content.
-          </p>
+          {proofSubhead && (
+            <p className="text-ecm-gray-dark text-center text-base mb-16 max-w-2xl mx-auto">
+              {proofSubhead}
+            </p>
+          )}
           <div className="grid sm:grid-cols-2 gap-6 mb-12">
-            {proofTiles.map((tile, i) => (
+            {proof.map((tile: any, i: number) => (
               <Link
                 key={i}
-                href={tile.href}
+                href={tile.url ?? tile.href ?? "/case-study"}
                 className="block bg-ecm-green rounded-xl p-6 sm:p-8 border border-ecm-lime/20 hover:border-ecm-lime/50 transition-all hover:shadow-lg hover:shadow-ecm-lime/5 group"
               >
                 <h3 className="text-ecm-lime font-barlow font-semibold text-lg mb-2 group-hover:text-white transition-colors">
@@ -470,16 +563,16 @@ export default async function HomePage() {
         <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
           <div className="bg-ecm-green-dark/60 backdrop-blur-sm rounded-2xl border border-ecm-lime/15 px-8 sm:px-12 py-12 sm:py-16">
             <h2 className="text-ecm-lime font-barlow font-bold text-3xl sm:text-4xl mb-4">
-              Not sure where your infrastructure is costing you most?
+              {diagnosticHeading}
             </h2>
             <p className="text-white/90 font-barlow font-light text-base sm:text-lg leading-relaxed mb-8 max-w-2xl mx-auto">
-              In about ten minutes, the assessment scores your marketing operation across strategy, workflow, technology, governance, measurement, and AI readiness, then shows you the weakest link and what to do about it. You get an executive-ready readout, not a sales call.
+              {diagnosticBody}
             </p>
             <Link
-              href="/assessments"
+              href={diagnosticCtaUrl}
               className="inline-block bg-ecm-lime text-ecm-green font-barlow font-bold text-lg px-10 py-4 rounded-full hover:bg-ecm-lime-hover transition-colors"
             >
-              Start the assessment
+              {diagnosticCtaLabel}
               <span className="ml-2 text-ecm-green/70 font-medium text-sm">10 min</span>
             </Link>
           </div>
@@ -494,26 +587,7 @@ export default async function HomePage() {
 
       {/* ─── TICKER TAPE ─── */}
       {(() => {
-        const truths = [
-          "Content is infrastructure now.",
-          "You don't have a content problem.",
-          "Transformation fails at the content layer.",
-          "Content friction is customer friction.",
-          "The bottleneck is the workflow.",
-          "Broken inputs. Broken outputs. Always.",
-          "Faster campaigns start upstream.",
-          "Every market shouldn't cost more than the last.",
-          "Your platform isn't the problem.",
-          "AI without governance is chaos.",
-          "Velocity without governance is liability.",
-          "Structure today. Intelligence tomorrow.",
-          "Localisation is system design.",
-          "Knowledge is only as good as retrieval.",
-          "Content that can't scale, won't.",
-          "Good architecture is invisible.",
-          "Information flows before AI wins.",
-          "Unfindable information doesn't exist.",
-        ];
+        const truths = tickerPhrases;
         return (
           <section style={{ background: "rgb(49,97,72)", padding: "12px 0", overflow: "hidden", width: "100%" }}>
             <style>{`.ecm-ticker-inner{display:inline-block;white-space:nowrap;animation:ecm-ticker 200s linear infinite}.ecm-ticker-item{font-family:"Courier New",Courier,monospace;font-weight:bold;font-size:1.2rem;color:#AAF870;display:inline-block;margin:0 120px}.ecm-ticker-sep{font-family:"Courier New",Courier,monospace;font-size:1.2rem;color:#AAF870;opacity:0.4}@keyframes ecm-ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}`}</style>
@@ -549,19 +623,21 @@ export default async function HomePage() {
               </p>
             )}
             <Link
-              href="/assessments"
+              href={closingCtaUrl}
               className="inline-block bg-ecm-lime text-ecm-green font-barlow font-bold text-xl px-12 py-4 rounded-full hover:bg-ecm-lime-hover transition-colors"
             >
-              Assess your content infrastructure
+              {closingCtaLabel}
             </Link>
-            <p className="mt-6">
-              <Link
-                href="/contact"
-                className="text-white/80 font-barlow text-sm underline underline-offset-4 hover:text-ecm-lime transition-colors"
-              >
-                or book a strategy session
-              </Link>
-            </p>
+            {closingSecondaryLabel && (
+              <p className="mt-6">
+                <Link
+                  href={closingSecondaryUrl}
+                  className="text-white/80 font-barlow text-sm underline underline-offset-4 hover:text-ecm-lime transition-colors"
+                >
+                  {closingSecondaryLabel}
+                </Link>
+              </p>
+            )}
           </div>
         </div>
       </section>

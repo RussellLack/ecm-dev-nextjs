@@ -616,3 +616,129 @@ export const getAllServicesQuery = `
     category
   }
 `;
+
+// ── Problems We Solve (buyer-centric problem pages) ──
+
+const PROBLEM_FIELDS = `
+  title,
+  "slug": slug.current,
+  eyebrow,
+  heroHeading,
+  heroSubhead,
+  symptoms,
+  realCauseLead,
+  realCause,
+  cost,
+  diagnosticLabel,
+  diagnosticUrl,
+  solutionLabel,
+  solutionUrl,
+  proof[]{ outcome, detail, url },
+  relatedReading[]{ title, url },
+  ctaHeading,
+  order,
+  seo
+`;
+
+export async function getProblemPage(slug: string) {
+  return sanityFetch(
+    `*[_type == "problemPage" && slug.current == $slug][0]{ ${PROBLEM_FIELDS} }`,
+    { slug }
+  );
+}
+
+export async function getAllProblemSlugs() {
+  return sanityFetch(
+    `*[_type == "problemPage" && defined(slug.current)]{ "slug": slug.current }`
+  );
+}
+
+export async function getProblemPages() {
+  return sanityFetch(
+    `*[_type == "problemPage"] | order(order asc){
+      title, "slug": slug.current, heroSubhead, order
+    }`
+  );
+}
+
+// ── Solutions (outcome-led solution pages) ──
+
+const SOLUTION_FIELDS = `
+  title,
+  "slug": slug.current,
+  eyebrow,
+  heroHeading,
+  heroSubhead,
+  howItWorks,
+  includes[]{ title, description },
+  proof[]{ outcome, detail, url },
+  diagnosticLabel,
+  diagnosticUrl,
+  depthLabel,
+  depthUrl,
+  ctaHeading,
+  ctaLabel,
+  ctaUrl,
+  order,
+  seo
+`;
+
+export async function getSolutionPage(slug: string) {
+  return sanityFetch(
+    `*[_type == "solutionPage" && slug.current == $slug][0]{ ${SOLUTION_FIELDS} }`,
+    { slug }
+  );
+}
+
+export async function getAllSolutionSlugs() {
+  return sanityFetch(
+    `*[_type == "solutionPage" && defined(slug.current)]{ "slug": slug.current }`
+  );
+}
+
+export async function getSolutionPages() {
+  return sanityFetch(
+    `*[_type == "solutionPage"] | order(order asc){
+      title, "slug": slug.current, heroSubhead, order
+    }`
+  );
+}
+
+// ── Cornerstone essays (board-level SEO hubs) ──
+
+const CORNERSTONE_FIELDS = `
+  title,
+  "slug": slug.current,
+  eyebrow,
+  heroHeading,
+  standfirst,
+  keyTakeaways,
+  body,
+  diagnosticLabel,
+  diagnosticUrl,
+  relatedLinks[]{ title, url },
+  ctaHeading,
+  order,
+  seo
+`;
+
+export async function getCornerstone(slug: string) {
+  return sanityFetch(
+    `*[_type == "cornerstone" && slug.current == $slug][0]{ ${CORNERSTONE_FIELDS} }`,
+    { slug }
+  );
+}
+
+export async function getAllCornerstoneSlugs() {
+  return sanityFetch(
+    `*[_type == "cornerstone" && defined(slug.current)]{ "slug": slug.current }`
+  );
+}
+
+export async function getCornerstones() {
+  return sanityFetch(
+    `*[_type == "cornerstone"] | order(order asc){
+      title, "slug": slug.current, standfirst, order
+    }`
+  );
+}

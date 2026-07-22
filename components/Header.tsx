@@ -6,6 +6,30 @@ import Image from "next/image";
 
 const navigation = [
   { name: "Home", href: "/" },
+  {
+    name: "Problems We Solve",
+    href: "/problems",
+    children: [
+      { name: "All problems", href: "/problems" },
+      { name: "Marketing takes too long", href: "/problems/marketing-takes-too-long" },
+      { name: "AI isn't delivering", href: "/problems/ai-isnt-delivering" },
+      { name: "Localisation costs keep growing", href: "/problems/localisation-costs-keep-growing" },
+      { name: "Our CMS isn't creating value", href: "/problems/our-cms-isnt-creating-value" },
+      { name: "Our teams work in silos", href: "/problems/our-teams-work-in-silos" },
+    ],
+  },
+  {
+    name: "Solutions",
+    href: "/solutions",
+    children: [
+      { name: "All solutions", href: "/solutions" },
+      { name: "Improve Campaign Velocity", href: "/solutions/improve-campaign-velocity" },
+      { name: "Scale Global Marketing", href: "/solutions/scale-global-marketing" },
+      { name: "Increase CMS ROI", href: "/solutions/increase-cms-roi" },
+      { name: "Prepare Content for AI", href: "/solutions/prepare-content-for-ai" },
+      { name: "Build a Marketing Operating System", href: "/solutions/build-a-marketing-operating-system" },
+    ],
+  },
   { name: "Work", href: "/case-study" },
   {
     name: "Services",
@@ -17,6 +41,7 @@ const navigation = [
     ],
   },
   { name: "Assessments", href: "/assessments" },
+  { name: "Briefings", href: "/briefings" },
   { name: "Guides", href: "/guides" },
   { name: "Blog", href: "/blog" },
   { name: "Contact", href: "/contact" },
@@ -24,7 +49,7 @@ const navigation = [
 
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [servicesOpen, setServicesOpen] = useState(false);
+  const [openMenu, setOpenMenu] = useState<string | null>(null);
 
   return (
     <header className="bg-ecm-green sticky top-0 z-50">
@@ -46,25 +71,25 @@ export default function Header() {
               <div key={item.name} className="relative group">
                 <button
                   className="text-white font-barlow font-medium text-sm tracking-wide hover:text-ecm-lime transition-colors"
-                  onMouseEnter={() => setServicesOpen(true)}
-                  onMouseLeave={() => setServicesOpen(false)}
+                  onMouseEnter={() => setOpenMenu(item.name)}
+                  onMouseLeave={() => setOpenMenu(null)}
                 >
                   {item.name}
                 </button>
                 <div
-                  className={`absolute top-full left-0 mt-2 bg-ecm-green-dark rounded-lg shadow-xl py-2 min-w-[200px] transition-all ${
-                    servicesOpen
+                  className={`absolute top-full left-0 mt-2 bg-ecm-green-dark rounded-lg shadow-xl py-2 min-w-[220px] transition-all ${
+                    openMenu === item.name
                       ? "opacity-100 visible"
                       : "opacity-0 invisible"
                   }`}
-                  onMouseEnter={() => setServicesOpen(true)}
-                  onMouseLeave={() => setServicesOpen(false)}
+                  onMouseEnter={() => setOpenMenu(item.name)}
+                  onMouseLeave={() => setOpenMenu(null)}
                 >
                   {item.children.map((child) => (
                     <Link
                       key={child.name}
                       href={child.href}
-                      className="block px-4 py-2 text-white text-sm hover:text-ecm-lime hover:bg-ecm-green transition-colors"
+                      className="block px-4 py-2 text-white text-sm hover:text-ecm-lime hover:bg-ecm-green transition-colors whitespace-nowrap"
                     >
                       {child.name}
                     </Link>
