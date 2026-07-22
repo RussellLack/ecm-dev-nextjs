@@ -1,5 +1,6 @@
 import homePage from "./homePage";
 import problemPage from "./problemPage";
+import solutionPage from "./solutionPage";
 import service from "./service";
 import servicePackage from "./servicePackage";
 import caseStudy from "./caseStudy";
@@ -19,6 +20,7 @@ import platform from "./platform";
 export const schemaTypes = [
   homePage,
   problemPage,
+  solutionPage,
   service,
   servicePackage,
   caseStudy,

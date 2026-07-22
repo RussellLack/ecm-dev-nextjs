@@ -18,6 +18,18 @@ const navigation = [
       { name: "Our teams work in silos", href: "/problems/our-teams-work-in-silos" },
     ],
   },
+  {
+    name: "Solutions",
+    href: "/solutions",
+    children: [
+      { name: "All solutions", href: "/solutions" },
+      { name: "Improve Campaign Velocity", href: "/solutions/improve-campaign-velocity" },
+      { name: "Scale Global Marketing", href: "/solutions/scale-global-marketing" },
+      { name: "Increase CMS ROI", href: "/solutions/increase-cms-roi" },
+      { name: "Prepare Content for AI", href: "/solutions/prepare-content-for-ai" },
+      { name: "Build a Marketing Operating System", href: "/solutions/build-a-marketing-operating-system" },
+    ],
+  },
   { name: "Work", href: "/case-study" },
   {
     name: "Services",

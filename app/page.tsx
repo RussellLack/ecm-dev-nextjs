@@ -103,21 +103,21 @@ const outcomeCards = [
     title: "Scale Marketing Operations",
     description:
       "Ship more, faster, with the team you already have. We find where your content operation leaks time and value, then rebuild that part of the system.",
-    href: "/content-services",
+    href: "/solutions/improve-campaign-velocity",
     icon: 1,
   },
   {
     title: "Accelerate Global Marketing",
     description:
       "Enter new markets without the cost spiral. We fix the system around translation, from source content to in-market findability.",
-    href: "/content-localization",
+    href: "/solutions/scale-global-marketing",
     icon: 2,
   },
   {
     title: "Unlock AI & MarTech Value",
     description:
       "Make the platforms and AI you have already paid for finally perform. We fix the operational layer that decides whether they deliver.",
-    href: "/content-technology",
+    href: "/solutions/increase-cms-roi",
     icon: 0,
   },
 ];

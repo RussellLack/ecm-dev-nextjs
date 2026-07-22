@@ -657,3 +657,46 @@ export async function getProblemPages() {
     }`
   );
 }
+
+// ── Solutions (outcome-led solution pages) ──
+
+const SOLUTION_FIELDS = `
+  title,
+  "slug": slug.current,
+  eyebrow,
+  heroHeading,
+  heroSubhead,
+  howItWorks,
+  includes[]{ title, description },
+  proof[]{ outcome, detail, url },
+  diagnosticLabel,
+  diagnosticUrl,
+  depthLabel,
+  depthUrl,
+  ctaHeading,
+  ctaLabel,
+  ctaUrl,
+  order,
+  seo
+`;
+
+export async function getSolutionPage(slug: string) {
+  return sanityFetch(
+    `*[_type == "solutionPage" && slug.current == $slug][0]{ ${SOLUTION_FIELDS} }`,
+    { slug }
+  );
+}
+
+export async function getAllSolutionSlugs() {
+  return sanityFetch(
+    `*[_type == "solutionPage" && defined(slug.current)]{ "slug": slug.current }`
+  );
+}
+
+export async function getSolutionPages() {
+  return sanityFetch(
+    `*[_type == "solutionPage"] | order(order asc){
+      title, "slug": slug.current, heroSubhead, order
+    }`
+  );
+}
