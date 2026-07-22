@@ -198,6 +198,16 @@ function formatDate(dateString: string): string {
   });
 }
 
+/* Route each homepage symptom to the matching Problems We Solve page. */
+function symptomHref(title: string): string {
+  const t = (title || "").toLowerCase();
+  if (t.includes("cms")) return "/problems/our-cms-isnt-creating-value";
+  if (t.includes("localis")) return "/problems/localisation-costs-keep-growing";
+  if (t.includes("team") || t.includes("governance")) return "/problems/our-teams-work-in-silos";
+  if (t.includes("ai") || t.includes("personalis")) return "/problems/ai-isnt-delivering";
+  return "/problems";
+}
+
 /* ─── Page Component ─── */
 
 export default async function HomePage() {
@@ -298,9 +308,10 @@ export default async function HomePage() {
           </p>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {symptoms.map((symptom: any, i: number) => (
-              <div
+              <Link
                 key={i}
-                className="bg-ecm-green rounded-xl p-6 sm:p-8 border border-ecm-lime/20 hover:border-ecm-lime/50 transition-all hover:shadow-lg hover:shadow-ecm-lime/5 group"
+                href={symptomHref(symptom.title)}
+                className="block bg-ecm-green rounded-xl p-6 sm:p-8 border border-ecm-lime/20 hover:border-ecm-lime/50 transition-all hover:shadow-lg hover:shadow-ecm-lime/5 group"
               >
                 <div className="w-10 h-10 bg-ecm-lime rounded-lg flex items-center justify-center mb-4">
                   <span className="text-ecm-green-dark font-barlow font-bold text-lg">{String(i + 1).padStart(2, '0')}</span>
@@ -311,7 +322,10 @@ export default async function HomePage() {
                 <p className="text-white/85 text-sm leading-relaxed">
                   {symptom.description}
                 </p>
-              </div>
+                <span className="mt-4 inline-flex items-center gap-1 text-ecm-lime/70 font-barlow font-semibold text-xs group-hover:text-ecm-lime transition-colors">
+                  See how we fix it <span aria-hidden="true">&rarr;</span>
+                </span>
+              </Link>
             ))}
           </div>
         </div>

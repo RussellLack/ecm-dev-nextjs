@@ -613,3 +613,47 @@ export const getAllServicesQuery = `
     category
   }
 `;
+
+// ── Problems We Solve (buyer-centric problem pages) ──
+
+const PROBLEM_FIELDS = `
+  title,
+  "slug": slug.current,
+  eyebrow,
+  heroHeading,
+  heroSubhead,
+  symptoms,
+  realCauseLead,
+  realCause,
+  cost,
+  diagnosticLabel,
+  diagnosticUrl,
+  solutionLabel,
+  solutionUrl,
+  proof[]{ outcome, detail, url },
+  relatedReading[]{ title, url },
+  ctaHeading,
+  order,
+  seo
+`;
+
+export async function getProblemPage(slug: string) {
+  return sanityFetch(
+    `*[_type == "problemPage" && slug.current == $slug][0]{ ${PROBLEM_FIELDS} }`,
+    { slug }
+  );
+}
+
+export async function getAllProblemSlugs() {
+  return sanityFetch(
+    `*[_type == "problemPage" && defined(slug.current)]{ "slug": slug.current }`
+  );
+}
+
+export async function getProblemPages() {
+  return sanityFetch(
+    `*[_type == "problemPage"] | order(order asc){
+      title, "slug": slug.current, heroSubhead, order
+    }`
+  );
+}
