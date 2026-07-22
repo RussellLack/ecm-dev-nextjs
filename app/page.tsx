@@ -21,7 +21,7 @@ export async function generateMetadata(): Promise<Metadata> {
   // full control over the brand-name placement.
   const title =
     seo.metaTitle ||
-    `${home?.heroHeading || "Content Infrastructure for the AI Enterprise"} | ECM.DEV`;
+    `${home?.heroHeading || "Content Infrastructure for Enterprise Marketing"} | ECM.DEV`;
 
   // Description: seo override → first 155 chars of heroBody → fallback.
   const heroBlurb = home?.heroBody
@@ -30,7 +30,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const description =
     seo.metaDescription ||
     heroBlurb ||
-    "We design the operating systems, governance frameworks, and structured workflows that turn content into a reliable, AI-ready asset.";
+    "ECM.DEV helps enterprise organisations build the content infrastructure behind modern marketing, so campaigns, localisation, personalisation, and AI keep up with the ambition.";
 
   const ogImage = seo.ogImage
     ? urlFor(seo.ogImage).width(1200).height(630).fit("crop").crop("center").url()
@@ -59,25 +59,25 @@ export async function generateMetadata(): Promise<Metadata> {
 /* ─── Static fallback data (used when Sanity fields are empty) ─── */
 
 const fallbackHero = {
-  heading: "Content Infrastructure for the AI Enterprise",
-  body: "Most organisations treat content as marketing output. They invest in platforms, headcount, and campaigns — then wonder why AI surfaces the wrong answers, personalisation fails at scale, and localisation costs continue to rise. The issue is not capability or technology. It is that content has never been treated as infrastructure.\n\nWe design the operating systems, governance frameworks, and structured workflows that turn content into a reliable, AI-ready asset.",
+  heading: "Marketing isn't slowing down. Your content infrastructure is.",
+  body: "Campaigns, localisation, personalisation, AI: every one now depends on structured content operations underneath. When that layer is missing, marketing gets slower, costs climb, and the results never quite arrive.\n\nECM.DEV helps enterprise organisations build the content infrastructure behind modern marketing, so the systems keep up with the ambition.",
 };
 
 const fallbackSymptoms = [
   {
     title: "AI Initiatives Stall or Fail",
     description:
-      "Fragmented, ungoverned content makes AI outputs unreliable — and enterprise adoption stalls.",
+      "Fragmented, ungoverned content makes AI outputs unreliable, so enterprise adoption stalls and the investment underperforms.",
   },
   {
     title: "CMS Investment Fails to Deliver",
     description:
-      "Platform selection is rarely the problem. Without operational design, enterprise CMS becomes an expensive container for chaos.",
+      "The platform is rarely the problem. Without operational design, an enterprise CMS becomes an expensive container for chaos.",
   },
   {
     title: "Localisation Costs Escalate",
     description:
-      "Without structured source content and governance, every new market adds disproportionate overhead.",
+      "Without structured source content, every new market adds disproportionate cost and delay.",
   },
   {
     title: "Personalisation Fails at Scale",
@@ -87,33 +87,63 @@ const fallbackSymptoms = [
   {
     title: "Content Teams Absorb System Failure",
     description:
-      "When automation is absent, teams compensate through effort — masking the real cost until it breaks.",
+      "When the system does not do the work, people do. Teams compensate through effort until it breaks.",
   },
   {
     title: "Governance Gaps Create Exposure",
     description:
-      "In Microsoft environments, Copilot surfaces whatever SharePoint holds — including what was never meant to be seen.",
+      "AI assistants surface whatever your content systems hold. Without governance, that includes what was never meant to be seen.",
   },
 ];
 
-const fallbackServices = [
+/* Outcome cards replace the old capability columns. Each names a business
+   outcome and links down to the service page that delivers it. */
+const outcomeCards = [
   {
-    title: "CONTENT TECHNOLOGY",
+    title: "Scale Marketing Operations",
     description:
-      "that is fit-for-purpose, consistently used and fully-integrated with digital marketing and sales objectives.",
-    href: "/content-technology",
-  },
-  {
-    title: "CONTENT SERVICES",
-    description:
-      "that turn business, marketing and sales strategies into continuously improving content workflows.",
+      "Ship more, faster, with the team you already have. We find where your content operation leaks time and value, then rebuild that part of the system.",
     href: "/content-services",
+    icon: 1,
   },
   {
-    title: "CONTENT LOCALIZATION",
+    title: "Accelerate Global Marketing",
     description:
-      "that ensures that whichever language and geography is your target, content is adapted to reflect the needs and preferences of local market audiences.",
+      "Enter new markets without the cost spiral. We fix the system around translation, from source content to in-market findability.",
     href: "/content-localization",
+    icon: 2,
+  },
+  {
+    title: "Unlock AI & MarTech Value",
+    description:
+      "Make the platforms and AI you have already paid for finally perform. We fix the operational layer that decides whether they deliver.",
+    href: "/content-technology",
+    icon: 0,
+  },
+];
+
+/* Outcome-led proof tiles. Lead with the result; the client is supporting
+   evidence in the linked case study. */
+const proofTiles = [
+  {
+    outcome: "Cut localisation cost across 15+ markets",
+    detail: "by fixing source content before it reached translation.",
+    href: "/case-study/content-localization-15-countrieslanguages",
+  },
+  {
+    outcome: "Rebuilt an enterprise CMS migration",
+    detail: "around how teams actually work, so the platform earned its keep.",
+    href: "/case-study/enterprise-cms-migration-sitecore-optimizely",
+  },
+  {
+    outcome: "Prepared enterprise content for AI",
+    detail: "with a taxonomy and metadata layer AI and search could rely on.",
+    href: "/case-study/enterprise-content-taxonomy-metadata-architecture",
+  },
+  {
+    outcome: "Turned a stalled intranet investment",
+    detail: "into an adopted employee portal across a multilingual workforce.",
+    href: "/case-study/sharepoint-intranet-employee-portal-financial-services",
   },
 ];
 
@@ -134,33 +164,17 @@ const fallbackTestimonials = [
   {
     name: "Satya Nadella",
     role: "Chairman & CEO, Microsoft",
-    quote: "\u201CAI is only as good as the data and knowledge you put into it.\u201D",
+    quote: "“AI is only as good as the data and knowledge you put into it.”",
     commentary:
-      "In organisations, \u201Cknowledge\u201D lives in: documents, policies, product content, metadata. Enterprise AI runs on enterprise content.",
-  },
-  {
-    name: "Fei-Fei Li",
-    role: "Co-Director, Stanford Human-Centered AI Institute",
-    quote:
-      "\u201CThere is nothing artificial about intelligence that lacks human context, values, and understanding.\u201D",
-    commentary:
-      "Context, values, and intent come from how content is created, structured, and governed.",
+      "In organisations, “knowledge” lives in documents, policies, product content, and metadata. Enterprise AI runs on enterprise content.",
   },
   {
     name: "Jeff Coyle",
     role: "Co-Founder & CPO, MarketMuse",
     quote:
-      "\u201CBrands that use AI well don\u2019t just create more content \u2014 they create better-structured, more meaningful content.\u201D",
+      "“Brands that use AI well don’t just create more content, they create better-structured, more meaningful content.”",
     commentary:
-      "This is where theory meets operations. AI performance improves with content maturity.",
-  },
-  {
-    name: "Yann LeCun",
-    role: "Chief AI Scientist, Meta",
-    quote:
-      "\u201CThe real challenge for AI is not algorithms, but giving systems the right representations of the world.\u201D",
-    commentary:
-      "Representation = structure, semantics, relationships. This is content architecture.",
+      "This is where theory meets operations. Marketing performance improves as content maturity improves.",
   },
 ];
 
@@ -169,7 +183,7 @@ const fallbackBlogPosts = [
   { title: "Agentic CX: From Journeys to Agents", date: "Sep 15, 2025", slug: "agentic-cx-from-journeys-to-agents" },
   { title: "Sanity CMS Upgrades Speed CX Delivery", date: "Sep 12, 2025", slug: "sanity-cms-upgrades-speed-cx-delivery" },
   { title: "Unlocking Sitecore productivity", date: "Sep 12, 2025", slug: "sitecore-productivity-and-roi" },
-  { title: "Ibexa v5: Europe\u2019s B2B DXP", date: "Sep 9, 2025", slug: "ibexa-v5-europe-s-b2b-dxp" },
+  { title: "Ibexa v5: Europe’s B2B DXP", date: "Sep 9, 2025", slug: "ibexa-v5-europe-s-b2b-dxp" },
   { title: "Hyland Content Innovation Cloud", date: "Aug 28, 2025", slug: "hyland-content-innovation-cloud" },
   { title: "Contentful AI Workflows Boost Speed", date: "Aug 20, 2025", slug: "contentful-ai-workflows-boost-speed" },
   { title: "Optimizely AEO/GEO: AI Visibility", date: "Aug 15, 2025", slug: "optimizely-aeo-geo-ai-visibility" },
@@ -177,17 +191,8 @@ const fallbackBlogPosts = [
 
 /* ─── Helpers ─── */
 
-function categoryToHref(category: string): string {
-  const map: Record<string, string> = {
-    technology: "/content-technology",
-    services: "/content-services",
-    localization: "/content-localization",
-  };
-  return map[category] || "/content-technology";
-}
-
 function formatDate(dateString: string): string {
-  return new Date(dateString).toLocaleDateString("en-US", {
+  return new Date(dateString).toLocaleDateString("en-GB", {
     month: "long",
     year: "numeric",
   });
@@ -206,16 +211,8 @@ export default async function HomePage() {
   const heroHeading = homePage?.heroHeading || fallbackHero.heading;
   const heroBody = homePage?.heroBody || fallbackHero.body;
   const symptoms = homePage?.symptoms?.length ? homePage.symptoms : fallbackSymptoms;
-  const servicesHeading = homePage?.servicesHeading || "SERVICES";
-
-  const services =
-    homePage?.services?.length
-      ? homePage.services.map((s: any) => ({
-          title: s.title,
-          description: s.summary || "",
-          href: categoryToHref(s.category),
-        }))
-      : fallbackServices;
+  const servicesHeading =
+    homePage?.servicesHeading || "What changes when the infrastructure is right";
 
   const learnMoreItems =
     homePage?.learnMoreItems?.length ? homePage.learnMoreItems : fallbackLearnMore;
@@ -223,8 +220,8 @@ export default async function HomePage() {
   const testimonials =
     homePage?.testimonials?.length ? homePage.testimonials : fallbackTestimonials;
 
-  const ctaHeading = homePage?.ctaHeading || "READY FOR YOUR";
-  const ctaSubheading = homePage?.ctaSubheading || "BUSINESS TO GROW?";
+  const ctaHeading = homePage?.ctaHeading || "Find out where your content infrastructure";
+  const ctaSubheading = homePage?.ctaSubheading || "is holding marketing back.";
 
   // Blog posts: use Sanity data if available, map to display format
   const blogPosts =
@@ -243,7 +240,7 @@ export default async function HomePage() {
       <section className="relative bg-ecm-green py-16 sm:py-24 lg:py-32 pb-24 sm:pb-32 lg:pb-40 overflow-hidden">
         <LavaBlobs variant="mixed" opacity={0.45} count={6} />
         <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Single centered text panel — full width on mobile, max-w-3xl on desktop */}
+          {/* Single centered text panel: full width on mobile, max-w-3xl on desktop */}
           <div className="max-w-3xl mx-auto lg:mx-0">
             {/* Heading */}
             <div className="bg-ecm-green-dark/80 backdrop-blur-sm rounded-t-2xl px-6 sm:px-10 lg:px-12 py-6 sm:py-8 lg:py-10 border border-white/10">
@@ -261,6 +258,22 @@ export default async function HomePage() {
                   {para}
                 </p>
               ))}
+              {/* Hero calls to action */}
+              <div className="mt-8 flex flex-col sm:flex-row gap-4">
+                <Link
+                  href="/assessments"
+                  className="inline-flex items-center justify-center bg-ecm-lime text-ecm-green font-barlow font-bold text-base sm:text-lg px-8 py-4 rounded-full hover:bg-ecm-lime-hover transition-colors"
+                >
+                  Assess your content infrastructure
+                  <span className="ml-2 text-ecm-green/70 font-medium text-sm">10 min</span>
+                </Link>
+                <Link
+                  href="/guides"
+                  className="inline-flex items-center justify-center border-2 border-ecm-lime text-ecm-lime font-barlow font-semibold text-base sm:text-lg px-8 py-4 rounded-full hover:bg-ecm-lime hover:text-ecm-green transition-colors"
+                >
+                  Explore the guides
+                </Link>
+              </div>
             </div>
           </div>
         </div>
@@ -275,9 +288,12 @@ export default async function HomePage() {
       {/* ─── SIX SYMPTOMS ─── */}
       <section className="py-20 bg-white">
         <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-ecm-green font-barlow font-bold text-3xl lg:text-4xl text-center mb-16">
-            Six symptoms. One underlying cause.
+          <h2 className="text-ecm-green font-barlow font-bold text-3xl lg:text-4xl text-center mb-4">
+            You probably recognise at least one of these.
           </h2>
+          <p className="text-ecm-gray-dark text-center text-base mb-16 max-w-2xl mx-auto">
+            Six symptoms. One underlying cause: content was never built as infrastructure.
+          </p>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {symptoms.map((symptom: any, i: number) => (
               <div
@@ -299,7 +315,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ─── SERVICES ─── */}
+      {/* ─── OUTCOMES (was Services) ─── */}
       <section className="relative pt-28 pb-28 bg-ecm-green">
         {/* Wave divider: white → green (top) */}
         <div className="wave-divider wave-divider-top">
@@ -312,30 +328,30 @@ export default async function HomePage() {
             {servicesHeading}
           </h2>
           <div className="grid md:grid-cols-3 gap-8 mb-12">
-            {services.map((service: any, i: number) => (
+            {outcomeCards.map((card, i) => (
               <Link
                 key={i}
-                href={service.href}
+                href={card.href}
                 className="service-card bg-white/10 backdrop-blur rounded-2xl p-8 text-center group border border-white/10 hover:border-ecm-lime/30 transition-all hover:shadow-lg hover:shadow-ecm-lime/5"
               >
                 <div className="w-16 h-16 bg-ecm-lime/20 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <ServiceIcon index={i} />
+                  <ServiceIcon index={card.icon} />
                 </div>
                 <h3 className="text-white font-barlow font-bold text-xl mb-4 group-hover:text-ecm-lime transition-colors">
-                  {service.title}
+                  {card.title}
                 </h3>
                 <p className="text-white/85 text-sm leading-relaxed">
-                  {service.description}
+                  {card.description}
                 </p>
               </Link>
             ))}
           </div>
           <div className="text-center">
             <Link
-              href="/content-technology"
+              href="/assessments"
               className="inline-block bg-ecm-green-dark text-white font-barlow font-semibold px-10 py-4 rounded-full border-2 border-ecm-lime hover:bg-ecm-lime hover:text-ecm-green transition-colors"
             >
-              GET STARTED
+              ASSESS YOUR INFRASTRUCTURE
             </Link>
           </div>
         </div>
@@ -347,8 +363,44 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* ─── PROOF (outcome-led case studies) ─── */}
+      <section className="py-20 bg-white">
+        <div className="max-w-6xl mx-auto px-6">
+          <h2 className="text-ecm-green font-barlow font-bold text-3xl lg:text-4xl text-center mb-4">
+            Enterprise marketing teams have already done this.
+          </h2>
+          <p className="text-ecm-gray-dark text-center text-base mb-16 max-w-2xl mx-auto">
+            Every result below started with the same problem: the system underneath the content.
+          </p>
+          <div className="grid sm:grid-cols-2 gap-6 mb-12">
+            {proofTiles.map((tile, i) => (
+              <Link
+                key={i}
+                href={tile.href}
+                className="block bg-ecm-green rounded-xl p-6 sm:p-8 border border-ecm-lime/20 hover:border-ecm-lime/50 transition-all hover:shadow-lg hover:shadow-ecm-lime/5 group"
+              >
+                <h3 className="text-ecm-lime font-barlow font-semibold text-lg mb-2 group-hover:text-white transition-colors">
+                  {tile.outcome}
+                </h3>
+                <p className="text-white/85 text-sm leading-relaxed">
+                  {tile.detail}
+                </p>
+              </Link>
+            ))}
+          </div>
+          <div className="text-center">
+            <Link
+              href="/case-study"
+              className="inline-block bg-ecm-green text-white font-barlow font-semibold px-8 py-3 rounded-full hover:bg-ecm-green-dark transition-colors"
+            >
+              SEE THE CASE STUDIES
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* ─── LEARN MORE ─── */}
-      <section className="relative py-20 bg-white">
+      <section className="relative py-20 bg-gray-50">
         <div className="max-w-6xl mx-auto px-6">
           <h2 className="text-ecm-green font-barlow font-bold text-3xl lg:text-4xl text-center mb-16">
             LEARN MORE
@@ -358,7 +410,7 @@ export default async function HomePage() {
       </section>
 
       {/* ─── LATEST INSIGHTS (Blog) ─── */}
-      <section className="relative py-20 bg-gray-50">
+      <section className="relative py-20 bg-white">
         <div className="max-w-6xl mx-auto px-6">
           <h2 className="text-ecm-green font-barlow font-bold text-3xl lg:text-4xl text-center mb-16">
             LATEST INSIGHTS
@@ -401,39 +453,61 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* ─── DIAGNOSTIC BAND ─── */}
+      <section className="relative pt-28 pb-28 bg-ecm-green overflow-hidden">
+        {/* Wave divider: white → green (top) */}
+        <div className="wave-divider wave-divider-top">
+          <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,60 C360,0 1080,120 1440,60 L1440,0 L0,0 Z" fill="#ffffff" />
+          </svg>
+        </div>
+        <LavaBlobs variant="lime" opacity={0.3} count={4} />
+        <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
+          <div className="bg-ecm-green-dark/60 backdrop-blur-sm rounded-2xl border border-ecm-lime/15 px-8 sm:px-12 py-12 sm:py-16">
+            <h2 className="text-ecm-lime font-barlow font-bold text-3xl sm:text-4xl mb-4">
+              Not sure where your infrastructure is costing you most?
+            </h2>
+            <p className="text-white/90 font-barlow font-light text-base sm:text-lg leading-relaxed mb-8 max-w-2xl mx-auto">
+              In about ten minutes, the assessment scores your marketing operation across strategy, workflow, technology, governance, measurement, and AI readiness, then shows you the weakest link and what to do about it. You get an executive-ready readout, not a sales call.
+            </p>
+            <Link
+              href="/assessments"
+              className="inline-block bg-ecm-lime text-ecm-green font-barlow font-bold text-lg px-10 py-4 rounded-full hover:bg-ecm-lime-hover transition-colors"
+            >
+              Start the assessment
+              <span className="ml-2 text-ecm-green/70 font-medium text-sm">10 min</span>
+            </Link>
+          </div>
+        </div>
+        {/* Wave divider: green → white (bottom) */}
+        <div className="wave-divider wave-divider-bottom">
+          <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="#ffffff" />
+          </svg>
+        </div>
+      </section>
+
       {/* ─── TICKER TAPE ─── */}
       {(() => {
         const truths = [
-          "Content without structure is noise.",
-          "Broken inputs. Broken outputs. Always.",
-          "Unfindable information doesn't exist.",
-          "Automation reveals unclear thinking fast.",
-          "Your content is a signal.",
-          "The bottleneck is the workflow.",
-          "Metadata is your intelligence layer.",
-          "Process debt compounds silently.",
-          "Every manual step is a risk.",
-          "Content ops is the edge.",
-          "AI without governance is chaos.",
-          "Information flows before AI wins.",
-          "Content that can't scale, won't.",
-          "Taxonomy is strategy. Not admin.",
-          "Automation exposes undocumented decisions.",
-          "Good architecture is invisible.",
-          "Poor information hides in decisions.",
-          "Content friction is customer friction.",
-          "AI exposes the lack of clarity.",
-          "Localisation is system design.",
           "Content is infrastructure now.",
-          "Structure today. Intelligence tomorrow.",
-          "Transformation fails at the content layer.",
-          "Unstructured data is just potential.",
-          "Knowledge is only as good as retrieval.",
-          "Automate clarity. Not confusion.",
-          "Velocity without governance is liability.",
-          "Information management is now adaptive.",
           "You don't have a content problem.",
-          "Intelligent organisations learn from content.",
+          "Transformation fails at the content layer.",
+          "Content friction is customer friction.",
+          "The bottleneck is the workflow.",
+          "Broken inputs. Broken outputs. Always.",
+          "Faster campaigns start upstream.",
+          "Every market shouldn't cost more than the last.",
+          "Your platform isn't the problem.",
+          "AI without governance is chaos.",
+          "Velocity without governance is liability.",
+          "Structure today. Intelligence tomorrow.",
+          "Localisation is system design.",
+          "Knowledge is only as good as retrieval.",
+          "Content that can't scale, won't.",
+          "Good architecture is invisible.",
+          "Information flows before AI wins.",
+          "Unfindable information doesn't exist.",
         ];
         return (
           <section style={{ background: "rgb(49,97,72)", padding: "12px 0", overflow: "hidden", width: "100%" }}>
@@ -467,18 +541,34 @@ export default async function HomePage() {
             <h2 className="text-ecm-lime font-barlow font-bold text-3xl sm:text-4xl lg:text-5xl mb-8">
               {ctaSubheading}
             </h2>
-          <Link
-            href="/contact"
-            className="inline-block bg-ecm-lime text-ecm-green font-barlow font-bold text-xl px-12 py-4 rounded-full hover:bg-ecm-lime-hover transition-colors"
-          >
-            CONTACT US
-          </Link>
+            <Link
+              href="/assessments"
+              className="inline-block bg-ecm-lime text-ecm-green font-barlow font-bold text-xl px-12 py-4 rounded-full hover:bg-ecm-lime-hover transition-colors"
+            >
+              Assess your content infrastructure
+            </Link>
+            <p className="mt-6">
+              <Link
+                href="/contact"
+                className="text-white/80 font-barlow text-sm underline underline-offset-4 hover:text-ecm-lime transition-colors"
+              >
+                or book a strategy session
+              </Link>
+            </p>
           </div>
         </div>
       </section>
 
       {/* ─── CONTACT ─── */}
       <ContactForm />
+
+      {/* ─── MOBILE STICKY CTA ─── */}
+      <Link
+        href="/assessments"
+        className="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-ecm-lime text-ecm-green font-barlow font-bold text-center py-4 shadow-[0_-4px_12px_rgba(0,0,0,0.15)] hover:bg-ecm-lime-hover transition-colors"
+      >
+        Assess your content infrastructure · 10 min
+      </Link>
     </>
   );
 }

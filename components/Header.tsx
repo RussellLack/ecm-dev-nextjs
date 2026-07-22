@@ -82,10 +82,10 @@ export default function Header() {
             )
           )}
           <Link
-            href="/contact"
+            href="/assessments"
             className="bg-ecm-lime text-ecm-green font-barlow font-semibold text-sm px-6 py-2 rounded-full hover:bg-ecm-lime-hover transition-colors"
           >
-            START NOW
+            Take the assessment
           </Link>
         </nav>
 
@@ -141,6 +141,13 @@ export default function Header() {
               </Link>
             )
           )}
+          <Link
+            href="/assessments"
+            className="block text-center bg-ecm-lime text-ecm-green font-barlow font-bold text-base mt-2 px-6 py-3 rounded-full hover:bg-ecm-lime-hover transition-colors"
+            onClick={() => setMobileOpen(false)}
+          >
+            Take the assessment · 10 min
+          </Link>
         </div>
       )}
     </header>

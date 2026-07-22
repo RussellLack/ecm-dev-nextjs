@@ -16,8 +16,9 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   return {
-    title: `Your Results | ECM.DEV`,
-    description: "Your personalised content operations maturity assessment results",
+    title: `Your Executive Readout | ECM.DEV`,
+    description:
+      "Your executive readout: where your content infrastructure is holding marketing back, what it is costing, and the one thing to do first.",
     robots: { index: false, follow: false },
   };
 }
