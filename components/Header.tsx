@@ -41,6 +41,7 @@ const navigation = [
     ],
   },
   { name: "Assessments", href: "/assessments" },
+  { name: "Briefings", href: "/briefings" },
   { name: "Guides", href: "/guides" },
   { name: "Blog", href: "/blog" },
   { name: "Contact", href: "/contact" },

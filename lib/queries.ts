@@ -700,3 +700,42 @@ export async function getSolutionPages() {
     }`
   );
 }
+
+// ── Cornerstone essays (board-level SEO hubs) ──
+
+const CORNERSTONE_FIELDS = `
+  title,
+  "slug": slug.current,
+  eyebrow,
+  heroHeading,
+  standfirst,
+  keyTakeaways,
+  body,
+  diagnosticLabel,
+  diagnosticUrl,
+  relatedLinks[]{ title, url },
+  ctaHeading,
+  order,
+  seo
+`;
+
+export async function getCornerstone(slug: string) {
+  return sanityFetch(
+    `*[_type == "cornerstone" && slug.current == $slug][0]{ ${CORNERSTONE_FIELDS} }`,
+    { slug }
+  );
+}
+
+export async function getAllCornerstoneSlugs() {
+  return sanityFetch(
+    `*[_type == "cornerstone" && defined(slug.current)]{ "slug": slug.current }`
+  );
+}
+
+export async function getCornerstones() {
+  return sanityFetch(
+    `*[_type == "cornerstone"] | order(order asc){
+      title, "slug": slug.current, standfirst, order
+    }`
+  );
+}
