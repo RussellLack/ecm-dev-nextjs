@@ -183,7 +183,7 @@ async function attachToSanity(image: Buffer, docId: string): Promise<string> {
     dataset: MAIN_DATASET,
     apiVersion: "2024-01-01",
     token,
-    useCdn: false,
+    useCdn: false, // sanity-economy: allow-no-cdn write client
   });
 
   console.log("Uploading asset to Sanity…");

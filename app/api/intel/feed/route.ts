@@ -9,7 +9,7 @@ import { sanityIntelFetch as sanityFetch } from "@/lib/intel/sanity";
  *   - topic  (optional intelTopic slug — filters articles that have it)
  */
 
-export const revalidate = 300;
+export const revalidate = 3600;
 
 type FeedItem = {
   id: string;

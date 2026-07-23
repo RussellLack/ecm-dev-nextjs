@@ -41,7 +41,7 @@ const client = createClient({
   projectId,
   dataset,
   apiVersion: "2026-04-01",
-  useCdn: false,
+  useCdn: true,
   token,
   perspective: "published",
 });

@@ -96,7 +96,7 @@ const tagColors: Record<string, string> = {
 
 export async function generateStaticParams() {
   const slugs = await getAllCaseStudySlugs().catch(() => []);
-  return slugs.map((s: { slug: string }) => ({ slug: s.slug }));
+  return slugs.slice(0, 50).map((s: { slug: string }) => ({ slug: s.slug }));
 }
 
 export async function generateMetadata({

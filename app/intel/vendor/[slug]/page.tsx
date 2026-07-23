@@ -8,11 +8,11 @@ import {
 } from "@/lib/intel/queries";
 import IntelArticleList from "../../IntelArticleList";
 
-export const revalidate = 300;
+export const revalidate = 3600;
 
 export async function generateStaticParams() {
   const vendors = await getActiveIntelVendors().catch(() => []);
-  return (vendors ?? []).map((v) => ({ slug: v.slug }));
+  return (vendors ?? []).slice(0, 25).map((v) => ({ slug: v.slug }));
 }
 
 export async function generateMetadata({

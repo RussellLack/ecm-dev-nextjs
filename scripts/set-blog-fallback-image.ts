@@ -48,7 +48,7 @@ async function main(): Promise<void> {
     dataset: MAIN_DATASET,
     apiVersion: "2024-01-01",
     token,
-    useCdn: false,
+    useCdn: false, // sanity-economy: allow-no-cdn write client
   });
 
   const force = process.argv.includes("--force");

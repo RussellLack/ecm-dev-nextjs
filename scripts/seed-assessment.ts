@@ -35,7 +35,7 @@ const client = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!,
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || "production",
   apiVersion: "2026-04-01",
-  useCdn: false,
+  useCdn: false, // sanity-economy: allow-no-cdn write client
   token: process.env.SANITY_WRITE_TOKEN!,
 });
 

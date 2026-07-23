@@ -10,7 +10,7 @@ export const revalidate = 3600;
 
 export async function generateStaticParams() {
   const tags = await getAllPostTags().catch(() => []);
-  return tags.map((tag) => ({ tag: tagToSlug(tag) }));
+  return tags.slice(0, 50).map((tag) => ({ tag: tagToSlug(tag) }));
 }
 
 export async function generateMetadata({

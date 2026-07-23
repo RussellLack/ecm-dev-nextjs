@@ -13,7 +13,7 @@ const siteUrl = "https://ecm.dev";
 
 export async function generateStaticParams() {
   const series = await getAllGuideSeries();
-  return (series ?? []).map((s) => ({ seriesSlug: s.slug?.current }));
+  return (series ?? []).slice(0, 50).map((s) => ({ seriesSlug: s.slug?.current }));
 }
 
 export async function generateMetadata({

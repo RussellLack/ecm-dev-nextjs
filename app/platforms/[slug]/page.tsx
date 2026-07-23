@@ -87,7 +87,7 @@ const ptComponents = {
 
 export async function generateStaticParams() {
   const slugs = await getAllPlatformSlugs().catch(() => []);
-  return (slugs ?? []).map((s: any) => ({ slug: s.slug }));
+  return (slugs ?? []).slice(0, 50).map((s: any) => ({ slug: s.slug }));
 }
 
 export async function generateMetadata({

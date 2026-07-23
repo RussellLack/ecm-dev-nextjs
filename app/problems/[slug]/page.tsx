@@ -7,7 +7,7 @@ export const revalidate = 3600;
 
 export async function generateStaticParams() {
   const slugs = await getAllProblemSlugs().catch(() => []);
-  return (slugs as { slug: string }[]).map((s) => ({ slug: s.slug }));
+  return (slugs as { slug: string }[]).slice(0, 50).map((s) => ({ slug: s.slug }));
 }
 
 export async function generateMetadata({

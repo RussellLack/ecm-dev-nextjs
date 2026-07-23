@@ -17,7 +17,7 @@ const INDUSTRY_LABEL: Record<string, string> = Object.fromEntries(
 
 export async function generateStaticParams() {
   const industries = await getAllUsedIndustries().catch(() => [] as string[]);
-  return industries.map((slug) => ({ slug }));
+  return industries.slice(0, 50).map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({

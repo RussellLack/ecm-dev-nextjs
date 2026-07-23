@@ -11,9 +11,9 @@ export const metadata: Metadata = {
     "AI-enriched briefings on Enterprise Content Management, CMS, ContentOps, and AI-for-content. Pulled from industry feeds and filtered for decision-useful signal.",
 };
 
-// Cache the feed for 5 minutes at the edge. Publishes from Sanity
-// invalidate naturally via the next build or revalidation.
-export const revalidate = 300;
+// Cache for 1 hour at the edge; the intel publish/reject Studio actions
+// fire /api/revalidate to refresh this immediately when content changes.
+export const revalidate = 3600;
 
 export default async function IntelPage() {
   const [articles, topics] = await Promise.all([
