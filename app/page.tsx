@@ -288,15 +288,6 @@ export default async function HomePage() {
     "Real outcomes from enterprise teams who fixed the operation underneath their content, not just the content itself.";
   const proof = homePage?.proofTiles?.length ? homePage.proofTiles : proofTiles;
 
-  // Diagnostic band
-  const diagnosticHeading =
-    homePage?.diagnosticHeading || "Not sure where your infrastructure is costing you most?";
-  const diagnosticBody =
-    homePage?.diagnosticBody ||
-    "In about ten minutes, the assessment scores your marketing operation across strategy, workflow, technology, governance, measurement, and AI readiness, then shows you the weakest link and what to do about it. You get an executive-ready readout, not a sales call.";
-  const diagnosticCtaLabel = homePage?.diagnosticCtaLabel || "Start the assessment";
-  const diagnosticCtaUrl = homePage?.diagnosticCtaUrl || "/assessments";
-
   // Ticker
   const tickerPhrases = homePage?.tickerPhrases?.length ? homePage.tickerPhrases : fallbackTicker;
 
@@ -548,40 +539,6 @@ export default async function HomePage() {
               READ MORE
             </Link>
           </div>
-        </div>
-      </section>
-
-      {/* ─── DIAGNOSTIC BAND ─── */}
-      <section className="relative pt-28 pb-28 bg-ecm-green overflow-hidden">
-        {/* Wave divider: white → green (top) */}
-        <div className="wave-divider wave-divider-top">
-          <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0,60 C360,0 1080,120 1440,60 L1440,0 L0,0 Z" fill="#ffffff" />
-          </svg>
-        </div>
-        <LavaBlobs variant="lime" opacity={0.3} count={4} />
-        <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
-          <div className="bg-ecm-green-dark/60 backdrop-blur-sm rounded-2xl border border-ecm-lime/15 px-8 sm:px-12 py-12 sm:py-16">
-            <h2 className="text-ecm-lime font-barlow font-bold text-3xl sm:text-4xl mb-4">
-              {diagnosticHeading}
-            </h2>
-            <p className="text-white/90 font-barlow font-light text-base sm:text-lg leading-relaxed mb-8 max-w-2xl mx-auto">
-              {diagnosticBody}
-            </p>
-            <Link
-              href={diagnosticCtaUrl}
-              className="inline-block bg-ecm-lime text-ecm-green font-barlow font-bold text-lg px-10 py-4 rounded-full hover:bg-ecm-lime-hover transition-colors"
-            >
-              {diagnosticCtaLabel}
-              <span className="ml-2 text-ecm-green/70 font-medium text-sm">10 min</span>
-            </Link>
-          </div>
-        </div>
-        {/* Wave divider: green → white (bottom) */}
-        <div className="wave-divider wave-divider-bottom">
-          <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="#ffffff" />
-          </svg>
         </div>
       </section>
 
