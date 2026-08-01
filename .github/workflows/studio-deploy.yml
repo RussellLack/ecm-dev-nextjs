@@ -37,6 +37,9 @@ jobs:
 
       - run: npm ci
 
+      - name: Check Sanity economy
+        run: npm run check:sanity
+
       - name: Deploy Studio
         env:
           # projectId/dataset are hardcoded in sanity.cli.ts with a
