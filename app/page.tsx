@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import ContactForm from "@/components/ContactForm";
-import TestimonialsClient from "@/components/TestimonialsClient";
 import LearnMoreSection from "@/components/LearnMoreSection";
 import LavaBlobs from "@/components/LavaBlobs";
 import PostIllustration from "@/components/post/PostIllustration";
@@ -202,24 +201,6 @@ const fallbackLearnMore = [
   { title: "Smarter AI Content Decisions", subtitle: "From content models to content pipelines" },
 ];
 
-const fallbackTestimonials = [
-  {
-    name: "Satya Nadella",
-    role: "Chairman & CEO, Microsoft",
-    quote: "“AI is only as good as the data and knowledge you put into it.”",
-    commentary:
-      "In organisations, “knowledge” lives in documents, policies, product content, and metadata. Enterprise AI runs on enterprise content.",
-  },
-  {
-    name: "Jeff Coyle",
-    role: "Co-Founder & CPO, MarketMuse",
-    quote:
-      "“Brands that use AI well don’t just create more content, they create better-structured, more meaningful content.”",
-    commentary:
-      "This is where theory meets operations. Marketing performance improves as content maturity improves.",
-  },
-];
-
 const fallbackBlogPosts = [
   { title: "Kentico CMS Cadence Cuts Migration Risk", date: "Sep 16, 2025", slug: "kentico-cadence-cuts-migration-risk" },
   { title: "Agentic CX: From Journeys to Agents", date: "Sep 15, 2025", slug: "agentic-cx-from-journeys-to-agents" },
@@ -297,9 +278,6 @@ export default async function HomePage() {
 
   const learnMoreItems =
     homePage?.learnMoreItems?.length ? homePage.learnMoreItems : fallbackLearnMore;
-
-  const testimonials =
-    homePage?.testimonials?.length ? homePage.testimonials : fallbackTestimonials;
 
   const ctaHeading =
     homePage?.ctaHeading || "Find out where content infrastructure is holding your marketing back.";
@@ -687,9 +665,6 @@ export default async function HomePage() {
           </section>
         );
       })()}
-
-      {/* ─── TESTIMONIALS CAROUSEL ─── */}
-      <TestimonialsClient testimonials={testimonials} />
 
       {/* ─── CTA ─── */}
       <section className="relative pt-28 pb-24 bg-ecm-green text-center overflow-hidden">
