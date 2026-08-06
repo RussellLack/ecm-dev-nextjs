@@ -494,16 +494,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ─── LEARN MORE ─── */}
-      <section className="relative py-20 bg-gray-50">
-        <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-ecm-green font-barlow font-bold text-3xl lg:text-4xl text-center mb-16">
-            LEARN MORE
-          </h2>
-          <LearnMoreSection items={learnMoreItems} />
-        </div>
-      </section>
-
       {/* ─── LATEST INSIGHTS (Blog) ─── */}
       <section className="relative py-20 bg-white">
         <div className="max-w-6xl mx-auto px-6">
@@ -594,6 +584,16 @@ export default async function HomePage() {
           <p className="text-center text-ecm-gray-dark text-sm max-w-2xl mx-auto">
             After the audit: a fixed-price remediation sprint (&euro;6,000&ndash;&euro;10,000) turns the roadmap into reviewable diffs you accept or reject, or a re-audit (&euro;4,000&ndash;&euro;6,000) measures what changed. Nothing is auto-applied.
           </p>
+        </div>
+      </section>
+
+      {/* ─── LEARN MORE ─── */}
+      <section className="relative py-20 bg-gray-50">
+        <div className="max-w-6xl mx-auto px-6">
+          <h2 className="text-ecm-green font-barlow font-bold text-3xl lg:text-4xl text-center mb-16">
+            LEARN MORE
+          </h2>
+          <LearnMoreSection items={learnMoreItems} />
         </div>
       </section>
 
