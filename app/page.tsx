@@ -147,6 +147,48 @@ const proofTiles = [
   },
 ];
 
+/* Engagement tiers for ecm-agent, the ECM.DEV Content AI-Readiness Audit.
+   Kept as literal constants rather than Sanity-sourced: engagement pricing
+   should go through code review, not a CMS edit. The free assessment above
+   this section is self-reported; every tier here scans the buyer's actual
+   content, which is the distinction the section exists to make unmistakable. */
+const engagementTiers = [
+  {
+    step: "1",
+    kicker: "Start here — free",
+    title: "Self-assessment",
+    price: "Free",
+    meta: "10 minutes · self-scored",
+    description:
+      "Score your own marketing operation across strategy, workflow, technology, governance, measurement, and AI readiness. An executive-ready readout, not a sales call.",
+    ctaLabel: "Start free",
+    ctaUrl: "/assessments",
+  },
+  {
+    step: "2",
+    kicker: "Paid front door",
+    title: "Snapshot",
+    price: "€2,000–€3,000",
+    meta: "5–7 business days · a real sample of your estate",
+    description:
+      "ecm-agent scans a genuine sample of your content, up to 100 items or 10% of the estate. A 5–10 page report, your top five findings, and one or two shown actually failing in an AI answer. 45-minute recorded readout.",
+    note: "100% credited toward a Full Estate Audit if you sign within 30 days.",
+    ctaLabel: "Book a Snapshot",
+    ctaUrl: "/contact",
+  },
+  {
+    step: "3",
+    kicker: "The product",
+    title: "Full Estate Audit",
+    price: "€12,000–€15,000",
+    meta: "3–4 weeks · your whole estate",
+    description:
+      "Every finding family available, scored across your full content estate, and a 20–30 page board-ready report with a costed remediation roadmap. 90-minute stakeholder readout, plus two weeks of async Q&A.",
+    ctaLabel: "Talk about a Full Audit",
+    ctaUrl: "/contact",
+  },
+];
+
 const fallbackLearnMore = [
   { title: "Sales and Marketing Sync-Up", subtitle: "Streamlining Shared Content for Bigger Wins" },
   { title: "The Content Efficiency Playbook", subtitle: "Reduce Production Time, Increase Output" },
@@ -582,6 +624,52 @@ export default async function HomePage() {
           <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="#ffffff" />
           </svg>
+        </div>
+      </section>
+
+      {/* ─── ENGAGEMENT TIERS (ecm-agent) ─── */}
+      <section className="py-20 bg-white">
+        <div className="max-w-6xl mx-auto px-6">
+          <p className="text-center text-ecm-green/70 font-barlow font-semibold text-xs tracking-widest uppercase mb-3">
+            The engagement · ecm-agent, ECM.DEV&rsquo;s Content AI-Readiness Audit
+          </p>
+          <h2 className="text-ecm-green font-barlow font-bold text-3xl lg:text-4xl text-center mb-4">
+            One assessment. Three depths.
+          </h2>
+          <p className="text-ecm-gray-dark text-center text-base mb-16 max-w-2xl mx-auto">
+            The free assessment above is self-reported and takes ten minutes. Everything below it scans your actual content: an independent, vendor-neutral read on whether your estate will make your AI rollout fail, not a sales pitch dressed as a diagnostic.
+          </p>
+          <div className="grid md:grid-cols-3 gap-6 mb-8">
+            {engagementTiers.map((tier) => (
+              <div
+                key={tier.step}
+                className="relative bg-ecm-green rounded-xl p-6 sm:p-8 border border-ecm-lime/20 flex flex-col"
+              >
+                <div className="w-10 h-10 bg-ecm-lime rounded-lg flex items-center justify-center mb-4">
+                  <span className="text-ecm-green-dark font-barlow font-bold text-lg">{tier.step}</span>
+                </div>
+                <p className="text-ecm-lime/70 font-barlow font-semibold text-xs uppercase tracking-wide mb-1">
+                  {tier.kicker}
+                </p>
+                <h3 className="text-ecm-lime font-barlow font-bold text-xl mb-1">{tier.title}</h3>
+                <p className="text-white font-barlow font-bold text-2xl mb-1">{tier.price}</p>
+                <p className="text-white/60 text-xs mb-4">{tier.meta}</p>
+                <p className="text-white/85 text-sm leading-relaxed mb-4 flex-1">{tier.description}</p>
+                {tier.note && (
+                  <p className="text-ecm-lime/80 text-xs italic mb-4">{tier.note}</p>
+                )}
+                <Link
+                  href={tier.ctaUrl}
+                  className="inline-flex items-center justify-center bg-ecm-lime text-ecm-green font-barlow font-semibold text-sm px-6 py-3 rounded-full hover:bg-ecm-lime-hover transition-colors mt-auto"
+                >
+                  {tier.ctaLabel}
+                </Link>
+              </div>
+            ))}
+          </div>
+          <p className="text-center text-ecm-gray-dark text-sm max-w-2xl mx-auto">
+            After the audit: a fixed-price remediation sprint (&euro;6,000&ndash;&euro;10,000) turns the roadmap into reviewable diffs you accept or reject, or a re-audit (&euro;4,000&ndash;&euro;6,000) measures what changed. Nothing is auto-applied.
+          </p>
         </div>
       </section>
 
