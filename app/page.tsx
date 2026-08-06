@@ -494,6 +494,52 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* ─── ENGAGEMENT TIERS (ecm-agent) ─── */}
+      <section className="py-20 bg-white">
+        <div className="max-w-6xl mx-auto px-6">
+          <p className="text-center text-ecm-green/70 font-barlow font-semibold text-xs tracking-widest uppercase mb-3">
+            The engagement · ecm-agent, ECM.DEV&rsquo;s Content AI-Readiness Audit
+          </p>
+          <h2 className="text-ecm-green font-barlow font-bold text-3xl lg:text-4xl text-center mb-4">
+            One assessment. Three depths.
+          </h2>
+          <p className="text-ecm-gray-dark text-center text-base mb-16 max-w-2xl mx-auto">
+            The free assessment above is self-reported and takes ten minutes. Everything below it scans your actual content: an independent, vendor-neutral read on whether your estate will make your AI rollout fail, not a sales pitch dressed as a diagnostic.
+          </p>
+          <div className="grid md:grid-cols-3 gap-6 mb-8">
+            {engagementTiers.map((tier) => (
+              <div
+                key={tier.step}
+                className="relative bg-ecm-green rounded-xl p-6 sm:p-8 border border-ecm-lime/20 flex flex-col"
+              >
+                <div className="w-10 h-10 bg-ecm-lime rounded-lg flex items-center justify-center mb-4">
+                  <span className="text-ecm-green-dark font-barlow font-bold text-lg">{tier.step}</span>
+                </div>
+                <p className="text-ecm-lime/70 font-barlow font-semibold text-xs uppercase tracking-wide mb-1">
+                  {tier.kicker}
+                </p>
+                <h3 className="text-ecm-lime font-barlow font-bold text-xl mb-1">{tier.title}</h3>
+                <p className="text-white font-barlow font-bold text-2xl mb-1">{tier.price}</p>
+                <p className="text-white/60 text-xs mb-4">{tier.meta}</p>
+                <p className="text-white/85 text-sm leading-relaxed mb-4 flex-1">{tier.description}</p>
+                {tier.note && (
+                  <p className="text-ecm-lime/80 text-xs italic mb-4">{tier.note}</p>
+                )}
+                <Link
+                  href={tier.ctaUrl}
+                  className="inline-flex items-center justify-center bg-ecm-lime text-ecm-green font-barlow font-semibold text-sm px-6 py-3 rounded-full hover:bg-ecm-lime-hover transition-colors mt-auto"
+                >
+                  {tier.ctaLabel}
+                </Link>
+              </div>
+            ))}
+          </div>
+          <p className="text-center text-ecm-gray-dark text-sm max-w-2xl mx-auto">
+            After the audit: a fixed-price remediation sprint (&euro;6,000&ndash;&euro;10,000) turns the roadmap into reviewable diffs you accept or reject, or a re-audit (&euro;4,000&ndash;&euro;6,000) measures what changed. Nothing is auto-applied.
+          </p>
+        </div>
+      </section>
+
       {/* ─── LATEST INSIGHTS (Blog) ─── */}
       <section className="relative py-20 bg-white">
         <div className="max-w-6xl mx-auto px-6">
@@ -538,52 +584,6 @@ export default async function HomePage() {
               READ MORE
             </Link>
           </div>
-        </div>
-      </section>
-
-      {/* ─── ENGAGEMENT TIERS (ecm-agent) ─── */}
-      <section className="py-20 bg-white">
-        <div className="max-w-6xl mx-auto px-6">
-          <p className="text-center text-ecm-green/70 font-barlow font-semibold text-xs tracking-widest uppercase mb-3">
-            The engagement · ecm-agent, ECM.DEV&rsquo;s Content AI-Readiness Audit
-          </p>
-          <h2 className="text-ecm-green font-barlow font-bold text-3xl lg:text-4xl text-center mb-4">
-            One assessment. Three depths.
-          </h2>
-          <p className="text-ecm-gray-dark text-center text-base mb-16 max-w-2xl mx-auto">
-            The free assessment above is self-reported and takes ten minutes. Everything below it scans your actual content: an independent, vendor-neutral read on whether your estate will make your AI rollout fail, not a sales pitch dressed as a diagnostic.
-          </p>
-          <div className="grid md:grid-cols-3 gap-6 mb-8">
-            {engagementTiers.map((tier) => (
-              <div
-                key={tier.step}
-                className="relative bg-ecm-green rounded-xl p-6 sm:p-8 border border-ecm-lime/20 flex flex-col"
-              >
-                <div className="w-10 h-10 bg-ecm-lime rounded-lg flex items-center justify-center mb-4">
-                  <span className="text-ecm-green-dark font-barlow font-bold text-lg">{tier.step}</span>
-                </div>
-                <p className="text-ecm-lime/70 font-barlow font-semibold text-xs uppercase tracking-wide mb-1">
-                  {tier.kicker}
-                </p>
-                <h3 className="text-ecm-lime font-barlow font-bold text-xl mb-1">{tier.title}</h3>
-                <p className="text-white font-barlow font-bold text-2xl mb-1">{tier.price}</p>
-                <p className="text-white/60 text-xs mb-4">{tier.meta}</p>
-                <p className="text-white/85 text-sm leading-relaxed mb-4 flex-1">{tier.description}</p>
-                {tier.note && (
-                  <p className="text-ecm-lime/80 text-xs italic mb-4">{tier.note}</p>
-                )}
-                <Link
-                  href={tier.ctaUrl}
-                  className="inline-flex items-center justify-center bg-ecm-lime text-ecm-green font-barlow font-semibold text-sm px-6 py-3 rounded-full hover:bg-ecm-lime-hover transition-colors mt-auto"
-                >
-                  {tier.ctaLabel}
-                </Link>
-              </div>
-            ))}
-          </div>
-          <p className="text-center text-ecm-gray-dark text-sm max-w-2xl mx-auto">
-            After the audit: a fixed-price remediation sprint (&euro;6,000&ndash;&euro;10,000) turns the roadmap into reviewable diffs you accept or reject, or a re-audit (&euro;4,000&ndash;&euro;6,000) measures what changed. Nothing is auto-applied.
-          </p>
         </div>
       </section>
 
