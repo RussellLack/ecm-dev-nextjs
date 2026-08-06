@@ -279,11 +279,6 @@ export default async function HomePage() {
   const learnMoreItems =
     homePage?.learnMoreItems?.length ? homePage.learnMoreItems : fallbackLearnMore;
 
-  const ctaHeading =
-    homePage?.ctaHeading || "Find out where content infrastructure is holding your marketing back.";
-  const ctaSubheading =
-    homePage?.ctaSubheading || "The ten-minute assessment shows you where to start.";
-
   // Hero buttons
   const heroCtaPrimaryLabel = homePage?.heroCta?.primaryLabel || "Assess your content infrastructure";
   const heroCtaPrimaryUrl = homePage?.heroCta?.primaryUrl || "/assessments";
@@ -319,12 +314,6 @@ export default async function HomePage() {
 
   // Ticker
   const tickerPhrases = homePage?.tickerPhrases?.length ? homePage.tickerPhrases : fallbackTicker;
-
-  // Closing CTA
-  const closingCtaLabel = homePage?.closingCtaLabel || "Assess your content infrastructure";
-  const closingCtaUrl = homePage?.closingCtaUrl || "/assessments";
-  const closingSecondaryLabel = homePage?.closingSecondaryLabel ?? "or book a strategy session";
-  const closingSecondaryUrl = homePage?.closingSecondaryUrl || "/contact";
 
   // Blog posts: use Sanity data if available, map to display format
   const blogPosts =
@@ -665,45 +654,6 @@ export default async function HomePage() {
           </section>
         );
       })()}
-
-      {/* ─── CTA ─── */}
-      <section className="relative pt-28 pb-24 bg-ecm-green text-center overflow-hidden">
-        {/* Wave divider: white → green (top) */}
-        <div className="wave-divider wave-divider-top">
-          <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0,60 C360,0 1080,120 1440,60 L1440,0 L0,0 Z" fill="#ffffff" />
-          </svg>
-        </div>
-        <LavaBlobs variant="lime" opacity={0.35} count={5} />
-        <div className="relative z-10 max-w-4xl mx-auto px-6">
-          <div className="bg-ecm-green-dark/60 backdrop-blur-sm rounded-2xl border border-ecm-lime/15 px-8 sm:px-12 py-12 sm:py-16">
-            <h2 className="text-ecm-lime font-barlow font-bold text-3xl sm:text-4xl lg:text-5xl mb-4">
-              {ctaHeading}
-            </h2>
-            {ctaSubheading && (
-              <p className="text-white/85 font-barlow font-light text-lg sm:text-xl mb-8 max-w-xl mx-auto">
-                {ctaSubheading}
-              </p>
-            )}
-            <Link
-              href={closingCtaUrl}
-              className="inline-block bg-ecm-lime text-ecm-green font-barlow font-bold text-xl px-12 py-4 rounded-full hover:bg-ecm-lime-hover transition-colors"
-            >
-              {closingCtaLabel}
-            </Link>
-            {closingSecondaryLabel && (
-              <p className="mt-6">
-                <Link
-                  href={closingSecondaryUrl}
-                  className="text-white/80 font-barlow text-sm underline underline-offset-4 hover:text-ecm-lime transition-colors"
-                >
-                  {closingSecondaryLabel}
-                </Link>
-              </p>
-            )}
-          </div>
-        </div>
-      </section>
 
       {/* ─── CONTACT ─── */}
       <ContactForm />
