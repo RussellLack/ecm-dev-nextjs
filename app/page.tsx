@@ -168,7 +168,7 @@ const engagementTiers = [
     step: "2",
     kicker: "Paid front door",
     title: "Snapshot",
-    price: "$2,000–$3,000",
+    price: "€2,000–€3,000",
     meta: "5–7 business days · a real sample of your estate",
     description:
       "ecm-agent scans a genuine sample of your content, up to 100 items or 10% of the estate. A 5–10 page report, your top five findings, and one or two shown actually failing in an AI answer. 45-minute recorded readout.",
@@ -180,7 +180,7 @@ const engagementTiers = [
     step: "3",
     kicker: "The product",
     title: "Full Estate Audit",
-    price: "$12,000–$15,000",
+    price: "€12,000–€15,000",
     meta: "3–4 weeks · your whole estate",
     description:
       "Every finding family available, scored across your full content estate, and a 20–30 page board-ready report with a costed remediation roadmap. 90-minute stakeholder readout, plus two weeks of async Q&A.",
@@ -668,7 +668,7 @@ export default async function HomePage() {
             ))}
           </div>
           <p className="text-center text-ecm-gray-dark text-sm max-w-2xl mx-auto">
-            After the audit: a fixed-price remediation sprint ($6,000&ndash;$10,000) turns the roadmap into reviewable diffs you accept or reject, or a re-audit ($4,000&ndash;$6,000) measures what changed. Nothing is auto-applied.
+            After the audit: a fixed-price remediation sprint (&euro;6,000&ndash;&euro;10,000) turns the roadmap into reviewable diffs you accept or reject, or a re-audit (&euro;4,000&ndash;&euro;6,000) measures what changed. Nothing is auto-applied.
           </p>
         </div>
       </section>
