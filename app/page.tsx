@@ -20,7 +20,7 @@ export async function generateMetadata(): Promise<Metadata> {
   // full control over the brand-name placement.
   const title =
     seo.metaTitle ||
-    `${home?.heroHeading || "Content Infrastructure for Enterprise Marketing"} | ECM.DEV`;
+    `${home?.heroHeading || "Content Infrastructure for Modern Marketing"} | ECM.DEV`;
 
   // Description: seo override → first 155 chars of heroBody → fallback.
   const heroBlurb = home?.heroBody
@@ -29,7 +29,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const description =
     seo.metaDescription ||
     heroBlurb ||
-    "ECM.DEV helps enterprise organisations build the content infrastructure behind modern marketing, so campaigns, localisation, personalisation, and AI keep up with the ambition.";
+    "ECM.DEV helps organisations build the content infrastructure behind modern marketing, so campaigns, localisation, personalisation, and AI keep up with the ambition.";
 
   const ogImage = seo.ogImage
     ? urlFor(seo.ogImage).width(1200).height(630).fit("crop").crop("center").url()
@@ -59,19 +59,19 @@ export async function generateMetadata(): Promise<Metadata> {
 
 const fallbackHero = {
   heading: "Marketing isn't slowing down. Your content infrastructure is.",
-  body: "Campaigns, localisation, personalisation, AI: every one now depends on structured content operations underneath. When that layer is missing, marketing gets slower, costs climb, and the results never quite arrive.\n\nECM.DEV helps enterprise organisations build the content infrastructure behind modern marketing, so the systems keep up with the ambition.",
+  body: "Campaigns, localisation, personalisation, AI: every one now depends on structured content operations underneath. When that layer is missing, marketing gets slower, costs climb, and the results never quite arrive.\n\nECM.DEV helps organisations build the content infrastructure behind modern marketing, so the systems keep up with the ambition.",
 };
 
 const fallbackSymptoms = [
   {
     title: "AI Initiatives Stall or Fail",
     description:
-      "Fragmented, ungoverned content makes AI outputs unreliable, so enterprise adoption stalls and the investment underperforms.",
+      "Fragmented, ungoverned content makes AI outputs unreliable, so adoption stalls and the investment underperforms.",
   },
   {
     title: "CMS Investment Fails to Deliver",
     description:
-      "The platform is rarely the problem. Without operational design, an enterprise CMS becomes an expensive container for chaos.",
+      "The platform is rarely the problem. Without operational design, a CMS becomes an expensive container for chaos.",
   },
   {
     title: "Localisation Costs Escalate",
@@ -125,23 +125,23 @@ const outcomeCards = [
    evidence in the linked case study. */
 const proofTiles = [
   {
-    outcome: "Cut localisation cost across 15+ markets",
+    outcome: "Cut localisation cost across multiple markets",
     detail: "by fixing source content before it reached translation.",
     href: "/case-study/content-localization-15-countrieslanguages",
   },
   {
-    outcome: "Rebuilt an enterprise CMS migration",
+    outcome: "Rebuilt a CMS migration",
     detail: "around how teams actually work, so the platform earned its keep.",
     href: "/case-study/enterprise-cms-migration-sitecore-optimizely",
   },
   {
-    outcome: "Prepared enterprise content for AI",
+    outcome: "Prepared content for AI",
     detail: "with a taxonomy and metadata layer AI and search could rely on.",
     href: "/case-study/enterprise-content-taxonomy-metadata-architecture",
   },
   {
     outcome: "Turned a stalled intranet investment",
-    detail: "into an adopted employee portal across a multilingual workforce.",
+    detail: "into a portal employees actually adopted.",
     href: "/case-study/sharepoint-intranet-employee-portal-financial-services",
   },
 ];
@@ -300,7 +300,7 @@ export default async function HomePage() {
   const proofHeading = homePage?.proofHeading || "Fix the system, and the results follow.";
   const proofSubhead =
     homePage?.proofSubhead ||
-    "Real outcomes from enterprise teams who fixed the operation underneath their content, not just the content itself.";
+    "Real outcomes from teams who fixed the operation underneath their content, not just the content itself.";
   const proof = homePage?.proofTiles?.length ? homePage.proofTiles : proofTiles;
 
   // Ticker
