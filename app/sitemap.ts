@@ -6,6 +6,13 @@ import {
 } from "@/lib/intel/queries";
 import { tagToSlug } from "@/lib/tags";
 
+// Regenerate at most once a day. This route makes ten separate sanityFetch
+// calls, and sanityFetch bypasses Next's Data Cache entirely because
+// @sanity/client uses its own HTTP layer rather than the patched fetch. Without
+// this, every regeneration is ten live requests against the metered quota, and
+// a sitemap has no need to be fresher than daily.
+export const revalidate = 86400;
+
 const siteUrl = "https://ecm.dev";
 
 // Stable fallback for pages whose freshness isn't tied to a single Sanity

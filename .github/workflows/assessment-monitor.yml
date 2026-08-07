@@ -1,9 +1,16 @@
 name: Assessment Monitor (production)
 
-# Smoke-tests every live assessment on ecm.dev every 15 minutes. Catches
+# Smoke-tests every live assessment on ecm.dev on a schedule. Catches
 # breakage that bypasses a deploy (infra, env, CSP, Sanity outage). Smoke depth
 # only — never submits a form — so it is safe to run against production on a
 # schedule. A failure fails the workflow, which emails repo admins.
+#
+# Cadence: every six hours, deliberately. This suite keeps every Sanity-backed
+# assessment route permanently warm, so each run forces ISR regeneration and
+# live queries against a metered quota. At */15 that was ~96 runs/day of load
+# existing only to serve a robot, and it contributed to the July quota
+# exhaustion. Six-hourly catches breakage nearly as fast for ~4% of the cost.
+# Do not tighten without checking Sanity usage first.
 #
 # Note: scheduled workflows only run from the default branch (main), so this
 # begins running once merged. GitHub may also disable the schedule after 60
@@ -11,7 +18,7 @@ name: Assessment Monitor (production)
 
 on:
   schedule:
-    - cron: "*/15 * * * *"
+    - cron: "0 */6 * * *"
   workflow_dispatch: {}
 
 concurrency:
