@@ -154,7 +154,7 @@ const proofTiles = [
 const engagementTiers = [
   {
     step: "1",
-    kicker: "Start here — free",
+    kicker: "Start here, free",
     title: "Self-assessment",
     price: "Free",
     meta: "10 minutes · self-scored",
@@ -165,7 +165,7 @@ const engagementTiers = [
   },
   {
     step: "2",
-    kicker: "Paid front door",
+    kicker: "First real proof",
     title: "Snapshot",
     price: "€2,000–€3,000",
     meta: "5–7 business days · a real sample of your estate",
@@ -177,7 +177,7 @@ const engagementTiers = [
   },
   {
     step: "3",
-    kicker: "The product",
+    kicker: "Full proof, board-ready",
     title: "Full Estate Audit",
     price: "€12,000–€15,000",
     meta: "3–4 weeks · your whole estate",
