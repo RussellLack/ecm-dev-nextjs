@@ -167,7 +167,7 @@ const engagementTiers = [
     step: "2",
     kicker: "First real proof",
     title: "Snapshot",
-    price: "€2,000–€3,000",
+    price: "From €2,000",
     meta: "5–7 business days · a real sample of your estate",
     description:
       "ecm-agent scans a genuine sample of your content, up to 100 items or 10% of the estate. A 5–10 page report, your top five findings, and one or two shown actually failing in an AI answer. 45-minute recorded readout.",
@@ -179,7 +179,7 @@ const engagementTiers = [
     step: "3",
     kicker: "Full proof, board-ready",
     title: "Full Estate Audit",
-    price: "€12,000–€15,000",
+    price: "From €12,000",
     meta: "3–4 weeks · your whole estate",
     description:
       "Every finding family available, scored across your full content estate, and a 20–30 page board-ready report with a costed remediation roadmap. 90-minute stakeholder readout, plus two weeks of async Q&A.",
@@ -506,8 +506,11 @@ export default async function HomePage() {
           <p className="text-ecm-gray-dark text-center text-base mb-4 max-w-2xl mx-auto">
             Content used to be read. Now it gets reused by AI. Our assessments prove your content is safe to reuse: current, consistent, and trustworthy, not just present.
           </p>
-          <p className="text-ecm-gray-dark text-center text-base mb-16 max-w-3xl mx-auto">
+          <p className="text-ecm-gray-dark text-center text-base mb-4 max-w-3xl mx-auto">
             Start with the ten-minute self-assessment to frame some of the current challenges. Our paid assessments check two basic things first: does your content actually cover what an AI needs to draw on, and is it current and consistent rather than contradicting itself. It then checks whether that content is written so an AI can pull a clean answer out of it, and on the full audit it separately flags when the real problem is the AI setup itself rather than the content, so you don't fix the wrong thing. It also checks consistency across languages.
+          </p>
+          <p className="text-ecm-gray-dark text-center text-sm mb-8 max-w-2xl mx-auto">
+            Not a €100-a-month scanner. Not a six-figure attestation platform. This is priced for what it actually is: an expert's judgment, backed by a tool, on a fixed scope.
           </p>
           <div className="grid md:grid-cols-3 gap-6 mb-8">
             {engagementTiers.map((tier) => (
@@ -537,8 +540,11 @@ export default async function HomePage() {
               </div>
             ))}
           </div>
-          <p className="text-center text-ecm-gray-dark text-sm max-w-2xl mx-auto">
-            After the audit: a fixed-price remediation sprint (&euro;6,000&ndash;&euro;10,000) turns the roadmap into reviewable diffs you accept or reject, or a re-audit (&euro;4,000&ndash;&euro;6,000) measures what changed. Nothing is auto-applied.
+          <p className="text-center text-ecm-gray-dark text-sm mb-2 max-w-2xl mx-auto">
+            After the audit: a fixed-price remediation sprint (from &euro;6,000) turns the roadmap into reviewable diffs you accept or reject, or a re-audit (from &euro;4,000) measures what changed. Nothing is auto-applied.
+          </p>
+          <p className="text-center text-ecm-gray-dark text-xs max-w-2xl mx-auto">
+            All prices exclude VAT where applicable.
           </p>
         </div>
       </section>
