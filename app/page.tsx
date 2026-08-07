@@ -501,10 +501,13 @@ export default async function HomePage() {
             Content AI-Readiness Audit
           </p>
           <h2 className="text-ecm-green font-barlow font-bold text-3xl lg:text-4xl text-center mb-4">
-            One assessment. Three depths.
+            One question. Three depths of proof.
           </h2>
-          <p className="text-ecm-gray-dark text-center text-base mb-16 max-w-2xl mx-auto">
-            The ten-minute self-assessment is self-reported. Every tier below it scans your actual content instead: an independent, vendor-neutral read on whether your estate will make your AI rollout fail, not a sales pitch dressed as a diagnostic.
+          <p className="text-ecm-gray-dark text-center text-base mb-4 max-w-2xl mx-auto">
+            Content used to be read. Now it gets reused by AI. Our assessments prove your content is safe to reuse: current, consistent, and trustworthy, not just present.
+          </p>
+          <p className="text-ecm-gray-dark text-center text-base mb-16 max-w-3xl mx-auto">
+            Start with the ten-minute self-assessment to frame some of the current challenges. Our paid assessments check two basic things first: does your content actually cover what an AI needs to draw on, and is it current and consistent rather than contradicting itself. It then checks whether that content is written so an AI can pull a clean answer out of it, and on the full audit it separately flags when the real problem is the AI setup itself rather than the content, so you don't fix the wrong thing. It also checks consistency across languages.
           </p>
           <div className="grid md:grid-cols-3 gap-6 mb-8">
             {engagementTiers.map((tier) => (
