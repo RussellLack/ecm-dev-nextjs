@@ -498,13 +498,13 @@ export default async function HomePage() {
       <section className="py-20 bg-white">
         <div className="max-w-6xl mx-auto px-6">
           <p className="text-center text-ecm-green/70 font-barlow font-semibold text-xs tracking-widest uppercase mb-3">
-            The engagement · ecm-agent, ECM.DEV&rsquo;s Content AI-Readiness Audit
+            Content AI-Readiness Audit
           </p>
           <h2 className="text-ecm-green font-barlow font-bold text-3xl lg:text-4xl text-center mb-4">
             One assessment. Three depths.
           </h2>
           <p className="text-ecm-gray-dark text-center text-base mb-16 max-w-2xl mx-auto">
-            The free assessment above is self-reported and takes ten minutes. Everything below it scans your actual content: an independent, vendor-neutral read on whether your estate will make your AI rollout fail, not a sales pitch dressed as a diagnostic.
+            The ten-minute self-assessment is self-reported. Every tier below it scans your actual content instead: an independent, vendor-neutral read on whether your estate will make your AI rollout fail, not a sales pitch dressed as a diagnostic.
           </p>
           <div className="grid md:grid-cols-3 gap-6 mb-8">
             {engagementTiers.map((tier) => (
