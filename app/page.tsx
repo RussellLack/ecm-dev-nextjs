@@ -161,7 +161,7 @@ const engagementTiers = [
     description:
       "Score your own marketing operation across strategy, workflow, technology, governance, measurement, and AI readiness. An executive-ready readout, not a sales call.",
     ctaLabel: "Start free",
-    ctaUrl: "/assessments",
+    ctaUrl: "/assessment/content-operations-maturity",
   },
   {
     step: "2",
@@ -281,7 +281,7 @@ export default async function HomePage() {
 
   // Hero buttons
   const heroCtaPrimaryLabel = homePage?.heroCta?.primaryLabel || "Assess your content infrastructure";
-  const heroCtaPrimaryUrl = homePage?.heroCta?.primaryUrl || "/assessments";
+  const heroCtaPrimaryUrl = homePage?.heroCta?.primaryUrl || "/assessment/content-operations-maturity";
   const heroCtaPrimaryNote = homePage?.heroCta?.primaryNote ?? "10 min";
   const heroCtaSecondaryLabel = homePage?.heroCta?.secondaryLabel || "Explore the guides";
   const heroCtaSecondaryUrl = homePage?.heroCta?.secondaryUrl || "/guides";
@@ -441,7 +441,7 @@ export default async function HomePage() {
           </div>
           <div className="text-center">
             <Link
-              href="/assessments"
+              href="/assessment/content-operations-maturity"
               className="inline-block bg-ecm-green-dark text-white font-barlow font-semibold px-10 py-4 rounded-full border-2 border-ecm-lime hover:bg-ecm-lime hover:text-ecm-green transition-colors"
             >
               ASSESS YOUR INFRASTRUCTURE
@@ -626,7 +626,7 @@ export default async function HomePage() {
 
       {/* ─── MOBILE STICKY CTA ─── */}
       <Link
-        href="/assessments"
+        href="/assessment/content-operations-maturity"
         className="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-ecm-lime text-ecm-green font-barlow font-bold text-center py-4 shadow-[0_-4px_12px_rgba(0,0,0,0.15)] hover:bg-ecm-lime-hover transition-colors"
       >
         Assess your content infrastructure · 10 min
