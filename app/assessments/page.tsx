@@ -368,7 +368,7 @@ export default async function AssessmentsPage() {
             </div>
           </div>
 
-          {assessments.length > 0 ? (
+          {assessments.length > 0 && (
             <div className="space-y-6 mt-6">
               {assessments.map((a: any) => (
                 <div
@@ -472,7 +472,13 @@ export default async function AssessmentsPage() {
                 </div>
               ))}
             </div>
-          ) : (
+          )}
+
+          {/* Only show this when there's truly no Sanity-authored content at
+              all -- the hardcoded tools above always exist, so an empty
+              `assessments` list alone (e.g. because the one CMS assessment is
+              already shown as `featured`) doesn't mean "nothing published". */}
+          {assessments.length === 0 && !featured && (
             <div className="text-center py-16">
               <p className="text-gray-400 font-barlow text-lg">
                 No assessments published yet. Check back soon.
