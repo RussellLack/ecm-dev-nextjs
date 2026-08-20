@@ -89,34 +89,62 @@ export async function getAssessmentTargets(
  * Warming every route once here, outside any per-test timeout, means the
  * timed run only ever hits already-warm functions.
  *
+ * A single attempt isn't always enough, though: moments after a fresh
+ * deploy the preview's DNS/edge routing can still be settling, which fails
+ * outright ("fetch failed" — connection refused / not yet resolvable)
+ * rather than timing out. That's a different failure mode than cold-start
+ * latency and needs a retry with a short pause, not a longer timeout. Each
+ * target therefore gets up to 3 attempts with a 3s pause between them
+ * before it's logged as failed.
+ *
  * Failures are logged, not thrown — a route that's still unreachable after
- * warm-up will fail loudly and correctly in the real test, with a real error,
- * instead of being masked here.
+ * every retry will fail loudly and correctly in the real test, with a real
+ * error, instead of being masked here.
  */
-export async function warmTargets(targets: AssessmentTarget[]): Promise<void> {
-  const results = await Promise.all(
-    targets.map(async (t) => {
-      const started = Date.now();
-      try {
-        const res = await fetch(t.url, { signal: AbortSignal.timeout(45_000) });
-        return { slug: t.slug, ok: res.ok, status: res.status, ms: Date.now() - started };
-      } catch (err) {
-        return {
-          slug: t.slug,
-          ok: false,
-          status: 0,
-          ms: Date.now() - started,
-          error: err instanceof Error ? err.message : String(err),
-        };
+const WARM_UP_MAX_ATTEMPTS = 3;
+const WARM_UP_RETRY_DELAY_MS = 3_000;
+
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+async function warmTarget(
+  target: AssessmentTarget,
+): Promise<{ slug: string; ok: boolean; status: number; ms: number; attempts: number; error?: string }> {
+  const started = Date.now();
+  let lastError: string | undefined;
+
+  for (let attempt = 1; attempt <= WARM_UP_MAX_ATTEMPTS; attempt++) {
+    try {
+      const res = await fetch(target.url, { signal: AbortSignal.timeout(45_000) });
+      if (res.ok) {
+        return { slug: target.slug, ok: true, status: res.status, ms: Date.now() - started, attempts: attempt };
       }
-    }),
-  );
+      lastError = `HTTP ${res.status}`;
+    } catch (err) {
+      lastError = err instanceof Error ? err.message : String(err);
+    }
+    if (attempt < WARM_UP_MAX_ATTEMPTS) await sleep(WARM_UP_RETRY_DELAY_MS);
+  }
+
+  return {
+    slug: target.slug,
+    ok: false,
+    status: 0,
+    ms: Date.now() - started,
+    attempts: WARM_UP_MAX_ATTEMPTS,
+    error: lastError,
+  };
+}
+
+export async function warmTargets(targets: AssessmentTarget[]): Promise<void> {
+  const results = await Promise.all(targets.map(warmTarget));
 
   console.log(`[warm-up] pinged ${results.length} target(s):`);
   for (const r of results) {
-    const detail = "error" in r ? ` (${r.error})` : "";
+    const detail = r.error ? ` (${r.error})` : "";
     console.log(
-      `  - ${r.slug.padEnd(26)} ${r.ok ? "ok" : "FAILED"} ${r.status || ""} ${r.ms}ms${detail}`,
+      `  - ${r.slug.padEnd(26)} ${r.ok ? "ok" : "FAILED"} attempt ${r.attempts}/${WARM_UP_MAX_ATTEMPTS} ${r.ms}ms${detail}`,
     );
   }
 }
