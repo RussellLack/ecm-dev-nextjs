@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import { getAssessmentTargets } from "./helpers/targets";
+import { getAssessmentTargets, warmTargets } from "./helpers/targets";
 
 /** Where the discovered target list is written for specs to read at collection. */
 export const TARGETS_FILE = path.join(process.cwd(), "test-results", "targets.json");
@@ -25,4 +25,7 @@ export default async function globalSetup(): Promise<void> {
     `[global-setup] discovered ${targets.length} assessment target(s) at ${baseURL}:`,
   );
   for (const t of targets) console.log(`  - ${t.slug.padEnd(26)} ${t.url}`);
+
+  // Pay any serverless cold-start cost here, once, outside the timed test.
+  await warmTargets(targets);
 }
