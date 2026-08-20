@@ -19,6 +19,12 @@ const TEST_EMAIL = "e2e-noreply@example.com";
 test("lead-magnet completes end-to-end with submission intercepted", async ({
   page,
 }) => {
+  // The config's default 30s test timeout is too tight now that a single
+  // navigation alone can legitimately take up to 60s on a cold function
+  // (see targets.ts warm-up); this test also runs the full question flow
+  // after that navigation succeeds.
+  test.setTimeout(120_000);
+
   let submitCalls = 0;
   let emailCalls = 0;
   let submitBody: any = null;
@@ -79,7 +85,7 @@ test("lead-magnet completes end-to-end with submission intercepted", async ({
 
   // global-setup warms this route already; the explicit timeout here is
   // defense-in-depth against Playwright's shorter default (see smoke spec).
-  await page.goto(LEAD_MAGNET_PATH, { waitUntil: "domcontentloaded", timeout: 45_000 });
+  await page.goto(LEAD_MAGNET_PATH, { waitUntil: "domcontentloaded", timeout: 60_000 });
 
   // ── Welcome → start
   await page.getByTestId("assessment-start").click();
