@@ -36,8 +36,10 @@ test("every assessment hydrates and is interactive", async ({ browser }) => {
   ).toBeGreaterThan(0);
 
   // One test exercises every target sequentially (isolated contexts), so the
-  // default per-test timeout is far too short — scale it to the target count.
-  test.setTimeout(Math.max(60_000, targets.length * 30_000));
+  // default per-test timeout is far too short — scale it to the target
+  // count. 75s/target covers even the worst cold-start navigations observed
+  // (global-setup's warm-up has seen 48s+) plus the interactivity checks.
+  test.setTimeout(Math.max(60_000, targets.length * 75_000));
 
   const failures: string[] = [];
 
@@ -57,12 +59,13 @@ test("every assessment hydrates and is interactive", async ({ browser }) => {
         try {
           const res = await page.goto(target.url, {
             waitUntil: "domcontentloaded",
-            // Global setup warms every target once, but give this navigation
-            // its own generous budget too -- independent of the per-test
-            // timeout above, and wider than Playwright's ~30s default -- so
-            // any residual latency on a still-settling function doesn't fail
-            // the run on its own.
-            timeout: 45_000,
+            // Global setup warms every target until it succeeds, but give
+            // this navigation its own generous budget too -- independent of
+            // the per-test timeout above, and wider than Playwright's ~30s
+            // default -- in case a function has gone idle again in the gap
+            // between warm-up and this navigation reaching it. Matches the
+            // worst-case cold-start latency observed in warm-up runs.
+            timeout: 60_000,
           });
           expect(res?.ok(), `navigation to ${target.url} should return 2xx`).toBeTruthy();
 

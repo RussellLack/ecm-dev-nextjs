@@ -81,27 +81,32 @@ export async function getAssessmentTargets(
  *
  * Netlify's Next.js runtime serves each dynamic route from its own
  * serverless function. A function that hasn't been hit since the last deploy
- * pays a cold-start penalty (10-40s+) on its *first* invocation. The smoke
- * spec's own `page.goto()` uses Playwright's default navigation timeout
- * (~30s), which is unrelated to and shorter than the per-test timeout the
- * spec already scales to the target count — so a cold function can time out
- * a navigation even though the test as a whole has plenty of budget left.
- * Warming every route once here, outside any per-test timeout, means the
- * timed run only ever hits already-warm functions.
+ * pays a cold-start penalty on its *first* invocation — and observed values
+ * on this project's plan have run well past initial estimates (one warm-up
+ * took 48s+ before succeeding). A *fixed* retry count can't adapt to that:
+ * whatever ceiling you pick, a slower cold start on a given day blows past
+ * it. So each target is retried until it succeeds or a generous overall
+ * DEADLINE elapses, not a fixed number of attempts — the deadline is the
+ * actual budget being spent, however many tries that takes.
  *
- * A single attempt isn't always enough, though: moments after a fresh
- * deploy the preview's DNS/edge routing can still be settling, which fails
- * outright ("fetch failed" — connection refused / not yet resolvable)
- * rather than timing out. That's a different failure mode than cold-start
- * latency and needs a retry with a short pause, not a longer timeout. Each
- * target therefore gets up to 3 attempts with a 3s pause between them
- * before it's logged as failed.
+ * This runs once in globalSetup, outside any per-test timeout, so spending
+ * up to that deadline per target is fine — the CI job's own timeout is the
+ * only real ceiling. The smoke spec's own `page.goto()` gets a matching
+ * generous timeout (see assessments.smoke.spec.ts) as a second line of
+ * defence, since a function can in principle go idle again in the gap
+ * between warm-up succeeding and the timed test reaching that target.
+ *
+ * A short pause between attempts also covers a different failure mode than
+ * latency: moments after a fresh deploy the preview's DNS/edge routing can
+ * still be settling, which fails outright ("fetch failed" — connection
+ * refused / not yet resolvable) rather than timing out.
  *
  * Failures are logged, not thrown — a route that's still unreachable after
- * every retry will fail loudly and correctly in the real test, with a real
- * error, instead of being masked here.
+ * the full deadline will fail loudly and correctly in the real test, with a
+ * real error, instead of being masked here.
  */
-const WARM_UP_MAX_ATTEMPTS = 3;
+const WARM_UP_DEADLINE_MS = 120_000;
+const WARM_UP_PER_ATTEMPT_TIMEOUT_MS = 30_000;
 const WARM_UP_RETRY_DELAY_MS = 3_000;
 
 function sleep(ms: number): Promise<void> {
@@ -113,18 +118,24 @@ async function warmTarget(
 ): Promise<{ slug: string; ok: boolean; status: number; ms: number; attempts: number; error?: string }> {
   const started = Date.now();
   let lastError: string | undefined;
+  let attempts = 0;
 
-  for (let attempt = 1; attempt <= WARM_UP_MAX_ATTEMPTS; attempt++) {
+  while (Date.now() - started < WARM_UP_DEADLINE_MS) {
+    attempts++;
     try {
-      const res = await fetch(target.url, { signal: AbortSignal.timeout(45_000) });
+      const res = await fetch(target.url, {
+        signal: AbortSignal.timeout(WARM_UP_PER_ATTEMPT_TIMEOUT_MS),
+      });
       if (res.ok) {
-        return { slug: target.slug, ok: true, status: res.status, ms: Date.now() - started, attempts: attempt };
+        return { slug: target.slug, ok: true, status: res.status, ms: Date.now() - started, attempts };
       }
       lastError = `HTTP ${res.status}`;
     } catch (err) {
       lastError = err instanceof Error ? err.message : String(err);
     }
-    if (attempt < WARM_UP_MAX_ATTEMPTS) await sleep(WARM_UP_RETRY_DELAY_MS);
+    const remaining = WARM_UP_DEADLINE_MS - (Date.now() - started);
+    if (remaining <= 0) break;
+    await sleep(Math.min(WARM_UP_RETRY_DELAY_MS, remaining));
   }
 
   return {
@@ -132,7 +143,7 @@ async function warmTarget(
     ok: false,
     status: 0,
     ms: Date.now() - started,
-    attempts: WARM_UP_MAX_ATTEMPTS,
+    attempts,
     error: lastError,
   };
 }
@@ -144,7 +155,7 @@ export async function warmTargets(targets: AssessmentTarget[]): Promise<void> {
   for (const r of results) {
     const detail = r.error ? ` (${r.error})` : "";
     console.log(
-      `  - ${r.slug.padEnd(26)} ${r.ok ? "ok" : "FAILED"} attempt ${r.attempts}/${WARM_UP_MAX_ATTEMPTS} ${r.ms}ms${detail}`,
+      `  - ${r.slug.padEnd(26)} ${r.ok ? "ok" : "FAILED"} ${r.attempts} attempt(s) ${r.ms}ms${detail}`,
     );
   }
 }
