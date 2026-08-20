@@ -90,6 +90,16 @@ export interface AssessmentSubmissionRecord {
     pushedAt: string | null;
     error: string | null;
   };
+
+  // Optional post-results feedback (currently only surfaced on the ungated
+  // Content Infrastructure Maturity results page). Set once, via a patch, if
+  // the visitor answers the feedback prompt.
+  feedback?: {
+    q1: string;
+    q2: string;
+    comment: string;
+    submittedAt: string;
+  };
 }
 
 export interface ToolSubmissionRecord {

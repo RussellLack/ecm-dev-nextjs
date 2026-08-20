@@ -97,6 +97,7 @@ export default async function ResultsPage({
     <>
       <ResultsDashboard
         submissionId={sid}
+        assessmentSlug={slug}
         firstName={submission.firstName || ""}
         totalScore={submission.totalScore}
         bandTitle={band?.title || submission.bandTitle || ""}

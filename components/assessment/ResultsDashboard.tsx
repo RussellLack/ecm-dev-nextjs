@@ -6,8 +6,26 @@ import { useCsrf } from "@/lib/useCsrf";
 import { CONSENT_TEXT, CONSENT_VERSION } from "@/lib/consent";
 import type { DimensionScore, Recommendation } from "@/lib/assessment/types";
 
+/** Assessments that get the post-results feedback prompt. */
+const FEEDBACK_ENABLED_SLUGS = new Set(["content-operations-maturity"]);
+
+const FEEDBACK_Q1_OPTIONS = [
+  "Not very",
+  "Somewhat",
+  "Mostly",
+  "Very accurately",
+] as const;
+
+const FEEDBACK_Q2_OPTIONS = [
+  "Not likely",
+  "Maybe",
+  "Likely",
+  "Very likely",
+] as const;
+
 interface ResultsDashboardProps {
   submissionId: string;
+  assessmentSlug: string;
   firstName: string;
   totalScore: number;
   bandTitle: string;
@@ -25,6 +43,7 @@ interface ResultsDashboardProps {
 
 export default function ResultsDashboard({
   submissionId,
+  assessmentSlug,
   firstName,
   totalScore,
   bandTitle,
@@ -48,6 +67,16 @@ export default function ResultsDashboard({
   const [reportError, setReportError] = useState<string | null>(null);
   const [consentGiven, setConsentGiven] = useState(false);
   const [linkCopied, setLinkCopied] = useState(false);
+
+  // Post-results feedback (Content Infrastructure Maturity only — see
+  // FEEDBACK_ENABLED_SLUGS).
+  const [feedbackQ1, setFeedbackQ1] = useState<string | null>(null);
+  const [feedbackQ2, setFeedbackQ2] = useState<string | null>(null);
+  const [feedbackComment, setFeedbackComment] = useState("");
+  const [feedbackHp, setFeedbackHp] = useState(""); // honeypot
+  const [feedbackSending, setFeedbackSending] = useState(false);
+  const [feedbackSent, setFeedbackSent] = useState(false);
+  const [feedbackError, setFeedbackError] = useState<string | null>(null);
 
   async function handleRequestReport(e: React.FormEvent) {
     e.preventDefault();
@@ -89,6 +118,43 @@ export default function ResultsDashboard({
       setReportError(err.message || "Something went wrong. Please try again.");
     } finally {
       setReportSending(false);
+    }
+  }
+
+  async function handleSubmitFeedback(e: React.FormEvent) {
+    e.preventDefault();
+    if (!feedbackQ1 || !feedbackQ2) {
+      setFeedbackError("Please answer both questions.");
+      return;
+    }
+
+    setFeedbackSending(true);
+    setFeedbackError(null);
+
+    try {
+      const res = await fetch("/api/assessment/feedback", {
+        method: "POST",
+        credentials: "same-origin",
+        headers: withCsrf({ "Content-Type": "application/json" }),
+        body: JSON.stringify({
+          submissionId,
+          q1: feedbackQ1,
+          q2: feedbackQ2,
+          comment: feedbackComment.trim(),
+          _hp: feedbackHp,
+        }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || "Failed to send feedback");
+      }
+
+      setFeedbackSent(true);
+    } catch (err: any) {
+      setFeedbackError(err.message || "Something went wrong. Please try again.");
+    } finally {
+      setFeedbackSending(false);
     }
   }
 
@@ -477,6 +543,117 @@ export default function ResultsDashboard({
           </div>
         </div>
       </section>
+
+      {/* ─── Quick Feedback (Content Infrastructure Maturity only) ─── */}
+      {FEEDBACK_ENABLED_SLUGS.has(assessmentSlug) && (
+        <section className="pb-16">
+          <div className="max-w-3xl mx-auto px-6">
+            <div className="bg-white/5 border border-white/10 rounded-2xl px-8 py-10">
+              {!feedbackSent ? (
+                <>
+                  <div className="text-xs font-bold text-white/60 uppercase tracking-wide font-barlow mb-1">Optional</div>
+                  <h3 className="text-white font-barlow font-bold text-xl mb-1">
+                    Quick feedback?
+                  </h3>
+                  <p className="text-white/60 font-barlow text-sm mb-6">
+                    Two questions, ten seconds, no email required. Helps us make this more useful.
+                  </p>
+                  <form onSubmit={handleSubmitFeedback} className="space-y-6">
+                    <div aria-hidden="true" style={{ position: "absolute", left: "-9999px", width: 1, height: 1, overflow: "hidden" }}>
+                      <label>
+                        Leave empty
+                        <input type="text" name="_hp" tabIndex={-1} autoComplete="off" value={feedbackHp} onChange={(e) => setFeedbackHp(e.target.value)} />
+                      </label>
+                    </div>
+
+                    <div>
+                      <p className="text-white/80 font-barlow text-sm mb-3">
+                        How accurately did this reflect your content operation?
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {FEEDBACK_Q1_OPTIONS.map((option) => (
+                          <button
+                            key={option}
+                            type="button"
+                            onClick={() => setFeedbackQ1(option)}
+                            className={`px-4 py-2 rounded-full text-sm font-barlow font-semibold transition-colors ${
+                              feedbackQ1 === option
+                                ? "bg-ecm-lime text-ecm-green"
+                                : "bg-white/10 text-white/70 hover:bg-white/15"
+                            }`}
+                          >
+                            {option}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <p className="text-white/80 font-barlow text-sm mb-3">
+                        How likely are you to act on the recommended next step?
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {FEEDBACK_Q2_OPTIONS.map((option) => (
+                          <button
+                            key={option}
+                            type="button"
+                            onClick={() => setFeedbackQ2(option)}
+                            className={`px-4 py-2 rounded-full text-sm font-barlow font-semibold transition-colors ${
+                              feedbackQ2 === option
+                                ? "bg-ecm-lime text-ecm-green"
+                                : "bg-white/10 text-white/70 hover:bg-white/15"
+                            }`}
+                          >
+                            {option}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-white/80 font-barlow text-sm mb-3">
+                        Anything else you&rsquo;d like to share? (optional)
+                      </label>
+                      <textarea
+                        value={feedbackComment}
+                        onChange={(e) => setFeedbackComment(e.target.value)}
+                        maxLength={2000}
+                        rows={3}
+                        placeholder="Your comment"
+                        className="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/15 text-white font-barlow placeholder-white/30 focus:outline-none focus:border-ecm-lime transition-colors resize-none"
+                      />
+                    </div>
+
+                    {feedbackError && (
+                      <p className="text-red-400 font-barlow text-xs">{feedbackError}</p>
+                    )}
+
+                    <button
+                      type="submit"
+                      disabled={feedbackSending || !feedbackQ1 || !feedbackQ2}
+                      className="bg-ecm-lime hover:bg-ecm-lime-hover text-ecm-green font-barlow font-bold py-3 px-8 rounded-xl text-sm transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                    >
+                      {feedbackSending ? "Sending..." : "Send feedback"}
+                    </button>
+                  </form>
+                </>
+              ) : (
+                <div className="text-center py-4">
+                  <svg className="w-10 h-10 text-ecm-lime mx-auto mb-3" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <p className="text-white font-barlow font-semibold text-lg mb-1">
+                    Thanks for the feedback
+                  </p>
+                  <p className="text-white/50 font-barlow text-sm">
+                    It genuinely helps us make this better.
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* CTA */}
       <section className="pb-20">
