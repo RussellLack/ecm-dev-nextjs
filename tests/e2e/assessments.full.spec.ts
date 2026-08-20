@@ -77,7 +77,9 @@ test("lead-magnet completes end-to-end with submission intercepted", async ({
     },
   ]);
 
-  await page.goto(LEAD_MAGNET_PATH, { waitUntil: "domcontentloaded" });
+  // global-setup warms this route already; the explicit timeout here is
+  // defense-in-depth against Playwright's shorter default (see smoke spec).
+  await page.goto(LEAD_MAGNET_PATH, { waitUntil: "domcontentloaded", timeout: 45_000 });
 
   // ── Welcome → start
   await page.getByTestId("assessment-start").click();

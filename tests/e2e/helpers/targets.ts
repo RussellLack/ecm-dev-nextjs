@@ -74,3 +74,49 @@ export async function getAssessmentTargets(
 
   return [...map.values()].sort((a, b) => a.slug.localeCompare(b.slug));
 }
+
+/**
+ * Fire one request at every target, in parallel, and wait for them all to
+ * settle — before the timed Playwright test ever navigates to one.
+ *
+ * Netlify's Next.js runtime serves each dynamic route from its own
+ * serverless function. A function that hasn't been hit since the last deploy
+ * pays a cold-start penalty (10-40s+) on its *first* invocation. The smoke
+ * spec's own `page.goto()` uses Playwright's default navigation timeout
+ * (~30s), which is unrelated to and shorter than the per-test timeout the
+ * spec already scales to the target count — so a cold function can time out
+ * a navigation even though the test as a whole has plenty of budget left.
+ * Warming every route once here, outside any per-test timeout, means the
+ * timed run only ever hits already-warm functions.
+ *
+ * Failures are logged, not thrown — a route that's still unreachable after
+ * warm-up will fail loudly and correctly in the real test, with a real error,
+ * instead of being masked here.
+ */
+export async function warmTargets(targets: AssessmentTarget[]): Promise<void> {
+  const results = await Promise.all(
+    targets.map(async (t) => {
+      const started = Date.now();
+      try {
+        const res = await fetch(t.url, { signal: AbortSignal.timeout(45_000) });
+        return { slug: t.slug, ok: res.ok, status: res.status, ms: Date.now() - started };
+      } catch (err) {
+        return {
+          slug: t.slug,
+          ok: false,
+          status: 0,
+          ms: Date.now() - started,
+          error: err instanceof Error ? err.message : String(err),
+        };
+      }
+    }),
+  );
+
+  console.log(`[warm-up] pinged ${results.length} target(s):`);
+  for (const r of results) {
+    const detail = "error" in r ? ` (${r.error})` : "";
+    console.log(
+      `  - ${r.slug.padEnd(26)} ${r.ok ? "ok" : "FAILED"} ${r.status || ""} ${r.ms}ms${detail}`,
+    );
+  }
+}
