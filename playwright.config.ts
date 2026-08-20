@@ -32,6 +32,16 @@ export default defineConfig({
   retries: 2,
   // Remote-only suite: no local web server, parallelism is safe and wanted.
   fullyParallel: true,
+  // In CI, the target is often a deploy preview seconds old: its serverless
+  // functions are still scaling out to handle concurrent load. A single real
+  // browser page load already issues far more simultaneous requests (JS
+  // bundles, RSC fetches, fonts) than the global-setup warm-up's plain GETs;
+  // running the smoke and full specs as two concurrent workers doubles that
+  // burst right when the origin can least afford it. Serialize to one worker
+  // in CI so the origin only ever sees one real browser's worth of load at a
+  // time -- locally (against a stable target) full parallelism is still fine
+  // and faster.
+  workers: process.env.CI ? 1 : undefined,
   forbidOnly: !!process.env.CI,
   reporter: process.env.CI
     ? [["list"], ["html", { open: "never" }]]
