@@ -275,7 +275,10 @@ interface CRMProvider {
 - Conditional question logic
 - Improved results visualisation (radar chart)
 - Real CRM integration (HubSpot / webhook)
-- Email automation via Resend
+- Email automation via Postmark (shipped August 2026 — see §8; originally
+  built on Resend, migrated after Resend's `ecm.dev` sending domain was found
+  to have never completed DNS verification, see
+  [`KNOWN-ISSUES.md`](../KNOWN-ISSUES.md))
 - PDF report generation
 
 ### Phase 3
@@ -284,3 +287,54 @@ interface CRMProvider {
 - AI-powered recommendation narratives
 - Downloadable branded PDF reports
 - Assessment versioning
+
+---
+
+## 8. Post-Launch Deviations From This Design (August 2026)
+
+Two changes shipped after V1 that intentionally diverge from the design
+above. Both are scoped to a single assessment, not the platform generally.
+
+### Ungated flagship assessment
+
+The original design gates every assessment behind `LeadCaptureForm` /
+`AssessmentGate` before results are shown. As of August 2026, the "Content
+Infrastructure Maturity Assessment" (`content-operations-maturity`) is the
+site's flagship, no-sign-up funnel — every homepage CTA points at it
+directly — and skips the gate entirely so a visitor can take it and see
+results with zero friction.
+
+Implemented as an allowlist, not a schema/CMS toggle:
+
+```ts
+// app/assessment/[slug]/page.tsx
+const UNGATED_SLUGS = new Set(["content-operations-maturity"]);
+if (UNGATED_SLUGS.has(slug)) return <AssessmentShell assessment={assessment} />;
+// otherwise falls through to <AssessmentGate>
+```
+
+All other assessments remain gated as originally designed. A submission
+record is still created anonymously on completion (no email/contact
+required) via the existing `assessmentSubmission` flow — this is what the
+feedback prompt below patches onto.
+
+### Post-results feedback prompt (feedback-only assessment, not the "share with a colleague" idea)
+
+Because the flagship assessment now has no lead-capture step to gauge
+engagement, `ResultsDashboard` shows an optional two-question + free-text
+feedback prompt after results, **only** for `content-operations-maturity`
+(`FEEDBACK_ENABLED_SLUGS` in `components/assessment/ResultsDashboard.tsx`).
+
+- Reuses the existing anonymous submission record — feedback is a `patch`
+  onto it (`lib/submissions.server.ts`'s `AssessmentSubmissionRecord.feedback`
+  field), not a new document type or storage layer.
+- `POST /api/assessment/feedback` (`app/api/assessment/feedback/route.ts`)
+  validates the two answers against fixed option sets, caps the comment at
+  2000 chars, patches the record, then emails an internal notification to
+  `rl@ecm.dev` via `lib/postmark.server.ts`.
+- A "share this assessment with a colleague via email" feature was
+  considered and deliberately **dropped**: an anonymous, ungated page
+  letting any visitor trigger a send to an arbitrary third-party address is
+  an open-mail-relay / spam-abuse vector against the site's own sending
+  reputation. If revisited, it should generate a plain shareable URL for the
+  visitor to copy themselves — no server-side send to a third party.
