@@ -68,10 +68,13 @@ export async function POST(request: Request) {
       feedback: { q1, q2, comment: trimmedComment, submittedAt },
     });
 
-    // Fire-and-forget internal notification — a failed send here shouldn't
-    // surface as an error to the visitor; the feedback itself is already
-    // safely stored above.
-    void sendInternalNotification({
+    // Awaited, not fire-and-forget: on Netlify serverless the function
+    // runtime can freeze as soon as the response is sent, so a background
+    // promise here would never reliably complete (see tool-email/route.ts's
+    // Snov.io push for the same constraint). A failed send is still
+    // non-fatal to the visitor -- sendInternalNotification only logs, it
+    // never throws -- the feedback itself is already safely stored above.
+    await sendInternalNotification({
       assessmentTitle: record.assessment?.title || "Content Infrastructure Maturity Assessment",
       q1,
       q2,
