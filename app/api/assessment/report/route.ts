@@ -3,6 +3,7 @@ import { getSubmission, getMaturityBands, getServiceRecommendations } from "@/li
 import { patchSubmissionRecord, type AssessmentSubmissionRecord } from "@/lib/submissions.server";
 import { guardSubmission } from "@/lib/submissionGuard";
 import { getCRMProvider, classifyIntent, SnovioCRMProvider } from "@/lib/assessment/crm";
+import { sendEmail } from "@/lib/postmark.server";
 
 // Blobs requires the Node runtime (not edge).
 export const runtime = "nodejs";
@@ -185,46 +186,32 @@ export async function POST(request: Request) {
         });
     }
 
-    // Send email via Resend
-    const apiKey = process.env.RESEND_API_KEY;
-    if (!apiKey) {
-      console.warn("RESEND_API_KEY not set — skipping email delivery");
-      return NextResponse.json({
-        success: true,
-        warning: "Email delivery skipped (no API key)",
-      });
-    }
-
     const firstName = name?.split(" ")[0] || "there";
 
-    const resendRes = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        from: process.env.EMAIL_FROM || "ECM.DEV <onboarding@resend.dev>",
-        to: email,
-        subject: `Your Content Operations Maturity Report — ${submission.totalScore}% (${band?.title || submission.bandTitle})`,
-        html: buildReportEmail({
-          firstName,
-          totalScore: submission.totalScore,
-          bandTitle: band?.title || submission.bandTitle || "",
-          bandHeadline: band?.headline || "",
-          bandDescription: band?.description || "",
-          bandColor: band?.color || "#6B7280",
-          bandLevel: submission.bandLevel,
-          dimensionScores: submission.dimensionScores || [],
-          weakAreas,
-          recommendations: mappedRecs,
-        }),
+    const sendResult = await sendEmail({
+      to: email,
+      subject: `Your Content Operations Maturity Report — ${submission.totalScore}% (${band?.title || submission.bandTitle})`,
+      html: buildReportEmail({
+        firstName,
+        totalScore: submission.totalScore,
+        bandTitle: band?.title || submission.bandTitle || "",
+        bandHeadline: band?.headline || "",
+        bandDescription: band?.description || "",
+        bandColor: band?.color || "#6B7280",
+        bandLevel: submission.bandLevel,
+        dimensionScores: submission.dimensionScores || [],
+        weakAreas,
+        recommendations: mappedRecs,
       }),
     });
 
-    if (!resendRes.ok) {
-      const err = await resendRes.text();
-      console.error("Resend error:", err);
+    if (!sendResult.ok) {
+      if (sendResult.reason === "not_configured") {
+        return NextResponse.json({
+          success: true,
+          warning: "Email delivery skipped (no API key)",
+        });
+      }
       return NextResponse.json(
         { error: "Failed to send email. Please try again." },
         { status: 500 }

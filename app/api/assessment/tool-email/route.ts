@@ -3,6 +3,7 @@ import { getToolSubmission } from "@/lib/assessment/queries";
 import { guardSubmission } from "@/lib/submissionGuard";
 import { patchSubmissionRecord, type ToolSubmissionRecord } from "@/lib/submissions.server";
 import { getCRMProvider, SnovioCRMProvider } from "@/lib/assessment/crm";
+import { sendEmail } from "@/lib/postmark.server";
 
 // Blobs requires the Node runtime (not edge).
 export const runtime = "nodejs";
@@ -119,15 +120,6 @@ export async function POST(request: Request) {
         ? JSON.parse(submission.results)
         : submission.results;
 
-    const apiKey = process.env.RESEND_API_KEY;
-    if (!apiKey) {
-      console.warn("RESEND_API_KEY not set — skipping email delivery");
-      return NextResponse.json({
-        success: true,
-        warning: "Email delivery skipped (no API key)",
-      });
-    }
-
     const isProcess = submission.toolType === "process";
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://ecm.dev";
     const resultsUrl = isProcess
@@ -145,23 +137,15 @@ export async function POST(request: Request) {
       ? buildProcessEmail(results, submission.name || "", resultsUrl, pdfUrl)
       : buildLeadMagnetEmail(results, submission.name || "", resultsUrl, pdfUrl);
 
-    const resendRes = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        from: process.env.EMAIL_FROM || "ECM.DEV <onboarding@resend.dev>",
-        to: email,
-        subject,
-        html,
-      }),
-    });
+    const sendResult = await sendEmail({ to: email, subject, html });
 
-    if (!resendRes.ok) {
-      const err = await resendRes.text();
-      console.error("Resend error:", err);
+    if (!sendResult.ok) {
+      if (sendResult.reason === "not_configured") {
+        return NextResponse.json({
+          success: true,
+          warning: "Email delivery skipped (no API key)",
+        });
+      }
       return NextResponse.json(
         { error: "Failed to send email. Please try again." },
         { status: 500 }
