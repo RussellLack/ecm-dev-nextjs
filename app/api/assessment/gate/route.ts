@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { guardSubmission } from "@/lib/submissionGuard";
 import { createSubmission, type GateSubmissionRecord } from "@/lib/submissions.server";
 import { getCRMProvider, SnovioCRMProvider } from "@/lib/assessment/crm";
+import { sendEmail } from "@/lib/postmark.server";
 import {
   GATE_ACCESS_COOKIE,
   GATE_ACCESS_MAX_AGE,
@@ -9,7 +10,7 @@ import {
   GATE_CONSENT_VERSION,
 } from "@/lib/assessment/gate";
 
-// Blobs + Resend require the Node runtime (not edge).
+// Blobs + Postmark require the Node runtime (not edge).
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
@@ -191,12 +192,6 @@ async function sendInternalNotification(lead: {
   submittedAt: string;
   tracking: Record<string, unknown>;
 }): Promise<void> {
-  const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey) {
-    console.warn("RESEND_API_KEY not set — skipping gate notification email");
-    return;
-  }
-
   const subject = lead.consultRequested
     ? `[ACTION] Consultant read-through requested — ${lead.toolTitle}`
     : `New assessment registration — ${lead.toolTitle}`;
@@ -236,26 +231,13 @@ async function sendInternalNotification(lead: {
   </table>
 </body></html>`;
 
-  try {
-    const resendRes = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        from: process.env.EMAIL_FROM || "ECM.DEV <onboarding@resend.dev>",
-        to: NOTIFY_EMAIL,
-        reply_to: lead.email,
-        subject,
-        html,
-      }),
-    });
-    if (!resendRes.ok) {
-      const err = await resendRes.text().catch(() => "");
-      console.error("Gate notification email failed:", resendRes.status, err);
-    }
-  } catch (err: unknown) {
-    console.error("Gate notification email error (non-blocking):", err);
+  const sendResult = await sendEmail({
+    to: NOTIFY_EMAIL,
+    replyTo: lead.email,
+    subject,
+    html,
+  });
+  if (!sendResult.ok && sendResult.reason === "send_failed") {
+    console.error("Gate notification email failed:", sendResult.error);
   }
 }

@@ -4,8 +4,9 @@ import {
   getSubmissionRecord,
   patchSubmissionRecord,
 } from "@/lib/submissions.server";
+import { sendEmail } from "@/lib/postmark.server";
 
-// Blobs + Resend require the Node runtime (not edge).
+// Blobs + Postmark require the Node runtime (not edge).
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
@@ -97,12 +98,6 @@ async function sendInternalNotification(feedback: {
   submissionId: string;
   submittedAt: string;
 }): Promise<void> {
-  const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey) {
-    console.warn("RESEND_API_KEY not set — skipping feedback notification email");
-    return;
-  }
-
   const row = (label: string, value: string) =>
     `<tr><td style="padding:4px 12px 4px 0;color:#6e6e6e;font-family:Helvetica,Arial,sans-serif;font-size:13px;">${escapeHtml(
       label,
@@ -137,25 +132,12 @@ async function sendInternalNotification(feedback: {
   </table>
 </body></html>`;
 
-  try {
-    const resendRes = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        from: process.env.EMAIL_FROM || "ECM.DEV <onboarding@resend.dev>",
-        to: NOTIFY_EMAIL,
-        subject: `New assessment feedback — ${feedback.assessmentTitle}`,
-        html,
-      }),
-    });
-    if (!resendRes.ok) {
-      const err = await resendRes.text().catch(() => "");
-      console.error("Feedback notification email failed:", resendRes.status, err);
-    }
-  } catch (err: unknown) {
-    console.error("Feedback notification email error (non-blocking):", err);
+  const sendResult = await sendEmail({
+    to: NOTIFY_EMAIL,
+    subject: `New assessment feedback — ${feedback.assessmentTitle}`,
+    html,
+  });
+  if (!sendResult.ok && sendResult.reason === "send_failed") {
+    console.error("Feedback notification email failed:", sendResult.error);
   }
 }

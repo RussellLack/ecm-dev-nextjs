@@ -10,6 +10,7 @@ import type {
   CmsImplementationInputs,
   CmsImplementationResult,
 } from "@/lib/assessment/cms-implementation/types";
+import { sendEmail } from "@/lib/postmark.server";
 
 // Blobs requires the Node runtime (not edge).
 export const runtime = "nodejs";
@@ -141,15 +142,6 @@ export async function POST(request: Request) {
     }
 
     /* ── Send the email ───────────────────────────────────────────────── */
-    const apiKey = process.env.RESEND_API_KEY;
-    if (!apiKey) {
-      console.warn("RESEND_API_KEY not set — skipping email delivery");
-      return NextResponse.json({
-        success: true,
-        warning: "Email delivery skipped (no API key)",
-      });
-    }
-
     const inputs: CmsImplementationInputs = JSON.parse(submission.answers);
     const result: CmsImplementationResult = JSON.parse(submission.results);
 
@@ -172,23 +164,15 @@ export async function POST(request: Request) {
     const total = horizon === 5 ? result.fiveYearTotal : result.threeYearTotal;
     const subject = `Your CMS Implementation TCO — ${fmt(total.low * m, sym)}–${fmt(total.high * m, sym)} over ${horizon} years`;
 
-    const resendRes = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        from: process.env.EMAIL_FROM || "ECM.DEV <onboarding@resend.dev>",
-        to: email,
-        subject,
-        html,
-      }),
-    });
+    const sendResult = await sendEmail({ to: email, subject, html });
 
-    if (!resendRes.ok) {
-      const err = await resendRes.text();
-      console.error("Resend error:", err);
+    if (!sendResult.ok) {
+      if (sendResult.reason === "not_configured") {
+        return NextResponse.json({
+          success: true,
+          warning: "Email delivery skipped (no API key)",
+        });
+      }
       return NextResponse.json(
         { error: "Failed to send email. Please try again." },
         { status: 500 },
