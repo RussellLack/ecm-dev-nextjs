@@ -35,6 +35,18 @@ export async function getHomePage() {
   }`);
 }
 
+// /build landing page
+export async function getBuildPage() {
+  return sanityFetch(`*[_type == "buildPage"][0]{
+    hero, subheadline, primaryCTA, secondaryCTA,
+    problemsHeading, problemsSubheading, problems[],
+    deliverablesHeading, deliverables[],
+    howWeWorkHeading, steps[],
+    ctaHeading, ctaSubheading, ctaButtonLabel, ctaButtonUrl,
+    seo { title, description }
+  }`);
+}
+
 // Services
 export async function getServices() {
   return sanityFetch(`*[_type == "service"] | order(order asc){
