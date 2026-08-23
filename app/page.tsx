@@ -20,13 +20,13 @@ export async function generateMetadata(): Promise<Metadata> {
   // seo.metaTitle/metaDescription value still sitting in Sanity. Same
   // reasoning as offerLadder below — brief-specified copy goes through
   // code review, not a CMS edit.
-  const title = "ECM.DEV — Outbound Stack Engineering for B2B Companies";
+  const title = "ECM.DEV — Pipeline Infrastructure for B2B Marketing Teams";
   const description =
-    "ECM.DEV builds the conversion infrastructure between your cold outreach and your booked meeting. Prospect lists, interactive tools, CRM-connected landing flows. Hands-on, fixed scope, fast.";
+    "ECM.DEV builds the lists, tools, and landing flows that turn leads into pipeline — for inbound and outbound marketing. Hands-on, fixed scope, fast.";
 
-  const ogTitle = "ECM.DEV — We build the outbound stack.";
+  const ogTitle = "ECM.DEV — We build what turns leads into pipeline.";
   const ogDescription =
-    "List to landing page to CRM. Hands-on build partner for B2B companies running outbound. Fixed scope, fast delivery, stack-agnostic.";
+    "Lists, tools, and landing flows for inbound and outbound marketing. Hands-on, fixed scope, fast. You own everything we build.";
 
   const ogImage = seo.ogImage
     ? urlFor(seo.ogImage).width(1200).height(630).fit("crop").crop("center").url()
