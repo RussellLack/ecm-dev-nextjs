@@ -7,7 +7,7 @@ export const revalidate = 3600;
 /* ─── Static fallback data (used when Sanity fields are empty) ─── */
 
 const fallback = {
-  hero: "A Calendly link is not a conversion layer. Here is what one actually looks like.",
+  hero: "You have a list. You have a landing page. They don't talk to each other.",
   subheadline:
     "ECM.DEV builds the outbound stack for B2B companies who are generating interest but losing pipeline between the email and the meeting. We engineer the three components that fix this: a clean targeted prospect list, an interactive tool that qualifies before you pitch, and a landing flow wired into your CRM. Hands-on build, fixed scope, fast turnaround. You own everything.",
   primaryCTA: { label: "Start with a free assessment", url: "/assessments" },
