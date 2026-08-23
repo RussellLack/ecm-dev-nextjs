@@ -14,21 +14,14 @@ export async function generateMetadata(): Promise<Metadata> {
   const home = await getHomePage().catch(() => null);
   const seo = home?.seo || {};
 
-  // Title precedence: editor seo override → derived from heroHeading →
-  // root-layout default. We deliberately render the title as a literal
-  // (not template) when an editor has set seo.metaTitle so they have
-  // full control over the brand-name placement.
-  const title =
-    seo.metaTitle ||
-    "ECM.DEV — Outbound Stack Engineering for B2B Companies";
-
-  // Description: seo override → first 155 chars of heroBody → fallback.
-  const heroBlurb = home?.heroBody
-    ? String(home.heroBody).split(/\n+/)[0].slice(0, 155).trim()
-    : null;
+  // Title and description are literal, not Sanity-overridable: this copy
+  // is specified in full by the outbound-stack repositioning brief and
+  // must render as written, not be silently shadowed by a pre-rewrite
+  // seo.metaTitle/metaDescription value still sitting in Sanity. Same
+  // reasoning as offerLadder below — brief-specified copy goes through
+  // code review, not a CMS edit.
+  const title = "ECM.DEV — Outbound Stack Engineering for B2B Companies";
   const description =
-    seo.metaDescription ||
-    heroBlurb ||
     "ECM.DEV builds the conversion infrastructure between your cold outreach and your booked meeting. Prospect lists, interactive tools, CRM-connected landing flows. Hands-on, fixed scope, fast.";
 
   const ogTitle = "ECM.DEV — We build the outbound stack.";
@@ -260,12 +253,14 @@ export default async function HomePage() {
     getBlogPosts(8).catch(() => null),
   ]);
 
-  // Merge Sanity data with fallbacks
-  const heroHeading = homePage?.heroHeading || fallbackHero.heading;
-  const heroBody = homePage?.heroBody || fallbackHero.body;
-  const symptoms = homePage?.symptoms?.length ? homePage.symptoms : fallbackSymptoms;
-  const servicesHeading =
-    homePage?.servicesHeading || "What changes when the stack is engineered properly.";
+  // Hero, symptoms, and servicesHeading are literal, not Sanity-overridable:
+  // this repositioning brief's copy must render as specified, not be
+  // shadowed by pre-rewrite content still sitting in Sanity. Same reasoning
+  // as the title/description literals in generateMetadata above.
+  const heroHeading = fallbackHero.heading;
+  const heroBody = fallbackHero.body;
+  const symptoms = fallbackSymptoms;
+  const servicesHeading = "What changes when the stack is engineered properly.";
   const servicesSubhead =
     homePage?.servicesSubhead ||
     "The same outbound volume produces more pipeline. Not because you send more emails. Because fewer prospects leak between the first touch and the booked meeting.";
