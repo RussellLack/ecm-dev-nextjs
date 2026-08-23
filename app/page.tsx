@@ -56,7 +56,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 const fallbackHero = {
   heading:
-    "We build the outbound stack. List to landing page to CRM. Hands-on, fixed scope, fast.",
+    "We build the lists, tools, and landing flows that turn leads into pipeline.",
   body: "ECM.DEV is a hands-on build partner for B2B companies running outbound. We engineer the conversion layer between your cold email and your booked meeting: clean prospect lists, interactive qualification tools, and landing flows wired into your CRM. Then we make sure the content underneath all of it is structured enough to do its job.",
 };
 
