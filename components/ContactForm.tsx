@@ -48,9 +48,12 @@ export default function ContactForm() {
       <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16">
         {/* Left: Contact Info */}
         <div>
-          <h2 className="text-ecm-lime font-barlow font-bold text-2xl sm:text-3xl mb-8">
-            GET IN TOUCH
+          <h2 className="text-ecm-lime font-barlow font-bold text-2xl sm:text-3xl mb-4">
+            Tell us what you are running.
           </h2>
+          <p className="text-white/85 font-barlow font-light text-sm sm:text-base leading-relaxed mb-8 max-w-md">
+            Describe your current outbound motion and where it is losing people. We will come back with a specific observation, not a proposal deck.
+          </p>
           <a
             href="https://www.linkedin.com/company/ecm-dev"
             target="_blank"

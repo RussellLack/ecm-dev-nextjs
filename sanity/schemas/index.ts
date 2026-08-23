@@ -1,4 +1,5 @@
 import homePage from "./homePage";
+import buildPage from "./buildPage";
 import problemPage from "./problemPage";
 import solutionPage from "./solutionPage";
 import cornerstone from "./cornerstone";
@@ -20,6 +21,7 @@ import platform from "./platform";
 
 export const schemaTypes = [
   homePage,
+  buildPage,
   problemPage,
   solutionPage,
   cornerstone,
