@@ -114,7 +114,7 @@ const outcomeCards = [
     title: "Content that qualifies before you speak to anyone",
     description:
       "A scored assessment, an interactive calculator, a multi-step landing flow: these convert cold clicks into qualified prospects before you spend time on a call. We build these. We built the ones on this site.",
-    href: "/assessments",
+    href: "/build",
     icon: 0,
   },
 ];
