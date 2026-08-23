@@ -376,7 +376,7 @@ export default async function HomePage() {
             {symptoms.map((symptom: any, i: number) => (
               <Link
                 key={i}
-                href="/assessments"
+                href="/problems/outbound-conversion"
                 className="block bg-ecm-green rounded-xl p-6 sm:p-8 border border-ecm-lime/20 hover:border-ecm-lime/50 transition-all hover:shadow-lg hover:shadow-ecm-lime/5 group"
               >
                 <div className="w-10 h-10 bg-ecm-lime rounded-lg flex items-center justify-center mb-4">
