@@ -7,7 +7,7 @@
   <body>
     <!--
       This file exists so Netlify's build-time form parser detects our forms.
-      Real submission path: React form -> POST /api/contact
+      Real submission path: React form -> POST /api/contact or /api/audit-request
       -> guardSubmission (CSRF + honeypot + rate limit)
       -> server forwards to /__forms.html (this file) as x-www-form-urlencoded.
       Do not remove. Do not link. Keep field names in sync with the server handler.
@@ -17,6 +17,14 @@
       <input type="text" name="lastName" />
       <input type="email" name="email" />
       <textarea name="message"></textarea>
+      <input type="text" name="bot-field" />
+    </form>
+    <form name="audit-request" data-netlify="true" data-netlify-honeypot="bot-field">
+      <input type="text" name="fullName" />
+      <input type="email" name="workEmail" />
+      <input type="text" name="company" />
+      <input type="text" name="websiteUrl" />
+      <textarea name="notes"></textarea>
       <input type="text" name="bot-field" />
     </form>
   </body>

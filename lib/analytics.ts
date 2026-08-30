@@ -34,6 +34,7 @@ export const TOOL_NAME = {
   process: "process",
   leadMagnet: "lead-magnet",
   contact: "contact",
+  auditRequest: "ai-readiness-audit",
 } as const;
 
 /** The six params every lead event carries, matching the GA4 tag. For lead
