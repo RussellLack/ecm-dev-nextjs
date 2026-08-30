@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import ContactForm from "@/components/ContactForm";
+import AuditRequestForm from "@/components/AuditRequestForm";
 import LearnMoreSection from "@/components/LearnMoreSection";
 import LavaBlobs from "@/components/LavaBlobs";
 import PostIllustration from "@/components/post/PostIllustration";
@@ -148,6 +149,77 @@ const proofTiles = [
   },
 ];
 
+/* AI Content Readiness Audit strip. Copy is kept as literal constants for the
+   same reason the offer ladder below is: this section carries a hard language
+   guardrail (no certification, guarantee or attestation wording, and no implied
+   promise that a client's AI is safe or compliant), and that is enforced in
+   code review, not in a CMS edit. The audit itself is detailed on
+   /content-services; this strip is the homepage door into it. */
+/* Introductory offer cutoff: 00:00 UTC on 1 October 2026, so the whole of
+   30 September is covered in Irish and UK time. Compared at render time; the
+   page carries `revalidate = 3600`, so the switch to the paid framing lands
+   within an hour of the cutoff rather than on the stroke of it. */
+const AUDIT_OFFER_ENDS = Date.UTC(2026, 9, 1);
+
+const auditStrip = {
+  eyebrow: "AI Content Readiness Audit",
+  headline: "Find out if AI systems can actually find, trust, and cite your content",
+  subhead:
+    "Buyers now research through AI answers before they ever reach your site. This audit tests whether your content estate is retrievable and trustworthy to that layer, not how it ranks on a results page.",
+  differentiators: [
+    "Not another free self-assessment: this is evidence-based, run directly against your actual content, not your team's perception of it.",
+    "Not an SEO audit: SEO tools score how a ranking algorithm reads one page at a time. AI answer engines retrieve and weigh passages against everything else you have published, which is a different test entirely.",
+  ],
+  coverage: [
+    {
+      title: "Retrievability",
+      description:
+        "Whether an AI system can find, pull, and cite your content cleanly when it answers a real question a buyer asked about you.",
+    },
+    {
+      title: "Grounding",
+      description:
+        "Verified by actually running realistic buyer questions through a retrieval test, so every finding is proven, not guessed at from a best-practice checklist.",
+    },
+    {
+      title: "Localisation fidelity",
+      description:
+        "Whether your non-English content says the same thing as your English content: missing translations, drifted prices and dates, mismatched page structure. A gap no SEO tool or platform-native audit checks at all.",
+    },
+    {
+      title: "Priority",
+      description:
+        "A ranked shortlist of what to fix first, scored by business impact against effort, not a dump of every issue found.",
+    },
+  ],
+  trustLine:
+    "Anything not yet reliably testable is flagged as untested. Never a false clean bill of health.",
+  ctaLabel: "Request Your Audit",
+  /* Introductory offer, time-bound rather than count-bound so the claim can be
+     enforced here instead of depending on someone remembering to edit it. The
+     five-at-a-time line is a capacity condition, not the scarcity device: the
+     deadline is what closes the offer. Once AUDIT_OFFER_ENDS passes, the strip
+     renders `paidOffer` below and the badge disappears. */
+  introOffer: {
+    badge: "Free for audits requested before 30 September",
+    heading: "Why this one is free",
+    body: "This is a new service and it will normally be paid work. We are running it free of charge for audits requested before 30 September, in exchange for a recommendation if the analysis turns out to be something you can use.",
+    caveat: "We take on five at a time, so if we are at capacity we will tell you when we can start rather than leave you waiting. If the findings are not useful, say so and we part on good terms: no recommendation, no invoice, no obligation either way.",
+  },
+  /* Shown automatically once the introductory offer closes. No price here by
+     design; the homepage strip exists to start a conversation, and the tiers
+     and figures live on /content-services. */
+  paidOffer: {
+    heading: "What this costs",
+    body: "This is a paid engagement, scoped to the size of your content estate. Tell us what you are running and we will come back with a scope and a price before any work starts.",
+    caveat: "Findings and recommended remediation, delivered as a professional opinion you can act on or argue with.",
+    linkLabel: "See the full service range",
+    linkUrl: "/content-services",
+  },
+  formIntro: "Tell us where to send it. We reply personally, not with an automated report.",
+  confirmation: "Thanks, we'll be in touch within one business day.",
+};
+
 /* Three-step offer ladder. Kept as literal constants rather than
    Sanity-sourced: engagement pricing should go through code review, not a
    CMS edit. Replaces the former ecm-agent engagement tiers — see
@@ -247,6 +319,10 @@ const fallbackTicker = [
 /* ─── Page Component ─── */
 
 export default async function HomePage() {
+  // Is the introductory (free) audit offer still open? See AUDIT_OFFER_ENDS.
+  const auditOfferOpen = Date.now() < AUDIT_OFFER_ENDS;
+  const auditOffer = auditOfferOpen ? auditStrip.introOffer : auditStrip.paidOffer;
+
   // Fetch Sanity data in parallel
   const [homePage, liveBlogPosts] = await Promise.all([
     getHomePage().catch(() => null),
@@ -527,6 +603,105 @@ export default async function HomePage() {
               Full service range
             </Link>
           </p>
+        </div>
+      </section>
+
+      {/* ─── AI CONTENT READINESS AUDIT ─── */}
+      <section id="audit-request" className="relative pt-28 pb-28 bg-ecm-green">
+        {/* Wave divider: white → green (top) */}
+        <div className="wave-divider wave-divider-top">
+          <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,60 C360,0 1080,120 1440,60 L1440,0 L0,0 Z" fill="#ffffff" />
+          </svg>
+        </div>
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mb-3">
+            <p className="text-ecm-lime/70 font-barlow font-semibold text-xs tracking-widest uppercase">
+              {auditStrip.eyebrow}
+            </p>
+            {auditOfferOpen && (
+              <p className="inline-flex items-center rounded-full border border-ecm-lime/50 px-3 py-1 text-ecm-lime font-barlow font-semibold text-xs">
+                {auditStrip.introOffer.badge}
+              </p>
+            )}
+          </div>
+          <h2 className="text-ecm-lime font-barlow font-bold text-3xl lg:text-4xl mb-4 max-w-3xl">
+            {auditStrip.headline}
+          </h2>
+          <p className="text-white/85 text-base sm:text-lg leading-relaxed mb-6 max-w-3xl">
+            {auditStrip.subhead}
+          </p>
+          {/* The two differentiations: versus our own free assessment, versus SEO
+              tooling. Kept directly under the subhead so both are readable as
+              soon as the section comes into view. */}
+          <div className="space-y-2 mb-12 max-w-3xl border-l-2 border-ecm-lime/40 pl-5">
+            {auditStrip.differentiators.map((line, i) => (
+              <p key={i} className="text-white/75 text-sm leading-relaxed">
+                {line}
+              </p>
+            ))}
+          </div>
+
+          <div className="grid lg:grid-cols-5 gap-10 lg:gap-14 items-start">
+            {/* Left: what the audit covers */}
+            <div className="lg:col-span-3">
+              <div className="grid sm:grid-cols-2 gap-6">
+                {auditStrip.coverage.map((item, i) => (
+                  <div
+                    key={item.title}
+                    className="bg-white/10 backdrop-blur rounded-2xl p-6 border border-white/10 flex flex-col"
+                  >
+                    <div className="w-10 h-10 bg-ecm-lime rounded-lg flex items-center justify-center mb-4">
+                      <span className="text-ecm-green-dark font-barlow font-bold text-lg">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                    </div>
+                    <h3 className="text-ecm-lime font-barlow font-semibold text-lg mb-3">
+                      {item.title}
+                    </h3>
+                    <p className="text-white/85 text-sm leading-relaxed">{item.description}</p>
+                  </div>
+                ))}
+              </div>
+              <p className="text-white/70 text-sm leading-relaxed mt-6">
+                {auditStrip.trustLine}
+              </p>
+            </div>
+
+            {/* Right: signup. The submit button carries the section CTA label. */}
+            <div className="lg:col-span-2 bg-ecm-green-dark/60 backdrop-blur-sm rounded-2xl p-6 sm:p-8 border border-white/10">
+              <div className="mb-6 pb-6 border-b border-white/15">
+                <h3 className="text-ecm-lime font-barlow font-semibold text-lg mb-3">
+                  {auditOffer.heading}
+                </h3>
+                <p className="text-white/85 text-sm leading-relaxed mb-3">
+                  {auditOffer.body}
+                </p>
+                <p className="text-white/70 text-sm leading-relaxed">
+                  {auditOffer.caveat}
+                </p>
+                {!auditOfferOpen && (
+                  <Link
+                    href={auditStrip.paidOffer.linkUrl}
+                    className="inline-block mt-3 text-ecm-lime text-sm underline hover:text-ecm-lime-hover"
+                  >
+                    {auditStrip.paidOffer.linkLabel}
+                  </Link>
+                )}
+              </div>
+              <AuditRequestForm
+                intro={auditStrip.formIntro}
+                submitLabel={auditStrip.ctaLabel}
+                confirmation={auditStrip.confirmation}
+              />
+            </div>
+          </div>
+        </div>
+        {/* Wave divider: green → white (bottom) */}
+        <div className="wave-divider wave-divider-bottom">
+          <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="#ffffff" />
+          </svg>
         </div>
       </section>
 
