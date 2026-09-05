@@ -199,38 +199,50 @@ const AUDIT_OFFER_ENDS = Date.UTC(2026, 9, 1);
 
 const auditStrip = {
   eyebrow: "AI Content Readiness Audit",
-  headline: "Find out if AI systems can actually find, trust, and cite your content",
-  subhead:
-    "Buyers now research through AI answers before they ever reach your site. This audit tests whether your content estate is retrievable and trustworthy to that layer, not how it ranks on a results page.",
+  headline: "Can AI systems find, trust and reuse your content?",
+  /* Short stacked lines rather than one dense paragraph, to keep the
+     fragment rhythm of the approved copy rather than flattening it into
+     a single sentence. */
+  subhead: [
+    "Your buyers are already asking AI tools for answers.",
+    "About vendors. About problems. About options. About what to do next.",
+    "The question is simple: Will those systems understand you?",
+    "This audit tests whether your content can be retrieved, cited and reused by AI answer engines.",
+  ],
+  /* Three negations plus the positive counter-claim. The last line is
+     styled distinctly in the JSX below so it lands as the payoff, not
+     a fourth negation. */
   differentiators: [
-    "Not another free self-assessment: this is evidence-based, run directly against your actual content, not your team's perception of it.",
-    "Not an SEO audit: SEO tools score how a ranking algorithm reads one page at a time. AI answer engines retrieve and weigh passages against everything else you have published, which is a different test entirely.",
+    "Not how pretty your website looks.",
+    "Not whether one SEO score is green.",
+    "Not whether your team thinks the content is good.",
+    "We test the content estate itself.",
   ],
   coverage: [
     {
       title: "Retrievability",
-      description:
-        "Whether an AI system can find, pull, and cite your content cleanly when it answers a real question a buyer asked about you.",
+      description: "Can AI systems find the right passages?",
     },
     {
-      title: "Grounding",
-      description:
-        "Verified by actually running realistic buyer questions through a retrieval test, so every finding is proven, not guessed at from a best-practice checklist.",
+      title: "Trust signals",
+      description: "Does the content prove expertise, authority and relevance?",
     },
     {
-      title: "Localisation fidelity",
-      description:
-        "Whether your non-English content says the same thing as your English content: missing translations, drifted prices and dates, mismatched page structure. A gap no SEO tool or platform-native audit checks at all.",
+      title: "Structure",
+      description: "Is the content organised clearly enough for machines and people?",
     },
     {
-      title: "Priority",
-      description:
-        "A ranked shortlist of what to fix first, scored by business impact against effort, not a dump of every issue found.",
+      title: "Commercial usefulness",
+      description: "Does the content help buyers move closer to a decision?",
+    },
+    {
+      title: "Workflow readiness",
+      description: "Can your team reuse and maintain the content without creating more mess?",
     },
   ],
   trustLine:
-    "Anything not yet reliably testable is flagged as untested. Never a false clean bill of health.",
-  ctaLabel: "Request Your Audit",
+    "The result: a clear view of what AI can see, what it misses and what needs fixing first.",
+  ctaLabel: "Request the audit",
   /* Introductory offer, time-bound rather than count-bound so the claim can be
      enforced here instead of depending on someone remembering to edit it. The
      five-at-a-time line is a capacity condition, not the scarcity device: the
@@ -709,15 +721,26 @@ export default async function HomePage() {
           <h2 className="text-ecm-lime font-barlow font-bold text-3xl lg:text-4xl mb-4 max-w-3xl">
             {auditStrip.headline}
           </h2>
-          <p className="text-white/85 text-base sm:text-lg leading-relaxed mb-6 max-w-3xl">
-            {auditStrip.subhead}
-          </p>
-          {/* The two differentiations: versus our own free assessment, versus SEO
-              tooling. Kept directly under the subhead so both are readable as
-              soon as the section comes into view. */}
+          <div className="mb-6 max-w-3xl space-y-1">
+            {auditStrip.subhead.map((line, i) => (
+              <p key={i} className="text-white/85 text-base sm:text-lg leading-relaxed">
+                {line}
+              </p>
+            ))}
+          </div>
+          {/* Three negations, then the positive counter-claim. The last line is
+              styled as the payoff (lime, semibold) rather than another negation,
+              so it reads as the turn rather than a fourth item in the list. */}
           <div className="space-y-2 mb-12 max-w-3xl border-l-2 border-ecm-lime/40 pl-5">
-            {auditStrip.differentiators.map((line, i) => (
-              <p key={i} className="text-white/75 text-sm leading-relaxed">
+            {auditStrip.differentiators.map((line, i, arr) => (
+              <p
+                key={i}
+                className={
+                  i === arr.length - 1
+                    ? "text-ecm-lime font-barlow font-semibold text-sm leading-relaxed"
+                    : "text-white/75 text-sm leading-relaxed"
+                }
+              >
                 {line}
               </p>
             ))}
