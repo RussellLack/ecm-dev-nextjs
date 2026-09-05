@@ -21,11 +21,11 @@ export async function generateMetadata(): Promise<Metadata> {
   // seo.metaTitle/metaDescription value still sitting in Sanity. Same
   // reasoning as offerLadder below — brief-specified copy goes through
   // code review, not a CMS edit.
-  const title = "ECM.DEV — Pipeline Infrastructure for B2B Marketing Teams";
+  const title = "ECM.DEV: Pipeline Infrastructure for B2B Marketing Teams";
   const description =
-    "ECM.DEV builds the lists, tools, and landing flows that turn leads into pipeline — for inbound and outbound marketing. Hands-on, fixed scope, fast.";
+    "ECM.DEV builds the lists, tools, and landing flows that turn leads into pipeline, for inbound and outbound marketing. Hands-on, fixed scope, fast.";
 
-  const ogTitle = "ECM.DEV — We build what turns leads into pipeline.";
+  const ogTitle = "ECM.DEV: We build what turns leads into pipeline.";
   const ogDescription =
     "Lists, tools, and landing flows for inbound and outbound marketing. Hands-on, fixed scope, fast. You own everything we build.";
 
@@ -56,9 +56,10 @@ export async function generateMetadata(): Promise<Metadata> {
 /* ─── Static fallback data (used when Sanity fields are empty) ─── */
 
 const fallbackHero = {
-  heading:
-    "We build the lists, tools, and landing flows that turn leads into pipeline.",
-  body: "ECM.DEV is a hands-on build partner for B2B companies running inbound and outbound marketing. We engineer the layer between interest and a booked meeting: clean prospect lists, interactive qualification tools, and landing flows wired into your CRM. Then we structure the content and workflows underneath it all so your AI automations can actually use them.",
+  heading: "Pipeline infrastructure for B2B marketing teams.",
+  body: "The gap between interest and a booked meeting is where most pipeline is lost. ECM.DEV builds the layer that closes it: clean prospect lists, qualification tools, landing flows, CRM workflows and the content structure underneath them.",
+  supportingLine:
+    "Outbound, inbound, campaigns and content, connected to the CRM that has to record the result.",
 };
 
 const fallbackSymptoms = [
@@ -94,29 +95,64 @@ const fallbackSymptoms = [
   },
 ];
 
-/* Outcome cards replace the old capability columns. Each names a business
-   outcome and links down to the service page that delivers it. */
+/* Outcome cards. Non-clickable info cards, not links: the approved copy
+   set doesn't give per-card destinations for these four (unlike the
+   3-card version this replaced), so this is content, not navigation. */
 const outcomeCards = [
   {
-    title: "More pipeline from the outbound you are already running",
+    title: "Better lists",
     description:
-      "We find where your conversion layer is losing people and rebuild that part of the stack. One or two specific fixes usually produce most of the improvement. We build it, you own it.",
-    href: "/solutions/improve-campaign-velocity",
+      "You reach companies that match your ICP and people who can actually act on it, segmented by market, trigger, role and buying context. Less budget spent chasing accounts that were never going to buy.",
     icon: 1,
   },
   {
-    title: "Better prospects, less wasted outbound budget",
+    title: "Better journeys",
     description:
-      "A properly built and QA'd prospect list means your outbound reaches people who match your ICP, have verified contact data, and are segmented by the signal that matters for your specific offer.",
-    href: "/solutions/scale-global-marketing",
+      "A click lands in a flow rather than on a static page. The prospect answers, scores, qualifies, and gets the next step that fits the answer. Sales arrives at the first conversation already holding context.",
+    icon: 0,
+  },
+  {
+    title: "Better CRM action",
+    description:
+      "Campaign responses stop living in inboxes and spreadsheets. They arrive in the CRM with the fields, owner, task and follow-up logic attached, so what happened and what comes next are recorded rather than remembered.",
     icon: 2,
   },
   {
-    title: "Content that qualifies before you speak to anyone",
+    title: "Better AI readiness",
     description:
-      "A scored assessment, an interactive calculator, a multi-step landing flow: these convert cold clicks into qualified prospects before you spend time on a call. We build these. We built the ones on this site.",
-    href: "/build",
-    icon: 0,
+      "AI does not rescue messy content, it inherits it. We structure content, metadata, workflows and the knowledge underneath them so your AI tools can find the right material, trust it and reuse it. Structure is what makes the automation worth running.",
+    icon: 1,
+  },
+];
+
+/* The five things ECM.DEV builds. Non-clickable info cards, same reasoning
+   as outcomeCards above: no per-item destinations given in the approved
+   copy set. */
+const whatWeBuild = [
+  {
+    title: "Prospect list engines",
+    description:
+      "Clean, targeted account and contact lists for a specific ICP, market and offer, built with research logic, enrichment, verification and QA. Not scraped exports and approximate job titles. Lists your team can work from without checking them first.",
+  },
+  {
+    title: "Interactive qualification tools",
+    description:
+      "Assessments, calculators, scorecards and diagnostics that help a buyer understand their own problem while telling you whether they fit. They give the conversation a better reason to continue than an invitation to book a call.",
+  },
+  {
+    title: "Landing flows",
+    description:
+      "Multi-step landing experiences that turn a campaign click into structured intent. We design the message, the questions, the scoring logic, the routing and the CRM handoff. The page does not only explain the offer. It moves the prospect somewhere.",
+  },
+  {
+    title: "CRM-connected workflows",
+    description:
+      "We wire campaign activity into the systems your team already uses: HubSpot, Salesforce, Pipedrive, your email platform, your automation tools, your dashboards. Nothing waits in an inbox, no signal is lost, and the work does not turn manual at the moment the campaign starts working.",
+  },
+  {
+    title: "Content and AI operations",
+    description:
+      "We structure the content underneath the campaigns so people and AI systems can both use it: messaging, proof, FAQs, case studies, sales assets, localised content, metadata and the knowledge you want to reuse. AI-ready content is not a property of the tool. It is work someone has done.",
   },
 ];
 
@@ -226,29 +262,29 @@ const auditStrip = {
    app/content-services/page.tsx's auditTiers for where that content lives now. */
 const offerLadder = [
   {
-    step: "1",
-    kicker: "Start here, free",
+    step: "01",
     title: "Free assessment",
-    subtitle: "5 minutes. No sales call.",
-    body: "Score your outbound and content operation across six dimensions. You get a personalised readout showing exactly where the friction sits, mapped to what to fix first. Built by us. Used by us. No email gate on the result.",
+    tagline: "Find where your pipeline is leaking.",
+    subtitle: "Five minutes. No sales call, no email gate on the result.",
+    body: "Score your outbound, content and conversion operation across six dimensions. You get a readout of what is slowing the journey from first touch to qualified opportunity, and what to fix first. Not a maturity model, a practical order of work.",
     ctaLabel: "Take the free assessment",
     ctaUrl: "/assessments",
   },
   {
-    step: "2",
-    kicker: "First build",
-    title: "Fixed-scope engagement",
-    subtitle: "From €1,500. Delivered in 1 to 2 weeks.",
-    body: "We scope and build one component of your outbound stack. A clean prospect list for one target segment. An interactive assessment or calculator for your conversion layer. A multi-step landing flow connected to your CRM. Fixed price, fixed scope, fast turnaround. You own everything we build.",
+    step: "02",
+    title: "Fixed-scope build",
+    tagline: "Build one useful piece of the system.",
+    subtitle: "From EUR 1,500. Delivered in one to two weeks.",
+    body: "Pick one problem and we build it: a clean prospect list for a single target segment, a scored assessment or calculator, a campaign landing flow, a CRM-connected follow-up workflow, or a content structure your AI tools can actually use. Fixed price, fixed scope, and you own everything we build.",
     ctaLabel: "Talk about a first build",
     ctaUrl: "/contact",
   },
   {
-    step: "3",
-    kicker: "Ongoing partner",
-    title: "Retained outbound engineering",
+    step: "03",
+    title: "Retained pipeline engineering",
+    tagline: "Keep the system improving every month.",
     subtitle: "Monthly. Cancel anytime.",
-    body: "We run and iterate your outbound infrastructure as an ongoing build partner. List refresh, conversion tool improvement, new campaign builds, CRM connection maintenance. One point of contact. Hands-on every month, not a monthly report.",
+    body: "For teams that want a hands-on build partner. We refresh lists, improve flows, build new campaign assets, maintain the CRM connections, review conversion data and keep the content layer usable. Hands-on work every month, not a report that describes progress instead of making it.",
     ctaLabel: "Talk about a retainer",
     ctaUrl: "/contact",
   },
@@ -335,20 +371,21 @@ export default async function HomePage() {
   // as the title/description literals in generateMetadata above.
   const heroHeading = fallbackHero.heading;
   const heroBody = fallbackHero.body;
+  const heroSupportingLine = fallbackHero.supportingLine;
   const symptoms = fallbackSymptoms;
   const servicesHeading = "What changes when the stack is engineered properly.";
   const servicesSubhead =
     homePage?.servicesSubhead ||
-    "The same outbound volume produces more pipeline. Not because you send more emails. Because fewer prospects leak between the first touch and the booked meeting.";
+    "The same campaign effort produces more pipeline, because fewer prospects leak between touchpoints you have already paid for.";
 
   const learnMoreItems =
     homePage?.learnMoreItems?.length ? homePage.learnMoreItems : fallbackLearnMore;
 
   // Hero buttons
-  const heroCtaPrimaryLabel = homePage?.heroCta?.primaryLabel || "Start with a free assessment";
+  const heroCtaPrimaryLabel = homePage?.heroCta?.primaryLabel || "Start with the free assessment";
   const heroCtaPrimaryUrl = homePage?.heroCta?.primaryUrl || "/assessments";
   const heroCtaPrimaryNote = homePage?.heroCta?.primaryNote ?? "";
-  const heroCtaSecondaryLabel = homePage?.heroCta?.secondaryLabel || "See our work";
+  const heroCtaSecondaryLabel = homePage?.heroCta?.secondaryLabel || "See the work";
   const heroCtaSecondaryUrl = homePage?.heroCta?.secondaryUrl || "/case-study";
 
   // Symptoms section headings
@@ -406,6 +443,11 @@ export default async function HomePage() {
                   {para}
                 </p>
               ))}
+              {heroSupportingLine && (
+                <p className="text-ecm-lime/80 font-barlow font-semibold text-sm sm:text-base mb-0">
+                  {heroSupportingLine}
+                </p>
+              )}
               {/* Hero calls to action */}
               <div className="mt-8 flex flex-col sm:flex-row gap-4">
                 <Link
@@ -434,6 +476,24 @@ export default async function HomePage() {
           <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="#ffffff" />
           </svg>
+        </div>
+      </section>
+
+      {/* ─── CONVERSION LAYER DIAGNOSIS ─── */}
+      <section className="py-20 bg-white">
+        <div className="max-w-3xl mx-auto px-6">
+          <h2 className="text-ecm-green font-barlow font-bold text-2xl sm:text-3xl leading-snug mb-6">
+            Your campaigns are not broken. The layer between them is.
+          </h2>
+          <p className="text-ecm-gray-dark text-base leading-relaxed mb-4">
+            Most B2B teams already have the parts: a website, a CRM, a few campaigns, some outbound tooling, several years of content, and usually some AI running on top of it. What they do not have is a reliable handoff from one part to the next.
+          </p>
+          <p className="text-ecm-gray-dark text-base leading-relaxed mb-4">
+            So the right people click and then go quiet. Replies arrive and stall. Meetings get booked against opportunities nothing qualified first. The AI tools promise speed, then meet the content and the data as they actually are.
+          </p>
+          <p className="text-ecm-gray-dark text-base leading-relaxed">
+            We engineer that handoff: the conversion layer that carries a prospect from the first sign of interest to an opportunity sales can genuinely work.
+          </p>
         </div>
       </section>
 
@@ -490,23 +550,22 @@ export default async function HomePage() {
               {servicesSubhead}
             </p>
           )}
-          <div className="grid md:grid-cols-3 gap-8 mb-12">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
             {cards.map((card: any, i: number) => (
-              <Link
+              <div
                 key={i}
-                href={card.url ?? card.href ?? "/solutions"}
-                className="service-card bg-white/10 backdrop-blur rounded-2xl p-8 text-center group border border-white/10 hover:border-ecm-lime/30 transition-all hover:shadow-lg hover:shadow-ecm-lime/5"
+                className="bg-white/10 backdrop-blur rounded-2xl p-8 text-center border border-white/10"
               >
                 <div className="w-16 h-16 bg-ecm-lime/20 rounded-full flex items-center justify-center mx-auto mb-6">
                   <ServiceIcon index={iconIndex(card.icon)} />
                 </div>
-                <h3 className="text-white font-barlow font-bold text-xl mb-4 group-hover:text-ecm-lime transition-colors">
+                <h3 className="text-white font-barlow font-bold text-xl mb-4">
                   {card.title}
                 </h3>
                 <p className="text-white/85 text-sm leading-relaxed">
                   {card.description}
                 </p>
-              </Link>
+              </div>
             ))}
           </div>
           <div className="text-center">
@@ -523,6 +582,30 @@ export default async function HomePage() {
           <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="#ffffff" />
           </svg>
+        </div>
+      </section>
+
+      {/* ─── WHAT WE BUILD ─── */}
+      <section className="py-20 bg-white">
+        <div className="max-w-6xl mx-auto px-6">
+          <h2 className="text-ecm-green font-barlow font-bold text-3xl lg:text-4xl text-center mb-16">
+            What we build.
+          </h2>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {whatWeBuild.map((item, i) => (
+              <div
+                key={i}
+                className="bg-ecm-green rounded-xl p-6 sm:p-8 border border-ecm-lime/20"
+              >
+                <h3 className="text-ecm-lime font-barlow font-semibold text-lg mb-3">
+                  {item.title}
+                </h3>
+                <p className="text-white/85 text-sm leading-relaxed">
+                  {item.description}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -568,10 +651,10 @@ export default async function HomePage() {
       <section className="py-20 bg-white">
         <div className="max-w-6xl mx-auto px-6">
           <h2 className="text-ecm-green font-barlow font-bold text-3xl lg:text-4xl text-center mb-4">
-            Three ways to start. One clear path forward.
+            Three ways to start. One path.
           </h2>
           <p className="text-ecm-gray-dark text-center text-base mb-16 max-w-2xl mx-auto">
-            Every engagement starts with understanding where your outbound stack is leaking. The free assessment is the fastest way to find out.
+            Diagnose the leak, build the missing part, keep the system improving.
           </p>
           <div className="grid md:grid-cols-3 gap-6 mb-6">
             {offerLadder.map((step) => (
@@ -582,10 +665,8 @@ export default async function HomePage() {
                 <div className="w-10 h-10 bg-ecm-lime rounded-lg flex items-center justify-center mb-4">
                   <span className="text-ecm-green-dark font-barlow font-bold text-lg">{step.step}</span>
                 </div>
-                <p className="text-ecm-lime/70 font-barlow font-semibold text-xs uppercase tracking-wide mb-1">
-                  {step.kicker}
-                </p>
                 <h3 className="text-ecm-lime font-barlow font-bold text-xl mb-1">{step.title}</h3>
+                <p className="text-ecm-lime/80 font-barlow font-semibold text-sm mb-1">{step.tagline}</p>
                 <p className="text-white/60 text-xs mb-4">{step.subtitle}</p>
                 <p className="text-white/85 text-sm leading-relaxed mb-4 flex-1">{step.body}</p>
                 <Link
