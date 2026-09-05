@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "ECM.DEV — Content Infrastructure for the AI Enterprise";
+export const alt = "ECM.DEV: Pipeline Infrastructure for B2B Marketing Teams";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -71,8 +71,8 @@ export default async function OGImage() {
             flexDirection: "column",
           }}
         >
-          <span>Content Infrastructure</span>
-          <span>for the AI Enterprise</span>
+          <span>Pipeline Infrastructure</span>
+          <span>for B2B Marketing Teams</span>
         </div>
 
         {/* Description */}
@@ -85,8 +85,8 @@ export default async function OGImage() {
             maxWidth: 700,
           }}
         >
-          Operating systems, governance frameworks, and structured workflows
-          that turn content into a reliable, AI-ready asset.
+          Clean prospect lists, qualification tools, landing flows, and CRM
+          workflows, for inbound and outbound marketing.
         </div>
 
         {/* URL */}
