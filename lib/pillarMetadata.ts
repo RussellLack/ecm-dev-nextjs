@@ -32,7 +32,11 @@ export async function buildPillarMetadata(opts: {
     : undefined;
 
   return {
-    title,
+    // `absolute` so the root layout's `%s | ECM.DEV` title template never
+    // applies on top of this: the fallback branch above already appends
+    // "| ECM.DEV" itself, and without `absolute` the template doubled it
+    // up to "... | ECM.DEV | ECM.DEV" whenever seo.metaTitle was empty.
+    title: { absolute: title },
     description,
     alternates: { canonical: opts.canonical },
     ...(seo.noIndex ? { robots: { index: false, follow: false } } : {}),
