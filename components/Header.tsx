@@ -170,6 +170,11 @@ export default function Header() {
             Work
           </Link>
 
+          {/* About */}
+          <Link href="/about" className={triggerClass}>
+            About
+          </Link>
+
           {/* Insights mega */}
           <div
             className="relative"
@@ -339,13 +344,20 @@ export default function Header() {
             </div>
           ))}
 
-          {/* Work + Contact flat links */}
+          {/* Work + About + Contact flat links */}
           <Link
             href="/case-study"
             className="block py-4 text-white font-barlow font-semibold text-lg border-b border-white/10 hover:text-ecm-lime"
             onClick={() => setMobileOpen(false)}
           >
             Work
+          </Link>
+          <Link
+            href="/about"
+            className="block py-4 text-white font-barlow font-semibold text-lg border-b border-white/10 hover:text-ecm-lime"
+            onClick={() => setMobileOpen(false)}
+          >
+            About
           </Link>
           <Link
             href="/contact"
