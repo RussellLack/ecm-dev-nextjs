@@ -65,7 +65,7 @@ export default function ServicePage({ data }: { data: ServicePageData }) {
                   className="text-ecm-gray-dark text-base leading-relaxed flex gap-3"
                 >
                   <span className="text-ecm-green flex-shrink-0 font-bold">
-                    —
+                    &bull;
                   </span>
                   <span>{item}</span>
                 </li>
