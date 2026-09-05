@@ -157,13 +157,23 @@ const whatWeBuild = [
 ];
 
 /* Outcome-led proof tiles. Lead with the result; the client is supporting
-   evidence in the linked case study. */
+   evidence in the linked case study. Curated to the six proof themes that
+   map to this site's own positioning (pipeline/CRM activation, data
+   operations, content infrastructure, localisation, AI readiness, digital
+   service design) out of the 71 case studies in Sanity — not an
+   exhaustive or representative sample of the full catalogue. */
 const proofTiles = [
   {
-    outcome: "Cut localisation cost across multiple markets",
+    outcome: "Rebuilt a CRM workflow the sales team actually used",
     detail:
-      "Cut multilingual content cost by fixing what went into translation before it reached the translators. The saving was not in the translation budget. It was upstream.",
-    href: "/case-study/content-localization-15-countrieslanguages",
+      "Redesigned sales workflows and pipeline governance for a digital marketplace's advertising team, wiring pitch content into CRM stages instead of leaving it in inboxes and spreadsheets.",
+    href: "/case-study/crm-activation-program",
+  },
+  {
+    outcome: "Built a data architecture leadership could actually trust",
+    detail:
+      "Connected CRM, web analytics, and event systems into one privacy-compliant architecture for a professional association, so marketing investment decisions stopped running on guesswork.",
+    href: "/case-study/data-operations-strategy",
   },
   {
     outcome: "Rebuilt a CMS migration",
@@ -172,16 +182,22 @@ const proofTiles = [
     href: "/case-study/enterprise-cms-migration-sitecore-optimizely",
   },
   {
+    outcome: "Cut localisation cost across multiple markets",
+    detail:
+      "Cut multilingual content cost by fixing what went into translation before it reached the translators. The saving was not in the translation budget. It was upstream.",
+    href: "/case-study/content-localization-15-countrieslanguages",
+  },
+  {
     outcome: "Prepared content for AI",
     detail:
       "Built a content taxonomy and metadata layer that made AI search and retrieval actually useful, for a team that had the tools but not the structure underneath them.",
     href: "/case-study/enterprise-content-taxonomy-metadata-architecture",
   },
   {
-    outcome: "Turned a stalled intranet investment",
+    outcome: "Validated a new digital service before a line of code was written",
     detail:
-      "Turned a stalled intranet investment into a portal employees used daily. No six-figure implementation programme. Fixed scope, fast delivery, measurable adoption from week one.",
-    href: "/case-study/sharepoint-intranet-employee-portal-financial-services",
+      "Prototyped and user-tested new service concepts for a real estate leader, so the business case for development was proven before the investment, not after.",
+    href: "/case-study/service-prototyping",
   },
 ];
 
@@ -199,38 +215,50 @@ const AUDIT_OFFER_ENDS = Date.UTC(2026, 9, 1);
 
 const auditStrip = {
   eyebrow: "AI Content Readiness Audit",
-  headline: "Find out if AI systems can actually find, trust, and cite your content",
-  subhead:
-    "Buyers now research through AI answers before they ever reach your site. This audit tests whether your content estate is retrievable and trustworthy to that layer, not how it ranks on a results page.",
+  headline: "Can AI systems find, trust and reuse your content?",
+  /* Short stacked lines rather than one dense paragraph, to keep the
+     fragment rhythm of the approved copy rather than flattening it into
+     a single sentence. */
+  subhead: [
+    "Your buyers are already asking AI tools for answers.",
+    "About vendors. About problems. About options. About what to do next.",
+    "The question is simple: Will those systems understand you?",
+    "This audit tests whether your content can be retrieved, cited and reused by AI answer engines.",
+  ],
+  /* Three negations plus the positive counter-claim. The last line is
+     styled distinctly in the JSX below so it lands as the payoff, not
+     a fourth negation. */
   differentiators: [
-    "Not another free self-assessment: this is evidence-based, run directly against your actual content, not your team's perception of it.",
-    "Not an SEO audit: SEO tools score how a ranking algorithm reads one page at a time. AI answer engines retrieve and weigh passages against everything else you have published, which is a different test entirely.",
+    "Not how pretty your website looks.",
+    "Not whether one SEO score is green.",
+    "Not whether your team thinks the content is good.",
+    "We test the content estate itself.",
   ],
   coverage: [
     {
       title: "Retrievability",
-      description:
-        "Whether an AI system can find, pull, and cite your content cleanly when it answers a real question a buyer asked about you.",
+      description: "Can AI systems find the right passages?",
     },
     {
-      title: "Grounding",
-      description:
-        "Verified by actually running realistic buyer questions through a retrieval test, so every finding is proven, not guessed at from a best-practice checklist.",
+      title: "Trust signals",
+      description: "Does the content prove expertise, authority and relevance?",
     },
     {
-      title: "Localisation fidelity",
-      description:
-        "Whether your non-English content says the same thing as your English content: missing translations, drifted prices and dates, mismatched page structure. A gap no SEO tool or platform-native audit checks at all.",
+      title: "Structure",
+      description: "Is the content organised clearly enough for machines and people?",
     },
     {
-      title: "Priority",
-      description:
-        "A ranked shortlist of what to fix first, scored by business impact against effort, not a dump of every issue found.",
+      title: "Commercial usefulness",
+      description: "Does the content help buyers move closer to a decision?",
+    },
+    {
+      title: "Workflow readiness",
+      description: "Can your team reuse and maintain the content without creating more mess?",
     },
   ],
   trustLine:
-    "Anything not yet reliably testable is flagged as untested. Never a false clean bill of health.",
-  ctaLabel: "Request Your Audit",
+    "The result: a clear view of what AI can see, what it misses and what needs fixing first.",
+  ctaLabel: "Request the audit",
   /* Introductory offer, time-bound rather than count-bound so the claim can be
      enforced here instead of depending on someone remembering to edit it. The
      five-at-a-time line is a capacity condition, not the scarcity device: the
@@ -289,6 +317,17 @@ const offerLadder = [
     ctaUrl: "/contact",
   },
 ];
+
+/* Closing section, immediately above the contact form. Placed last, after
+   the proof section, so it reads as the closing argument rather than an
+   opener: by this point the visitor has seen the problem, the build, the
+   offer, and the evidence. */
+const whyEcmDev = {
+  heading: "Why ecm.dev?",
+  body: "We build the missing layer between marketing activity and sales pipeline. Modern B2B marketing is not just a content problem. And it is not only a CRM problem. It is a systems problem. Your data, content, tools, landing pages, workflows and AI experiments all need to work together. That is what we build.",
+  closingLine:
+    "ECM.DEV is the hands-on partner for B2B teams that want their marketing stack to produce cleaner leads, better conversations and stronger pipeline.",
+};
 
 const fallbackLearnMore = [
   { title: "Sales and Marketing Sync-Up", subtitle: "Streamlining Shared Content for Bigger Wins" },
@@ -398,11 +437,11 @@ export default async function HomePage() {
   // Outcome cards
   const cards = homePage?.outcomeCards?.length ? homePage.outcomeCards : outcomeCards;
 
-  // Proof band
-  const proofHeading = homePage?.proofHeading || "Built, shipped, and working.";
+  // Proof band ("Work that proves the model")
+  const proofHeading = homePage?.proofHeading || "Work that proves the model.";
   const proofSubhead =
     homePage?.proofSubhead ||
-    "Real outcomes from companies who fixed the operation underneath their pipeline, not just the campaigns on top of it.";
+    "We connect content, systems and workflows to commercial outcomes.";
   const proof = homePage?.proofTiles?.length ? homePage.proofTiles : proofTiles;
 
   // Ticker
@@ -609,84 +648,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ─── PROOF (outcome-led case studies) ─── */}
-      <section className="py-20 bg-white">
-        <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-ecm-green font-barlow font-bold text-3xl lg:text-4xl text-center mb-4">
-            {proofHeading}
-          </h2>
-          {proofSubhead && (
-            <p className="text-ecm-gray-dark text-center text-base mb-16 max-w-2xl mx-auto">
-              {proofSubhead}
-            </p>
-          )}
-          <div className="grid sm:grid-cols-2 gap-6 mb-12">
-            {proof.map((tile: any, i: number) => (
-              <Link
-                key={i}
-                href={tile.url ?? tile.href ?? "/case-study"}
-                className="block bg-ecm-green rounded-xl p-6 sm:p-8 border border-ecm-lime/20 hover:border-ecm-lime/50 transition-all hover:shadow-lg hover:shadow-ecm-lime/5 group"
-              >
-                <h3 className="text-ecm-lime font-barlow font-semibold text-lg mb-2 group-hover:text-white transition-colors">
-                  {tile.outcome}
-                </h3>
-                <p className="text-white/85 text-sm leading-relaxed">
-                  {tile.detail}
-                </p>
-              </Link>
-            ))}
-          </div>
-          <div className="text-center">
-            <Link
-              href="/case-study"
-              className="inline-block bg-ecm-green text-white font-barlow font-semibold px-8 py-3 rounded-full hover:bg-ecm-green-dark transition-colors"
-            >
-              See all case studies
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* ─── OFFER LADDER (was engagement tiers) ─── */}
-      <section className="py-20 bg-white">
-        <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-ecm-green font-barlow font-bold text-3xl lg:text-4xl text-center mb-4">
-            Three ways to start. One path.
-          </h2>
-          <p className="text-ecm-gray-dark text-center text-base mb-16 max-w-2xl mx-auto">
-            Diagnose the leak, build the missing part, keep the system improving.
-          </p>
-          <div className="grid md:grid-cols-3 gap-6 mb-6">
-            {offerLadder.map((step) => (
-              <div
-                key={step.step}
-                className="relative bg-ecm-green rounded-xl p-6 sm:p-8 border border-ecm-lime/20 flex flex-col"
-              >
-                <div className="w-10 h-10 bg-ecm-lime rounded-lg flex items-center justify-center mb-4">
-                  <span className="text-ecm-green-dark font-barlow font-bold text-lg">{step.step}</span>
-                </div>
-                <h3 className="text-ecm-lime font-barlow font-bold text-xl mb-1">{step.title}</h3>
-                <p className="text-ecm-lime/80 font-barlow font-semibold text-sm mb-1">{step.tagline}</p>
-                <p className="text-white/60 text-xs mb-4">{step.subtitle}</p>
-                <p className="text-white/85 text-sm leading-relaxed mb-4 flex-1">{step.body}</p>
-                <Link
-                  href={step.ctaUrl}
-                  className="inline-flex items-center justify-center bg-ecm-lime text-ecm-green font-barlow font-semibold text-sm px-6 py-3 rounded-full hover:bg-ecm-lime-hover transition-colors mt-auto"
-                >
-                  {step.ctaLabel}
-                </Link>
-              </div>
-            ))}
-          </div>
-          <p className="text-center text-ecm-gray-dark text-xs">
-            Working at larger scale or need a full content infrastructure audit?{" "}
-            <Link href="/content-services" className="underline hover:text-ecm-green">
-              Full service range
-            </Link>
-          </p>
-        </div>
-      </section>
-
       {/* ─── AI CONTENT READINESS AUDIT ─── */}
       <section id="audit-request" className="relative pt-28 pb-28 bg-ecm-green">
         {/* Wave divider: white → green (top) */}
@@ -709,15 +670,26 @@ export default async function HomePage() {
           <h2 className="text-ecm-lime font-barlow font-bold text-3xl lg:text-4xl mb-4 max-w-3xl">
             {auditStrip.headline}
           </h2>
-          <p className="text-white/85 text-base sm:text-lg leading-relaxed mb-6 max-w-3xl">
-            {auditStrip.subhead}
-          </p>
-          {/* The two differentiations: versus our own free assessment, versus SEO
-              tooling. Kept directly under the subhead so both are readable as
-              soon as the section comes into view. */}
+          <div className="mb-6 max-w-3xl space-y-1">
+            {auditStrip.subhead.map((line, i) => (
+              <p key={i} className="text-white/85 text-base sm:text-lg leading-relaxed">
+                {line}
+              </p>
+            ))}
+          </div>
+          {/* Three negations, then the positive counter-claim. The last line is
+              styled as the payoff (lime, semibold) rather than another negation,
+              so it reads as the turn rather than a fourth item in the list. */}
           <div className="space-y-2 mb-12 max-w-3xl border-l-2 border-ecm-lime/40 pl-5">
-            {auditStrip.differentiators.map((line, i) => (
-              <p key={i} className="text-white/75 text-sm leading-relaxed">
+            {auditStrip.differentiators.map((line, i, arr) => (
+              <p
+                key={i}
+                className={
+                  i === arr.length - 1
+                    ? "text-ecm-lime font-barlow font-semibold text-sm leading-relaxed"
+                    : "text-white/75 text-sm leading-relaxed"
+                }
+              >
                 {line}
               </p>
             ))}
@@ -783,6 +755,46 @@ export default async function HomePage() {
           <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="#ffffff" />
           </svg>
+        </div>
+      </section>
+
+      {/* ─── OFFER LADDER (was engagement tiers) ─── */}
+      <section className="py-20 bg-white">
+        <div className="max-w-6xl mx-auto px-6">
+          <h2 className="text-ecm-green font-barlow font-bold text-3xl lg:text-4xl text-center mb-4">
+            Three ways to start. One path.
+          </h2>
+          <p className="text-ecm-gray-dark text-center text-base mb-16 max-w-2xl mx-auto">
+            Diagnose the leak, build the missing part, keep the system improving.
+          </p>
+          <div className="grid md:grid-cols-3 gap-6 mb-6">
+            {offerLadder.map((step) => (
+              <div
+                key={step.step}
+                className="relative bg-ecm-green rounded-xl p-6 sm:p-8 border border-ecm-lime/20 flex flex-col"
+              >
+                <div className="w-10 h-10 bg-ecm-lime rounded-lg flex items-center justify-center mb-4">
+                  <span className="text-ecm-green-dark font-barlow font-bold text-lg">{step.step}</span>
+                </div>
+                <h3 className="text-ecm-lime font-barlow font-bold text-xl mb-1">{step.title}</h3>
+                <p className="text-ecm-lime/80 font-barlow font-semibold text-sm mb-1">{step.tagline}</p>
+                <p className="text-white/60 text-xs mb-4">{step.subtitle}</p>
+                <p className="text-white/85 text-sm leading-relaxed mb-4 flex-1">{step.body}</p>
+                <Link
+                  href={step.ctaUrl}
+                  className="inline-flex items-center justify-center bg-ecm-lime text-ecm-green font-barlow font-semibold text-sm px-6 py-3 rounded-full hover:bg-ecm-lime-hover transition-colors mt-auto"
+                >
+                  {step.ctaLabel}
+                </Link>
+              </div>
+            ))}
+          </div>
+          <p className="text-center text-ecm-gray-dark text-xs">
+            Working at larger scale or need a full content infrastructure audit?{" "}
+            <Link href="/content-services" className="underline hover:text-ecm-green">
+              Full service range
+            </Link>
+          </p>
         </div>
       </section>
 
@@ -857,6 +869,59 @@ export default async function HomePage() {
           </section>
         );
       })()}
+
+      {/* ─── PROOF ("Work that proves the model") ─── */}
+      <section className="py-20 bg-white">
+        <div className="max-w-6xl mx-auto px-6">
+          <h2 className="text-ecm-green font-barlow font-bold text-3xl lg:text-4xl text-center mb-4">
+            {proofHeading}
+          </h2>
+          {proofSubhead && (
+            <p className="text-ecm-gray-dark text-center text-base mb-16 max-w-2xl mx-auto">
+              {proofSubhead}
+            </p>
+          )}
+          <div className="grid sm:grid-cols-2 gap-6 mb-12">
+            {proof.map((tile: any, i: number) => (
+              <Link
+                key={i}
+                href={tile.url ?? tile.href ?? "/case-study"}
+                className="block bg-ecm-green rounded-xl p-6 sm:p-8 border border-ecm-lime/20 hover:border-ecm-lime/50 transition-all hover:shadow-lg hover:shadow-ecm-lime/5 group"
+              >
+                <h3 className="text-ecm-lime font-barlow font-semibold text-lg mb-2 group-hover:text-white transition-colors">
+                  {tile.outcome}
+                </h3>
+                <p className="text-white/85 text-sm leading-relaxed">
+                  {tile.detail}
+                </p>
+              </Link>
+            ))}
+          </div>
+          <div className="text-center">
+            <Link
+              href="/case-study"
+              className="inline-block bg-ecm-green text-white font-barlow font-semibold px-8 py-3 rounded-full hover:bg-ecm-green-dark transition-colors"
+            >
+              See all case studies
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── WHY ECM.DEV ─── */}
+      <section className="py-20 bg-white">
+        <div className="max-w-2xl mx-auto px-6 text-center">
+          <h2 className="text-ecm-green font-barlow font-bold text-3xl lg:text-4xl mb-6">
+            {whyEcmDev.heading}
+          </h2>
+          <p className="text-ecm-gray-dark text-base leading-relaxed mb-6">
+            {whyEcmDev.body}
+          </p>
+          <p className="text-ecm-green font-barlow font-semibold text-base leading-relaxed">
+            {whyEcmDev.closingLine}
+          </p>
+        </div>
+      </section>
 
       {/* ─── CONTACT ─── */}
       <ContactForm />
