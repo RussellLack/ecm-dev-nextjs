@@ -12,25 +12,25 @@ export const revalidate = 3600;
    actual sentences. */
 const hero = {
   heading: "We build the missing layer between marketing activity and sales pipeline.",
-  body: "Modern B2B marketing is not just a content problem. And it is not only a CRM problem. It is a systems problem. Your data, content, tools, landing pages, workflows and AI experiments all need to work together. That is what we build.",
+  body: "Modern B2B marketing is not a content problem, or a CRM problem. It is a systems problem: your data, content, tools, landing pages, workflows and AI experiments all need to work together. That is what we build.",
 };
 
 const sections = [
   {
     title: "Content, systems, and commercial execution",
-    body: "ECM.DEV was built by people who have run content operations, integrated CRM and marketing systems, and been accountable for the commercial number those systems were supposed to produce. That combination is unusual. Most agencies own the content. Most RevOps consultants own the systems. Few people have had to answer for both at once, which is exactly where B2B pipeline actually breaks.",
+    body: "ECM.DEV was built by people who have run content operations, integrated CRM systems, and been accountable for the pipeline number those systems were meant to produce. Most agencies own the content. Most RevOps consultants own the systems. Few have answered for both at once, which is exactly where pipeline breaks.",
   },
   {
     title: "A build, not a retainer for advice",
-    body: "We do not hand over a strategy deck and leave the building to you. Every engagement produces something you can point at: a prospect list, a scored assessment, a landing flow, a CRM workflow, a piece of content structure. Fixed scope, fixed price, a defined delivery window. You know what you are getting before you start, and you own it once it ships.",
+    body: "We do not hand over a strategy deck and leave the building to you. Every engagement produces something you can point at: a list, a tool, a landing flow, a workflow, a content structure. Fixed scope, fixed price, a defined delivery window. You own it once it ships.",
   },
   {
     title: "Not an agency. Not a RevOps consultancy. Not a content shop.",
-    body: "Digital agencies sell campaigns and creative, then move on to the next brief. RevOps consultants sell process and platform configuration, and rarely touch the content running through it. Content shops sell production volume. ECM.DEV builds the specific piece of infrastructure sitting between whichever two of those categories your team has already bought, and the pipeline number you are actually trying to hit.",
+    body: "Agencies sell campaigns, then move to the next brief. RevOps consultants sell process and platform configuration, rarely touching the content running through it. Content shops sell volume. ECM.DEV builds the piece of infrastructure sitting between whatever you have already bought and the pipeline number you are trying to hit.",
   },
   {
     title: "What you own when we are done",
-    body: "Everything. The prospect list, the tool, the landing flow, the workflow, the content structure: built in your stack, under your control, with documentation, not locked behind our subscription. If you never call us again, it keeps working. Most clients call us again anyway, for the next piece.",
+    body: "Everything: built in your stack, under your control, documented, not locked behind our subscription. If you never call us again, it keeps working. Most clients call anyway, for the next piece.",
   },
 ];
 
