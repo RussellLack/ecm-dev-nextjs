@@ -25,6 +25,10 @@ type Item = {
   fallback?: React.ReactNode;
 };
 
+/* Intel feed hidden 2026-09-06. Typed as boolean rather than the literal
+   `true` so the guarded branch stays type-checked while it is switched off. */
+const HIDE_INTEL: boolean = true;
+
 const EYEBROW: Record<Doctype, string> = {
   post: "Article",
   guide: "Guide",
@@ -116,7 +120,10 @@ export default async function MixedRelated({
       ),
     });
   }
-  if (intelTopic?.slug) {
+  // Intel feed hidden 2026-09-06 — the topic hubs have nothing to show, so
+  // this card would be a dead end. Query and type left in place; set
+  // HIDE_INTEL to false to bring it back.
+  if (intelTopic?.slug && !HIDE_INTEL) {
     items.push({
       doctype: "intelTopic",
       href: `/intel/topic/${intelTopic.slug}`,
