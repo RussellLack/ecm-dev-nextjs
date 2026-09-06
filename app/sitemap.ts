@@ -238,13 +238,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Intel topic + vendor hubs (only those with at least one published article).
   // The active-hub helpers don't expose per-hub dates, so use the stable
   // fallback rather than a churning `new Date()`.
+  // Intel feed hidden 2026-09-06 — nothing was ever published to it, so its
+  // hubs are withheld from the sitemap. The fetch machinery below is left
+  // intact and simply skipped; set HIDE_INTEL to false to restore them.
+  const HIDE_INTEL = true;
   let intelHubEntries: MetadataRoute.Sitemap = [];
   try {
     const [topics, vendors] = await Promise.all([
       getActiveIntelTopics().catch(() => []),
       getActiveIntelVendors().catch(() => []),
     ]);
-    intelHubEntries = [
+    intelHubEntries = HIDE_INTEL ? [] : [
       ...(topics ?? []).map((t) => ({
         url: `${siteUrl}/intel/topic/${t.slug}`,
         lastModified: STATIC_LAST_MODIFIED,
@@ -307,7 +311,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${siteUrl}/assessments`, lastModified: assessmentsMax, changeFrequency: "weekly", priority: 0.8 },
     { url: `${siteUrl}/blog`, lastModified: postsMax, changeFrequency: "weekly", priority: 0.8 },
     { url: `${siteUrl}/guides`, lastModified: maxDate(guidesMax, guideSeriesMax), changeFrequency: "weekly", priority: 0.8 },
-    { url: `${siteUrl}/intel`, lastModified: STATIC_LAST_MODIFIED, changeFrequency: "daily", priority: 0.7 },
     { url: `${siteUrl}/industries`, lastModified: caseStudiesMax, changeFrequency: "monthly", priority: 0.7 },
     { url: `${siteUrl}/platforms`, lastModified: platformsMax, changeFrequency: "monthly", priority: 0.7 },
     { url: `${siteUrl}/contact`, lastModified: STATIC_LAST_MODIFIED, changeFrequency: "yearly", priority: 0.6 },

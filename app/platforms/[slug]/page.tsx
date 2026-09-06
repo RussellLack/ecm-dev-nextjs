@@ -16,6 +16,10 @@ import PostIllustration from "@/components/post/PostIllustration";
 
 export const revalidate = 3600;
 
+/* Intel feed hidden 2026-09-06. Typed as boolean rather than the literal
+   `true` so the guarded branch stays type-checked while it is switched off. */
+const HIDE_INTEL: boolean = true;
+
 const PILLAR_HREF: Record<string, string> = {
   technology: "/content-technology",
   services: "/content-services",
@@ -214,7 +218,9 @@ export default async function PlatformDetailPage({
                 </Link>
               );
             })}
-            {platform.intelVendorSlug && (
+            {/* Intel feed hidden 2026-09-06 — the vendor hubs have nothing
+                to show. Set HIDE_INTEL to false to restore. */}
+            {platform.intelVendorSlug && !HIDE_INTEL && (
               <Link
                 href={`/intel/vendor/${platform.intelVendorSlug}`}
                 className="inline-flex items-center gap-2 bg-white border border-ecm-green/30 text-ecm-green font-barlow font-semibold text-sm px-5 py-2.5 rounded-full hover:bg-ecm-green hover:text-white transition-colors"
