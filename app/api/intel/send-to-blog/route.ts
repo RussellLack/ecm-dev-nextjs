@@ -3,13 +3,20 @@ import { createClient } from "@sanity/client";
 import { randomUUID } from "node:crypto";
 
 /**
- * Bridge from an enriched intelArticle (ecm-dev-intel project) to a draft
- * blog post (main ecm-dev project). The intel Studio's "Send to blog"
- * document action POSTs here with { articleId }; we create a draft post
- * with everything except mainImage. Editor opens the draft in the
- * ecm-dev Studio, uses AI Assist to generate the cover, publishes there.
+ * Bridge from an intelArticle that's been through the intel Studio's full
+ * blog pipeline (queued -> AI rewrite -> editor review -> approved, i.e.
+ * blogStage="approved") to a draft blog post in the main ecm-dev project.
+ * The intel Studio's "Send to blog" document action (or the Blog Pipeline
+ * kanban board's drag-to-"Sent" handler) POSTs here with { articleId }; we
+ * build the draft post from the article's AI-rewritten body/title/excerpt
+ * (falling back to a thin summary synthesis for the rare article sent
+ * without a rewrite draft), append the internal links the intel Studio's
+ * "Approve & find links" step found, and generate a unique on-brand cover
+ * via gpt-image-1 — everything except a final editorial pass happens here.
+ * Editor opens the draft in the ecm-dev Studio, gives it a final look, and
+ * publishes there.
  *
- * The Studio action flips intelArticle.status to "published" itself once
+ * The Studio action flips intelArticle.blogStage to "sent" itself once
  * this endpoint returns 200 — cleaner than us doing a cross-project
  * status flip from here.
  *
@@ -72,6 +79,21 @@ type IntelArticle = {
   topics: { title: string; slug: string }[];
   vendors: { name: string }[];
   sourceTitle: string | null;
+  blogDraftTitle: string | null;
+  blogDraftExcerpt: string | null;
+  blogDraftBody: PortableTextBlock[] | null;
+  internalLinks: { title: string; targetId: string; targetType: string }[] | null;
+};
+
+// Minimal shape we care about for pass-through blocks — these come from
+// the intel project's blogDraftBody (workers/rewrite.ts), already valid
+// Portable Text (style/markDefs/children), so no reshaping is needed.
+type PortableTextBlock = {
+  _type: string;
+  _key: string;
+  style?: string;
+  markDefs?: unknown[];
+  children?: unknown[];
 };
 
 const INTEL_QUERY = `*[_type == "intelArticle" && _id == $id][0]{
@@ -85,7 +107,11 @@ const INTEL_QUERY = `*[_type == "intelArticle" && _id == $id][0]{
   visualConcept,
   "topics": topics[]->{ "title": title, "slug": slug.current },
   "vendors": vendors[]->{ "name": name },
-  "sourceTitle": source->title
+  "sourceTitle": source->title,
+  blogDraftTitle,
+  blogDraftExcerpt,
+  blogDraftBody,
+  "internalLinks": internalLinks[]{ title, targetId, targetType }
 }`;
 
 // Emergency fallback SVG cover — used only if gpt-image-1 generation
@@ -353,11 +379,66 @@ function sourceLinkParagraph(sourceTitle: string | null, url: string) {
   };
 }
 
+function headingBlock(text: string) {
+  return {
+    _type: "block",
+    _key: randomUUID(),
+    style: "h3",
+    markDefs: [],
+    children: [{ _type: "span", _key: randomUUID(), text, marks: [] }],
+  };
+}
+
+// One bullet per internal link, using the site's `internalLink` Portable
+// Text annotation (sanity/schemas/internalLink.ts) rather than a hardcoded
+// href — resolved to a route at render time by lib/internalLink.ts, so
+// these survive future slug renames.
+function internalLinkBullet(link: { title: string; targetId: string; targetType: string }) {
+  const linkKey = randomUUID();
+  return {
+    _type: "block",
+    _key: randomUUID(),
+    style: "normal",
+    listItem: "bullet",
+    level: 1,
+    markDefs: [
+      {
+        _type: "internalLink",
+        _key: linkKey,
+        reference: { _type: "reference", _ref: link.targetId },
+      },
+    ],
+    children: [
+      { _type: "span", _key: randomUUID(), text: link.title, marks: [linkKey] },
+    ],
+  };
+}
+
 function buildBody(a: IntelArticle) {
   const blocks: unknown[] = [];
-  if (a.keyInsight) blocks.push(paragraph(a.keyInsight));
-  if (a.contentAngle) blocks.push(paragraph(a.contentAngle));
-  blocks.push(sourceLinkParagraph(a.sourceTitle, a.url));
+
+  // Prefer the AI-rewritten draft from the intel Studio's blog pipeline —
+  // it's already valid Portable Text, produced by workers/rewrite.ts and
+  // reviewed/edited by an editor before approval. Fall back to the old
+  // thin synthesis only for the rare article sent without going through
+  // the rewrite pipeline.
+  if (a.blogDraftBody && a.blogDraftBody.length > 0) {
+    blocks.push(...a.blogDraftBody);
+  } else {
+    if (a.keyInsight) blocks.push(paragraph(a.keyInsight));
+    if (a.contentAngle) blocks.push(paragraph(a.contentAngle));
+    blocks.push(sourceLinkParagraph(a.sourceTitle, a.url));
+  }
+
+  // Append up to 5 relevant internal links found by "Approve & find links"
+  // in the intel Studio, as a "Further reading" section at the end.
+  if (a.internalLinks && a.internalLinks.length > 0) {
+    blocks.push(headingBlock("Further reading"));
+    for (const link of a.internalLinks.slice(0, 5)) {
+      blocks.push(internalLinkBullet(link));
+    }
+  }
+
   return blocks;
 }
 
@@ -456,7 +537,9 @@ export async function POST(req: Request) {
       );
     }
 
-    const slug = slugify(article.title);
+    const postTitle = article.blogDraftTitle?.trim() || article.title;
+    const postExcerpt = article.blogDraftExcerpt?.trim() || article.summary || "";
+    const slug = slugify(postTitle);
     const draftId = `drafts.post-intel-${slug}-${randomUUID().slice(0, 8)}`;
 
     // Per-article cover generation: prefer the enricher's visualConcept
@@ -476,10 +559,10 @@ export async function POST(req: Request) {
     const doc = {
       _id: draftId,
       _type: "post",
-      title: article.title,
+      title: postTitle,
       slug: { _type: "slug", current: slug },
       publishedAt: new Date().toISOString(),
-      excerpt: article.summary ?? "",
+      excerpt: postExcerpt,
       visualConcept: article.visualConcept ?? "",
       // Two-field tag storage: canonical topics (12-item enum) and
       // platform / product / vendor names (free-form). Frontend
@@ -500,9 +583,11 @@ export async function POST(req: Request) {
       },
       seo: {
         // Cap at 70 chars (schema's soft-warning limit is 60, hard limit 70).
-        metaTitle: article.title.slice(0, 70),
+        // The intel Studio's SEO health panel already nudges editors to
+        // keep blogDraftTitle within this range before approval.
+        metaTitle: postTitle.slice(0, 70),
         // Cap at 170 chars (schema's soft-warning limit is 160, hard limit 170).
-        metaDescription: (article.summary ?? "").slice(0, 170),
+        metaDescription: postExcerpt.slice(0, 170),
         // ogImage left unset — editor either uploads a social-specific
         // image or the site falls back to mainImage in OG rendering.
       },

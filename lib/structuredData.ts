@@ -61,6 +61,7 @@ type ArticleInput = {
   _createdAt?: string;
   _updatedAt: string;
   mainImage?: SanityImage;
+  tags?: string[];
 };
 
 /**
@@ -100,6 +101,7 @@ export function articleSchema(
     dateModified,
     author: ORG_REF,
     publisher: ORG_REF,
+    ...(doc.tags && doc.tags.length > 0 ? { keywords: doc.tags.join(", ") } : {}),
     mainEntityOfPage: {
       "@type": "WebPage",
       "@id": url,
