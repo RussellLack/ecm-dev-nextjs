@@ -236,9 +236,13 @@ export default async function CaseStudyDetailPage({
 
       {/* Featured illustration — sits between the dark hero and the body
           content, full-width within the content column at the canonical
-          280x144 aspect ratio of the SVG. Mirrors the post-detail hero
-          treatment. */}
-      <div className="max-w-4xl mx-auto px-6 -mt-12 sm:-mt-16 lg:-mt-20 relative z-10">
+          280x144 aspect ratio of the SVG. Sits below the wave divider
+          rather than overlapping it: the wave's curve isn't a straight
+          line (it dips much lower on the left third of the page than the
+          right), so a fixed negative margin pulling this card up would
+          clip through green at some horizontal position on a card this
+          wide, whatever the offset. */}
+      <div className="max-w-4xl mx-auto px-6 mt-8 sm:mt-10 lg:mt-12 relative z-10">
         <div className="rounded-2xl w-full shadow-lg bg-ecm-green/5 border border-gray-100 aspect-[280/144] overflow-hidden">
           <CaseStudyIllustration slug={slug} />
         </div>

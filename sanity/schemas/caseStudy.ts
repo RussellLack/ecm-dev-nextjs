@@ -141,5 +141,26 @@ export default defineType({
       title: "Display Order",
       type: "number",
     }),
+    defineField({
+      name: "featured",
+      title: "Featured on Homepage",
+      description: "Show this case study as a summary card on the homepage, linking through to the full case study.",
+      type: "boolean",
+      initialValue: false,
+    }),
+    defineField({
+      name: "featuredOrder",
+      title: "Featured Display Order",
+      description: "Order among featured case studies on the homepage. Lower numbers show first.",
+      type: "number",
+      hidden: ({ document }) => !document?.featured,
+    }),
+    defineField({
+      name: "featuredTagline",
+      title: "Featured Card Tagline",
+      description: "Short category line shown on the homepage featured card, e.g. \"Buyer education · Lead qualification · CRM integration\".",
+      type: "string",
+      hidden: ({ document }) => !document?.featured,
+    }),
   ],
 });

@@ -17,6 +17,35 @@ const nextConfig = {
     },
 
     /**
+         * Old case-study slugs kept working after a title/slug rename, so
+     * existing inbound links and search results don't 404.
+     */
+    async redirects() {
+          return [
+            {
+                      source: "/case-study/crm-activation-program",
+                      destination: "/case-study/advertising-sales-platform",
+                      permanent: true,
+            },
+            {
+                      source: "/case-study/digital-process-improvements",
+                      destination: "/case-study/digital-sales-journeys",
+                      permanent: true,
+            },
+            {
+                      source: "/case-study/content-strategy-and-cms-migration",
+                      destination: "/case-study/digital-demand-generation",
+                      permanent: true,
+            },
+            {
+                      source: "/case-study/content-and-localization-services-for-national-tourism-portal",
+                      destination: "/case-study/content-operations-transformation",
+                      permanent: true,
+            },
+                ];
+    },
+
+    /**
          * Proxy Google Tag Manager and GA4 collect through our own domain.
      * This prevents Netlify edge / CDN from 503-ing the external GTM script
      * and also bypasses ad-blockers that target googletagmanager.com directly.
