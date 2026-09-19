@@ -298,7 +298,7 @@ export default async function CaseStudyDetailPage({
                 {cs.whyItMatters && (
                   <div className="mt-10">
                     <h2 className="text-ecm-green font-barlow font-bold text-2xl mb-3">
-                      Why It Matters
+                      The Outcome
                     </h2>
                     <p className="text-ecm-gray-dark leading-relaxed text-base lg:text-lg whitespace-pre-line">
                       {cs.whyItMatters}
