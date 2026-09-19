@@ -900,6 +900,7 @@ const SLUG_TO_MOTIF: Record<string, Motif> = {
   "sharepoint-migration-and-employee-portal-design-global-paints":
     IntranetMotif,
   "sharepoint-intranet-employee-portal-financial-services": IntranetMotif,
+  "global-digital-platform-maritime-services-group": IntranetMotif,
   // ecommerce
   "new-e-commerce-platform-for-automotive-group": EcommerceMotif,
   "automotive-content-ecommerce": EcommerceMotif,
@@ -907,6 +908,7 @@ const SLUG_TO_MOTIF: Record<string, Motif> = {
   "multilingual-seo-and-content-localization": LocalisationMotif,
   "content-and-localization-services-for-national-tourism-portal":
     LocalisationMotif,
+  "content-operations-transformation": LocalisationMotif,
   "multilingual-website-for-hotel-chain": LocalisationMotif,
   "content-localization-15-countrieslanguages": LocalisationMotif,
   "hospitality-tourism-multilingual-website": LocalisationMotif,
@@ -933,6 +935,7 @@ const SLUG_TO_MOTIF: Record<string, Motif> = {
   "digital-b2b-strategy-content-operations": CrmMotif,
   "crm-activation-program": CrmMotif,
   "crm-activation-b2b-sales-teams": CrmMotif,
+  "advertising-sales-platform": CrmMotif,
   // ecm vision
   "future-state-ecm-vision": EcmVisionMotif,
   "ecm-governance-financial-services": EcmVisionMotif,
@@ -953,11 +956,13 @@ const SLUG_TO_MOTIF: Record<string, Motif> = {
   "digital-campaign-management-ngo": MarketingMotif,
   "private-equity-martech-due-diligence": DataOpsMotif,
   "inbound-marketing-thought-leadership-b2b": MarketingMotif,
+  "digital-demand-generation": MarketingMotif,
   // prototype
   "service-prototyping": PrototypeMotif,
   "new-product-concepts": PrototypeMotif,
   // workflow / website-side
   "digital-process-improvements": WorkflowMotif,
+  "digital-sales-journeys": WorkflowMotif,
   "gdpr-compliant-web-analytics-migration": DataOpsMotif,
   "forms-ux-and-workflow-redesign": WorkflowMotif,
   "website-optimization-programme-oil-and-gas-company": WebsiteMotif,
