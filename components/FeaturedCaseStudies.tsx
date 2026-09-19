@@ -16,8 +16,14 @@ interface FeaturedCaseStudy {
   industry?: string;
   description?: string;
   image?: any;
+  imageWidth?: number;
   featuredTagline?: string;
 }
+
+// Below this, a 560px-wide crop would upscale the source noticeably
+// (blurry thumbnails, and a Lighthouse Best Practices hit for serving
+// visibly low-resolution images) — fall back to the illustration instead.
+const MIN_IMAGE_WIDTH = 560;
 
 export default function FeaturedCaseStudies({
   caseStudies,
@@ -39,7 +45,7 @@ export default function FeaturedCaseStudies({
             className="block bg-ecm-green rounded-2xl overflow-hidden border border-ecm-lime/15 hover:border-ecm-lime/40 hover:shadow-lg hover:shadow-ecm-lime/5 transition-all group"
           >
             <div className="aspect-[280/144] bg-[#eef3ef] overflow-hidden">
-              {cs.image ? (
+              {cs.image && (cs.imageWidth ?? 0) >= MIN_IMAGE_WIDTH ? (
                 <Image
                   src={urlFor(cs.image).width(560).height(288).fit("crop").url()}
                   alt=""

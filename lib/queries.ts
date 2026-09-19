@@ -98,7 +98,8 @@ export async function getCaseStudies() {
 export async function getFeaturedCaseStudies(limit = 6) {
   return sanityFetch(
     `*[_type == "caseStudy" && featured == true] | order(featuredOrder asc, order asc)[0...$limit]{
-      _id, title, slug, client, tags, industry, description, image, featuredTagline
+      _id, title, slug, client, tags, industry, description, image, featuredTagline,
+      "imageWidth": image.asset->metadata.dimensions.width
     }`,
     { limit }
   );
