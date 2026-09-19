@@ -142,24 +142,18 @@ const AUDIT_OFFER_ENDS = Date.UTC(2026, 9, 1);
 const auditStrip = {
   eyebrow: "AI Content Readiness Audit",
   headline: "Can AI systems find, trust and reuse your content?",
-  /* Short stacked lines rather than one dense paragraph, to keep the
-     fragment rhythm of the approved copy rather than flattening it into
-     a single sentence. */
+  /* Condensed to two lines for the homepage strip (the full four-line
+     version lives in /content-services); keeps the buyer-behaviour framing
+     and the payoff question without the extra stacked lines. */
   subhead: [
-    "Your buyers are already asking AI tools for answers.",
-    "About vendors. About problems. About options. About what to do next.",
-    "The question is simple: Will those systems understand you?",
+    "Your buyers are already asking AI tools about vendors, problems and options.",
     "This audit tests whether your content can be retrieved, cited and reused by AI answer engines.",
   ],
-  /* Three negations plus the positive counter-claim. The last line is
-     styled distinctly in the JSX below so it lands as the payoff, not
-     a fourth negation. */
-  differentiators: [
-    "Not how pretty your website looks.",
-    "Not whether one SEO score is green.",
-    "Not whether your team thinks the content is good.",
-    "We test the content estate itself.",
-  ],
+  /* Collapsed from three negations plus a payoff into one line: keeps the
+     counter-claim (we test the content estate, not appearance or opinion)
+     without the stacked list taking up homepage space. */
+  differentiatorLine:
+    "Not how the site looks or one SEO score. We test the content estate itself.",
   coverage: [
     {
       title: "Retrievability",
@@ -528,7 +522,7 @@ export default async function HomePage() {
       </section>
 
       {/* ─── AI CONTENT READINESS AUDIT ─── */}
-      <section id="audit-request" className="relative pt-28 pb-28 bg-ecm-green">
+      <section id="audit-request" className="relative pt-16 pb-16 bg-ecm-green">
         {/* Wave divider: white → green (top) */}
         <div className="wave-divider wave-divider-top">
           <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
@@ -549,53 +543,36 @@ export default async function HomePage() {
           <h2 className="text-ecm-lime font-barlow font-bold text-3xl lg:text-4xl mb-4 max-w-3xl">
             {auditStrip.headline}
           </h2>
-          <div className="mb-6 max-w-3xl space-y-1">
+          <div className="mb-4 max-w-3xl space-y-1">
             {auditStrip.subhead.map((line, i) => (
               <p key={i} className="text-white/85 text-base sm:text-lg leading-relaxed">
                 {line}
               </p>
             ))}
           </div>
-          {/* Three negations, then the positive counter-claim. The last line is
-              styled as the payoff (lime, semibold) rather than another negation,
-              so it reads as the turn rather than a fourth item in the list. */}
-          <div className="space-y-2 mb-12 max-w-3xl border-l-2 border-ecm-lime/40 pl-5">
-            {auditStrip.differentiators.map((line, i, arr) => (
-              <p
-                key={i}
-                className={
-                  i === arr.length - 1
-                    ? "text-ecm-lime font-barlow font-semibold text-sm leading-relaxed"
-                    : "text-white/75 text-sm leading-relaxed"
-                }
-              >
-                {line}
-              </p>
-            ))}
-          </div>
+          {/* Single payoff line replacing the former three-negation stack:
+              same counter-claim, a fraction of the vertical space. */}
+          <p className="mb-8 max-w-3xl text-ecm-lime font-barlow font-semibold text-sm leading-relaxed border-l-2 border-ecm-lime/40 pl-4">
+            {auditStrip.differentiatorLine}
+          </p>
 
-          <div className="grid lg:grid-cols-5 gap-10 lg:gap-14 items-start">
-            {/* Left: what the audit covers */}
-            <div className="lg:col-span-3">
-              <div className="grid sm:grid-cols-2 gap-6">
-                {auditStrip.coverage.map((item, i) => (
-                  <div
+          <div className="grid lg:grid-cols-5 gap-10 lg:gap-14 items-stretch">
+            {/* Left: what the audit covers, as a compact tag row rather than
+                five full description cards, plus the signup form. Centered
+                vertically so the shorter tag row doesn't leave a dead gap
+                under itself next to the taller signup form. */}
+            <div className="lg:col-span-3 flex flex-col justify-center">
+              <div className="flex flex-wrap gap-2">
+                {auditStrip.coverage.map((item) => (
+                  <span
                     key={item.title}
-                    className="bg-white/10 backdrop-blur rounded-2xl p-6 border border-white/10 flex flex-col"
+                    className="inline-flex items-center rounded-full bg-white/10 border border-white/15 px-4 py-2 text-white/90 font-barlow text-sm"
                   >
-                    <div className="w-10 h-10 bg-ecm-lime rounded-lg flex items-center justify-center mb-4">
-                      <span className="text-ecm-green-dark font-barlow font-bold text-lg">
-                        {String(i + 1).padStart(2, "0")}
-                      </span>
-                    </div>
-                    <h3 className="text-ecm-lime font-barlow font-semibold text-lg mb-3">
-                      {item.title}
-                    </h3>
-                    <p className="text-white/85 text-sm leading-relaxed">{item.description}</p>
-                  </div>
+                    {item.title}
+                  </span>
                 ))}
               </div>
-              <p className="text-white/70 text-sm leading-relaxed mt-6">
+              <p className="text-white/70 text-sm leading-relaxed mt-5">
                 {auditStrip.trustLine}
               </p>
             </div>
