@@ -38,7 +38,7 @@ export default function FeaturedCaseStudies({
             aria-label={`View case study: ${cs.title}`}
             className="block bg-ecm-green rounded-2xl overflow-hidden border border-ecm-lime/15 hover:border-ecm-lime/40 hover:shadow-lg hover:shadow-ecm-lime/5 transition-all group"
           >
-            <div className="aspect-[280/144] bg-white/5 overflow-hidden">
+            <div className="aspect-[280/144] bg-[#eef3ef] overflow-hidden">
               {cs.image ? (
                 <Image
                   src={urlFor(cs.image).width(560).height(288).fit("crop").url()}
