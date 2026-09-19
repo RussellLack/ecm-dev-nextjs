@@ -20,6 +20,9 @@ export default async function CaseStudyPage() {
           <h1 className="text-ecm-lime font-barlow font-bold text-3xl sm:text-4xl lg:text-5xl mb-4">
             PROJECTS
           </h1>
+          <p className="text-white/90 font-barlow font-light text-base sm:text-lg leading-relaxed max-w-3xl mx-auto">
+            These are the systems and programmes that shaped how ECM.DEV thinks, some delivered as ECM.DEV, some in earlier roles at other organisations.
+          </p>
         </div>
         {/* Wave divider: green → white */}
         <div className="wave-divider wave-divider-bottom">
