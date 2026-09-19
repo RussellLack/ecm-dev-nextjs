@@ -16,6 +16,7 @@ interface FeaturedCaseStudy {
   industry?: string;
   description?: string;
   image?: any;
+  featuredTagline?: string;
 }
 
 export default function FeaturedCaseStudies({
@@ -60,7 +61,12 @@ export default function FeaturedCaseStudies({
                 {cs.title}
               </h3>
               {cs.client && (
-                <p className="text-white/60 text-sm font-medium mb-3">{cs.client}</p>
+                <p className="text-white/60 text-sm font-medium mb-2">{cs.client}</p>
+              )}
+              {cs.featuredTagline && (
+                <p className="text-ecm-lime/70 text-xs font-barlow font-semibold uppercase tracking-wide mb-3">
+                  {cs.featuredTagline}
+                </p>
               )}
               {cs.description && (
                 <p className="text-white/70 text-sm leading-relaxed line-clamp-3">

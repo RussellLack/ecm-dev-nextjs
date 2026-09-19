@@ -147,5 +147,12 @@ export default defineType({
       type: "number",
       hidden: ({ document }) => !document?.featured,
     }),
+    defineField({
+      name: "featuredTagline",
+      title: "Featured Card Tagline",
+      description: "Short category line shown on the homepage featured card, e.g. \"Buyer education · Lead qualification · CRM integration\".",
+      type: "string",
+      hidden: ({ document }) => !document?.featured,
+    }),
   ],
 });
