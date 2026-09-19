@@ -310,6 +310,12 @@ export default async function CaseStudyDetailPage({
                     />
                   </div>
                 )}
+
+                {cs.attribution && (
+                  <p className="mt-10 text-xs text-ecm-gray leading-relaxed">
+                    {cs.attribution}
+                  </p>
+                )}
               </div>
             </div>
 

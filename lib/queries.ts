@@ -101,7 +101,7 @@ export async function getCaseStudy(slug: string) {
     `*[_type == "caseStudy" && slug.current == $slug][0]{
       title, slug, client, tags, pillars, industry, description, image,
       _createdAt, _updatedAt,
-      whoThisIsFor, theChallenge, whatWePropose, whyItMatters,
+      whoThisIsFor, theChallenge, whatWePropose, whyItMatters, attribution,
       body[]{
         ...,
         markDefs[]{
