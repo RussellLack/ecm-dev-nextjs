@@ -6,7 +6,8 @@ import AuditRequestForm from "@/components/AuditRequestForm";
 import LearnMoreSection from "@/components/LearnMoreSection";
 import LavaBlobs from "@/components/LavaBlobs";
 import PostIllustration from "@/components/post/PostIllustration";
-import { getHomePage, getBlogPosts } from "@/lib/queries";
+import FeaturedCaseStudies from "@/components/FeaturedCaseStudies";
+import { getHomePage, getBlogPosts, getFeaturedCaseStudies } from "@/lib/queries";
 import { urlFor } from "@/lib/sanity";
 
 export const revalidate = 3600;
@@ -153,51 +154,6 @@ const whatWeBuild = [
     title: "Content and AI operations",
     description:
       "We structure the content underneath the campaigns so people and AI systems can both use it: messaging, proof, FAQs, case studies, sales assets, localised content, metadata and the knowledge you want to reuse. AI-ready content is not a property of the tool. It is work someone has done.",
-  },
-];
-
-/* Outcome-led proof tiles. Lead with the result; the client is supporting
-   evidence in the linked case study. Curated to the six proof themes that
-   map to this site's own positioning (pipeline/CRM activation, data
-   operations, content infrastructure, localisation, AI readiness, digital
-   service design) out of the 71 case studies in Sanity — not an
-   exhaustive or representative sample of the full catalogue. */
-const proofTiles = [
-  {
-    outcome: "Rebuilt a CRM workflow the sales team actually used",
-    detail:
-      "Redesigned sales workflows and pipeline governance for a digital marketplace's advertising team, wiring pitch content into CRM stages instead of leaving it in inboxes and spreadsheets.",
-    href: "/case-study/crm-activation-program",
-  },
-  {
-    outcome: "Built a data architecture leadership could actually trust",
-    detail:
-      "Connected CRM, web analytics, and event systems into one privacy-compliant architecture for a professional association, so marketing investment decisions stopped running on guesswork.",
-    href: "/case-study/data-operations-strategy",
-  },
-  {
-    outcome: "Rebuilt a CMS migration",
-    detail:
-      "Rebuilt a CMS migration around how a small marketing team actually works, so the platform earned its keep from the first week rather than the first quarter.",
-    href: "/case-study/enterprise-cms-migration-sitecore-optimizely",
-  },
-  {
-    outcome: "Cut localisation cost across multiple markets",
-    detail:
-      "Cut multilingual content cost by fixing what went into translation before it reached the translators. The saving was not in the translation budget. It was upstream.",
-    href: "/case-study/content-localization-15-countrieslanguages",
-  },
-  {
-    outcome: "Prepared content for AI",
-    detail:
-      "Built a content taxonomy and metadata layer that made AI search and retrieval actually useful, for a team that had the tools but not the structure underneath them.",
-    href: "/case-study/enterprise-content-taxonomy-metadata-architecture",
-  },
-  {
-    outcome: "Validated a new digital service before a line of code was written",
-    detail:
-      "Prototyped and user-tested new service concepts for a real estate leader, so the business case for development was proven before the investment, not after.",
-    href: "/case-study/service-prototyping",
   },
 ];
 
@@ -399,9 +355,10 @@ export default async function HomePage() {
   const auditOffer = auditOfferOpen ? auditStrip.introOffer : auditStrip.paidOffer;
 
   // Fetch Sanity data in parallel
-  const [homePage, liveBlogPosts] = await Promise.all([
+  const [homePage, liveBlogPosts, featuredCaseStudies] = await Promise.all([
     getHomePage().catch(() => null),
     getBlogPosts(8).catch(() => null),
+    getFeaturedCaseStudies().catch(() => []),
   ]);
 
   // Hero, symptoms, and servicesHeading are literal, not Sanity-overridable:
@@ -436,13 +393,6 @@ export default async function HomePage() {
 
   // Outcome cards
   const cards = homePage?.outcomeCards?.length ? homePage.outcomeCards : outcomeCards;
-
-  // Proof band ("Work that proves the model")
-  const proofHeading = homePage?.proofHeading || "Work that proves the model.";
-  const proofSubhead =
-    homePage?.proofSubhead ||
-    "We connect content, systems and workflows to commercial outcomes.";
-  const proof = homePage?.proofTiles?.length ? homePage.proofTiles : proofTiles;
 
   // Ticker
   const tickerPhrases = homePage?.tickerPhrases?.length ? homePage.tickerPhrases : fallbackTicker;
@@ -870,43 +820,30 @@ export default async function HomePage() {
         );
       })()}
 
-      {/* ─── PROOF ("Work that proves the model") ─── */}
-      <section className="py-20 bg-white">
-        <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-ecm-green font-barlow font-bold text-3xl lg:text-4xl text-center mb-4">
-            {proofHeading}
-          </h2>
-          {proofSubhead && (
+      {/* ─── FEATURED CASE STUDIES ─── */}
+      {featuredCaseStudies && featuredCaseStudies.length > 0 && (
+        <section className="py-20 bg-white">
+          <div className="max-w-6xl mx-auto px-6">
+            <h2 className="text-ecm-green font-barlow font-bold text-3xl lg:text-4xl text-center mb-4">
+              Featured work.
+            </h2>
             <p className="text-ecm-gray-dark text-center text-base mb-16 max-w-2xl mx-auto">
-              {proofSubhead}
+              A closer look at outcomes across content technology, services and localisation.
             </p>
-          )}
-          <div className="grid sm:grid-cols-2 gap-6 mb-12">
-            {proof.map((tile: any, i: number) => (
+            <div className="mb-12">
+              <FeaturedCaseStudies caseStudies={featuredCaseStudies} />
+            </div>
+            <div className="text-center">
               <Link
-                key={i}
-                href={tile.url ?? tile.href ?? "/case-study"}
-                className="block bg-ecm-green rounded-xl p-6 sm:p-8 border border-ecm-lime/20 hover:border-ecm-lime/50 transition-all hover:shadow-lg hover:shadow-ecm-lime/5 group"
+                href="/case-study"
+                className="inline-block bg-ecm-green text-white font-barlow font-semibold px-8 py-3 rounded-full hover:bg-ecm-green-dark transition-colors"
               >
-                <h3 className="text-ecm-lime font-barlow font-semibold text-lg mb-2 group-hover:text-white transition-colors">
-                  {tile.outcome}
-                </h3>
-                <p className="text-white/85 text-sm leading-relaxed">
-                  {tile.detail}
-                </p>
+                See all case studies
               </Link>
-            ))}
+            </div>
           </div>
-          <div className="text-center">
-            <Link
-              href="/case-study"
-              className="inline-block bg-ecm-green text-white font-barlow font-semibold px-8 py-3 rounded-full hover:bg-ecm-green-dark transition-colors"
-            >
-              See all case studies
-            </Link>
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* ─── WHY ECM.DEV ─── */}
       <section className="py-20 bg-white">

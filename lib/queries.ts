@@ -94,6 +94,17 @@ export async function getCaseStudies() {
   }`);
 }
 
+// Featured case studies (homepage summary cards)
+export async function getFeaturedCaseStudies(limit = 6) {
+  return sanityFetch(
+    `*[_type == "caseStudy" && featured == true] | order(featuredOrder asc, order asc)[0...$limit]{
+      _id, title, slug, client, tags, industry, description, image, featuredTagline,
+      "imageWidth": image.asset->metadata.dimensions.width
+    }`,
+    { limit }
+  );
+}
+
 // Single case study
 // See getPost re: the markDefs walk for internalLink dereferencing.
 export async function getCaseStudy(slug: string) {

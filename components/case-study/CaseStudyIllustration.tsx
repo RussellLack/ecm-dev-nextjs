@@ -307,36 +307,41 @@ function EcommerceMotif({ seed }: { seed: number }) {
 function LocalisationMotif({ seed }: { seed: number }) {
   const tagCount = 4 + (seed % 3); // 4, 5, 6 language tags
   const accent = seed % tagCount;
+  // Globe shifted left of centre and tags widened to fill the right side,
+  // so the overall composition (globe + tags) balances around the 280-wide
+  // canvas instead of sitting left-heavy.
+  const cx = 68;
+  const r = 40;
   return (
     <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
       {/* globe */}
-      <circle cx="100" cy="72" r="44" stroke={G} strokeWidth="1.2" fill={FILL_G} />
+      <circle cx={cx} cy="72" r={r} stroke={G} strokeWidth="1.2" fill={FILL_G} />
       <g stroke={G} strokeWidth="1" fill="none" opacity="0.45">
-        <ellipse cx="100" cy="72" rx="44" ry="18" />
-        <ellipse cx="100" cy="72" rx="44" ry="32" />
-        <line x1="56" y1="72" x2="144" y2="72" />
-        <line x1="100" y1="28" x2="100" y2="116" />
-        <ellipse cx="100" cy="72" rx="22" ry="44" />
+        <ellipse cx={cx} cy="72" rx={r} ry="16" />
+        <ellipse cx={cx} cy="72" rx={r} ry="29" />
+        <line x1={cx - r} y1="72" x2={cx + r} y2="72" />
+        <line x1={cx} y1="32" x2={cx} y2="112" />
+        <ellipse cx={cx} cy="72" rx="20" ry={r} />
       </g>
-      {/* language tags fanned to the right */}
+      {/* language tags fanned to the right, filling the remaining width */}
       {Array.from({ length: tagCount }).map((_, i) => {
         const y = 28 + (i * (88 / Math.max(1, tagCount - 1)));
         const isAccent = i === accent;
         return (
           <g key={i}>
             <line
-              x1={100 + 44}
+              x1={cx + r}
               y1="72"
-              x2="180"
+              x2="168"
               y2={y}
               stroke={G}
               strokeWidth="1"
               opacity="0.6"
             />
             <rect
-              x="180"
+              x="168"
               y={y - 7}
-              width="78"
+              width="94"
               height="14"
               rx="2"
               stroke={isAccent ? L : G}
@@ -344,18 +349,18 @@ function LocalisationMotif({ seed }: { seed: number }) {
               fill={isAccent ? FILL_L : "white"}
             />
             <line
-              x1="190"
+              x1="180"
               y1={y}
-              x2="226"
+              x2="224"
               y2={y}
               stroke={G}
               strokeWidth="0.8"
               opacity="0.4"
             />
             <line
-              x1="232"
+              x1="230"
               y1={y}
-              x2="252"
+              x2="258"
               y2={y}
               stroke={G}
               strokeWidth="0.8"
@@ -478,40 +483,43 @@ function MarketingMotif({ seed }: { seed: number }) {
   // Funnel with seed-varied levels and accent ring
   const levels = 4;
   const accent = seed % levels;
-  const baseW = 200;
-  const baseX = 140;
+  const baseW = 260;
+  const baseX = 158;
   return (
     <svg viewBox="0 0 280 144" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
       {/* megaphone abstraction at left */}
-      <g stroke={G} strokeWidth="1.2" fill={FILL_G}>
-        <path d="M 30 50 L 60 38 L 60 106 L 30 94 Z" />
-        <rect x="60" y="54" width="20" height="36" rx="2" />
+      <g stroke={G} strokeWidth="1.4" fill={FILL_G}>
+        <path d="M 18 48 L 54 32 L 54 112 L 18 96 Z" />
+        <rect x="54" y="50" width="24" height="44" rx="2" />
       </g>
-      <g stroke={L} strokeWidth="1.5" fill="none">
-        <path d="M 84 60 Q 96 60 96 72 Q 96 84 84 84" />
-        <path d="M 96 50 Q 116 50 116 72 Q 116 94 96 94" opacity="0.6" />
+      <g stroke={L} strokeWidth="1.6" fill="none">
+        <path d="M 82 58 Q 98 58 98 72 Q 98 86 82 86" />
+        <path d="M 98 46 Q 122 46 122 72 Q 122 98 98 98" opacity="0.6" />
       </g>
-      {/* funnel on the right */}
+      {/* funnel, widened and recentred so the top level spans most of the
+          canvas width while staying visually balanced against the
+          megaphone on the left */}
       {Array.from({ length: levels }).map((_, i) => {
-        const w = baseW * (1 - (i * 0.18));
-        const x = baseX - w / 2;
-        const y = 30 + i * 22;
+        const w = baseW * (1 - i * 0.15);
+        const width = w * 0.6;
+        const x = baseX - width / 2;
+        const y = 26 + i * 24;
         return (
           <rect
             key={i}
             x={x}
             y={y}
-            width={w * 0.55}
-            height="14"
+            width={width}
+            height="16"
             rx="1"
             stroke={i === accent ? L : G}
-            strokeWidth="1.2"
+            strokeWidth="1.3"
             fill={i === accent ? FILL_L : "white"}
           />
         );
       })}
       {/* drop accents */}
-      <circle cx={(baseX) + 30 + (seed % 14)} cy="124" r="3" fill={L} />
+      <circle cx={baseX + 40 + (seed % 20)} cy="126" r="3" fill={L} />
     </svg>
   );
 }
@@ -523,8 +531,8 @@ function CrmMotif({ seed }: { seed: number }) {
   const positions = Array.from({ length: userCount }).map((_, i) => {
     const angle = (i / userCount) * Math.PI * 2 - Math.PI / 2;
     return {
-      x: 140 + Math.cos(angle) * 50,
-      y: 72 + Math.sin(angle) * 38,
+      x: 140 + Math.cos(angle) * 112,
+      y: 72 + Math.sin(angle) * 50,
     };
   });
   return (
@@ -900,6 +908,7 @@ const SLUG_TO_MOTIF: Record<string, Motif> = {
   "sharepoint-migration-and-employee-portal-design-global-paints":
     IntranetMotif,
   "sharepoint-intranet-employee-portal-financial-services": IntranetMotif,
+  "global-digital-platform-maritime-services-group": IntranetMotif,
   // ecommerce
   "new-e-commerce-platform-for-automotive-group": EcommerceMotif,
   "automotive-content-ecommerce": EcommerceMotif,
@@ -907,6 +916,7 @@ const SLUG_TO_MOTIF: Record<string, Motif> = {
   "multilingual-seo-and-content-localization": LocalisationMotif,
   "content-and-localization-services-for-national-tourism-portal":
     LocalisationMotif,
+  "content-operations-transformation": LocalisationMotif,
   "multilingual-website-for-hotel-chain": LocalisationMotif,
   "content-localization-15-countrieslanguages": LocalisationMotif,
   "hospitality-tourism-multilingual-website": LocalisationMotif,
@@ -933,6 +943,7 @@ const SLUG_TO_MOTIF: Record<string, Motif> = {
   "digital-b2b-strategy-content-operations": CrmMotif,
   "crm-activation-program": CrmMotif,
   "crm-activation-b2b-sales-teams": CrmMotif,
+  "advertising-sales-platform": CrmMotif,
   // ecm vision
   "future-state-ecm-vision": EcmVisionMotif,
   "ecm-governance-financial-services": EcmVisionMotif,
@@ -953,11 +964,13 @@ const SLUG_TO_MOTIF: Record<string, Motif> = {
   "digital-campaign-management-ngo": MarketingMotif,
   "private-equity-martech-due-diligence": DataOpsMotif,
   "inbound-marketing-thought-leadership-b2b": MarketingMotif,
+  "digital-demand-generation": MarketingMotif,
   // prototype
   "service-prototyping": PrototypeMotif,
   "new-product-concepts": PrototypeMotif,
   // workflow / website-side
   "digital-process-improvements": WorkflowMotif,
+  "digital-sales-journeys": WorkflowMotif,
   "gdpr-compliant-web-analytics-migration": DataOpsMotif,
   "forms-ux-and-workflow-redesign": WorkflowMotif,
   "website-optimization-programme-oil-and-gas-company": WebsiteMotif,

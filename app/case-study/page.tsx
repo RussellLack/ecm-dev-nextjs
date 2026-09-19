@@ -29,6 +29,18 @@ export default async function CaseStudyPage() {
         </div>
       </section>
 
+      {/* About this work */}
+      <section className="py-14 sm:py-16 bg-white border-b border-gray-100">
+        <div className="max-w-3xl mx-auto px-6 text-center">
+          <p className="text-ecm-gray-dark text-base sm:text-lg leading-relaxed mb-4">
+            ECM.DEV is a new vehicle for established expertise. Before establishing ECM.DEV, Russell Lack spent years working across digital platforms, content operations, analytics, international publishing and transformation programmes.
+          </p>
+          <p className="text-ecm-gray-dark text-base sm:text-lg leading-relaxed">
+            The examples below include current and earlier work performed during the last decade. Each example is selected because it shows the scale, complexity and kinds of customer challenges that now shape how ECM.DEV works.
+          </p>
+        </div>
+      </section>
+
       {/* Filter + Grid */}
       <section className="py-20 bg-white">
         <div className="max-w-6xl mx-auto px-6">
