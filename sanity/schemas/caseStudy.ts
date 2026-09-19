@@ -123,6 +123,14 @@ export default defineType({
       ],
     }),
     defineField({
+      name: "attribution",
+      title: "Attribution",
+      description:
+        "For work delivered while employed elsewhere: Russell's role, the employer/team, and a non-endorsement note. Shown in small text at the end of the case study. Leave blank for ECM.DEV's own work.",
+      type: "text",
+      rows: 3,
+    }),
+    defineField({
       name: "image",
       title: "Image",
       type: "image",
