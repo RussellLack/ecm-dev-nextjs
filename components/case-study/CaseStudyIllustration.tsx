@@ -980,6 +980,7 @@ const SLUG_TO_MOTIF: Record<string, Motif> = {
   // broadcast / event
   "conference-webcasting-dubai-energy-conference": BroadcastMotif,
   "conference-webcasting-event-content-production": BroadcastMotif,
+  "webcasting-meftec-2009-bahrain": BroadcastMotif,
 };
 
 // ─── Public component ────────────────────────────────────────────────
