@@ -96,36 +96,6 @@ const fallbackSymptoms = [
   },
 ];
 
-/* Outcome cards. Non-clickable info cards, not links: the approved copy
-   set doesn't give per-card destinations for these four (unlike the
-   3-card version this replaced), so this is content, not navigation. */
-const outcomeCards = [
-  {
-    title: "Better lists",
-    description:
-      "You reach companies that match your ICP and people who can actually act on it, segmented by market, trigger, role and buying context. Less budget spent chasing accounts that were never going to buy.",
-    icon: 1,
-  },
-  {
-    title: "Better journeys",
-    description:
-      "A click lands in a flow rather than on a static page. The prospect answers, scores, qualifies, and gets the next step that fits the answer. Sales arrives at the first conversation already holding context.",
-    icon: 0,
-  },
-  {
-    title: "Better CRM action",
-    description:
-      "Campaign responses stop living in inboxes and spreadsheets. They arrive in the CRM with the fields, owner, task and follow-up logic attached, so what happened and what comes next are recorded rather than remembered.",
-    icon: 2,
-  },
-  {
-    title: "Better AI readiness",
-    description:
-      "AI does not rescue messy content, it inherits it. We structure content, metadata, workflows and the knowledge underneath them so your AI tools can find the right material, trust it and reuse it. Structure is what makes the automation worth running.",
-    icon: 1,
-  },
-];
-
 /* The five things ECM.DEV builds. Non-clickable info cards, same reasoning
    as outcomeCards above: no per-item destinations given in the approved
    copy set. */
@@ -318,13 +288,6 @@ function formatDate(dateString: string): string {
   });
 }
 
-/* Map an outcome-card icon (Sanity string, or legacy number) to a ServiceIcon index. */
-function iconIndex(icon: any): number {
-  if (typeof icon === "number") return icon;
-  const map: Record<string, number> = { technology: 0, services: 1, localization: 2 };
-  return map[icon] ?? 1;
-}
-
 /* Fallback ticker phrases (used when Sanity tickerPhrases is empty). */
 const fallbackTicker = [
   "A Calendly link is not a conversion layer.",
@@ -361,18 +324,14 @@ export default async function HomePage() {
     getFeaturedCaseStudies().catch(() => []),
   ]);
 
-  // Hero, symptoms, and servicesHeading are literal, not Sanity-overridable:
-  // this repositioning brief's copy must render as specified, not be
+  // Hero and symptoms are literal, not Sanity-overridable: this
+  // repositioning brief's copy must render as specified, not be
   // shadowed by pre-rewrite content still sitting in Sanity. Same reasoning
   // as the title/description literals in generateMetadata above.
   const heroHeading = fallbackHero.heading;
   const heroBody = fallbackHero.body;
   const heroSupportingLine = fallbackHero.supportingLine;
   const symptoms = fallbackSymptoms;
-  const servicesHeading = "What changes when the stack is engineered properly.";
-  const servicesSubhead =
-    homePage?.servicesSubhead ||
-    "The same campaign effort produces more pipeline, because fewer prospects leak between touchpoints you have already paid for.";
 
   const learnMoreItems =
     homePage?.learnMoreItems?.length ? homePage.learnMoreItems : fallbackLearnMore;
@@ -390,9 +349,6 @@ export default async function HomePage() {
   const symptomsSubhead =
     homePage?.symptomsSubhead ||
     "Any one of these is worth fixing. More than one means the whole stack needs a look.";
-
-  // Outcome cards
-  const cards = homePage?.outcomeCards?.length ? homePage.outcomeCards : outcomeCards;
 
   // Ticker
   const tickerPhrases = homePage?.tickerPhrases?.length ? homePage.tickerPhrases : fallbackTicker;
@@ -793,54 +749,18 @@ export default async function HomePage() {
         );
       })()}
 
-      {/* ─── OUTCOMES (was Services) ───
-          No top wave divider: the ticker tape immediately above this
-          section uses rgb(49,97,72), the same colour as bg-ecm-green, so
-          the transition into this section is already seamless. */}
-      <section className="relative pt-28 pb-28 bg-ecm-green">
-        <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-ecm-lime font-barlow font-bold text-3xl lg:text-4xl text-center mb-4">
-            {servicesHeading}
-          </h2>
-          {servicesSubhead && (
-            <p className="text-white/85 text-center text-base mb-16 max-w-2xl mx-auto">
-              {servicesSubhead}
-            </p>
-          )}
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-            {cards.map((card: any, i: number) => (
-              <div
-                key={i}
-                className="bg-white/10 backdrop-blur rounded-2xl p-8 text-center border border-white/10"
-              >
-                <div className="w-16 h-16 bg-ecm-lime/20 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <ServiceIcon index={iconIndex(card.icon)} />
-                </div>
-                <h3 className="text-white font-barlow font-bold text-xl mb-4">
-                  {card.title}
-                </h3>
-                <p className="text-white/85 text-sm leading-relaxed">
-                  {card.description}
-                </p>
-              </div>
-            ))}
-          </div>
-          <div className="text-center">
-            <Link
-              href="/assessments"
-              className="inline-block bg-ecm-green-dark text-white font-barlow font-semibold px-10 py-4 rounded-full border-2 border-ecm-lime hover:bg-ecm-lime hover:text-ecm-green transition-colors"
-            >
-              Start with a free assessment
-            </Link>
-          </div>
-        </div>
-        {/* Wave divider: green → white (bottom) */}
-        <div className="wave-divider wave-divider-bottom">
-          <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="#ffffff" />
-          </svg>
-        </div>
-      </section>
+      {/* Wave divider (green → white) bridging the ticker tape into "Why
+          ecm.dev" below, now that the outcome cards section which used to
+          carry this transition has been removed. Rendered in normal flow
+          (not the wave-divider absolute-positioning classes) since the
+          ticker tape above is far too short to contain an absolutely
+          positioned wave without it clipping against the ticker's own
+          overflow:hidden. */}
+      <div className="bg-ecm-green" style={{ lineHeight: 0 }}>
+        <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" style={{ display: "block", width: "100%", height: "auto" }}>
+          <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="#ffffff" />
+        </svg>
+      </div>
 
       {/* ─── WHY ECM.DEV ─── */}
       <section className="py-20 bg-white">
@@ -868,30 +788,5 @@ export default async function HomePage() {
         Assess your content infrastructure · 10 min
       </Link>
     </>
-  );
-}
-
-/* ─── Service Icons ─── */
-function ServiceIcon({ index }: { index: number }) {
-  const cls = "w-8 h-8 text-ecm-lime";
-  // 0 = Technology (monitor + gear), 1 = Services (clipboard + check), 2 = Localization (globe)
-  if (index === 0) {
-    return (
-      <svg className={cls} fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25A2.25 2.25 0 015.25 3h13.5A2.25 2.25 0 0121 5.25z" />
-      </svg>
-    );
-  }
-  if (index === 1) {
-    return (
-      <svg className={cls} fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 010 3.75H5.625a1.875 1.875 0 010-3.75z" />
-      </svg>
-    );
-  }
-  return (
-    <svg className={cls} fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5a17.92 17.92 0 01-8.716-2.247m0 0A8.966 8.966 0 013 12c0-1.264.26-2.466.733-3.559" />
-    </svg>
   );
 }
