@@ -943,7 +943,6 @@ const SLUG_TO_MOTIF: Record<string, Motif> = {
   "customer-platform-prototype": PrototypeMotif,
   "digital-b2b-strategy-global-paints-and-coatings-manufacturer": CrmMotif,
   "digital-services-strategy-global-coatings-company": CrmMotif,
-  "digital-b2b-strategy-content-operations": CrmMotif,
   "crm-activation-program": CrmMotif,
   "crm-activation-b2b-sales-teams": CrmMotif,
   "advertising-sales-platform": CrmMotif,
