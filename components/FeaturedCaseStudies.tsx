@@ -2,18 +2,12 @@ import Link from "next/link";
 import Image from "next/image";
 import CaseStudyIllustration from "@/components/case-study/CaseStudyIllustration";
 import { urlFor } from "@/lib/sanity";
-import { INDUSTRY_OPTIONS } from "@/sanity/schemas/taxonomyOptions";
-
-const INDUSTRY_LABEL: Record<string, string> = Object.fromEntries(
-  INDUSTRY_OPTIONS.map((o) => [o.value, o.title])
-);
 
 interface FeaturedCaseStudy {
   _id?: string;
   title: string;
   slug: { current: string } | string;
   client?: string;
-  industry?: string;
   description?: string;
   image?: any;
   imageWidth?: number;
@@ -58,11 +52,6 @@ export default function FeaturedCaseStudies({
               )}
             </div>
             <div className="p-6 sm:p-8">
-              {cs.industry && (
-                <span className="inline-block bg-white/10 text-ecm-lime/80 text-xs font-barlow font-medium px-3 py-1 rounded-full mb-3">
-                  {INDUSTRY_LABEL[cs.industry] ?? cs.industry}
-                </span>
-              )}
               <h3 className="text-ecm-lime font-barlow font-bold text-xl mb-2 group-hover:text-white transition-colors">
                 {cs.title}
               </h3>

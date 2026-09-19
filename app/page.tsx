@@ -522,57 +522,30 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ─── OUTCOMES (was Services) ─── */}
-      <section className="relative pt-28 pb-28 bg-ecm-green">
-        {/* Wave divider: white → green (top) */}
-        <div className="wave-divider wave-divider-top">
-          <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0,60 C360,0 1080,120 1440,60 L1440,0 L0,0 Z" fill="#ffffff" />
-          </svg>
-        </div>
-        <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-ecm-lime font-barlow font-bold text-3xl lg:text-4xl text-center mb-4">
-            {servicesHeading}
-          </h2>
-          {servicesSubhead && (
-            <p className="text-white/85 text-center text-base mb-16 max-w-2xl mx-auto">
-              {servicesSubhead}
+      {/* ─── FEATURED CASE STUDIES ─── */}
+      {featuredCaseStudies && featuredCaseStudies.length > 0 && (
+        <section className="py-20 bg-white">
+          <div className="max-w-6xl mx-auto px-6">
+            <h2 className="text-ecm-green font-barlow font-bold text-3xl lg:text-4xl text-center mb-4">
+              Featured work.
+            </h2>
+            <p className="text-ecm-gray-dark text-center text-base mb-16 max-w-2xl mx-auto">
+              A closer look at outcomes across content technology, services and localisation.
             </p>
-          )}
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-            {cards.map((card: any, i: number) => (
-              <div
-                key={i}
-                className="bg-white/10 backdrop-blur rounded-2xl p-8 text-center border border-white/10"
+            <div className="mb-12">
+              <FeaturedCaseStudies caseStudies={featuredCaseStudies} />
+            </div>
+            <div className="text-center">
+              <Link
+                href="/case-study"
+                className="inline-block bg-ecm-green text-white font-barlow font-semibold px-8 py-3 rounded-full hover:bg-ecm-green-dark transition-colors"
               >
-                <div className="w-16 h-16 bg-ecm-lime/20 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <ServiceIcon index={iconIndex(card.icon)} />
-                </div>
-                <h3 className="text-white font-barlow font-bold text-xl mb-4">
-                  {card.title}
-                </h3>
-                <p className="text-white/85 text-sm leading-relaxed">
-                  {card.description}
-                </p>
-              </div>
-            ))}
+                See all case studies
+              </Link>
+            </div>
           </div>
-          <div className="text-center">
-            <Link
-              href="/assessments"
-              className="inline-block bg-ecm-green-dark text-white font-barlow font-semibold px-10 py-4 rounded-full border-2 border-ecm-lime hover:bg-ecm-lime hover:text-ecm-green transition-colors"
-            >
-              Start with a free assessment
-            </Link>
-          </div>
-        </div>
-        {/* Wave divider: green → white (bottom) */}
-        <div className="wave-divider wave-divider-bottom">
-          <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="#ffffff" />
-          </svg>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* ─── WHAT WE BUILD ─── */}
       <section className="py-20 bg-white">
@@ -820,30 +793,54 @@ export default async function HomePage() {
         );
       })()}
 
-      {/* ─── FEATURED CASE STUDIES ─── */}
-      {featuredCaseStudies && featuredCaseStudies.length > 0 && (
-        <section className="py-20 bg-white">
-          <div className="max-w-6xl mx-auto px-6">
-            <h2 className="text-ecm-green font-barlow font-bold text-3xl lg:text-4xl text-center mb-4">
-              Featured work.
-            </h2>
-            <p className="text-ecm-gray-dark text-center text-base mb-16 max-w-2xl mx-auto">
-              A closer look at outcomes across content technology, services and localisation.
+      {/* ─── OUTCOMES (was Services) ───
+          No top wave divider: the ticker tape immediately above this
+          section uses rgb(49,97,72), the same colour as bg-ecm-green, so
+          the transition into this section is already seamless. */}
+      <section className="relative pt-28 pb-28 bg-ecm-green">
+        <div className="max-w-6xl mx-auto px-6">
+          <h2 className="text-ecm-lime font-barlow font-bold text-3xl lg:text-4xl text-center mb-4">
+            {servicesHeading}
+          </h2>
+          {servicesSubhead && (
+            <p className="text-white/85 text-center text-base mb-16 max-w-2xl mx-auto">
+              {servicesSubhead}
             </p>
-            <div className="mb-12">
-              <FeaturedCaseStudies caseStudies={featuredCaseStudies} />
-            </div>
-            <div className="text-center">
-              <Link
-                href="/case-study"
-                className="inline-block bg-ecm-green text-white font-barlow font-semibold px-8 py-3 rounded-full hover:bg-ecm-green-dark transition-colors"
+          )}
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+            {cards.map((card: any, i: number) => (
+              <div
+                key={i}
+                className="bg-white/10 backdrop-blur rounded-2xl p-8 text-center border border-white/10"
               >
-                See all case studies
-              </Link>
-            </div>
+                <div className="w-16 h-16 bg-ecm-lime/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <ServiceIcon index={iconIndex(card.icon)} />
+                </div>
+                <h3 className="text-white font-barlow font-bold text-xl mb-4">
+                  {card.title}
+                </h3>
+                <p className="text-white/85 text-sm leading-relaxed">
+                  {card.description}
+                </p>
+              </div>
+            ))}
           </div>
-        </section>
-      )}
+          <div className="text-center">
+            <Link
+              href="/assessments"
+              className="inline-block bg-ecm-green-dark text-white font-barlow font-semibold px-10 py-4 rounded-full border-2 border-ecm-lime hover:bg-ecm-lime hover:text-ecm-green transition-colors"
+            >
+              Start with a free assessment
+            </Link>
+          </div>
+        </div>
+        {/* Wave divider: green → white (bottom) */}
+        <div className="wave-divider wave-divider-bottom">
+          <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="#ffffff" />
+          </svg>
+        </div>
+      </section>
 
       {/* ─── WHY ECM.DEV ─── */}
       <section className="py-20 bg-white">
