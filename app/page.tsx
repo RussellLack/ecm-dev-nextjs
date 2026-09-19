@@ -63,67 +63,44 @@ const fallbackHero = {
     "Outbound, inbound, campaigns and content, connected to the CRM that has to record the result.",
 };
 
-const fallbackSymptoms = [
+/* Merged "six symptoms" + "what we build" into one paired list: each row
+   states the pipeline leak, then the specific thing ECM.DEV builds to close
+   it. Five rows, not six, because the former opens-but-no-replies and
+   landing-page symptoms are the same underlying gap (no structured path
+   from click to meeting) and share one fix (landing flows). Replaces two
+   separate card grids with one causal list, so the page states the problem
+   and the fix as a single claim instead of asking the visitor to connect
+   them across two sections. */
+const pipelineFixes = [
   {
-    title: "Outbound is generating opens but not replies",
+    problem: "Opens don't turn into replies, and clicks don't turn into meetings.",
+    fix: "Landing flows",
     description:
-      "Your subject lines are working. The email itself, or what it points to, is losing people who were already interested. This is a conversion layer problem, not a volume problem.",
+      "Multi-step landing experiences that turn a campaign click into structured intent: message, questions, scoring logic, routing and CRM handoff.",
   },
   {
-    title: "Replies are not converting to booked meetings",
+    problem: "Meetings get booked with people nothing qualified first.",
+    fix: "Interactive qualification tools",
     description:
-      "The gap between a reply and a meeting needs something to bridge it. An interactive tool, a scored assessment, a reason to take the next step that is not just \"get on a call with me.\"",
+      "Assessments, calculators and scorecards that tell a buyer something useful about their own problem while telling you whether they fit.",
   },
   {
-    title: "Meetings are not converting to pipeline",
+    problem: "Your list is leaking budget before any campaign runs.",
+    fix: "Prospect list engines",
     description:
-      "You are booking calls with people who were never going to buy, because nothing in the outbound flow qualified them first. A scored assessment before the meeting fixes this without adding friction.",
+      "Clean, targeted account and contact lists, built with research logic, enrichment, verification and QA. Lists your team can work from without checking them first.",
   },
   {
-    title: "Your landing page is not converting clicks",
+    problem: "Campaign signal dies in an inbox instead of reaching the CRM.",
+    fix: "CRM-connected workflows",
     description:
-      "A static page with a contact form is not a conversion layer. It is where momentum goes to stop. The companies converting cold outbound consistently have something interactive between the email click and the booked meeting.",
+      "Campaign activity wired into HubSpot, Salesforce, Pipedrive and the tools you already run, so nothing waits in an inbox and no signal is lost.",
   },
   {
-    title: "Your prospect list is leaking budget",
+    problem: "Your content isn't doing a job in the pipeline.",
+    fix: "Content and AI operations",
     description:
-      "Bad data, wrong titles, unverified emails, no segmentation by signal or intent. A poorly built list means paying to reach people who will never buy. List build and QA is infrastructure, not admin.",
-  },
-  {
-    title: "Your content is not doing a job in the pipeline",
-    description:
-      "Every asset you produce should be qualifying, educating, or building enough trust to lift reply rates. If it is not doing that, it is overhead. Structured content converts. Unstructured content costs.",
-  },
-];
-
-/* The five things ECM.DEV builds. Non-clickable info cards, same reasoning
-   as outcomeCards above: no per-item destinations given in the approved
-   copy set. */
-const whatWeBuild = [
-  {
-    title: "Prospect list engines",
-    description:
-      "Clean, targeted account and contact lists for a specific ICP, market and offer, built with research logic, enrichment, verification and QA. Not scraped exports and approximate job titles. Lists your team can work from without checking them first.",
-  },
-  {
-    title: "Interactive qualification tools",
-    description:
-      "Assessments, calculators, scorecards and diagnostics that help a buyer understand their own problem while telling you whether they fit. They give the conversation a better reason to continue than an invitation to book a call.",
-  },
-  {
-    title: "Landing flows",
-    description:
-      "Multi-step landing experiences that turn a campaign click into structured intent. We design the message, the questions, the scoring logic, the routing and the CRM handoff. The page does not only explain the offer. It moves the prospect somewhere.",
-  },
-  {
-    title: "CRM-connected workflows",
-    description:
-      "We wire campaign activity into the systems your team already uses: HubSpot, Salesforce, Pipedrive, your email platform, your automation tools, your dashboards. Nothing waits in an inbox, no signal is lost, and the work does not turn manual at the moment the campaign starts working.",
-  },
-  {
-    title: "Content and AI operations",
-    description:
-      "We structure the content underneath the campaigns so people and AI systems can both use it: messaging, proof, FAQs, case studies, sales assets, localised content, metadata and the knowledge you want to reuse. AI-ready content is not a property of the tool. It is work someone has done.",
+      "Messaging, proof, FAQs, case studies and metadata structured so people and AI systems can both use it. AI-ready content is work someone has done, not a property of the tool.",
   },
 ];
 
@@ -325,7 +302,6 @@ export default async function HomePage() {
   const heroHeading = fallbackHero.heading;
   const heroBody = fallbackHero.body;
   const heroSupportingLine = fallbackHero.supportingLine;
-  const symptoms = fallbackSymptoms;
 
   const learnMoreItems =
     homePage?.learnMoreItems?.length ? homePage.learnMoreItems : fallbackLearnMore;
@@ -337,12 +313,13 @@ export default async function HomePage() {
   const heroCtaSecondaryLabel = homePage?.heroCta?.secondaryLabel || "See the work";
   const heroCtaSecondaryUrl = homePage?.heroCta?.secondaryUrl || "/case-study";
 
-  // Symptoms section headings
-  const symptomsHeading =
-    homePage?.symptomsHeading || "Six signs your outbound stack needs engineering.";
-  const symptomsSubhead =
+  // Pipeline-fixes section headings (merged former "six symptoms" +
+  // "what we build" sections into one problem/fix list; see pipelineFixes).
+  const pipelineFixesHeading =
+    homePage?.symptomsHeading || "Where pipeline leaks, and what we build to fix it.";
+  const pipelineFixesSubhead =
     homePage?.symptomsSubhead ||
-    "Any one of these is worth fixing. More than one means the whole stack needs a look.";
+    "Any one of these is worth fixing. Here is exactly what closes each gap.";
 
   // Ticker
   const tickerPhrases = homePage?.tickerPhrases?.length ? homePage.tickerPhrases : fallbackTicker;
@@ -436,38 +413,52 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ─── SIX SYMPTOMS ─── */}
+      {/* ─── PIPELINE FIXES (merged former "six symptoms" + "what we build") ─── */}
       <section className="py-20 bg-white">
-        <div className="max-w-6xl mx-auto px-6">
+        <div className="max-w-4xl mx-auto px-6">
           <h2 className="text-ecm-green font-barlow font-bold text-3xl lg:text-4xl text-center mb-4">
-            {symptomsHeading}
+            {pipelineFixesHeading}
           </h2>
-          {symptomsSubhead && (
-            <p className="text-ecm-gray-dark text-center text-base mb-16 max-w-2xl mx-auto">
-              {symptomsSubhead}
+          {pipelineFixesSubhead && (
+            <p className="text-ecm-gray-dark text-center text-base mb-12 max-w-2xl mx-auto">
+              {pipelineFixesSubhead}
             </p>
           )}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {symptoms.map((symptom: any, i: number) => (
-              <Link
+          <div className="flex flex-col gap-4">
+            {pipelineFixes.map((item, i) => (
+              <div
                 key={i}
-                href="/problems/outbound-conversion"
-                className="block bg-ecm-green rounded-xl p-6 sm:p-8 border border-ecm-lime/20 hover:border-ecm-lime/50 transition-all hover:shadow-lg hover:shadow-ecm-lime/5 group"
+                className="bg-ecm-green rounded-xl p-6 sm:p-8 border border-ecm-lime/20 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-8"
               >
-                <div className="w-10 h-10 bg-ecm-lime rounded-lg flex items-center justify-center mb-4">
-                  <span className="text-ecm-green-dark font-barlow font-bold text-lg">{String(i + 1).padStart(2, '0')}</span>
+                <div className="sm:w-2/5">
+                  <span className="text-white/50 font-barlow font-semibold text-xs uppercase tracking-wide">
+                    The leak
+                  </span>
+                  <p className="text-white/90 text-sm sm:text-base leading-relaxed mt-1">
+                    {item.problem}
+                  </p>
                 </div>
-                <h3 className="text-ecm-lime font-barlow font-semibold text-lg mb-3">
-                  {symptom.title}
-                </h3>
-                <p className="text-white/85 text-sm leading-relaxed">
-                  {symptom.description}
-                </p>
-                <span className="mt-4 inline-flex items-center gap-1 text-ecm-lime/70 font-barlow font-semibold text-xs group-hover:text-ecm-lime transition-colors">
-                  See how we fix it <span aria-hidden="true">&rarr;</span>
-                </span>
-              </Link>
+                <div className="hidden sm:block text-ecm-lime text-xl shrink-0" aria-hidden="true">
+                  &rarr;
+                </div>
+                <div className="sm:w-3/5">
+                  <h3 className="text-ecm-lime font-barlow font-semibold text-base sm:text-lg mb-1">
+                    {item.fix}
+                  </h3>
+                  <p className="text-white/85 text-sm leading-relaxed">
+                    {item.description}
+                  </p>
+                </div>
+              </div>
             ))}
+          </div>
+          <div className="text-center mt-10">
+            <Link
+              href="/problems/outbound-conversion"
+              className="inline-flex items-center gap-1 text-ecm-green font-barlow font-semibold text-sm hover:text-ecm-green-dark transition-colors"
+            >
+              See how we fix it <span aria-hidden="true">&rarr;</span>
+            </Link>
           </div>
         </div>
       </section>
@@ -496,30 +487,6 @@ export default async function HomePage() {
           </div>
         </section>
       )}
-
-      {/* ─── WHAT WE BUILD ─── */}
-      <section className="py-20 bg-white">
-        <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-ecm-green font-barlow font-bold text-3xl lg:text-4xl text-center mb-16">
-            What we build.
-          </h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {whatWeBuild.map((item, i) => (
-              <div
-                key={i}
-                className="bg-ecm-green rounded-xl p-6 sm:p-8 border border-ecm-lime/20"
-              >
-                <h3 className="text-ecm-lime font-barlow font-semibold text-lg mb-3">
-                  {item.title}
-                </h3>
-                <p className="text-white/85 text-sm leading-relaxed">
-                  {item.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* ─── AI CONTENT READINESS AUDIT ─── */}
       <section id="audit-request" className="relative pt-16 pb-16 bg-ecm-green">
