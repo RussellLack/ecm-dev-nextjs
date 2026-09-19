@@ -523,12 +523,16 @@ export default async function HomePage() {
             {auditStrip.differentiatorLine}
           </p>
 
-          <div className="grid lg:grid-cols-5 gap-10 lg:gap-14 items-stretch">
+          <div className="grid lg:grid-cols-5 gap-10 lg:gap-14 items-start">
             {/* Left: what the audit covers, as a compact tag row rather than
-                five full description cards, plus the signup form. Centered
-                vertically so the shorter tag row doesn't leave a dead gap
-                under itself next to the taller signup form. */}
-            <div className="lg:col-span-3 flex flex-col justify-center">
+                five full description cards, plus the signup form. Top-aligned
+                rather than vertically centered: centering relied on the
+                section's green background to make the balancing whitespace
+                read as intentional, which broke under forced-colors mode
+                (backgrounds get stripped, leaving an unexplained blank gap
+                mid-section). Trailing space below the shorter column is a
+                normal, unremarkable pattern in any color scheme. */}
+            <div className="lg:col-span-3">
               <div className="flex flex-wrap gap-2">
                 {auditStrip.coverage.map((item) => (
                   <span
