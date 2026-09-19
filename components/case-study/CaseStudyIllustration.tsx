@@ -932,6 +932,7 @@ const SLUG_TO_MOTIF: Record<string, Motif> = {
   "corporate-website": WebsiteMotif,
   "content-strategy-us-regional-rail-network": ContentStrategyMotif,
   "content-strategy-nordic-esg-consultancy": ContentStrategyMotif,
+  "website-content-production-norvestor-equity": ContentStrategyMotif,
   "corporate-website-nordic-m2m-technology-company": WebsiteMotif,
   "esg-sustainability-content-strategy": ContentStrategyMotif,
   // crm
