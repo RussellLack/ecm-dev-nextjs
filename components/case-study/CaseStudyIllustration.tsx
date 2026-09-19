@@ -932,6 +932,9 @@ const SLUG_TO_MOTIF: Record<string, Motif> = {
   "corporate-website": WebsiteMotif,
   "content-strategy-us-regional-rail-network": ContentStrategyMotif,
   "content-strategy-nordic-esg-consultancy": ContentStrategyMotif,
+  "website-content-production-norvestor-equity": ContentStrategyMotif,
+  "content-strategy-proposal-gyldendal": ContentStrategyMotif,
+  "ioc-youth-olympic-games-injury-prevention-tool": PrototypeMotif,
   "corporate-website-nordic-m2m-technology-company": WebsiteMotif,
   "esg-sustainability-content-strategy": ContentStrategyMotif,
   // crm
@@ -940,7 +943,6 @@ const SLUG_TO_MOTIF: Record<string, Motif> = {
   "customer-platform-prototype": PrototypeMotif,
   "digital-b2b-strategy-global-paints-and-coatings-manufacturer": CrmMotif,
   "digital-services-strategy-global-coatings-company": CrmMotif,
-  "digital-b2b-strategy-content-operations": CrmMotif,
   "crm-activation-program": CrmMotif,
   "crm-activation-b2b-sales-teams": CrmMotif,
   "advertising-sales-platform": CrmMotif,
@@ -977,6 +979,7 @@ const SLUG_TO_MOTIF: Record<string, Motif> = {
   // broadcast / event
   "conference-webcasting-dubai-energy-conference": BroadcastMotif,
   "conference-webcasting-event-content-production": BroadcastMotif,
+  "webcasting-meftec-2009-bahrain": BroadcastMotif,
 };
 
 // ─── Public component ────────────────────────────────────────────────
