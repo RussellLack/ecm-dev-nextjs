@@ -14,8 +14,8 @@ import { useCsrf } from "@/lib/useCsrf";
 import { pushLeadEvent, LEAD_TYPE, TOOL_NAME } from "@/lib/analytics";
 
 const FIELD_CLASS =
-  "w-full bg-transparent border-b border-white/60 text-white py-2 focus:border-ecm-lime outline-none transition-colors";
-const LABEL_CLASS = "block text-white text-sm mb-1";
+  "w-full bg-transparent border-b border-white/60 text-white text-sm py-1.5 focus:border-ecm-lime outline-none transition-colors";
+const LABEL_CLASS = "block text-white/70 text-xs font-barlow font-semibold uppercase tracking-wide mb-1";
 
 export default function AuditRequestForm({
   intro,
@@ -77,8 +77,8 @@ export default function AuditRequestForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <p className="text-white/85 text-sm leading-relaxed">{intro}</p>
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <p className="text-white/70 text-xs leading-relaxed">{intro}</p>
 
       {/* Honeypot, hidden from real users, visible to bots */}
       <div
@@ -98,61 +98,68 @@ export default function AuditRequestForm({
         </label>
       </div>
 
-      <div>
-        <label htmlFor="audit-full-name" className={LABEL_CLASS}>Full name *</label>
-        <input
-          id="audit-full-name"
-          name="fullName"
-          type="text"
-          autoComplete="name"
-          required
-          value={formData.fullName}
-          onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-          className={FIELD_CLASS}
-        />
-      </div>
+      {/* Two fields per row from sm up: halves the field stack's height
+          without cramming labels or inputs. */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-4">
+        <div>
+          <label htmlFor="audit-full-name" className={LABEL_CLASS}>Full name *</label>
+          <input
+            id="audit-full-name"
+            name="fullName"
+            type="text"
+            autoComplete="name"
+            placeholder="Jane Smith"
+            required
+            value={formData.fullName}
+            onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+            className={`${FIELD_CLASS} placeholder:text-white/30`}
+          />
+        </div>
 
-      <div>
-        <label htmlFor="audit-work-email" className={LABEL_CLASS}>Work email *</label>
-        <input
-          id="audit-work-email"
-          name="workEmail"
-          type="email"
-          autoComplete="email"
-          required
-          value={formData.workEmail}
-          onChange={(e) => setFormData({ ...formData, workEmail: e.target.value })}
-          className={FIELD_CLASS}
-        />
-      </div>
+        <div>
+          <label htmlFor="audit-work-email" className={LABEL_CLASS}>Work email *</label>
+          <input
+            id="audit-work-email"
+            name="workEmail"
+            type="email"
+            autoComplete="email"
+            placeholder="jane@company.com"
+            required
+            value={formData.workEmail}
+            onChange={(e) => setFormData({ ...formData, workEmail: e.target.value })}
+            className={`${FIELD_CLASS} placeholder:text-white/30`}
+          />
+        </div>
 
-      <div>
-        <label htmlFor="audit-company" className={LABEL_CLASS}>Company *</label>
-        <input
-          id="audit-company"
-          name="company"
-          type="text"
-          autoComplete="organization"
-          required
-          value={formData.company}
-          onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-          className={FIELD_CLASS}
-        />
-      </div>
+        <div>
+          <label htmlFor="audit-company" className={LABEL_CLASS}>Company *</label>
+          <input
+            id="audit-company"
+            name="company"
+            type="text"
+            autoComplete="organization"
+            required
+            value={formData.company}
+            onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+            className={FIELD_CLASS}
+          />
+        </div>
 
-      <div>
-        <label htmlFor="audit-website-url" className={LABEL_CLASS}>Website URL *</label>
-        <input
-          id="audit-website-url"
-          name="websiteUrl"
-          type="text"
-          inputMode="url"
-          autoComplete="url"
-          required
-          value={formData.websiteUrl}
-          onChange={(e) => setFormData({ ...formData, websiteUrl: e.target.value })}
-          className={FIELD_CLASS}
-        />
+        <div>
+          <label htmlFor="audit-website-url" className={LABEL_CLASS}>Website URL *</label>
+          <input
+            id="audit-website-url"
+            name="websiteUrl"
+            type="text"
+            inputMode="url"
+            autoComplete="url"
+            placeholder="company.com"
+            required
+            value={formData.websiteUrl}
+            onChange={(e) => setFormData({ ...formData, websiteUrl: e.target.value })}
+            className={`${FIELD_CLASS} placeholder:text-white/30`}
+          />
+        </div>
       </div>
 
       <div>
@@ -160,24 +167,24 @@ export default function AuditRequestForm({
         <textarea
           id="audit-notes"
           name="notes"
-          rows={3}
+          rows={2}
           placeholder="e.g. which markets, which CMS, what prompted this"
           value={formData.notes}
           onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-          className={`${FIELD_CLASS} resize-none placeholder:text-white/40`}
+          className={`${FIELD_CLASS} resize-none placeholder:text-white/30`}
         />
       </div>
 
       <button
         type="submit"
         disabled={status === "sending"}
-        className="bg-ecm-lime text-ecm-green font-barlow font-semibold px-10 py-3 rounded-full hover:bg-ecm-lime-hover transition-colors disabled:opacity-50"
+        className="w-full bg-ecm-lime text-ecm-green font-barlow font-semibold py-3 rounded-full hover:bg-ecm-lime-hover transition-colors disabled:opacity-50"
       >
         {status === "sending" ? "Sending..." : submitLabel}
       </button>
 
       {status === "error" && (
-        <p className="text-red-400 text-sm mt-3">Something went wrong. Please try again.</p>
+        <p className="text-red-400 text-sm">Something went wrong. Please try again.</p>
       )}
     </form>
   );

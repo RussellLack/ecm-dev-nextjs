@@ -489,7 +489,12 @@ export default async function HomePage() {
       )}
 
       {/* ─── AI CONTENT READINESS AUDIT ─── */}
-      <section id="audit-request" className="relative pt-16 pb-16 bg-ecm-green">
+      {/* pb-24: the bottom wave divider is absolutely positioned and dips up
+          to ~120px into the section at some points along its width; pb-16
+          wasn't enough clearance and the wave clipped into the form card's
+          bottom edge. Compacting the form (see AuditRequestForm) does most
+          of the work; this is the safety margin on top of that. */}
+      <section id="audit-request" className="relative pt-16 pb-24 bg-ecm-green">
         {/* Wave divider: white → green (top) */}
         <div className="wave-divider wave-divider-top">
           <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
@@ -549,15 +554,15 @@ export default async function HomePage() {
             </div>
 
             {/* Right: signup. The submit button carries the section CTA label. */}
-            <div className="lg:col-span-2 bg-ecm-green-dark/60 backdrop-blur-sm rounded-2xl p-6 sm:p-8 border border-white/10">
-              <div className="mb-6 pb-6 border-b border-white/15">
-                <h3 className="text-ecm-lime font-barlow font-semibold text-lg mb-3">
+            <div className="lg:col-span-2 bg-ecm-green-dark/60 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
+              <div className="mb-4 pb-4 border-b border-white/15">
+                <h3 className="text-ecm-lime font-barlow font-semibold text-base mb-2">
                   {auditOffer.heading}
                 </h3>
-                <p className="text-white/85 text-sm leading-relaxed mb-3">
+                <p className="text-white/85 text-sm leading-relaxed mb-2">
                   {auditOffer.body}
                 </p>
-                <p className="text-white/70 text-sm leading-relaxed">
+                <p className="text-white/70 text-xs leading-relaxed">
                   {auditOffer.caveat}
                 </p>
                 {!auditOfferOpen && (
