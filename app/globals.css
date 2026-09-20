@@ -19,7 +19,10 @@
      text-ecm-lime, text-white/NN) are intentionally NOT theme-aware —
      they're already dark and stay constant brand color in both themes,
      the same way they read as one fixed "accent block" against the page
-     background today. Only the page's own light canvas inverts. */
+     background today. Only the page's own light canvas inverts.
+     These are also the site's fixed default: light, regardless of the
+     visitor's OS/browser preference, until they explicitly choose dark
+     via the theme toggle (see the data-theme="dark" rule below). */
   --color-surface: #ffffff;
   --color-surface-alt: #f9fafb;      /* was bg-gray-50 / bg-gray-100 */
   --color-surface-border: #f3f4f6;   /* was border-gray-100 / border-gray-200 */
@@ -33,7 +36,10 @@
   --color-ink-muted: var(--ecm-gray);
 }
 
-/* Explicit dark choice (data-theme set by the theme toggle / init script). */
+/* Explicit dark choice (data-theme set by the theme toggle / init script).
+   Dark mode is opt-in only — the site no longer follows the OS/browser
+   prefers-color-scheme preference, so a visitor lands on light by default
+   regardless of their system setting. */
 :root[data-theme="dark"] {
   --color-surface: #0f1a14;
   --color-surface-alt: #17251c;
@@ -42,21 +48,6 @@
   --color-heading-dark: var(--ecm-lime-hover);
   --color-ink: #d4d4d8;
   --color-ink-muted: #9a9aa0;
-}
-
-/* No explicit choice stored yet: follow the OS preference, live. Guarded
-   by :not([data-theme="light"]) so an explicit light choice always wins
-   even on a dark-preferring OS. */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --color-surface: #0f1a14;
-    --color-surface-alt: #17251c;
-    --color-surface-border: #26362c;
-    --color-heading: var(--ecm-lime);
-    --color-heading-dark: var(--ecm-lime-hover);
-    --color-ink: #d4d4d8;
-    --color-ink-muted: #9a9aa0;
-  }
 }
 
 html {

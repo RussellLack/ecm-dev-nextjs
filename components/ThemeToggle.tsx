@@ -1,29 +1,23 @@
 "use client";
 
 /**
- * Light / dark / system theme toggle.
+ * Light / dark theme toggle.
  *
- * Cycles light -> dark -> system -> light. "System" removes the explicit
- * data-theme attribute so the CSS `@media (prefers-color-scheme: dark)`
- * rule in globals.css takes over and stays live-reactive to OS changes;
- * "light"/"dark" set data-theme explicitly and persist to localStorage.
- * The no-FOUC init script in app/layout.tsx applies any stored choice
- * before first paint — this component only needs to read it back on
- * mount to show the right icon and to handle clicks after that.
+ * The site defaults to light regardless of OS/browser preference (see
+ * app/globals.css) — dark is opt-in only. Clicking this cycles light <->
+ * dark and persists the choice to localStorage; the no-FOUC init script
+ * in app/layout.tsx applies any stored choice before first paint, so this
+ * component only needs to read it back on mount to show the right icon
+ * and to handle clicks after that.
  */
 
 import { useEffect, useState } from "react";
 
-type ThemeChoice = "light" | "dark" | "system";
+type ThemeChoice = "light" | "dark";
 const STORAGE_KEY = "ecm-theme";
 
 function applyTheme(choice: ThemeChoice) {
-  const root = document.documentElement;
-  if (choice === "system") {
-    root.removeAttribute("data-theme");
-  } else {
-    root.setAttribute("data-theme", choice);
-  }
+  document.documentElement.setAttribute("data-theme", choice);
 }
 
 function SunIcon() {
@@ -53,43 +47,32 @@ function MoonIcon() {
   );
 }
 
-function SystemIcon() {
-  return (
-    <svg className="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <rect x="3" y="4.5" width="18" height="12" rx="1.5" stroke="currentColor" strokeWidth="1.6" />
-      <path d="M8.5 20h7M12 16.5V20" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-    </svg>
-  );
-}
-
 export default function ThemeToggle({ className = "" }: { className?: string }) {
-  const [choice, setChoice] = useState<ThemeChoice>("system");
+  const [choice, setChoice] = useState<ThemeChoice>("light");
 
   useEffect(() => {
-    let stored: ThemeChoice = "system";
+    let stored: ThemeChoice = "light";
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw === "light" || raw === "dark") stored = raw;
     } catch {
-      /* localStorage unavailable (private mode, blocked storage) — fall back to system */
+      /* localStorage unavailable (private mode, blocked storage) — fall back to light */
     }
     setChoice(stored);
   }, []);
 
   const cycle = () => {
-    const next: ThemeChoice = choice === "light" ? "dark" : choice === "dark" ? "system" : "light";
+    const next: ThemeChoice = choice === "light" ? "dark" : "light";
     setChoice(next);
     try {
-      if (next === "system") localStorage.removeItem(STORAGE_KEY);
-      else localStorage.setItem(STORAGE_KEY, next);
+      localStorage.setItem(STORAGE_KEY, next);
     } catch {
       /* persistence is a convenience, not a requirement — theme still applies this session */
     }
     applyTheme(next);
   };
 
-  const label =
-    choice === "light" ? "Light theme" : choice === "dark" ? "Dark theme" : "System theme";
+  const label = choice === "light" ? "Light theme" : "Dark theme";
 
   return (
     <button
@@ -99,9 +82,7 @@ export default function ThemeToggle({ className = "" }: { className?: string }) 
       title={`Theme: ${label} — click to change`}
       className={`inline-flex items-center justify-center w-9 h-9 rounded-full text-ecm-lime hover:bg-white/10 transition-colors ${className}`}
     >
-      {choice === "light" && <SunIcon />}
-      {choice === "dark" && <MoonIcon />}
-      {choice === "system" && <SystemIcon />}
+      {choice === "light" ? <SunIcon /> : <MoonIcon />}
     </button>
   );
 }

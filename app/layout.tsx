@@ -76,10 +76,10 @@ const STORAGE_KEY = "ecm-cookie-consent";
 const THEME_STORAGE_KEY = "ecm-theme";
 
 /**
- * Applies a stored light/dark choice before first paint, so there's no
- * flash of the wrong theme. No stored choice (or "system") leaves
- * data-theme unset, and the CSS prefers-color-scheme rule in globals.css
- * takes over — see components/ThemeToggle.tsx for the write side.
+ * Applies a stored dark choice before first paint, so there's no flash of
+ * the wrong theme. No stored choice leaves data-theme unset, which is
+ * light — the site's fixed default regardless of OS preference — see
+ * components/ThemeToggle.tsx for the write side.
  */
 const themeInitScript = `
 (function() {
