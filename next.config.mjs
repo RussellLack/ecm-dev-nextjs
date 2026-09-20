@@ -23,6 +23,25 @@ const nextConfig = {
     async redirects() {
           return [
             {
+                      // The Content Operations pillar page moved off its old
+                      // /content-services URL so the route matches the label
+                      // used everywhere else on the site (nav, footer, case
+                      // studies): see docs/SERVICE-CLARITY-AUDIT-2026-09-20.md.
+                      source: "/content-services",
+                      destination: "/content-operations",
+                      permanent: true,
+            },
+            {
+                      // The outbound-stack "Build" page (prospect lists, landing
+                      // flows, CRM workflows) is retired: the business now runs
+                      // on the three-pillar content infrastructure model, not a
+                      // GTM-tooling offer. Not linked from any internal nav, so
+                      // this only catches direct/external links.
+                      source: "/build",
+                      destination: "/",
+                      permanent: true,
+            },
+            {
                       source: "/case-study/crm-activation-program",
                       destination: "/case-study/advertising-sales-platform",
                       permanent: true,

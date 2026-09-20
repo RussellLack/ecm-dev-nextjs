@@ -18,7 +18,7 @@ export async function generateMetadata(): Promise<Metadata> {
     fallbackTitle: "Content Operations",
     fallbackDescription:
       "Governance, ownership, workflow, and lifecycle — run as a standing function, not a one-off report that goes stale in a month.",
-    canonical: "/content-services",
+    canonical: "/content-operations",
   });
 }
 
@@ -56,7 +56,7 @@ export default async function ContentOperationsPage() {
         data={serviceSchema({
           name: "Content Operations",
           description: data.heroDescription,
-          path: "/content-services",
+          path: "/content-operations",
           serviceType: "Content Operations",
         })}
       />

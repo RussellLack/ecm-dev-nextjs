@@ -25,7 +25,7 @@ const solutions = [
 const services = [
   {
     name: "Content Operations",
-    href: "/content-services",
+    href: "/content-operations",
     blurb: "Content that has an owner, a workflow, and someone accountable for keeping it that way.",
   },
   {
@@ -68,7 +68,7 @@ const insightsMore = [
 const mobileMenus = [
   { name: "Solutions", href: "/solutions", children: [{ name: "Start with a problem", href: "/problems", heading: true }, ...problems, { name: "Explore by outcome", href: "/solutions", heading: true }, ...solutions] },
   { name: "Insights", href: "/briefings", children: [...briefings, ...insightsMore] },
-  { name: "Services", href: "/content-services", children: services },
+  { name: "Services", href: "/content-operations", children: services },
 ];
 
 /* ── Shared styles ─────────────────────────────────────────── */
@@ -152,7 +152,7 @@ export default function Header() {
               </div>
               {/* Services callout */}
               <Link
-                href="/content-services"
+                href="/content-operations"
                 className="flex items-center justify-between gap-4 border-t border-white/10 px-7 py-4 rounded-b-xl hover:bg-ecm-green transition-colors group/callout"
               >
                 <span className="text-white/90 text-sm font-barlow">

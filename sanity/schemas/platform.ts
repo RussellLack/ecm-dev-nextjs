@@ -74,7 +74,7 @@ export default defineType({
       name: "pillars",
       title: "Service pillars",
       description:
-        "Which service pillar(s) this platform falls under. Drives cross-linking from /content-technology, /content-services, /content-localization.",
+        "Which service pillar(s) this platform falls under. Drives cross-linking from /content-technology, /content-operations, /content-localization.",
       type: "array",
       of: [{ type: "string" }],
       options: { list: [...PILLAR_OPTIONS] },

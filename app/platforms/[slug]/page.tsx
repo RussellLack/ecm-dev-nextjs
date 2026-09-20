@@ -25,7 +25,7 @@ export const revalidate = 3600;
 
 const PILLAR_HREF: Record<string, string> = {
   technology: "/content-technology",
-  services: "/content-services",
+  services: "/content-operations",
   localization: "/content-localization",
 };
 
