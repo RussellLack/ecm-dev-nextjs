@@ -27,7 +27,6 @@ export async function getHomePage() {
     "services": *[_type == "service"] | order(order asc){
       title, slug, category, summary
     },
-    learnMoreItems[]{title, subtitle},
     testimonials[]{name, role, quote, commentary},
     ctaHeading,
     ctaSubheading,

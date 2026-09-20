@@ -5,9 +5,22 @@ import { buildPillarMetadata } from "@/lib/pillarMetadata";
 import ServicePage from "@/components/ServicePage";
 import PillarClusters from "@/components/PillarClusters";
 import ContentAuditTiers from "@/components/ContentAuditTiers";
+import LearnMoreSection from "@/components/LearnMoreSection";
 import JsonLd from "@/components/JsonLd";
 import { serviceSchema } from "@/lib/structuredData";
 import type { ServicePageData } from "@/lib/serviceTypes";
+import { topicSlides } from "@/lib/learnMoreSlides";
+
+// Moved here from the homepage (see docs/SERVICE-CLARITY-AUDIT-2026-09-20.md):
+// every deck is now a Content Operations deep dive, so this is where they
+// belong, read before the pricing ask below rather than as generic homepage
+// filler. Cards are derived directly from topicSlides, the same source the
+// modal reads from, so there is no second title list that can drift out of
+// sync with it (that drift broke the homepage cards once already).
+const learnMoreItems = topicSlides.map((t) => ({
+  title: t.title,
+  subtitle: t.subtitle,
+}));
 
 export const revalidate = 3600;
 
@@ -61,6 +74,19 @@ export default async function ContentOperationsPage() {
         })}
       />
       <ServicePage data={data} />
+
+      <section className="relative py-20 bg-surface-alt">
+        <div className="max-w-6xl mx-auto px-6">
+          <h2 className="text-heading font-barlow font-bold text-3xl lg:text-4xl text-center mb-4">
+            Go deeper on Content Operations
+          </h2>
+          <p className="text-ink text-center text-base mb-16 max-w-2xl mx-auto">
+            Ten short explainers on governance, workflow, and how a diagnostic turns into an ongoing managed package, before you look at pricing.
+          </p>
+          <LearnMoreSection items={learnMoreItems} />
+        </div>
+      </section>
+
       <ContentAuditTiers />
       <PillarClusters pillar="services" />
     </>

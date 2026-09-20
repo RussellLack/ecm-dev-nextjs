@@ -3,7 +3,6 @@ import Link from "next/link";
 import Image from "next/image";
 import ContactForm from "@/components/ContactForm";
 import AuditRequestForm from "@/components/AuditRequestForm";
-import LearnMoreSection from "@/components/LearnMoreSection";
 import LavaBlobs from "@/components/LavaBlobs";
 import PostIllustration from "@/components/post/PostIllustration";
 import FeaturedCaseStudies from "@/components/FeaturedCaseStudies";
@@ -217,23 +216,6 @@ const whyEcmDev = {
     "ECM.DEV is the practice for organisations that need their content to hold up under AI, not just look right to a person scrolling past it.",
 };
 
-// Titles and subtitles here must match lib/learnMoreSlides.ts exactly
-// (LearnMoreSection matches a clicked card to its slide deck by title, case
-// insensitive) — if the Sanity homePage document has its own learnMoreItems,
-// those need the same titles or their cards won't open either.
-const fallbackLearnMore = [
-  { title: "Content Governance: Who Actually Owns What", subtitle: "Decision rights, not a style guide" },
-  { title: "Content Debt: What Accumulates When Nobody's Accountable", subtitle: "Like technical debt, but for content" },
-  { title: "The Content Lifecycle, End to End", subtitle: "Publishing is the midpoint, not the finish line" },
-  { title: "Workflow Redesign: Where Content Actually Gets Stuck", subtitle: "It's rarely the writing that's slow" },
-  { title: "Measurement That Connects to Outcomes", subtitle: "Not vanity metrics with a dashboard around them" },
-  { title: "The Content Efficiency Playbook", subtitle: "Reduce production time without losing quality" },
-  { title: "Content Governance for Regulated Content", subtitle: "The same discipline, higher stakes" },
-  { title: "The Seam Between Content Operations and Content Technology", subtitle: "Two pillars, one failure mode" },
-  { title: "AI Readiness Starts With Governance, Not Tools", subtitle: "The instinct is to buy something. That's rarely the fix." },
-  { title: "From Diagnostic to Managed Package", subtitle: "How a bounded finding becomes an ongoing service" },
-];
-
 const fallbackBlogPosts = [
   { title: "Kentico CMS Cadence Cuts Migration Risk", date: "Sep 16, 2025", slug: "kentico-cadence-cuts-migration-risk" },
   { title: "Agentic CX: From Journeys to Agents", date: "Sep 15, 2025", slug: "agentic-cx-from-journeys-to-agents" },
@@ -291,9 +273,6 @@ export default async function HomePage() {
   const heroHeading = fallbackHero.heading;
   const heroBody = fallbackHero.body;
   const heroSupportingLine = fallbackHero.supportingLine;
-
-  const learnMoreItems =
-    homePage?.learnMoreItems?.length ? homePage.learnMoreItems : fallbackLearnMore;
 
   // Hero buttons
   const heroCtaPrimaryLabel = homePage?.heroCta?.primaryLabel || "Start with the free assessment";
@@ -659,16 +638,6 @@ export default async function HomePage() {
               READ MORE
             </Link>
           </div>
-        </div>
-      </section>
-
-      {/* ─── LEARN MORE ─── */}
-      <section className="relative py-20 bg-surface-alt">
-        <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-heading font-barlow font-bold text-3xl lg:text-4xl text-center mb-16">
-            LEARN MORE
-          </h2>
-          <LearnMoreSection items={learnMoreItems} />
         </div>
       </section>
 
