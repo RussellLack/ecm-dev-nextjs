@@ -9,7 +9,7 @@ import RelatedContent from "@/components/RelatedContent";
 import MixedRelated from "@/components/MixedRelated";
 import CaseStudyIllustration from "@/components/case-study/CaseStudyIllustration";
 import JsonLd from "@/components/JsonLd";
-import { TagChip } from "@/components/TagChip";
+import { TagChip, PillarTags } from "@/components/TagChip";
 import { internalLinkHref } from "@/lib/internalLink";
 import { caseStudySchema } from "@/lib/structuredData";
 import { INDUSTRY_OPTIONS } from "@/sanity/schemas/taxonomyOptions";
@@ -193,12 +193,12 @@ export default async function CaseStudyDetailPage({
             All Projects
           </Link>
 
-          {/* Tags */}
-          {cs.tags && cs.tags.length > 0 && (
+          {/* Pillars — only the 3-pillar taxonomy shows here, matching the
+              cards. Free-text article tags are shown at the bottom of the
+              article body instead, see below. */}
+          {cs.pillars && cs.pillars.length > 0 && (
             <div className="flex flex-wrap gap-2 mb-6">
-              {cs.tags.map((tag: string) => (
-                <TagChip key={tag} tag={tag} />
-              ))}
+              <PillarTags pillars={cs.pillars} />
             </div>
           )}
 
@@ -309,6 +309,22 @@ export default async function CaseStudyDetailPage({
                     {cs.attribution}
                   </p>
                 )}
+
+                {/* Article tags — the free-text topic/technique tags live
+                    here, at the foot of the article, not on cards or in the
+                    hero, which show only the 3-pillar taxonomy. */}
+                {cs.tags && cs.tags.length > 0 && (
+                  <div className="mt-10 pt-6 border-t border-gray-100 not-prose">
+                    <p className="text-ecm-gray text-xs uppercase tracking-wider mb-2">
+                      Topics
+                    </p>
+                    <div className="flex flex-wrap gap-1.5">
+                      {cs.tags.map((tag: string) => (
+                        <TagChip key={tag} tag={tag} />
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -344,15 +360,13 @@ export default async function CaseStudyDetailPage({
                   </div>
                 )}
 
-                {cs.tags && cs.tags.length > 0 && (
+                {cs.pillars && cs.pillars.length > 0 && (
                   <div className="mb-6">
                     <p className="text-ink-muted text-xs uppercase tracking-wider mb-2">
                       Services
                     </p>
                     <div className="flex flex-wrap gap-1.5">
-                      {cs.tags.map((tag: string) => (
-                        <TagChip key={tag} tag={tag} />
-                      ))}
+                      <PillarTags pillars={cs.pillars} />
                     </div>
                   </div>
                 )}

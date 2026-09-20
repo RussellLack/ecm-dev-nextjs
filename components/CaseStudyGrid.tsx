@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { TagChip, PILLAR_TAG_COLORS } from "@/components/TagChip";
+import { PillarTags, PILLAR_TAG_COLORS } from "@/components/TagChip";
 import { INDUSTRY_OPTIONS } from "@/sanity/schemas/taxonomyOptions";
 
 // Cards never show the real client name (anonymised by design), the
@@ -93,9 +93,7 @@ export default function CaseStudyGrid({
             className="block bg-ecm-green rounded-2xl p-8 hover:shadow-lg hover:shadow-ecm-lime/5 transition-all border border-ecm-lime/15 hover:border-ecm-lime/40 group"
           >
             <div className="flex flex-wrap gap-2 mb-4">
-              {cs.tags?.map((tag: string) => (
-                <TagChip key={tag} tag={tag} />
-              ))}
+              <PillarTags pillars={cs.pillars} />
             </div>
             <h3 className="text-ecm-lime font-barlow font-bold text-xl mb-2 group-hover:text-white transition-colors">
               {cs.title}
