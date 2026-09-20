@@ -31,13 +31,13 @@ export default function ServicePageLayout({
         {/* Wave divider: green → white */}
         <div className="wave-divider wave-divider-bottom">
           <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="#ffffff" />
+            <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="var(--color-surface)" />
           </svg>
         </div>
       </section>
 
       {/* Packages Grid */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-surface">
         <div className="max-w-6xl mx-auto px-6">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {packages.map((pkg, i) => (
@@ -66,7 +66,7 @@ export default function ServicePageLayout({
         {/* Wave divider: white → green */}
         <div className="wave-divider wave-divider-top">
           <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0,60 C360,0 1080,120 1440,60 L1440,0 L0,0 Z" fill="#ffffff" />
+            <path d="M0,60 C360,0 1080,120 1440,60 L1440,0 L0,0 Z" fill="var(--color-surface)" />
           </svg>
         </div>
         <div className="max-w-4xl mx-auto px-6">

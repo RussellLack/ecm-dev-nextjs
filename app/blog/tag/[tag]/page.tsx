@@ -94,15 +94,15 @@ export default async function BlogTagPage({
         </div>
         <div className="wave-divider wave-divider-bottom">
           <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="#ffffff" />
+            <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="var(--color-surface)" />
           </svg>
         </div>
       </section>
 
-      <section className="py-12 bg-white">
+      <section className="py-12 bg-surface">
         <div className="max-w-5xl mx-auto px-6">
           {posts.length === 0 ? (
-            <p className="text-ecm-gray text-center py-16 font-barlow">
+            <p className="text-ink-muted text-center py-16 font-barlow">
               No articles found for this tag.
             </p>
           ) : (
@@ -111,20 +111,20 @@ export default async function BlogTagPage({
                 <Link
                   key={post._id}
                   href={`/post/${post.slug?.current}`}
-                  className="bg-white rounded-xl overflow-hidden hover:shadow-lg transition-shadow group border border-gray-100 flex flex-col"
+                  className="bg-surface rounded-xl overflow-hidden hover:shadow-lg transition-shadow group border border-surface-border flex flex-col"
                 >
-                  <div className="h-36 overflow-hidden bg-ecm-green/5 flex items-center justify-center border-b border-gray-100">
+                  <div className="h-36 overflow-hidden bg-ecm-green/5 flex items-center justify-center border-b border-surface-border">
                     <PostIllustration
                       slug={post.slug?.current}
                       mainImage={post.mainImage}
                     />
                   </div>
-                  <div className="p-4 flex flex-col flex-1 bg-gray-50">
-                    <h2 className="text-ecm-green font-barlow font-semibold text-sm mb-2 group-hover:text-ecm-green-dark transition-colors leading-snug">
+                  <div className="p-4 flex flex-col flex-1 bg-surface-alt">
+                    <h2 className="text-heading font-barlow font-semibold text-sm mb-2 group-hover:text-heading-dark transition-colors leading-snug">
                       {post.title}
                     </h2>
                     {post.publishedAt && (
-                      <p className="text-ecm-gray text-xs mb-3">
+                      <p className="text-ink-muted text-xs mb-3">
                         {new Date(post.publishedAt).toLocaleDateString("en-GB", {
                           year: "numeric",
                           month: "long",
@@ -132,14 +132,14 @@ export default async function BlogTagPage({
                       </p>
                     )}
                     {post.tags && post.tags.length > 0 && (
-                      <div className="flex flex-wrap gap-1 mt-auto pt-3 border-t border-gray-100">
+                      <div className="flex flex-wrap gap-1 mt-auto pt-3 border-t border-surface-border">
                         {post.tags.slice(0, 3).map((t) => (
                           <span
                             key={t}
                             className={`inline-block border text-[10px] font-barlow font-semibold px-2 py-0.5 rounded-full ${
                               t === tag
                                 ? "bg-ecm-green text-white border-ecm-green"
-                                : "border-ecm-green/25 text-ecm-green"
+                                : "border-heading/25 text-heading"
                             }`}
                           >
                             {t}

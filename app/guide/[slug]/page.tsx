@@ -74,16 +74,16 @@ function guideOgFallbackUrl(guide: {
 const ptComponents = {
   block: {
     h2: ({ children }: any) => (
-      <h2 className="text-ecm-green font-barlow font-bold text-2xl mt-10 mb-4">{children}</h2>
+      <h2 className="text-heading font-barlow font-bold text-2xl mt-10 mb-4">{children}</h2>
     ),
     h3: ({ children }: any) => (
-      <h3 className="text-ecm-green font-barlow font-semibold text-xl mt-8 mb-3">{children}</h3>
+      <h3 className="text-heading font-barlow font-semibold text-xl mt-8 mb-3">{children}</h3>
     ),
     normal: ({ children }: any) => (
-      <p className="text-ecm-gray-dark leading-relaxed mb-4">{children}</p>
+      <p className="text-ink leading-relaxed mb-4">{children}</p>
     ),
     blockquote: ({ children }: any) => (
-      <blockquote className="border-l-4 border-ecm-lime pl-6 my-6 italic text-ecm-gray">
+      <blockquote className="border-l-4 border-ecm-lime pl-6 my-6 italic text-ink-muted">
         {children}
       </blockquote>
     ),
@@ -91,7 +91,7 @@ const ptComponents = {
   marks: {
     link: ({ children, value }: any) => (
       <a href={value?.href} target="_blank" rel="noopener noreferrer"
-        className="text-ecm-green underline hover:text-ecm-lime transition-colors">
+        className="text-heading underline hover:text-ecm-lime transition-colors">
         {children}
       </a>
     ),
@@ -101,22 +101,22 @@ const ptComponents = {
       return (
         <Link
           href={href}
-          className="text-ecm-green underline hover:text-ecm-lime transition-colors"
+          className="text-heading underline hover:text-ecm-lime transition-colors"
         >
           {children}
         </Link>
       );
     },
     strong: ({ children }: any) => (
-      <strong className="font-semibold text-ecm-green-dark">{children}</strong>
+      <strong className="font-semibold text-heading-dark">{children}</strong>
     ),
   },
   list: {
     bullet: ({ children }: any) => (
-      <ul className="list-disc pl-6 mb-4 space-y-2 text-ecm-gray-dark">{children}</ul>
+      <ul className="list-disc pl-6 mb-4 space-y-2 text-ink">{children}</ul>
     ),
     number: ({ children }: any) => (
-      <ol className="list-decimal pl-6 mb-4 space-y-2 text-ecm-gray-dark">{children}</ol>
+      <ol className="list-decimal pl-6 mb-4 space-y-2 text-ink">{children}</ol>
     ),
   },
 };
@@ -212,7 +212,7 @@ export default async function GuidePage({
           {guide.body ? (
             <PortableText value={guide.body} components={ptComponents} />
           ) : (
-            <p className="text-ecm-gray text-center italic">Full guide content coming soon.</p>
+            <p className="text-ink-muted text-center italic">Full guide content coming soon.</p>
           )}
         </div>
       </article>
@@ -221,8 +221,8 @@ export default async function GuidePage({
       {guide.tags?.length > 0 && (
         <section className="pb-10">
           <div className="max-w-3xl mx-auto px-6">
-            <div className="border-t border-gray-100 pt-8">
-              <p className="text-ecm-gray text-xs font-barlow font-semibold uppercase tracking-widest mb-3">
+            <div className="border-t border-surface-border pt-8">
+              <p className="text-ink-muted text-xs font-barlow font-semibold uppercase tracking-widest mb-3">
                 Filed under
               </p>
               <div className="flex flex-wrap gap-2">
@@ -230,7 +230,7 @@ export default async function GuidePage({
                   <Link
                     key={tag}
                     href={`/guides/tag/${tagToSlug(tag)}`}
-                    className="inline-block border border-ecm-green/30 text-ecm-green text-xs font-barlow font-semibold px-4 py-1.5 rounded-full hover:bg-ecm-green hover:text-white transition-colors"
+                    className="inline-block border border-heading/30 text-heading text-xs font-barlow font-semibold px-4 py-1.5 rounded-full hover:bg-ecm-green hover:text-white transition-colors"
                   >
                     {tag}
                   </Link>
@@ -246,14 +246,14 @@ export default async function GuidePage({
       {seriesSiblings.length > 0 && (
         <section className="pb-10">
           <div className="max-w-3xl mx-auto px-6">
-            <div className="border-t border-gray-100 pt-8">
+            <div className="border-t border-surface-border pt-8">
               <div className="flex items-baseline justify-between gap-4 mb-5">
-                <p className="text-ecm-gray text-xs font-barlow font-semibold uppercase tracking-widest">
+                <p className="text-ink-muted text-xs font-barlow font-semibold uppercase tracking-widest">
                   More from {guide.series}
                 </p>
                 <Link
                   href={seriesHref}
-                  className="text-ecm-green text-xs font-barlow font-semibold hover:text-ecm-green-dark whitespace-nowrap"
+                  className="text-heading text-xs font-barlow font-semibold hover:text-heading-dark whitespace-nowrap"
                 >
                   View series →
                 </Link>
@@ -263,19 +263,19 @@ export default async function GuidePage({
                   <Link
                     key={sib._id}
                     href={`/guide/${sib.slug?.current}`}
-                    className="group flex gap-4 p-4 rounded-xl border border-gray-100 hover:border-ecm-green/20 hover:shadow-md transition-all bg-white"
+                    className="group flex gap-4 p-4 rounded-xl border border-surface-border hover:border-heading/20 hover:shadow-md transition-all bg-surface"
                   >
                     <div className="flex-shrink-0 w-10 h-10 rounded-full bg-ecm-green/8 flex items-center justify-center">
-                      <span className="text-ecm-green font-barlow font-bold text-xs">
+                      <span className="text-heading font-barlow font-bold text-xs">
                         {String(sib.guideNumber ?? "").padStart(2, "0")}
                       </span>
                     </div>
                     <div className="min-w-0">
-                      <p className="text-ecm-green font-barlow font-semibold text-sm leading-snug group-hover:text-ecm-green-dark transition-colors line-clamp-2">
+                      <p className="text-heading font-barlow font-semibold text-sm leading-snug group-hover:text-heading-dark transition-colors line-clamp-2">
                         {sib.title}
                       </p>
                       {sib.subtitle && (
-                        <p className="text-ecm-gray text-xs italic mt-0.5 line-clamp-1">
+                        <p className="text-ink-muted text-xs italic mt-0.5 line-clamp-1">
                           {sib.subtitle}
                         </p>
                       )}
@@ -292,8 +292,8 @@ export default async function GuidePage({
       {guide.relatedGuides?.length > 0 && (
         <section className="pb-10">
           <div className="max-w-3xl mx-auto px-6">
-            <div className="border-t border-gray-100 pt-8">
-              <p className="text-ecm-gray text-xs font-barlow font-semibold uppercase tracking-widest mb-5">
+            <div className="border-t border-surface-border pt-8">
+              <p className="text-ink-muted text-xs font-barlow font-semibold uppercase tracking-widest mb-5">
                 Related Guides
               </p>
               <div className="grid sm:grid-cols-2 gap-4">
@@ -301,11 +301,11 @@ export default async function GuidePage({
                   <Link
                     key={related._id}
                     href={`/guide/${related.slug?.current}`}
-                    className="group flex gap-4 p-4 rounded-xl border border-gray-100 hover:border-ecm-green/20 hover:shadow-md transition-all bg-white"
+                    className="group flex gap-4 p-4 rounded-xl border border-surface-border hover:border-heading/20 hover:shadow-md transition-all bg-surface"
                   >
                     {/* Guide number badge */}
                     <div className="flex-shrink-0 w-10 h-10 rounded-full bg-ecm-green/8 flex items-center justify-center">
-                      <span className="text-ecm-green font-barlow font-bold text-xs">
+                      <span className="text-heading font-barlow font-bold text-xs">
                         {String(related.guideNumber ?? "").padStart(2, "0")}
                       </span>
                     </div>
@@ -313,11 +313,11 @@ export default async function GuidePage({
                       <p className="text-[10px] font-barlow font-semibold uppercase tracking-widest text-ecm-lime-hover mb-0.5">
                         {related.series}
                       </p>
-                      <p className="text-ecm-green font-barlow font-semibold text-sm leading-snug group-hover:text-ecm-green-dark transition-colors line-clamp-2">
+                      <p className="text-heading font-barlow font-semibold text-sm leading-snug group-hover:text-heading-dark transition-colors line-clamp-2">
                         {related.title}
                       </p>
                       {related.subtitle && (
-                        <p className="text-ecm-gray text-xs italic mt-0.5 line-clamp-1">
+                        <p className="text-ink-muted text-xs italic mt-0.5 line-clamp-1">
                           {related.subtitle}
                         </p>
                       )}

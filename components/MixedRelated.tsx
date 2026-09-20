@@ -149,8 +149,8 @@ export default async function MixedRelated({
   return (
     <section className="pb-16">
       <div className="max-w-5xl mx-auto px-6">
-        <div className="border-t border-gray-100 pt-10">
-          <p className="text-ecm-gray text-xs font-barlow font-semibold uppercase tracking-widest mb-5">
+        <div className="border-t border-surface-border pt-10">
+          <p className="text-ink-muted text-xs font-barlow font-semibold uppercase tracking-widest mb-5">
             Continue exploring
           </p>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -158,7 +158,7 @@ export default async function MixedRelated({
               <Link
                 key={item.href}
                 href={item.href}
-                className="group bg-white rounded-xl border border-gray-100 hover:border-ecm-green/20 hover:shadow-md transition-all overflow-hidden flex flex-col"
+                className="group bg-surface rounded-xl border border-surface-border hover:border-heading/20 hover:shadow-md transition-all overflow-hidden flex flex-col"
               >
                 {/* image wins when present (kept for guides which still
                     prefer editor mainImage); else fallback (always set on
@@ -180,7 +180,7 @@ export default async function MixedRelated({
                   </div>
                 ) : (
                   <div className="h-28 bg-ecm-green/5 flex items-center justify-center">
-                    <span className="text-ecm-green/30 text-[10px] font-barlow font-semibold tracking-widest uppercase">
+                    <span className="text-heading/30 text-[10px] font-barlow font-semibold tracking-widest uppercase">
                       {EYEBROW[item.doctype]}
                     </span>
                   </div>
@@ -189,11 +189,11 @@ export default async function MixedRelated({
                   <p className="text-[10px] font-barlow font-semibold uppercase tracking-widest text-ecm-lime-hover mb-1">
                     {item.eyebrow}
                   </p>
-                  <h3 className="text-ecm-green font-barlow font-semibold text-sm leading-snug mb-2 group-hover:text-ecm-green-dark line-clamp-2">
+                  <h3 className="text-heading font-barlow font-semibold text-sm leading-snug mb-2 group-hover:text-heading-dark line-clamp-2">
                     {item.title}
                   </h3>
                   {item.blurb && (
-                    <p className="text-ecm-gray text-xs leading-relaxed line-clamp-3">
+                    <p className="text-ink-muted text-xs leading-relaxed line-clamp-3">
                       {item.blurb}
                     </p>
                   )}

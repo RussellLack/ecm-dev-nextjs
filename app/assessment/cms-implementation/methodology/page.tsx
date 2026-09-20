@@ -42,7 +42,7 @@ export default function MethodologyPage() {
       </section>
 
       {/* Body */}
-      <article className="bg-white py-14">
+      <article className="bg-surface py-14">
         <div className="mx-auto max-w-3xl px-6">
           <Heading2>1. Headless CMS — annual licence</Heading2>
           <P>
@@ -168,12 +168,12 @@ export default function MethodologyPage() {
           <P>
             The full benchmark research with 40+ source citations lives in the
             project repo at{" "}
-            <code className="rounded bg-gray-100 px-1.5 py-0.5 text-[12px]">
+            <code className="rounded bg-surface-alt px-1.5 py-0.5 text-[12px]">
               docs/CMS-IMPLEMENTATION-BENCHMARKS.md
             </code>
             . Key analyst sources include:
           </P>
-          <ul className="mb-6 space-y-1.5 pl-6 font-barlow text-sm text-ecm-gray-dark">
+          <ul className="mb-6 space-y-1.5 pl-6 font-barlow text-sm text-ink">
             <li>
               • <Ext href="https://realstorygroup.com/Blog/cms-implementation-cost-curve">Real Story Group — CMS Implementation Cost Curve</Ext>
             </li>
@@ -201,13 +201,13 @@ export default function MethodologyPage() {
           <P>
             Coefficients are refreshed quarterly. The model version is shown in
             the result header — when you see{" "}
-            <code className="rounded bg-gray-100 px-1.5 py-0.5 text-[12px]">v0.1</code>,
+            <code className="rounded bg-surface-alt px-1.5 py-0.5 text-[12px]">v0.1</code>,
             the table you're looking at was last reviewed May 2026. We bump the
             version when any coefficient moves more than 10%.
           </P>
 
           {/* Back to estimator */}
-          <div className="mt-12 border-t border-gray-100 pt-8 text-center">
+          <div className="mt-12 border-t border-surface-border pt-8 text-center">
             <Link
               href="/assessment/cms-implementation"
               className="inline-block rounded-full bg-ecm-green px-8 py-3 font-barlow text-sm font-semibold text-white transition-colors hover:bg-ecm-green-dark"
@@ -225,7 +225,7 @@ export default function MethodologyPage() {
 
 function Heading2({ children }: { children: React.ReactNode }) {
   return (
-    <h2 className="mb-3 mt-10 font-barlow text-2xl font-bold text-ecm-green first:mt-0">
+    <h2 className="mb-3 mt-10 font-barlow text-2xl font-bold text-heading first:mt-0">
       {children}
     </h2>
   );
@@ -233,7 +233,7 @@ function Heading2({ children }: { children: React.ReactNode }) {
 
 function P({ children }: { children: React.ReactNode }) {
   return (
-    <p className="mb-4 font-barlow text-sm leading-relaxed text-ecm-gray-dark">
+    <p className="mb-4 font-barlow text-sm leading-relaxed text-ink">
       {children}
     </p>
   );
@@ -241,7 +241,7 @@ function P({ children }: { children: React.ReactNode }) {
 
 function Range({ children }: { children: React.ReactNode }) {
   return (
-    <p className="mb-6 rounded-lg border-l-4 border-ecm-lime bg-gray-50 px-4 py-3 font-barlow text-sm tabular-nums text-ecm-gray-dark">
+    <p className="mb-6 rounded-lg border-l-4 border-ecm-lime bg-surface-alt px-4 py-3 font-barlow text-sm tabular-nums text-ink">
       {children}
     </p>
   );
@@ -269,7 +269,7 @@ function Ext({ href, children }: { href: string; children: React.ReactNode }) {
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="text-ecm-green underline hover:text-ecm-green-dark"
+      className="text-heading underline hover:text-heading-dark"
     >
       {children}
     </a>

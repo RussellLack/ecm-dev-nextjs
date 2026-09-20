@@ -222,7 +222,7 @@ export default function CmsImplementationForm({ inputs, onChange, onReset }: Pro
               <li><strong>SOC 2</strong> — service-org controls audit (access control, audit trail)</li>
               <li><strong>Public-sector procurement</strong> — government RFI/ITT-driven controls</li>
               <li><strong>Sector-specific</strong> — financial services (FCA, PCI), healthcare (HIPAA, NHS DSPT), pharma (GxP)</li>
-              <li className="!mt-1.5 list-none text-ecm-gray"><em>Each ticked item adds ~3% to implementation. Capped at +15%.</em></li>
+              <li className="!mt-1.5 list-none text-ink-muted"><em>Each ticked item adds ~3% to implementation. Capped at +15%.</em></li>
             </ul>
           }
         />
@@ -273,7 +273,7 @@ export default function CmsImplementationForm({ inputs, onChange, onReset }: Pro
       <button
         type="button"
         onClick={onReset}
-        className="mt-5 w-full rounded-full border border-gray-200 bg-white px-4 py-2.5 text-xs font-semibold uppercase tracking-wider text-ecm-gray transition-colors hover:border-ecm-green hover:text-ecm-green"
+        className="mt-5 w-full rounded-full border border-surface-border bg-surface px-4 py-2.5 text-xs font-semibold uppercase tracking-wider text-ink-muted transition-colors hover:border-heading hover:text-heading"
       >
         Reset to defaults
       </button>
@@ -286,7 +286,7 @@ export default function CmsImplementationForm({ inputs, onChange, onReset }: Pro
 function Group({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section className="mb-6 last:mb-0">
-      <h2 className="mb-3 border-b border-gray-200 pb-2 text-[11px] font-bold uppercase tracking-[0.16em] text-ecm-gray">
+      <h2 className="mb-3 border-b border-surface-border pb-2 text-[11px] font-bold uppercase tracking-[0.16em] text-ink-muted">
         {title}
       </h2>
       {children}
@@ -312,7 +312,7 @@ function SelectRow<T extends string | number>({
   return (
     <div className="mb-3 text-sm">
       <div className="flex items-start justify-between gap-3">
-        <label className="flex-1 pt-1 text-ecm-gray-dark">{label}</label>
+        <label className="flex-1 pt-1 text-ink">{label}</label>
         <select
           value={value}
           onChange={(e) => {
@@ -322,7 +322,7 @@ function SelectRow<T extends string | number>({
               (typeof first === "number" ? parseInt(raw, 10) : raw) as T,
             );
           }}
-          className="w-[260px] max-w-full rounded-md border border-gray-200 bg-white px-2 py-1.5 text-sm text-ecm-gray-dark focus:border-ecm-green focus:outline-none"
+          className="w-[260px] max-w-full rounded-md border border-surface-border bg-surface px-2 py-1.5 text-sm text-ink focus:border-heading focus:outline-none"
         >
           {options.map((opt) => (
             <option key={String(opt.value)} value={opt.value}>
@@ -332,7 +332,7 @@ function SelectRow<T extends string | number>({
         </select>
       </div>
       {hint && (
-        <div className="mt-1 text-[11px] leading-relaxed text-ecm-gray">
+        <div className="mt-1 text-[11px] leading-relaxed text-ink-muted">
           {hint}
         </div>
       )}
@@ -366,7 +366,7 @@ function NumberRow({
   return (
     <div className="mb-2 text-sm">
       <div className="flex items-center justify-between gap-3">
-        <label className="flex-1 text-ecm-gray-dark">{label}</label>
+        <label className="flex-1 text-ink">{label}</label>
         <input
           type="number"
           min={min}
@@ -383,11 +383,11 @@ function NumberRow({
             const parsed = parseInt(raw, 10);
             onChange(Number.isNaN(parsed) ? (optional ? undefined : 0) : parsed);
           }}
-          className="w-[140px] rounded-md border border-gray-200 bg-white px-2 py-1.5 text-right text-sm text-ecm-gray-dark focus:border-ecm-green focus:outline-none"
+          className="w-[140px] rounded-md border border-surface-border bg-surface px-2 py-1.5 text-right text-sm text-ink focus:border-heading focus:outline-none"
         />
       </div>
       {hint && (
-        <p className="mt-0.5 text-right text-[11px] text-ecm-gray">{hint}</p>
+        <p className="mt-0.5 text-right text-[11px] text-ink-muted">{hint}</p>
       )}
     </div>
   );
@@ -408,9 +408,9 @@ function CheckRow({
 }) {
   return (
     <div className="mb-3 text-sm">
-      <p className="mb-1 text-ecm-gray-dark">{label}</p>
+      <p className="mb-1 text-ink">{label}</p>
       {hint && (
-        <div className="mb-2 text-[11px] leading-relaxed text-ecm-gray">
+        <div className="mb-2 text-[11px] leading-relaxed text-ink-muted">
           {hint}
         </div>
       )}
@@ -425,7 +425,7 @@ function CheckRow({
               className={`rounded-full border px-3 py-1 text-xs font-semibold transition-colors ${
                 active
                   ? "border-ecm-green bg-ecm-green text-white"
-                  : "border-gray-200 bg-white text-ecm-gray-dark hover:border-ecm-green hover:text-ecm-green"
+                  : "border-surface-border bg-surface text-ink hover:border-heading hover:text-heading"
               }`}
             >
               {opt.label}

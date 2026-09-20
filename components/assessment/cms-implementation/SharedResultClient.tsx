@@ -48,7 +48,7 @@ export default function SharedResultClient({
     : null;
 
   return (
-    <div className="bg-white">
+    <div className="bg-surface">
       {/* Hero — same dark green band as the calculator, but framed as a
           shared snapshot rather than an active calculator. */}
       <section className="relative overflow-hidden bg-ecm-green py-14 pb-16 sm:py-20 sm:pb-20">

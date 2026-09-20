@@ -138,13 +138,13 @@ export default async function AssessmentNextSteps({
   ].slice(0, 3);
 
   return (
-    <section className="py-16 bg-white border-t border-gray-100">
+    <section className="py-16 bg-surface border-t border-surface-border">
       <div className="max-w-6xl mx-auto px-6 space-y-12">
         <div className="text-center">
-          <h2 className="text-ecm-green font-barlow font-bold text-3xl mb-3">
+          <h2 className="text-heading font-barlow font-bold text-3xl mb-3">
             {heading}
           </h2>
-          <p className="text-ecm-gray font-barlow text-base max-w-2xl mx-auto">
+          <p className="text-ink-muted font-barlow text-base max-w-2xl mx-auto">
             Based on what you've assessed, here's where to go deeper or get
             help.
           </p>
@@ -288,12 +288,12 @@ function Cluster({
   return (
     <div>
       <div className="flex items-baseline justify-between mb-5 gap-4">
-        <h3 className="text-ecm-green font-barlow font-bold text-xl lg:text-2xl">
+        <h3 className="text-heading font-barlow font-bold text-xl lg:text-2xl">
           {heading}
         </h3>
         <Link
           href={indexHref}
-          className="text-ecm-green text-sm font-barlow font-semibold hover:text-ecm-green-dark whitespace-nowrap"
+          className="text-heading text-sm font-barlow font-semibold hover:text-heading-dark whitespace-nowrap"
         >
           {indexLabel} →
         </Link>
@@ -321,7 +321,7 @@ function Card({
   return (
     <Link
       href={href}
-      className="group bg-gray-50 rounded-xl border border-gray-100 hover:border-ecm-green/20 hover:shadow-lg transition-all overflow-hidden flex flex-col"
+      className="group bg-surface-alt rounded-xl border border-surface-border hover:border-heading/20 hover:shadow-lg transition-all overflow-hidden flex flex-col"
     >
       {/* image wins for guides (kept for editor mainImage); else fallback
           for posts and case studies (their call sites omit `image`); else
@@ -347,11 +347,11 @@ function Card({
             {eyebrow}
           </p>
         )}
-        <h4 className="text-ecm-green font-barlow font-semibold text-sm leading-snug mb-2 group-hover:text-ecm-green-dark line-clamp-2">
+        <h4 className="text-heading font-barlow font-semibold text-sm leading-snug mb-2 group-hover:text-heading-dark line-clamp-2">
           {title}
         </h4>
         {subtitle && (
-          <p className="text-ecm-gray text-xs leading-relaxed line-clamp-3">
+          <p className="text-ink-muted text-xs leading-relaxed line-clamp-3">
             {subtitle}
           </p>
         )}

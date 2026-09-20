@@ -38,17 +38,17 @@ const PILLAR_TITLE: Record<string, string> = {
 const ptComponents = {
   block: {
     h2: ({ children }: any) => (
-      <h2 className="text-ecm-green font-barlow font-bold text-2xl mt-10 mb-4">
+      <h2 className="text-heading font-barlow font-bold text-2xl mt-10 mb-4">
         {children}
       </h2>
     ),
     h3: ({ children }: any) => (
-      <h3 className="text-ecm-green font-barlow font-semibold text-xl mt-8 mb-3">
+      <h3 className="text-heading font-barlow font-semibold text-xl mt-8 mb-3">
         {children}
       </h3>
     ),
     normal: ({ children }: any) => (
-      <p className="text-ecm-gray-dark leading-relaxed mb-4">{children}</p>
+      <p className="text-ink leading-relaxed mb-4">{children}</p>
     ),
   },
   marks: {
@@ -57,7 +57,7 @@ const ptComponents = {
         href={value?.href}
         target="_blank"
         rel="noopener noreferrer"
-        className="text-ecm-green underline hover:text-ecm-lime transition-colors"
+        className="text-heading underline hover:text-ecm-lime transition-colors"
       >
         {children}
       </a>
@@ -68,24 +68,24 @@ const ptComponents = {
       return (
         <Link
           href={href}
-          className="text-ecm-green underline hover:text-ecm-lime transition-colors"
+          className="text-heading underline hover:text-ecm-lime transition-colors"
         >
           {children}
         </Link>
       );
     },
     strong: ({ children }: any) => (
-      <strong className="font-semibold text-ecm-green-dark">{children}</strong>
+      <strong className="font-semibold text-heading-dark">{children}</strong>
     ),
   },
   list: {
     bullet: ({ children }: any) => (
-      <ul className="list-disc pl-6 mb-4 space-y-2 text-ecm-gray-dark">
+      <ul className="list-disc pl-6 mb-4 space-y-2 text-ink">
         {children}
       </ul>
     ),
     number: ({ children }: any) => (
-      <ol className="list-decimal pl-6 mb-4 space-y-2 text-ecm-gray-dark">
+      <ol className="list-decimal pl-6 mb-4 space-y-2 text-ink">
         {children}
       </ol>
     ),
@@ -158,7 +158,7 @@ export default async function PlatformDetailPage({
         <div className="max-w-3xl mx-auto px-6 mt-8">
           <div className="flex items-center gap-4 mb-5">
             {platform.logo && (
-              <div className="flex-shrink-0 w-16 h-16 bg-white rounded-lg p-2">
+              <div className="flex-shrink-0 w-16 h-16 bg-surface rounded-lg p-2">
                 <Image
                   src={urlFor(platform.logo).width(160).height(160).url()}
                   alt={platform.name}
@@ -185,29 +185,29 @@ export default async function PlatformDetailPage({
         </div>
         <div className="wave-divider wave-divider-bottom">
           <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="#ffffff" />
+            <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="var(--color-surface)" />
           </svg>
         </div>
       </section>
 
-      <article className="py-12 bg-white">
+      <article className="py-12 bg-surface">
         <div className="max-w-3xl mx-auto px-6">
           {platform.heroDescription && (
-            <p className="text-ecm-gray-dark font-barlow text-lg leading-relaxed mb-8">
+            <p className="text-ink font-barlow text-lg leading-relaxed mb-8">
               {platform.heroDescription}
             </p>
           )}
           {platform.body ? (
             <PortableText value={platform.body} components={ptComponents} />
           ) : (
-            <p className="text-ecm-gray italic">
+            <p className="text-ink-muted italic">
               Detailed perspective coming soon. In the meantime, see the
               related guides, case studies, and intel below.
             </p>
           )}
 
           {/* Pillar + intel cross-links */}
-          <div className="mt-10 pt-8 border-t border-gray-100 flex flex-wrap gap-4">
+          <div className="mt-10 pt-8 border-t border-surface-border flex flex-wrap gap-4">
             {(platform.pillars ?? []).map((p: string) => {
               const href = PILLAR_HREF[p];
               if (!href) return null;
@@ -224,7 +224,7 @@ export default async function PlatformDetailPage({
             {platform.intelVendorSlug && (
               <Link
                 href={`/intel/vendor/${platform.intelVendorSlug}`}
-                className="inline-flex items-center gap-2 bg-white border border-ecm-green/30 text-ecm-green font-barlow font-semibold text-sm px-5 py-2.5 rounded-full hover:bg-ecm-green hover:text-white transition-colors"
+                className="inline-flex items-center gap-2 bg-surface border border-heading/30 text-heading font-barlow font-semibold text-sm px-5 py-2.5 rounded-full hover:bg-ecm-green hover:text-white transition-colors"
               >
                 Latest {platform.name} intel →
               </Link>
@@ -234,7 +234,7 @@ export default async function PlatformDetailPage({
                 href={platform.website}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-ecm-gray font-barlow text-sm hover:text-ecm-green transition-colors self-center"
+                className="inline-flex items-center gap-2 text-ink-muted font-barlow text-sm hover:text-heading transition-colors self-center"
               >
                 {platform.name} website ↗
               </a>
@@ -245,7 +245,7 @@ export default async function PlatformDetailPage({
 
       {/* Auto-collected related content */}
       {(guides.length > 0 || caseStudies.length > 0 || posts.length > 0) && (
-        <section className="py-16 bg-gray-50 border-t border-gray-100">
+        <section className="py-16 bg-surface-alt border-t border-surface-border">
           <div className="max-w-5xl mx-auto px-6 space-y-12">
             {guides.length > 0 && (
               <Cluster heading={`Guides on ${platform.name}`} indexHref="/guides" indexLabel="All guides">
@@ -320,12 +320,12 @@ function Cluster({
   return (
     <div>
       <div className="flex items-baseline justify-between mb-5 gap-4">
-        <h2 className="text-ecm-green font-barlow font-bold text-xl lg:text-2xl">
+        <h2 className="text-heading font-barlow font-bold text-xl lg:text-2xl">
           {heading}
         </h2>
         <Link
           href={indexHref}
-          className="text-ecm-green text-sm font-barlow font-semibold hover:text-ecm-green-dark whitespace-nowrap"
+          className="text-heading text-sm font-barlow font-semibold hover:text-heading-dark whitespace-nowrap"
         >
           {indexLabel} →
         </Link>
@@ -353,7 +353,7 @@ function Card({
   return (
     <Link
       href={href}
-      className="group bg-white rounded-xl border border-gray-100 hover:border-ecm-green/20 hover:shadow-lg transition-all overflow-hidden flex flex-col"
+      className="group bg-surface rounded-xl border border-surface-border hover:border-heading/20 hover:shadow-lg transition-all overflow-hidden flex flex-col"
     >
       {/* image wins for guides; else fallback for posts / case studies. */}
       {image ? (
@@ -377,11 +377,11 @@ function Card({
             {eyebrow}
           </p>
         )}
-        <h3 className="text-ecm-green font-barlow font-semibold text-sm leading-snug mb-2 group-hover:text-ecm-green-dark line-clamp-2">
+        <h3 className="text-heading font-barlow font-semibold text-sm leading-snug mb-2 group-hover:text-heading-dark line-clamp-2">
           {title}
         </h3>
         {subtitle && (
-          <p className="text-ecm-gray text-xs leading-relaxed line-clamp-3">
+          <p className="text-ink-muted text-xs leading-relaxed line-clamp-3">
             {subtitle}
           </p>
         )}

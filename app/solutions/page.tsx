@@ -47,13 +47,13 @@ export default async function SolutionsIndexPage() {
         </div>
         <div className="wave-divider wave-divider-bottom">
           <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="#ffffff" />
+            <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="var(--color-surface)" />
           </svg>
         </div>
       </section>
 
       {/* Solution cards */}
-      <section className="bg-white py-20">
+      <section className="bg-surface py-20">
         <div className="max-w-5xl mx-auto px-6">
           <div className="grid sm:grid-cols-2 gap-6">
             {solutions.map((s) => (

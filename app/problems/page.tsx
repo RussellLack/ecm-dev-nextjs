@@ -48,13 +48,13 @@ export default async function ProblemsIndexPage() {
         </div>
         <div className="wave-divider wave-divider-bottom">
           <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="#ffffff" />
+            <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="var(--color-surface)" />
           </svg>
         </div>
       </section>
 
       {/* Problem cards */}
-      <section className="bg-white py-20">
+      <section className="bg-surface py-20">
         <div className="max-w-5xl mx-auto px-6">
           <div className="grid sm:grid-cols-2 gap-6">
             {problems.map((p) => (
@@ -63,13 +63,13 @@ export default async function ProblemsIndexPage() {
                 href={`/problems/${p.slug}`}
                 className="block bg-ecm-gray-light border-l-[5px] border-ecm-lime p-8 rounded-r-2xl hover:shadow-lg transition-all group"
               >
-                <h2 className="text-ecm-green font-barlow font-bold text-xl sm:text-2xl mb-3 group-hover:text-ecm-green-dark transition-colors">
+                <h2 className="text-heading font-barlow font-bold text-xl sm:text-2xl mb-3 group-hover:text-heading-dark transition-colors">
                   {p.title}
                 </h2>
                 {p.heroSubhead && (
-                  <p className="text-ecm-gray-dark text-sm leading-relaxed">{p.heroSubhead}</p>
+                  <p className="text-ink text-sm leading-relaxed">{p.heroSubhead}</p>
                 )}
-                <span className="mt-5 inline-flex items-center gap-2 text-ecm-green font-barlow font-semibold text-sm">
+                <span className="mt-5 inline-flex items-center gap-2 text-heading font-barlow font-semibold text-sm">
                   See how we fix it <span aria-hidden="true">&rarr;</span>
                 </span>
               </Link>

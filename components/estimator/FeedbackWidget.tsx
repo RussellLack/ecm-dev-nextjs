@@ -71,8 +71,8 @@ export default function FeedbackWidget({ inputs, result }: Props) {
   }
 
   return (
-    <section className="mb-8 border-t border-gray-200 pt-7">
-      <p className="mb-3.5 font-barlow text-base text-ecm-gray-dark">
+    <section className="mb-8 border-t border-surface-border pt-7">
+      <p className="mb-3.5 font-barlow text-base text-ink">
         Does this estimate feel right?
       </p>
 
@@ -88,7 +88,7 @@ export default function FeedbackWidget({ inputs, result }: Props) {
               className={`rounded-full border px-4 py-2 font-barlow text-sm transition-colors ${
                 active
                   ? "border-ecm-green bg-ecm-green text-white"
-                  : "border-gray-200 bg-white text-ecm-gray-dark hover:border-ecm-green hover:text-ecm-green"
+                  : "border-surface-border bg-surface text-ink hover:border-heading hover:text-heading"
               }`}
             >
               {chipLabels[r]}
@@ -104,7 +104,7 @@ export default function FeedbackWidget({ inputs, result }: Props) {
       )}
 
       {submitted && (
-        <div className="mt-2.5 font-barlow text-sm text-ecm-green">
+        <div className="mt-2.5 font-barlow text-sm text-heading">
           Thanks — your feedback will help refine the next version of the model.
         </div>
       )}
@@ -118,18 +118,18 @@ export default function FeedbackWidget({ inputs, result }: Props) {
             onChange={(e) => setComment(e.target.value)}
             onBlur={handleCommentBlur}
             placeholder="Optional — where did we miss it?"
-            className="w-full rounded-md border border-gray-200 bg-white px-3 py-2 font-barlow text-sm text-ecm-gray-dark focus:border-ecm-green focus:outline-none"
+            className="w-full rounded-md border border-surface-border bg-surface px-3 py-2 font-barlow text-sm text-ink focus:border-heading focus:outline-none"
           />
-          <div className="mt-1 text-right font-barlow text-[11px] text-ecm-gray">
+          <div className="mt-1 text-right font-barlow text-[11px] text-ink-muted">
             {comment.length} / 140
           </div>
         </div>
       )}
 
-      <div className="mt-3.5 font-barlow text-[11px] leading-relaxed text-ecm-gray">
+      <div className="mt-3.5 font-barlow text-[11px] leading-relaxed text-ink-muted">
         Your feedback is anonymous. We store your input profile and your reaction to help
         improve the model — nothing that identifies you or your organisation.{" "}
-        <a href="/methodology#feedback-loop" className="underline hover:text-ecm-green">
+        <a href="/methodology#feedback-loop" className="underline hover:text-heading">
           How we use this.
         </a>
       </div>

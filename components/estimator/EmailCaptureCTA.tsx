@@ -63,7 +63,7 @@ export default function EmailCaptureCTA({ inputs, result }: Props) {
       <button
         type="button"
         onClick={() => setView("form")}
-        className="inline-flex items-center gap-2 rounded-full border border-ecm-green bg-transparent px-7 py-3.5 font-barlow text-sm font-semibold text-ecm-green transition-colors hover:bg-ecm-green hover:text-white"
+        className="inline-flex items-center gap-2 rounded-full border border-heading bg-transparent px-7 py-3.5 font-barlow text-sm font-semibold text-heading transition-colors hover:bg-ecm-green hover:text-white"
       >
         Email me the full breakdown
       </button>
@@ -72,7 +72,7 @@ export default function EmailCaptureCTA({ inputs, result }: Props) {
 
   if (view === "sent") {
     return (
-      <div className="rounded-xl border border-ecm-green/30 bg-ecm-green/5 px-5 py-4 font-barlow text-sm text-ecm-green-dark">
+      <div className="rounded-xl border border-heading/30 bg-ecm-green/5 px-5 py-4 font-barlow text-sm text-heading-dark">
         Thanks — we&apos;ve got it. We&apos;ll be in touch when the full breakdown is ready and
         when the next model refresh ships material changes.
       </div>
@@ -82,9 +82,9 @@ export default function EmailCaptureCTA({ inputs, result }: Props) {
   return (
     <form
       onSubmit={submit}
-      className="w-full max-w-xl rounded-xl border border-gray-200 bg-gray-50 p-5 font-barlow"
+      className="w-full max-w-xl rounded-xl border border-surface-border bg-surface-alt p-5 font-barlow"
     >
-      <label className="mb-2 block text-sm font-semibold text-ecm-gray-dark">
+      <label className="mb-2 block text-sm font-semibold text-ink">
         Email me the full breakdown
       </label>
       <input
@@ -94,10 +94,10 @@ export default function EmailCaptureCTA({ inputs, result }: Props) {
         placeholder="you@company.com"
         autoComplete="email"
         required
-        className="w-full rounded-md border border-gray-200 bg-white px-3 py-2.5 text-sm text-ecm-gray-dark focus:border-ecm-green focus:outline-none"
+        className="w-full rounded-md border border-surface-border bg-surface px-3 py-2.5 text-sm text-ink focus:border-heading focus:outline-none"
       />
 
-      <label className="mt-3 flex cursor-pointer items-start gap-2.5 text-xs leading-relaxed text-ecm-gray">
+      <label className="mt-3 flex cursor-pointer items-start gap-2.5 text-xs leading-relaxed text-ink-muted">
         <span
           onClick={(e) => {
             e.preventDefault();
@@ -118,7 +118,7 @@ export default function EmailCaptureCTA({ inputs, result }: Props) {
         <span>
           I consent to ECM.dev storing this information for the purpose of sending me the full
           breakdown and notifying me of material model updates. Handled under GDPR and our{" "}
-          <Link href="/privacy" className="text-ecm-green underline hover:text-ecm-green-dark">
+          <Link href="/privacy" className="text-heading underline hover:text-heading-dark">
             privacy policy
           </Link>
           . Never shared with third parties.
@@ -143,7 +143,7 @@ export default function EmailCaptureCTA({ inputs, result }: Props) {
             setView("button");
             setError(null);
           }}
-          className="inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white px-5 py-2.5 text-sm font-semibold text-ecm-gray-dark transition-colors hover:border-ecm-gray hover:text-ecm-gray-dark"
+          className="inline-flex items-center gap-2 rounded-full border border-surface-border bg-surface px-5 py-2.5 text-sm font-semibold text-ink transition-colors hover:border-ecm-gray hover:text-ink"
         >
           Cancel
         </button>

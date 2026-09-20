@@ -76,21 +76,21 @@ export default async function AssessmentsPage() {
           >
             <path
               d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z"
-              fill="#ffffff"
+              fill="var(--color-surface)"
             />
           </svg>
         </div>
       </section>
 
       {/* Assessments List */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-surface">
         <div className="max-w-5xl mx-auto px-6">
 
           {/* ── Featured: Content Operations Maturity Assessment ── */}
           {featured && (
             <div
               id={featured.slug?.current}
-              className="group relative bg-white border-2 border-ecm-lime rounded-2xl overflow-hidden shadow-lg mb-6 scroll-mt-24"
+              className="group relative bg-surface border-2 border-ecm-lime rounded-2xl overflow-hidden shadow-lg mb-6 scroll-mt-24"
             >
               <div className="absolute top-0 left-0 bg-ecm-lime text-ecm-green font-barlow font-bold text-xs uppercase tracking-wider px-4 py-1.5 rounded-br-xl">
                 Start here
@@ -98,11 +98,11 @@ export default async function AssessmentsPage() {
               <div className="p-8 sm:p-10 lg:p-12 pt-14 sm:pt-16">
                 <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
                   <div className="flex-1">
-                    <h2 className="text-ecm-green font-barlow font-bold text-xl sm:text-2xl lg:text-3xl mb-3">
+                    <h2 className="text-heading font-barlow font-bold text-xl sm:text-2xl lg:text-3xl mb-3">
                       {featured.title}
                     </h2>
                     {featured.subtitle && (
-                      <p className="text-ecm-gray font-barlow text-base mb-4">
+                      <p className="text-ink-muted font-barlow text-base mb-4">
                         {featured.subtitle}
                       </p>
                     )}
@@ -159,14 +159,14 @@ export default async function AssessmentsPage() {
           <div className="space-y-6">
 
             {/* Process Assessment */}
-            <div id="process" className="group relative bg-gray-50 border border-gray-100 rounded-2xl overflow-hidden hover:shadow-lg transition-all scroll-mt-24">
+            <div id="process" className="group relative bg-surface-alt border border-surface-border rounded-2xl overflow-hidden hover:shadow-lg transition-all scroll-mt-24">
               <div className="p-8 sm:p-10 lg:p-12">
                 <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
                   <div className="flex-1">
-                    <h2 className="text-ecm-green font-barlow font-bold text-xl sm:text-2xl lg:text-3xl mb-3 group-hover:text-ecm-green-dark transition-colors">
+                    <h2 className="text-heading font-barlow font-bold text-xl sm:text-2xl lg:text-3xl mb-3 group-hover:text-heading-dark transition-colors">
                       Process Assessment
                     </h2>
-                    <p className="text-ecm-gray font-barlow text-base mb-4">
+                    <p className="text-ink-muted font-barlow text-base mb-4">
                       Map a key process, surface blockers and ownership gaps, and generate a pre-diagnostic brief.
                     </p>
                     <p className="text-gray-500 font-barlow text-sm leading-relaxed mb-6 max-w-2xl">
@@ -211,14 +211,14 @@ export default async function AssessmentsPage() {
               </div>
               <div className="h-1 bg-ecm-lime w-0 group-hover:w-full transition-all duration-500" />
             </div>
-            <div id="lead-magnet" className="group relative bg-gray-50 border border-gray-100 rounded-2xl overflow-hidden hover:shadow-lg transition-all scroll-mt-24">
+            <div id="lead-magnet" className="group relative bg-surface-alt border border-surface-border rounded-2xl overflow-hidden hover:shadow-lg transition-all scroll-mt-24">
               <div className="p-8 sm:p-10 lg:p-12">
                 <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
                   <div className="flex-1">
-                    <h2 className="text-ecm-green font-barlow font-bold text-xl sm:text-2xl lg:text-3xl mb-3 group-hover:text-ecm-green-dark transition-colors">
+                    <h2 className="text-heading font-barlow font-bold text-xl sm:text-2xl lg:text-3xl mb-3 group-hover:text-heading-dark transition-colors">
                       Lead Magnet Ideation Tool
                     </h2>
-                    <p className="text-ecm-gray font-barlow text-base mb-4">
+                    <p className="text-ink-muted font-barlow text-base mb-4">
                       Find your best-fit lead magnet format and close the capability gaps holding you back.
                     </p>
                     <p className="text-gray-500 font-barlow text-sm leading-relaxed mb-6 max-w-2xl">
@@ -264,14 +264,14 @@ export default async function AssessmentsPage() {
             </div>
 
             {/* Localisation Cost Estimator */}
-            <div id="localisation-cost" className="group relative bg-gray-50 border border-gray-100 rounded-2xl overflow-hidden hover:shadow-lg transition-all scroll-mt-24">
+            <div id="localisation-cost" className="group relative bg-surface-alt border border-surface-border rounded-2xl overflow-hidden hover:shadow-lg transition-all scroll-mt-24">
               <div className="p-8 sm:p-10 lg:p-12">
                 <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
                   <div className="flex-1">
-                    <h2 className="text-ecm-green font-barlow font-bold text-xl sm:text-2xl lg:text-3xl mb-3 group-hover:text-ecm-green-dark transition-colors">
+                    <h2 className="text-heading font-barlow font-bold text-xl sm:text-2xl lg:text-3xl mb-3 group-hover:text-heading-dark transition-colors">
                       Localisation Cost Estimator
                     </h2>
-                    <p className="text-ecm-gray font-barlow text-base mb-4">
+                    <p className="text-ink-muted font-barlow text-base mb-4">
                       See where your multilingual content operations are really spending — and what an AI-native operating model could recover.
                     </p>
                     <p className="text-gray-500 font-barlow text-sm leading-relaxed mb-6 max-w-2xl">
@@ -316,14 +316,14 @@ export default async function AssessmentsPage() {
             </div>
 
             {/* CMS Implementation Cost Estimator */}
-            <div id="cms-implementation" className="group relative bg-gray-50 border border-gray-100 rounded-2xl overflow-hidden hover:shadow-lg transition-all scroll-mt-24">
+            <div id="cms-implementation" className="group relative bg-surface-alt border border-surface-border rounded-2xl overflow-hidden hover:shadow-lg transition-all scroll-mt-24">
               <div className="p-8 sm:p-10 lg:p-12">
                 <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
                   <div className="flex-1">
-                    <h2 className="text-ecm-green font-barlow font-bold text-xl sm:text-2xl lg:text-3xl mb-3 group-hover:text-ecm-green-dark transition-colors">
+                    <h2 className="text-heading font-barlow font-bold text-xl sm:text-2xl lg:text-3xl mb-3 group-hover:text-heading-dark transition-colors">
                       CMS Implementation Cost Estimator
                     </h2>
-                    <p className="text-ecm-gray font-barlow text-base mb-4">
+                    <p className="text-ink-muted font-barlow text-base mb-4">
                       Build a defensible business case for your CMS / DXP / ECM project. Twelve plain inputs in, a 3- or 5-year TCO band out — take-away PDF gated only by an email.
                     </p>
                     <p className="text-gray-500 font-barlow text-sm leading-relaxed mb-6 max-w-2xl">
@@ -374,17 +374,17 @@ export default async function AssessmentsPage() {
                 <div
                   key={a._id}
                   id={a.slug?.current}
-                  className="group relative bg-gray-50 border border-gray-100 rounded-2xl overflow-hidden hover:shadow-lg transition-all scroll-mt-24"
+                  className="group relative bg-surface-alt border border-surface-border rounded-2xl overflow-hidden hover:shadow-lg transition-all scroll-mt-24"
                 >
                   <div className="p-8 sm:p-10 lg:p-12">
                     <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
                       {/* Content */}
                       <div className="flex-1">
-                        <h2 className="text-ecm-green font-barlow font-bold text-xl sm:text-2xl lg:text-3xl mb-3 group-hover:text-ecm-green-dark transition-colors">
+                        <h2 className="text-heading font-barlow font-bold text-xl sm:text-2xl lg:text-3xl mb-3 group-hover:text-heading-dark transition-colors">
                           {a.title}
                         </h2>
                         {a.subtitle && (
-                          <p className="text-ecm-gray font-barlow text-base mb-4">
+                          <p className="text-ink-muted font-barlow text-base mb-4">
                             {a.subtitle}
                           </p>
                         )}
@@ -489,7 +489,7 @@ export default async function AssessmentsPage() {
           {/* Editor: Create New Assessment — only visible in dev/admin environments */}
           {showEditorControls && (
             <div className="mt-16 text-center">
-              <div className="inline-flex flex-col items-center gap-3 px-8 py-6 bg-gray-50 border border-dashed border-gray-200 rounded-2xl">
+              <div className="inline-flex flex-col items-center gap-3 px-8 py-6 bg-surface-alt border border-dashed border-surface-border rounded-2xl">
                 <p className="text-gray-400 font-barlow text-sm">
                   Want to add a new assessment?
                 </p>

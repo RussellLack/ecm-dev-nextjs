@@ -62,21 +62,21 @@ export default async function PlatformsIndexPage() {
         </div>
         <div className="wave-divider wave-divider-bottom">
           <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="#ffffff" />
+            <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="var(--color-surface)" />
           </svg>
         </div>
       </section>
 
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-surface">
         <div className="max-w-5xl mx-auto px-6 space-y-12">
           {platforms.length === 0 ? (
-            <p className="text-ecm-gray text-center py-16 font-barlow">
+            <p className="text-ink-muted text-center py-16 font-barlow">
               Platform pages coming soon.
             </p>
           ) : (
             groups.map(([category, items]) => (
               <div key={category}>
-                <h2 className="text-ecm-green font-barlow font-bold text-xl mb-5 uppercase tracking-wider">
+                <h2 className="text-heading font-barlow font-bold text-xl mb-5 uppercase tracking-wider">
                   {category}
                 </h2>
                 <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -84,7 +84,7 @@ export default async function PlatformsIndexPage() {
                     <Link
                       key={p._id}
                       href={`/platforms/${p.slug?.current}`}
-                      className="group bg-gray-50 rounded-xl border border-gray-100 hover:border-ecm-green/20 hover:shadow-lg transition-all p-6 flex flex-col"
+                      className="group bg-surface-alt rounded-xl border border-surface-border hover:border-heading/20 hover:shadow-lg transition-all p-6 flex flex-col"
                     >
                       <div className="flex items-center gap-4 mb-3">
                         {p.logo && (
@@ -98,12 +98,12 @@ export default async function PlatformsIndexPage() {
                             />
                           </div>
                         )}
-                        <h3 className="text-ecm-green font-barlow font-bold text-lg leading-snug group-hover:text-ecm-green-dark transition-colors">
+                        <h3 className="text-heading font-barlow font-bold text-lg leading-snug group-hover:text-heading-dark transition-colors">
                           {p.name}
                         </h3>
                       </div>
                       {p.summary && (
-                        <p className="text-ecm-gray text-sm leading-relaxed line-clamp-3">
+                        <p className="text-ink-muted text-sm leading-relaxed line-clamp-3">
                           {p.summary}
                         </p>
                       )}
