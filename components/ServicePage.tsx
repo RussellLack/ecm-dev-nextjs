@@ -65,7 +65,7 @@ export default function ServicePage({ data }: { data: ServicePageData }) {
                   className="text-ink text-base leading-relaxed flex gap-3"
                 >
                   <span className="text-heading flex-shrink-0 font-bold">
-                    —
+                    •
                   </span>
                   <span>{item}</span>
                 </li>
@@ -151,7 +151,7 @@ export default function ServicePage({ data }: { data: ServicePageData }) {
                           className="text-ink text-sm leading-relaxed flex gap-2"
                         >
                           <span className="text-heading flex-shrink-0 font-bold">
-                            —
+                            •
                           </span>
                           <span>{feature}</span>
                         </li>

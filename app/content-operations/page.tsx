@@ -17,7 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
     category: "services",
     fallbackTitle: "Content Operations",
     fallbackDescription:
-      "Governance, ownership, workflow, and lifecycle — run as a standing function, not a one-off report that goes stale in a month.",
+      "Governance, ownership, workflow, and lifecycle, run as a standing function, not a one-off report that goes stale in a month.",
     canonical: "/content-operations",
   });
 }

@@ -18,19 +18,19 @@ const auditTiers = [
   {
     kicker: "First real proof",
     title: "Snapshot",
-    price: "£2,000–3,000",
-    meta: "5–7 business days · a real sample of your estate",
+    price: "£2,000 to £3,000",
+    meta: "5 to 7 business days · a real sample of your estate",
     description:
-      "ecm-agent scans a genuine sample of your content, up to 100 items or 10% of the estate. A 5–10 page report, your top five findings, and one or two shown actually failing in an AI answer. 45-minute recorded readout.",
+      "ecm-agent scans a genuine sample of your content, up to 100 items or 10% of the estate. A report of 5 to 10 pages, your top five findings, and one or two shown actually failing in an AI answer. 45-minute recorded readout.",
     note: "100% credited toward a Full Estate Audit if you sign within 30 days.",
   },
   {
     kicker: "Full proof, board-ready",
     title: "Full Estate Audit",
-    price: "£12,000–15,000",
-    meta: "3–4 weeks · your whole estate",
+    price: "£12,000 to £15,000",
+    meta: "3 to 4 weeks · your whole estate",
     description:
-      "Every finding family available, scored across your full content estate, and a 20–30 page board-ready report with a costed remediation roadmap. 90-minute stakeholder readout, plus two weeks of async Q&A.",
+      "Every finding family available, scored across your full content estate, and a board-ready report of 20 to 30 pages with a costed remediation roadmap. 90-minute stakeholder readout, plus two weeks of async Q&A.",
   },
 ];
 
