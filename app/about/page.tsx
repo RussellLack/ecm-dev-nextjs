@@ -3,54 +3,39 @@ import Link from "next/link";
 
 export const revalidate = 3600;
 
-/* Hero, the founder line, the four body sections, and the ICP block below.
-   Rewritten off the three-pillar content infrastructure positioning (see
-   docs/CONTENT-PILLARS-POSITIONING.md and
-   docs/SERVICE-CLARITY-AUDIT-2026-09-20.md), replacing the earlier
-   "pipeline infrastructure for B2B marketing teams" narrative, which had
-   no presence anywhere else on the site (nav, the three pillar pages, case
-   studies and llms.txt all already spoke the pillar model). Kept as literal
-   constants for the same reason the homepage copy is: positioning goes
-   through code review, not a CMS edit. */
 const hero = {
-  heading: "Content infrastructure for the AI era.",
-  body: "Most organisations already have a CMS, a content team, and content running in more than one language. What's usually missing is the operating system underneath: the architecture, the governance, and the workflow that make it something AI, and your own buyers, can actually find, trust, and reuse.",
+  heading: "What we do",
+  body: "ECM.dev is a fractional content operations and AI-readiness service. We work with mid-market and owner-managed businesses, engineering consultancies, exporters, B2B SaaS teams, professional services, who have outgrown ad hoc content production and are weighing whether to build a content function in-house. We're built to be the alternative to that build: senior diagnosis, a working system, and ongoing ownership of it, without the salary, the management overhead, or the year it takes a new hire to get up to speed.",
 };
 
 const founder = {
-  heading: "One person's judgment, not an anonymous team.",
-  body: "ECM.DEV is Russell Lack's independent practice. Engagements aren't sub-contracted: the audit findings, the report, and the live readout come from the person who did the work, which is the point, not a staffing gap to be filled later.",
+  heading: "Behind the system",
+  body: "Behind ECM.dev is Russell Lack, who has spent over thirteen years running enterprise cloud and data architecture programmes across the Nordics before turning the same discipline on content. That background is why the work reads like an audit, not a workshop deck.",
 };
 
 const sections = [
   {
-    title: "Three pillars, one operating system",
-    body: "Content Technology (your CMS, your platforms, and the data connecting them), Content Operations (governance, ownership, workflow, lifecycle), and Content Localisation (multilingual content at AI speed). Most consultancies specialise in one of these and treat the other two as someone else's problem. Content breaks at the seams between them, so we work across all three.",
+    title: "Why this exists",
+    body: "Most organisations still treat content as a finished product: a page, a document, a translated file, filed and forgotten. That assumption breaks down once content also has to feed search, feed AI answer engines, and feed decisions inside the business itself. Content that only looks right to a human reader is no longer enough on its own. This isn't a new idea. Content strategists have understood content as a system rather than a pile of assets for well over a decade. ECM.dev applies that discipline as a retained service, not a one-off report you're left to implement yourself.",
   },
   {
-    title: "A diagnostic first, in writing",
-    body: "Every engagement starts with a priced, bounded finding: a Content Audit, a governance assessment, or the Localisation Cost Estimator, depending on which pillar you start with. ecm-agent scans your actual estate rather than relying on self-reporting. Fixed scope, fixed price, a written finding either way, something you can act on or argue with.",
+    title: "How we work",
+    body: "Every engagement starts with the same person doing the diagnosis, the build, and the ongoing work, so judgement doesn't reset each time something changes. Most \"AI content audits\" on the market are shallow: a search-visibility check dressed up as a system review. We built ecm-agent, our own AI-readiness scoring engine, because that wasn't good enough. It scores governance, workflow, technology and AI-readiness together, against a versioned rubric, with every finding traceable back to its evidence. We call that provenance, not certification, because we won't claim more confidence than the evidence supports.",
   },
   {
-    title: "Not a certification. Not a subscription tool.",
-    body: "This is advisory work: a professional opinion, delivered as a report and a live readout, not an automated score or a guarantee that your content is AI-safe or compliant. Where it makes sense to turn the fix into a managed package, the diagnostic's cost is credited toward it. Where it does not, the diagnostic still stands on its own.",
+    title: "What makes this different",
+    body: "There are really only two ways most businesses solve this today: hire for it, or hand tasks to whoever's available and hope the pieces add up to something coherent. Both have a real cost. A hire means recruiting, management time, and months of ramp-up before you see the judgement you're paying for. Handing out tasks means no one owns the outcome, and whatever gets built has to be rebuilt the next time someone new picks it up. ECM.dev is neither. You get a system that runs without needing to staff for it, the same judgement retained month to month rather than re-hired each time, and an AI-readiness score you could defend to your own board.",
   },
   {
-    title: "What you own when we are done",
-    body: "Everything: findings, roadmap, and any remediation work, documented and in your stack, not locked behind an ongoing subscription. Most clients keep the relationship going anyway, for the next audit cycle or the next pillar.",
+    title: "Start here",
+    body: "Every engagement starts with a free assessment. It's a diagnosis, not a discount audit, no sales call, no email gate on the result. If it's worth fixing, we scope a fixed-price build, usually delivered in one to two weeks, moving into a monthly retained service after that: no fixed term, and you step away from it when the system no longer needs us running it.",
   },
 ];
-
-const whoThisIsFor = {
-  heading: "Who this is for.",
-  body: "Content-heavy organisations, publishing, professional services, healthcare, financial services, higher education, running a mixed or non-Microsoft AI stack. Roughly the size where one person can approve a five-figure engagement without a procurement committee, and large enough that the problem is actually expensive. Based in the UK, working with UK and Ireland teams.",
-  notFor: "Probably not a fit: a Copilot-first stack already running Purview, an estate too small to produce a defensible finding, or a search for a certification or guarantee. Worth saying plainly rather than finding out on a call.",
-};
 
 export async function generateMetadata(): Promise<Metadata> {
   const title = "About ECM.DEV";
   const description =
-    "ECM.DEV is Russell Lack's independent practice for content infrastructure: Content Technology, Content Operations, and Content Localisation, run as one system.";
+    "ECM.dev is a fractional content operations and AI-readiness service: senior diagnosis, a working system, and ongoing ownership of it, without the overhead of an in-house hire.";
   return {
     title,
     description,
@@ -105,21 +90,6 @@ export default function AboutPage() {
               </p>
             </div>
           ))}
-        </div>
-      </section>
-
-      {/* ─── WHO THIS IS FOR ─── */}
-      <section className="py-16 bg-surface-alt border-t border-surface-border">
-        <div className="max-w-3xl mx-auto px-6">
-          <h2 className="text-heading font-barlow font-bold text-2xl sm:text-3xl leading-snug mb-4">
-            {whoThisIsFor.heading}
-          </h2>
-          <p className="text-ink text-base leading-relaxed mb-4">
-            {whoThisIsFor.body}
-          </p>
-          <p className="text-ink-muted text-sm leading-relaxed">
-            {whoThisIsFor.notFor}
-          </p>
         </div>
       </section>
 
