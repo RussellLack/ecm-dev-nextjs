@@ -19,6 +19,22 @@ const config: Config = {
             dark: "#4a4b4d",
           },
         },
+        // Theme-aware tokens (see the CSS custom properties in
+        // globals.css) for the site's light sections. Use these instead
+        // of bg-white / bg-gray-50 / border-gray-100 / text-ecm-green /
+        // text-ecm-gray(-dark) anywhere that should invert in dark mode.
+        // Leave bg-ecm-green / text-ecm-lime / text-white as they are —
+        // those brand panels are deliberately constant across themes.
+        surface: {
+          DEFAULT: "var(--color-surface)",
+          alt: "var(--color-surface-alt)",
+          border: "var(--color-surface-border)",
+        },
+        heading: "var(--color-heading)",
+        ink: {
+          DEFAULT: "var(--color-ink)",
+          muted: "var(--color-ink-muted)",
+        },
       },
       fontFamily: {
         // Resolves to the next/font CSS variable defined in app/layout.tsx

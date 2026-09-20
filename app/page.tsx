@@ -390,37 +390,37 @@ export default async function HomePage() {
         {/* Wave divider: green → white */}
         <div className="wave-divider wave-divider-bottom">
           <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="#ffffff" />
+            <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="var(--color-surface)" />
           </svg>
         </div>
       </section>
 
       {/* ─── CONVERSION LAYER DIAGNOSIS ─── */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-surface">
         <div className="max-w-3xl mx-auto px-6">
-          <h2 className="text-ecm-green font-barlow font-bold text-2xl sm:text-3xl leading-snug mb-6">
+          <h2 className="text-heading font-barlow font-bold text-2xl sm:text-3xl leading-snug mb-6">
             Your campaigns are not broken. The layer between them is.
           </h2>
-          <p className="text-ecm-gray-dark text-base leading-relaxed mb-4">
+          <p className="text-ink text-base leading-relaxed mb-4">
             Most B2B teams already have the parts: a website, a CRM, a few campaigns, some outbound tooling, several years of content, and usually some AI running on top of it. What they do not have is a reliable handoff from one part to the next.
           </p>
-          <p className="text-ecm-gray-dark text-base leading-relaxed mb-4">
+          <p className="text-ink text-base leading-relaxed mb-4">
             So the right people click and then go quiet. Replies arrive and stall. Meetings get booked against opportunities nothing qualified first. The AI tools promise speed, then meet the content and the data as they actually are.
           </p>
-          <p className="text-ecm-gray-dark text-base leading-relaxed">
+          <p className="text-ink text-base leading-relaxed">
             We engineer that handoff: the conversion layer that carries a prospect from the first sign of interest to an opportunity sales can genuinely work.
           </p>
         </div>
       </section>
 
       {/* ─── PIPELINE FIXES (merged former "six symptoms" + "what we build") ─── */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-surface">
         <div className="max-w-4xl mx-auto px-6">
-          <h2 className="text-ecm-green font-barlow font-bold text-3xl lg:text-4xl text-center mb-4">
+          <h2 className="text-heading font-barlow font-bold text-3xl lg:text-4xl text-center mb-4">
             {pipelineFixesHeading}
           </h2>
           {pipelineFixesSubhead && (
-            <p className="text-ecm-gray-dark text-center text-base mb-12 max-w-2xl mx-auto">
+            <p className="text-ink text-center text-base mb-12 max-w-2xl mx-auto">
               {pipelineFixesSubhead}
             </p>
           )}
@@ -455,7 +455,7 @@ export default async function HomePage() {
           <div className="text-center mt-10">
             <Link
               href="/problems/outbound-conversion"
-              className="inline-flex items-center gap-1 text-ecm-green font-barlow font-semibold text-sm hover:text-ecm-green-dark transition-colors"
+              className="inline-flex items-center gap-1 text-heading font-barlow font-semibold text-sm hover:opacity-80 transition-opacity"
             >
               See how we fix it <span aria-hidden="true">&rarr;</span>
             </Link>
@@ -465,12 +465,12 @@ export default async function HomePage() {
 
       {/* ─── FEATURED CASE STUDIES ─── */}
       {featuredCaseStudies && featuredCaseStudies.length > 0 && (
-        <section className="py-20 bg-white">
+        <section className="py-20 bg-surface">
           <div className="max-w-6xl mx-auto px-6">
-            <h2 className="text-ecm-green font-barlow font-bold text-3xl lg:text-4xl text-center mb-4">
+            <h2 className="text-heading font-barlow font-bold text-3xl lg:text-4xl text-center mb-4">
               Featured work.
             </h2>
-            <p className="text-ecm-gray-dark text-center text-base mb-16 max-w-2xl mx-auto">
+            <p className="text-ink text-center text-base mb-16 max-w-2xl mx-auto">
               A closer look at outcomes across content technology, services and localisation.
             </p>
             <div className="mb-12">
@@ -498,7 +498,7 @@ export default async function HomePage() {
         {/* Wave divider: white → green (top) */}
         <div className="wave-divider wave-divider-top">
           <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0,60 C360,0 1080,120 1440,60 L1440,0 L0,0 Z" fill="#ffffff" />
+            <path d="M0,60 C360,0 1080,120 1440,60 L1440,0 L0,0 Z" fill="var(--color-surface)" />
           </svg>
         </div>
         <div className="max-w-6xl mx-auto px-6">
@@ -585,18 +585,18 @@ export default async function HomePage() {
         {/* Wave divider: green → white (bottom) */}
         <div className="wave-divider wave-divider-bottom">
           <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="#ffffff" />
+            <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="var(--color-surface)" />
           </svg>
         </div>
       </section>
 
       {/* ─── OFFER LADDER (was engagement tiers) ─── */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-surface">
         <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-ecm-green font-barlow font-bold text-3xl lg:text-4xl text-center mb-4">
+          <h2 className="text-heading font-barlow font-bold text-3xl lg:text-4xl text-center mb-4">
             Three ways to start. One path.
           </h2>
-          <p className="text-ecm-gray-dark text-center text-base mb-16 max-w-2xl mx-auto">
+          <p className="text-ink text-center text-base mb-16 max-w-2xl mx-auto">
             Diagnose the leak, build the missing part, keep the system improving.
           </p>
           <div className="grid md:grid-cols-3 gap-6 mb-6">
@@ -621,9 +621,9 @@ export default async function HomePage() {
               </div>
             ))}
           </div>
-          <p className="text-center text-ecm-gray-dark text-xs">
+          <p className="text-center text-ink text-xs">
             Working at larger scale or need a full content infrastructure audit?{" "}
-            <Link href="/content-services" className="underline hover:text-ecm-green">
+            <Link href="/content-services" className="underline hover:text-heading">
               Full service range
             </Link>
           </p>
@@ -631,9 +631,9 @@ export default async function HomePage() {
       </section>
 
       {/* ─── LATEST INSIGHTS (Blog) ─── */}
-      <section className="relative py-20 bg-white">
+      <section className="relative py-20 bg-surface">
         <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-ecm-green font-barlow font-bold text-3xl lg:text-4xl text-center mb-16">
+          <h2 className="text-heading font-barlow font-bold text-3xl lg:text-4xl text-center mb-16">
             LATEST INSIGHTS
           </h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
@@ -641,20 +641,20 @@ export default async function HomePage() {
               <Link
                 key={post._id || i}
                 href={`/post/${post.slug?.current || post.slug}`}
-                className="bg-white rounded-xl overflow-hidden border border-gray-100 hover:shadow-lg shadow-sm transition-shadow group flex flex-col"
+                className="bg-surface rounded-xl overflow-hidden border border-surface-border hover:shadow-lg shadow-sm transition-shadow group flex flex-col"
               >
-                <div className="h-36 overflow-hidden bg-ecm-green/5 flex items-center justify-center border-b border-gray-100">
+                <div className="h-36 overflow-hidden bg-ecm-green/5 flex items-center justify-center border-b border-surface-border">
                   <PostIllustration
                     slug={post.slug?.current || post.slug}
                     mainImage={post.mainImage}
                   />
                 </div>
-                <div className="p-4 flex flex-col flex-1 bg-gray-50">
-                  <h3 className="text-ecm-green font-barlow font-semibold text-sm mb-2 group-hover:text-ecm-green-dark transition-colors leading-snug">
+                <div className="p-4 flex flex-col flex-1 bg-surface-alt">
+                  <h3 className="text-heading font-barlow font-semibold text-sm mb-2 group-hover:opacity-80 transition-opacity leading-snug">
                     {post.title}
                   </h3>
                   {post.publishedAt && (
-                    <p className="text-ecm-gray text-xs">
+                    <p className="text-ink-muted text-xs">
                       {new Date(post.publishedAt).toLocaleDateString("en-GB", {
                         year: "numeric",
                         month: "long",
@@ -678,9 +678,9 @@ export default async function HomePage() {
       </section>
 
       {/* ─── LEARN MORE ─── */}
-      <section className="relative py-20 bg-gray-50">
+      <section className="relative py-20 bg-surface-alt">
         <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-ecm-green font-barlow font-bold text-3xl lg:text-4xl text-center mb-16">
+          <h2 className="text-heading font-barlow font-bold text-3xl lg:text-4xl text-center mb-16">
             LEARN MORE
           </h2>
           <LearnMoreSection items={learnMoreItems} />
@@ -711,20 +711,20 @@ export default async function HomePage() {
           overflow:hidden. */}
       <div className="bg-ecm-green" style={{ lineHeight: 0 }}>
         <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" style={{ display: "block", width: "100%", height: "auto" }}>
-          <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="#ffffff" />
+          <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="var(--color-surface)" />
         </svg>
       </div>
 
       {/* ─── WHY ECM.DEV ─── */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-surface">
         <div className="max-w-2xl mx-auto px-6 text-center">
-          <h2 className="text-ecm-green font-barlow font-bold text-3xl lg:text-4xl mb-6">
+          <h2 className="text-heading font-barlow font-bold text-3xl lg:text-4xl mb-6">
             {whyEcmDev.heading}
           </h2>
-          <p className="text-ecm-gray-dark text-base leading-relaxed mb-6">
+          <p className="text-ink text-base leading-relaxed mb-6">
             {whyEcmDev.body}
           </p>
-          <p className="text-ecm-green font-barlow font-semibold text-base leading-relaxed">
+          <p className="text-heading font-barlow font-semibold text-base leading-relaxed">
             {whyEcmDev.closingLine}
           </p>
         </div>

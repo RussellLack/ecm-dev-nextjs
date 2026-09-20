@@ -73,6 +73,24 @@ export const metadata: Metadata = {
 
 const GTM_ID = "GTM-M7DKTZKC";
 const STORAGE_KEY = "ecm-cookie-consent";
+const THEME_STORAGE_KEY = "ecm-theme";
+
+/**
+ * Applies a stored light/dark choice before first paint, so there's no
+ * flash of the wrong theme. No stored choice (or "system") leaves
+ * data-theme unset, and the CSS prefers-color-scheme rule in globals.css
+ * takes over — see components/ThemeToggle.tsx for the write side.
+ */
+const themeInitScript = `
+(function() {
+  try {
+    var stored = localStorage.getItem('${THEME_STORAGE_KEY}');
+    if (stored === 'light' || stored === 'dark') {
+      document.documentElement.setAttribute('data-theme', stored);
+    }
+  } catch (e) {}
+})();
+`;
 
 /**
  * Inline script content for GTM initialisation.
@@ -138,6 +156,15 @@ export default async function RootLayout({
 
   return (
         <html lang="en" className={barlow.variable}>
+          {/* Applies any stored light/dark choice before paint — must run
+              ahead of the GTM script's own beforeInteractive injection so
+              the theme is set before anything renders. */}
+                <Script
+                          id="theme-init"
+                          strategy="beforeInteractive"
+                          nonce={nonce}
+                          dangerouslySetInnerHTML={{ __html: themeInitScript }}
+                        />
           {/*
                     GTM loader — strategy="beforeInteractive" injects this into <head>
                     before any page JS runs. Must live in a Server Component (this file);
