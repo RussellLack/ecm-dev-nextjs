@@ -26,17 +26,17 @@ const services = [
   {
     name: "Content Operations",
     href: "/content-services",
-    blurb: "Governance, ownership and workflow run as a standing function.",
+    blurb: "Content that has an owner, a workflow, and someone accountable for keeping it that way.",
   },
   {
     name: "Content Technology",
     href: "/content-technology",
-    blurb: "CMS architecture and integration that turns your platform into an asset.",
+    blurb: "Your CMS, your platforms, and the data connecting them, run as one system instead of three separate problems.",
   },
   {
     name: "Content Localisation",
     href: "/content-localization",
-    blurb: "Multilingual delivery at scale, without the cost creep.",
+    blurb: "Multilingual content that holds up under AI-assisted translation, checked continuously, not once a year.",
   },
 ];
 
