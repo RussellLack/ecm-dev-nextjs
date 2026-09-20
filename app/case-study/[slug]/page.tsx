@@ -9,6 +9,7 @@ import RelatedContent from "@/components/RelatedContent";
 import MixedRelated from "@/components/MixedRelated";
 import CaseStudyIllustration from "@/components/case-study/CaseStudyIllustration";
 import JsonLd from "@/components/JsonLd";
+import { TagChip } from "@/components/TagChip";
 import { internalLinkHref } from "@/lib/internalLink";
 import { caseStudySchema } from "@/lib/structuredData";
 import { INDUSTRY_OPTIONS } from "@/sanity/schemas/taxonomyOptions";
@@ -87,12 +88,6 @@ const portableTextComponents: PortableTextComponents = {
 };
 
 export const revalidate = 3600;
-
-const tagColors: Record<string, string> = {
-  "Content Localization": "bg-blue-100 text-blue-800",
-  "Content Technology": "bg-purple-100 text-purple-800",
-  "Content Services": "bg-green-100 text-green-800",
-};
 
 export async function generateStaticParams() {
   const slugs = await getAllCaseStudySlugs().catch(() => []);
@@ -202,14 +197,7 @@ export default async function CaseStudyDetailPage({
           {cs.tags && cs.tags.length > 0 && (
             <div className="flex flex-wrap gap-2 mb-6">
               {cs.tags.map((tag: string) => (
-                <span
-                  key={tag}
-                  className={`${
-                    tagColors[tag] || "bg-white/15 text-white"
-                  } text-xs font-barlow font-medium px-3 py-1 rounded-full`}
-                >
-                  {tag}
-                </span>
+                <TagChip key={tag} tag={tag} />
               ))}
             </div>
           )}
@@ -234,16 +222,17 @@ export default async function CaseStudyDetailPage({
         </div>
       </section>
 
-      {/* Featured illustration — sits between the dark hero and the body
-          content, full-width within the content column at the canonical
-          280x144 aspect ratio of the SVG. Sits below the wave divider
-          rather than overlapping it: the wave's curve isn't a straight
-          line (it dips much lower on the left third of the page than the
-          right), so a fixed negative margin pulling this card up would
-          clip through green at some horizontal position on a card this
-          wide, whatever the offset. */}
+      {/* Featured illustration — small decorative accent between the dark
+          hero and the body content, purely ornamental (no functional
+          role: it's a generated motif, not a diagram of the actual
+          engagement), so it's kept deliberately small rather than
+          full-width. Sits below the wave divider rather than overlapping
+          it: the wave's curve isn't a straight line (it dips much lower
+          on the left third of the page than the right), so a fixed
+          negative margin pulling this card up would clip through green
+          at some horizontal position, whatever the offset. */}
       <div className="max-w-4xl mx-auto px-6 mt-8 sm:mt-10 lg:mt-12 relative z-10">
-        <div className="rounded-2xl w-full shadow-lg bg-ecm-green/5 border border-gray-100 aspect-[280/144] overflow-hidden">
+        <div className="max-w-[220px] rounded-xl shadow-sm bg-ecm-green/5 border border-gray-100 aspect-[280/144] overflow-hidden">
           <CaseStudyIllustration slug={slug} />
         </div>
       </div>
@@ -362,12 +351,7 @@ export default async function CaseStudyDetailPage({
                     </p>
                     <div className="flex flex-wrap gap-1.5">
                       {cs.tags.map((tag: string) => (
-                        <span
-                          key={tag}
-                          className="bg-ecm-green/10 text-ecm-green text-xs font-barlow font-medium px-2.5 py-1 rounded-full"
-                        >
-                          {tag}
-                        </span>
+                        <TagChip key={tag} tag={tag} />
                       ))}
                     </div>
                   </div>

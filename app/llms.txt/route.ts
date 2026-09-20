@@ -80,7 +80,7 @@ export async function GET() {
     "",
     "> Content infrastructure for the AI enterprise. We design the operating systems, governance frameworks, and structured workflows that turn content into a reliable, AI-ready asset.",
     "",
-    "ECM.DEV is an independent consultancy working with organisations on Enterprise Content Management, headless CMS platforms, content operations and content localisation. Our three service pillars are Content Technology (platform selection, CMS implementation, integrations), Content Services (governance, migration, editorial operations) and Content Localization (multilingual publishing, translation workflows, in-market content).",
+    "ECM.DEV is an independent consultancy working with organisations on Enterprise Content Management, headless CMS platforms, content operations and content localisation. Our three service pillars are Content Technology (CMS architecture, platform and analytics integration, a Content Audit diagnostic), Content Operations (governance, ownership, workflow, lifecycle) and Content Localization (multilingual publishing, AI-assisted translation QA, in-market content).",
     "",
     section("Core pages", null, [
       link("/", "Home", "Overview of ECM.DEV's positioning, services and case studies."),
@@ -88,9 +88,9 @@ export async function GET() {
       link("/contact", "Contact", "Start a conversation about a project or engagement."),
     ]),
     section("Services", null, [
-      link("/content-technology", "Content Technology", "Headless CMS selection, implementation, integrations and platform strategy."),
-      link("/content-services", "Content Services", "Content operations, governance, editorial workflows and migration."),
-      link("/content-localization", "Content Localization", "Multilingual content, translation operations and in-market publishing."),
+      link("/content-technology", "Content Technology", "CMS architecture, platform and analytics integration, and the Content Audit diagnostic."),
+      link("/content-services", "Content Operations", "Governance, ownership, workflow and lifecycle, run as a standing function."),
+      link("/content-localization", "Content Localization", "Multilingual content, AI-assisted translation QA and in-market publishing."),
     ]),
     section("Platforms", null, [
       link("/platforms", "Platform library", "Headless CMS platforms and DXP components we implement, with capability notes."),

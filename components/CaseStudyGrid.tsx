@@ -2,19 +2,34 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { TagChip, PILLAR_TAG_COLORS } from "@/components/TagChip";
+import { INDUSTRY_OPTIONS } from "@/sanity/schemas/taxonomyOptions";
 
-const tagColors: Record<string, string> = {
-  "Content Localization": "bg-blue-100 text-blue-800",
-  "Content Technology": "bg-purple-100 text-purple-800",
-  "Content Services": "bg-green-100 text-green-800",
-};
+// Cards never show the real client name (anonymised by design), the
+// subtitle uses the industry taxonomy instead.
+const INDUSTRY_LABEL: Record<string, string> = Object.fromEntries(
+  INDUSTRY_OPTIONS.map((o) => [o.value, o.title])
+);
+
+// The filter bar shows only the 3 pillars, not the much larger set of
+// free-text industry/technique tags stored on each case study (those still
+// render as descriptive chips on the cards below). Matching is done against
+// the `pillars` slug field, not `tags`, since most case studies carry a
+// pillars value without the matching literal string in tags.
+const PILLARS: { slug: string; title: string }[] = [
+  { slug: "technology", title: "Content Technology" },
+  { slug: "services", title: "Content Operations" },
+  { slug: "localization", title: "Content Localization" },
+];
 
 interface CaseStudy {
   _id?: string;
   title: string;
   slug: { current: string };
   client: string;
+  industry?: string;
   tags?: string[];
+  pillars?: string[];
   description: string;
 }
 
@@ -23,49 +38,46 @@ export default function CaseStudyGrid({
 }: {
   caseStudies: CaseStudy[];
 }) {
-  const [activeTag, setActiveTag] = useState<string | null>(null);
+  const [activePillar, setActivePillar] = useState<string | null>(null);
 
-  // Collect all unique tags from the data
-  const allTags = Array.from(
-    new Set(caseStudies.flatMap((cs) => cs.tags || []))
-  ).sort();
+  const pillarsWithCounts = PILLARS.map((p) => ({
+    ...p,
+    count: caseStudies.filter((cs) => cs.pillars?.includes(p.slug)).length,
+  })).filter((p) => p.count > 0);
 
-  const filtered = activeTag
-    ? caseStudies.filter((cs) => cs.tags?.includes(activeTag))
+  const filtered = activePillar
+    ? caseStudies.filter((cs) => cs.pillars?.includes(activePillar))
     : caseStudies;
 
   return (
     <>
-      {/* Tag filter bar */}
+      {/* Pillar filter bar */}
       <div className="flex flex-wrap gap-3 mb-12 justify-center">
         <button
-          onClick={() => setActiveTag(null)}
+          onClick={() => setActivePillar(null)}
           className={`text-sm font-barlow font-medium px-4 py-2 rounded-full transition-all ${
-            activeTag === null
+            activePillar === null
               ? "bg-ecm-green text-white shadow-md"
               : "bg-gray-100 text-gray-600 hover:bg-gray-200"
           }`}
         >
           All ({caseStudies.length})
         </button>
-        {allTags.map((tag) => {
-          const count = caseStudies.filter((cs) =>
-            cs.tags?.includes(tag)
-          ).length;
-          const isActive = activeTag === tag;
-          const colorClass = tagColors[tag] || "bg-gray-200 text-gray-700";
+        {pillarsWithCounts.map((p) => {
+          const isActive = activePillar === p.slug;
+          const colorClass = PILLAR_TAG_COLORS[p.title] || "bg-gray-200 text-gray-700";
 
           return (
             <button
-              key={tag}
-              onClick={() => setActiveTag(isActive ? null : tag)}
+              key={p.slug}
+              onClick={() => setActivePillar(isActive ? null : p.slug)}
               className={`text-sm font-barlow font-medium px-4 py-2 rounded-full transition-all ${
                 isActive
                   ? `${colorClass} shadow-md ring-2 ring-offset-1 ring-current`
                   : `${colorClass} hover:opacity-80`
               }`}
             >
-              {tag} ({count})
+              {p.title} ({p.count})
             </button>
           );
         })}
@@ -82,22 +94,17 @@ export default function CaseStudyGrid({
           >
             <div className="flex flex-wrap gap-2 mb-4">
               {cs.tags?.map((tag: string) => (
-                <span
-                  key={tag}
-                  className={`${
-                    tagColors[tag] || "bg-gray-200 text-gray-700"
-                  } text-xs font-barlow font-medium px-3 py-1 rounded-full`}
-                >
-                  {tag}
-                </span>
+                <TagChip key={tag} tag={tag} />
               ))}
             </div>
             <h3 className="text-ecm-lime font-barlow font-bold text-xl mb-2 group-hover:text-white transition-colors">
               {cs.title}
             </h3>
-            <p className="text-white/60 text-sm font-medium mb-3">
-              {cs.client}
-            </p>
+            {cs.industry && (
+              <p className="text-white/60 text-sm font-medium mb-3">
+                {INDUSTRY_LABEL[cs.industry] ?? cs.industry}
+              </p>
+            )}
             <p className="text-white/70 text-sm leading-relaxed line-clamp-3">
               {cs.description}
             </p>

@@ -5,7 +5,7 @@
 
 export const PILLAR_OPTIONS = [
   { title: "Content Technology", value: "technology" },
-  { title: "Content Services", value: "services" },
+  { title: "Content Operations", value: "services" },
   { title: "Content Localization", value: "localization" },
 ] as const;
 

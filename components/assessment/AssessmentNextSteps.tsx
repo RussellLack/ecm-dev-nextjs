@@ -9,6 +9,13 @@ import { getAssessmentsByPillar } from "@/lib/assessment/queries";
 import GuideIllustration from "@/components/guides/GuideIllustration";
 import CaseStudyIllustration from "@/components/case-study/CaseStudyIllustration";
 import PostIllustration from "@/components/post/PostIllustration";
+import { INDUSTRY_OPTIONS } from "@/sanity/schemas/taxonomyOptions";
+
+// Cards never show the real client name (anonymised by design), the
+// subtitle uses the industry taxonomy instead.
+const INDUSTRY_LABEL: Record<string, string> = Object.fromEntries(
+  INDUSTRY_OPTIONS.map((o) => [o.value, o.title])
+);
 
 type Pillar = "technology" | "services" | "localization";
 
@@ -20,9 +27,9 @@ const PILLAR_META: Record<Pillar, { title: string; href: string; blurb: string }
       "Architecture, CMS / DAM / DXP selection, MarTech integration, and findability.",
   },
   services: {
-    title: "Content Services",
+    title: "Content Operations",
     href: "/content-services",
-    blurb: "Workflow design, governance, calendar, training, and measurement.",
+    blurb: "Governance, ownership, workflow, and lifecycle, run as a standing function.",
   },
   localization: {
     title: "Content Localization",
@@ -197,7 +204,10 @@ export default async function AssessmentNextSteps({
                 key={cs._id}
                 href={`/case-study/${cs.slug?.current}`}
                 title={cs.title}
-                subtitle={cs.client || cs.description}
+                subtitle={
+                  (cs.industry && (INDUSTRY_LABEL[cs.industry] ?? cs.industry)) ||
+                  cs.description
+                }
                 /* image omitted — illustration always wins for case studies */
                 fallback={<CaseStudyIllustration slug={cs.slug?.current} />}
               />

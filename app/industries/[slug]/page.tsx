@@ -120,9 +120,6 @@ export default async function IndustryDetailPage({
                     <h2 className="text-ecm-green font-barlow font-semibold text-sm leading-snug mb-2 group-hover:text-ecm-green-dark transition-colors line-clamp-2">
                       {cs.title}
                     </h2>
-                    {cs.client && (
-                      <p className="text-ecm-gray text-xs mb-2">{cs.client}</p>
-                    )}
                     {cs.description && (
                       <p className="text-ecm-gray text-xs leading-relaxed line-clamp-3">
                         {cs.description}

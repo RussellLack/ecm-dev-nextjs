@@ -90,7 +90,7 @@ export async function getServiceHero(category: string) {
 // Case studies
 export async function getCaseStudies() {
   return sanityFetch(`*[_type == "caseStudy"] | order(order asc){
-    title, slug, client, tags, description, image
+    title, slug, client, industry, tags, pillars, description, image
   }`);
 }
 
@@ -98,7 +98,7 @@ export async function getCaseStudies() {
 export async function getFeaturedCaseStudies(limit = 6) {
   return sanityFetch(
     `*[_type == "caseStudy" && featured == true] | order(featuredOrder asc, order asc)[0...$limit]{
-      _id, title, slug, client, tags, description, image, featuredTagline,
+      _id, title, slug, client, industry, tags, description, image, featuredTagline,
       "imageWidth": image.asset->metadata.dimensions.width
     }`,
     { limit }
@@ -501,7 +501,7 @@ export async function getOneRelatedCaseStudy({
         count((tags[])[@ in $tags]) > 0
       )]
       | order(count((pillars[])[@ in $pillars]) desc, order asc)[0]{
-        _id, title, slug, client, description, image
+        _id, title, slug, client, industry, description, image
       }`,
     { excludeSlug, pillars, tags }
   );
@@ -599,7 +599,7 @@ export async function getContentForPlatform(tagAliases: string[]) {
     sanityFetch<any[]>(
       `*[_type == "caseStudy" && count((tags[])[@ in $aliases]) > 0]
         | order(order asc)[0...4]{
-        _id, title, slug, client, description, image
+        _id, title, slug, client, industry, description, image
       }`,
       { aliases: tagAliases }
     ).catch(() => []),

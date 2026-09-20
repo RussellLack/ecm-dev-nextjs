@@ -24,9 +24,9 @@ const solutions = [
 
 const services = [
   {
-    name: "Content Services",
+    name: "Content Operations",
     href: "/content-services",
-    blurb: "Editorial, production and governance run as a managed operation.",
+    blurb: "Governance, ownership and workflow run as a standing function.",
   },
   {
     name: "Content Technology",

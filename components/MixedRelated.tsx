@@ -10,6 +10,13 @@ import { findOneIntelTopicForTags } from "@/lib/intel/queries";
 import GuideIllustration from "@/components/guides/GuideIllustration";
 import CaseStudyIllustration from "@/components/case-study/CaseStudyIllustration";
 import PostIllustration from "@/components/post/PostIllustration";
+import { INDUSTRY_OPTIONS } from "@/sanity/schemas/taxonomyOptions";
+
+// Cards never show the real client name (anonymised by design), the
+// blurb uses the industry taxonomy instead.
+const INDUSTRY_LABEL: Record<string, string> = Object.fromEntries(
+  INDUSTRY_OPTIONS.map((o) => [o.value, o.title])
+);
 
 type Doctype = "post" | "guide" | "caseStudy" | "assessment" | "intelTopic";
 
@@ -97,7 +104,9 @@ export default async function MixedRelated({
       href: `/case-study/${caseStudy.slug.current}`,
       eyebrow: EYEBROW.caseStudy,
       title: caseStudy.title,
-      blurb: caseStudy.client || caseStudy.description,
+      blurb:
+        (caseStudy.industry && (INDUSTRY_LABEL[caseStudy.industry] ?? caseStudy.industry)) ||
+        caseStudy.description,
       // image intentionally omitted — illustration always wins for case studies.
       fallback: <CaseStudyIllustration slug={caseStudy.slug.current} />,
     });
