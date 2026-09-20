@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 
 export const revalidate = 3600;
 
@@ -32,8 +33,11 @@ const sections = [
   },
 ];
 
+// The other two slots are held here for when they're filled in, but
+// only members with a name render (see the filter below) — hides them
+// without losing the slots.
 const team = [
-  { name: "Russell Lack", role: "Founder", initials: "RL" },
+  { name: "Russell Lack", role: "Project Lead", initials: "RL", photo: "/team/russell-lack.png" },
   { name: "", role: "", initials: "" },
   { name: "", role: "", initials: "" },
 ];
@@ -105,33 +109,35 @@ export default function AboutPage() {
           <h2 className="text-heading font-barlow font-bold text-xl sm:text-2xl leading-snug mb-6 text-center">
             Who's doing the work
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            {team.map((member, i) =>
-              member.name ? (
+          <div className="flex flex-wrap justify-center gap-4">
+            {team
+              .filter((member) => member.name)
+              .map((member, i) => (
                 <div
                   key={i}
-                  className="bg-surface rounded-xl border border-surface-border p-5 text-center"
+                  className="w-full sm:w-48 bg-surface rounded-xl border border-surface-border p-5 text-center"
                 >
-                  <div className="w-12 h-12 mx-auto rounded-full bg-ecm-green text-ecm-lime font-barlow font-bold flex items-center justify-center text-sm mb-3">
-                    {member.initials}
-                  </div>
+                  {member.photo ? (
+                    <div className="relative w-20 h-20 mx-auto rounded-full overflow-hidden mb-3">
+                      <Image
+                        src={member.photo}
+                        alt={member.name}
+                        fill
+                        sizes="80px"
+                        className="object-cover"
+                      />
+                    </div>
+                  ) : (
+                    <div className="w-12 h-12 mx-auto rounded-full bg-ecm-green text-ecm-lime font-barlow font-bold flex items-center justify-center text-sm mb-3">
+                      {member.initials}
+                    </div>
+                  )}
                   <p className="text-heading font-barlow font-semibold text-sm">
                     {member.name}
                   </p>
                   <p className="text-ink-muted text-xs">{member.role}</p>
                 </div>
-              ) : (
-                <div
-                  key={i}
-                  className="rounded-xl border border-dashed border-surface-border p-5 text-center flex flex-col items-center justify-center"
-                >
-                  <div className="w-12 h-12 rounded-full border border-dashed border-surface-border flex items-center justify-center text-ink-muted text-lg mb-3">
-                    +
-                  </div>
-                  <p className="text-ink-muted text-xs">Open</p>
-                </div>
-              )
-            )}
+              ))}
           </div>
         </div>
       </section>
