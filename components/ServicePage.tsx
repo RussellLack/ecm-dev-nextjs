@@ -1,7 +1,39 @@
 import Link from "next/link";
 import type { ServicePageData } from "@/lib/serviceTypes";
 
+/* The closing CTA band used to be one hardcoded button ("Take the Content
+   Operations Maturity Assessment") regardless of which pillar page it
+   rendered on, and regardless of what the Sanity ctaUrl field for that
+   pillar actually pointed to (the label text never read from data at
+   all). Content Technology and Content Localisation each have their own
+   dedicated self-serve tool that was losing every visibility contest to
+   the flagship assessment on their own pages. Made code-owned per pillar,
+   same reasoning as ContentAuditTiers and the homepage's howItWorks: this
+   is a commercial routing decision, not CMS copy. See
+   docs/SERVICE-CLARITY-AUDIT-2026-09-20.md. */
+const PILLAR_CTA: Record<
+  ServicePageData["category"],
+  { text: string; label: string; url: string }
+> = {
+  technology: {
+    text: "See exactly what a CMS or platform migration would cost, and what it would save.",
+    label: "Open the CMS Implementation Cost Estimator",
+    url: "/assessment/cms-implementation",
+  },
+  services: {
+    text: "Score your content operation across six dimensions and see where it needs to go.",
+    label: "Take the Content Operations Maturity Assessment",
+    url: "/assessment/content-operations-maturity",
+  },
+  localization: {
+    text: "See exactly where your multilingual content spend is going, and what an AI-native operating model could recover.",
+    label: "Open the Localisation Cost Estimator",
+    url: "/assessment/localisation-cost",
+  },
+};
+
 export default function ServicePage({ data }: { data: ServicePageData }) {
+  const pillarCta = PILLAR_CTA[data.category];
   const paragraphs = (data.problemIntro ?? "").split(/\n{2,}/).filter(Boolean);
   const [leadParagraph, ...restParagraphs] = paragraphs;
 
@@ -160,10 +192,10 @@ export default function ServicePage({ data }: { data: ServicePageData }) {
                   </div>
                 )}
                 <Link
-                  href={`/contact?service=${encodeURIComponent(pkg.title)}`}
+                  href={pkg.href || `/contact?service=${encodeURIComponent(pkg.title)}`}
                   className="mt-auto inline-block bg-ecm-lime text-ecm-green font-barlow font-semibold text-sm px-6 py-2 rounded-full hover:bg-ecm-lime-hover transition-colors self-start"
                 >
-                  Start a conversation →
+                  {pkg.href ? "Try it now →" : "Start a conversation →"}
                 </Link>
               </article>
             ))}
@@ -187,19 +219,15 @@ export default function ServicePage({ data }: { data: ServicePageData }) {
           </svg>
         </div>
         <div className="max-w-3xl mx-auto px-6 text-center">
-          {data.ctaText && (
-            <p className="text-white/80 font-barlow text-base sm:text-lg leading-relaxed mb-8">
-              {data.ctaText}
-            </p>
-          )}
-          {data.ctaUrl && (
-            <Link
-              href={data.ctaUrl}
-              className="inline-block bg-ecm-lime text-ecm-green font-barlow font-bold text-base sm:text-lg px-8 py-4 rounded-full hover:bg-ecm-lime-hover transition-colors"
-            >
-              Take the Content Operations Maturity Assessment →
-            </Link>
-          )}
+          <p className="text-white/80 font-barlow text-base sm:text-lg leading-relaxed mb-8">
+            {pillarCta.text}
+          </p>
+          <Link
+            href={pillarCta.url}
+            className="inline-block bg-ecm-lime text-ecm-green font-barlow font-bold text-base sm:text-lg px-8 py-4 rounded-full hover:bg-ecm-lime-hover transition-colors"
+          >
+            {pillarCta.label} →
+          </Link>
         </div>
       </section>
     </>

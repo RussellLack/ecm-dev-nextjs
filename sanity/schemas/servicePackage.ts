@@ -46,6 +46,15 @@ export default defineType({
       initialValue: "LEARN MORE",
     }),
     defineField({
+      name: "href",
+      title: "Direct link (optional)",
+      description:
+        "Send this package's button straight to a self-serve tool (e.g. /assessment/localisation-cost) instead of the default /contact enquiry link. Leave empty for packages that only make sense as a conversation.",
+      type: "url",
+      validation: (rule) =>
+        rule.uri({ allowRelative: true, scheme: ["http", "https"] }),
+    }),
+    defineField({
       name: "order",
       title: "Display Order",
       type: "number",

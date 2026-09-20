@@ -36,7 +36,7 @@ const fallbackData: ServicePageData = {
   ctaText: "",
   ctaUrl: "",
   packages: [
-    { title: "Localisation Cost Estimator", description: "A scoped, honest estimate of what your localisation actually costs, before you commit to a vendor or a platform.", features: [], order: 1 },
+    { title: "Localisation Cost Estimator", description: "A scoped, honest estimate of what your localisation actually costs, before you commit to a vendor or a platform.", features: [], order: 1, href: "/assessment/localisation-cost" },
     { title: "Managed Multilingual Content", description: "Ongoing quality assurance across every language you publish in, catching drift and AI-translation errors as new content lands, not once a year.", features: [], order: 2 },
     { title: "Multilingual SEO", description: "hreflang, keyword localisation, and metadata translation, audited and fixed.", features: [], order: 3 },
     { title: "Translation Workflow Setup", description: "Tooling configured against your CMS so multilingual publishing doesn't require a manual handoff every time.", features: [], order: 4 },

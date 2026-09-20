@@ -612,7 +612,8 @@ export const getServicePageQuery = `
       title,
       description,
       features,
-      order
+      order,
+      href
     }
   }
 `;
