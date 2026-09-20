@@ -192,7 +192,7 @@ function mapRecommendations(
     for (const rec of matching.slice(0, 2)) {
       const categoryToHref: Record<string, string> = {
         technology: "/content-technology",
-        services: "/content-services",
+        services: "/content-operations",
         localization: "/content-localization",
       };
 

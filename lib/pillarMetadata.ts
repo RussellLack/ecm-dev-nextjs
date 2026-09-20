@@ -4,7 +4,7 @@ import { urlFor } from "@/lib/sanity";
 
 /**
  * Shared metadata builder for the three pillar landing pages
- * (/content-services, /content-technology, /content-localization).
+ * (/content-operations, /content-technology, /content-localization).
  * Resolves the editor-managed `seo` object first, falls back to the
  * service hero content from Sanity, then to a static safety net.
  */

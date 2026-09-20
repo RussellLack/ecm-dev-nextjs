@@ -3,6 +3,10 @@ export type ServicePackage = {
   description: string;
   features: string[];
   order: number;
+  /** Direct link to a self-serve tool (e.g. the Localisation Cost
+   * Estimator), when this package has one. Falls back to a /contact
+   * link when empty. */
+  href?: string;
 };
 
 export type ServicePageData = {

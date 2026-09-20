@@ -57,7 +57,7 @@ export default async function ResultsPage({
   const mappedRecs: Recommendation[] = [];
   const categoryToHref: Record<string, string> = {
     technology: "/content-technology",
-    services: "/content-services",
+    services: "/content-operations",
     localization: "/content-localization",
   };
 

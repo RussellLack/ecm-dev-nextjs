@@ -79,11 +79,11 @@ export default function EstimatorForm({ inputs, onChange, onReset }: Props) {
           label="AI maturity"
           value={inputs.maturity}
           options={[
-            { value: 0, label: "L0 — no AI" },
-            { value: 1, label: "L1 — ad-hoc AI" },
-            { value: 2, label: "L2 — systematic MT+PE" },
-            { value: 3, label: "L3 — AI creation + translation" },
-            { value: 4, label: "L4 — fully AI-native" },
+            { value: 0, label: "L0: no AI" },
+            { value: 1, label: "L1: ad-hoc AI" },
+            { value: 2, label: "L2: systematic MT+PE" },
+            { value: 3, label: "L3: AI creation + translation" },
+            { value: 4, label: "L4: fully AI-native" },
           ]}
           onChange={(v) => onChange({ maturity: v as MaturityLevel })}
         />
@@ -101,7 +101,7 @@ export default function EstimatorForm({ inputs, onChange, onReset }: Props) {
         />
       </Group>
 
-      <Group title="Friction signals (0–3)">
+      <Group title="Friction signals (0 to 3)">
         <RangeRow
           label="Rework frequency"
           value={inputs.rework}
@@ -183,8 +183,8 @@ export default function EstimatorForm({ inputs, onChange, onReset }: Props) {
 
 function Group({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <section className="mb-5 last:mb-0">
-      <h2 className="mb-3 border-b border-surface-border pb-2 text-[11px] font-bold uppercase tracking-[0.16em] text-ink-muted">
+    <section className="mb-7 last:mb-0">
+      <h2 className="mb-4 border-b border-surface-border pb-2.5 text-xs font-bold uppercase tracking-[0.14em] text-ink-muted">
         {title}
       </h2>
       {children}
@@ -204,7 +204,7 @@ interface RangeRowProps {
 
 function RangeRow({ label, value, min, max, step, onChange, format }: RangeRowProps) {
   return (
-    <div className="mb-2 flex items-center justify-between gap-3 text-sm">
+    <div className="mb-3.5 flex items-center justify-between gap-4 text-[15px]">
       <label className="flex-1 text-ink">{label}</label>
       <div className="flex items-center gap-2.5">
         <input
@@ -214,9 +214,9 @@ function RangeRow({ label, value, min, max, step, onChange, format }: RangeRowPr
           step={step}
           value={value}
           onChange={(e) => onChange(parseFloat(e.target.value))}
-          className="w-[140px] accent-ecm-green"
+          className="w-[150px] accent-ecm-green"
         />
-        <span className="min-w-[80px] text-right text-[13px] tabular-nums text-ink">
+        <span className="min-w-[76px] text-right text-sm tabular-nums text-ink">
           {format(value)}
         </span>
       </div>
@@ -238,7 +238,7 @@ function NumberRow({
   onChange: (v: number) => void;
 }) {
   return (
-    <div className="mb-2 flex items-center justify-between gap-3 text-sm">
+    <div className="mb-3.5 flex items-center justify-between gap-4 text-[15px]">
       <label className="flex-1 text-ink">{label}</label>
       <input
         type="number"
@@ -246,7 +246,7 @@ function NumberRow({
         max={max}
         value={value}
         onChange={(e) => onChange(parseInt(e.target.value, 10) || 0)}
-        className="w-[100px] rounded-md border border-surface-border bg-surface px-2 py-1 text-right text-sm text-ink focus:border-heading focus:outline-none"
+        className="w-[110px] rounded-md border border-surface-border bg-surface px-2.5 py-1.5 text-right text-sm text-ink focus:border-heading focus:outline-none"
       />
     </div>
   );
@@ -266,7 +266,7 @@ function SelectRow<T extends string | number>({
   onChange,
 }: SelectRowProps<T>) {
   return (
-    <div className="mb-2 flex items-center justify-between gap-3 text-sm">
+    <div className="mb-3.5 flex items-center justify-between gap-4 text-[15px]">
       <label className="flex-1 text-ink">{label}</label>
       <select
         value={value}
@@ -275,7 +275,7 @@ function SelectRow<T extends string | number>({
           const first = options[0].value;
           onChange((typeof first === "number" ? parseInt(raw, 10) : raw) as T);
         }}
-        className="w-[220px] rounded-md border border-surface-border bg-surface px-2 py-1 text-sm text-ink focus:border-heading focus:outline-none"
+        className="w-[230px] rounded-md border border-surface-border bg-surface px-2.5 py-1.5 text-sm text-ink focus:border-heading focus:outline-none"
       >
         {options.map((opt) => (
           <option key={String(opt.value)} value={opt.value}>
@@ -291,7 +291,7 @@ function SumCheck({ total }: { total: number }) {
   const ok = Math.abs(total - 1) < 0.01;
   return (
     <div
-      className={`mt-2.5 border-t border-dashed border-surface-border pt-1.5 text-xs ${
+      className={`mt-3 border-t border-dashed border-surface-border pt-2 text-[13px] ${
         ok ? "text-ink-muted" : "text-red-600"
       }`}
     >

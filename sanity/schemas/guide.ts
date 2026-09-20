@@ -60,7 +60,7 @@ export default defineType({
       name: "pillars",
       title: "Service Pillars",
       description:
-        "Which service pillar(s) this guide supports. Drives cross-linking from /content-technology, /content-services, /content-localization.",
+        "Which service pillar(s) this guide supports. Drives cross-linking from /content-technology, /content-operations, /content-localization.",
       type: "array",
       of: [{ type: "string" }],
       options: { list: [...PILLAR_OPTIONS] },

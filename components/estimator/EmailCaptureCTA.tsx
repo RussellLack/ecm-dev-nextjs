@@ -73,7 +73,7 @@ export default function EmailCaptureCTA({ inputs, result }: Props) {
   if (view === "sent") {
     return (
       <div className="rounded-xl border border-heading/30 bg-ecm-green/5 px-5 py-4 font-barlow text-sm text-heading-dark">
-        Thanks — we&apos;ve got it. We&apos;ll be in touch when the full breakdown is ready and
+        Thanks, we&apos;ve got it. We&apos;ll be in touch when the full breakdown is ready and
         when the next model refresh ships material changes.
       </div>
     );

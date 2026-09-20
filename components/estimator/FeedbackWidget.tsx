@@ -99,13 +99,13 @@ export default function FeedbackWidget({ inputs, result }: Props) {
 
       {error && (
         <div className="mt-2.5 font-barlow text-sm text-red-600">
-          Could not save feedback — {error}
+          Could not save feedback: {error}
         </div>
       )}
 
       {submitted && (
         <div className="mt-2.5 font-barlow text-sm text-heading">
-          Thanks — your feedback will help refine the next version of the model.
+          Thanks. Your feedback will help refine the next version of the model.
         </div>
       )}
 
@@ -117,7 +117,7 @@ export default function FeedbackWidget({ inputs, result }: Props) {
             value={comment}
             onChange={(e) => setComment(e.target.value)}
             onBlur={handleCommentBlur}
-            placeholder="Optional — where did we miss it?"
+            placeholder="Optional: where did we miss it?"
             className="w-full rounded-md border border-surface-border bg-surface px-3 py-2 font-barlow text-sm text-ink focus:border-heading focus:outline-none"
           />
           <div className="mt-1 text-right font-barlow text-[11px] text-ink-muted">
@@ -128,7 +128,7 @@ export default function FeedbackWidget({ inputs, result }: Props) {
 
       <div className="mt-3.5 font-barlow text-[11px] leading-relaxed text-ink-muted">
         Your feedback is anonymous. We store your input profile and your reaction to help
-        improve the model — nothing that identifies you or your organisation.{" "}
+        improve the model, nothing that identifies you or your organisation.{" "}
         <a href="/methodology#feedback-loop" className="underline hover:text-heading">
           How we use this.
         </a>

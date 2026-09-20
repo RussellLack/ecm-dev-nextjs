@@ -1,6 +1,6 @@
 // Shared taxonomy option lists. Values must stay in sync with route slugs:
 //   technology   -> /content-technology
-//   services     -> /content-services
+//   services     -> /content-operations
 //   localization -> /content-localization
 
 export const PILLAR_OPTIONS = [

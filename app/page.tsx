@@ -3,12 +3,12 @@ import Link from "next/link";
 import Image from "next/image";
 import ContactForm from "@/components/ContactForm";
 import AuditRequestForm from "@/components/AuditRequestForm";
-import LearnMoreSection from "@/components/LearnMoreSection";
 import LavaBlobs from "@/components/LavaBlobs";
 import PostIllustration from "@/components/post/PostIllustration";
 import FeaturedCaseStudies from "@/components/FeaturedCaseStudies";
 import { getHomePage, getBlogPosts, getFeaturedCaseStudies } from "@/lib/queries";
 import { urlFor } from "@/lib/sanity";
+import { isAuditOfferOpen } from "@/lib/auditOffer";
 
 export const revalidate = 3600;
 
@@ -16,19 +16,20 @@ export async function generateMetadata(): Promise<Metadata> {
   const home = await getHomePage().catch(() => null);
   const seo = home?.seo || {};
 
-  // Title and description are literal, not Sanity-overridable: this copy
-  // is specified in full by the outbound-stack repositioning brief and
-  // must render as written, not be silently shadowed by a pre-rewrite
-  // seo.metaTitle/metaDescription value still sitting in Sanity. Same
-  // reasoning as offerLadder below — brief-specified copy goes through
-  // code review, not a CMS edit.
-  const title = "ECM.DEV: Pipeline Infrastructure for B2B Marketing Teams";
+  // Title and description are literal, not Sanity-overridable: this is the
+  // three-pillar content infrastructure positioning (see
+  // docs/CONTENT-PILLARS-POSITIONING.md and
+  // docs/SERVICE-CLARITY-AUDIT-2026-09-20.md), and must render as written,
+  // not be silently shadowed by a pre-rewrite seo.metaTitle/metaDescription
+  // value still sitting in Sanity. Same reasoning as howItWorks below —
+  // agreed positioning copy goes through code review, not a CMS edit.
+  const title = "ECM.DEV: Content Infrastructure for the AI Enterprise";
   const description =
-    "ECM.DEV builds the lists, tools, and landing flows that turn leads into pipeline, for inbound and outbound marketing. Hands-on, fixed scope, fast.";
+    "ECM.DEV designs the CMS architecture, governance, and multilingual operations that make content something AI, and your own buyers, can find, trust and reuse. Fixed-scope engagements, clear pricing.";
 
-  const ogTitle = "ECM.DEV: We build what turns leads into pipeline.";
+  const ogTitle = "ECM.DEV: Content Infrastructure for the AI Enterprise";
   const ogDescription =
-    "Lists, tools, and landing flows for inbound and outbound marketing. Hands-on, fixed scope, fast. You own everything we build.";
+    "Content Technology, Content Operations, and Content Localisation, run as one system instead of three separate problems.";
 
   const ogImage = seo.ogImage
     ? urlFor(seo.ogImage).width(1200).height(630).fit("crop").crop("center").url()
@@ -57,70 +58,56 @@ export async function generateMetadata(): Promise<Metadata> {
 /* ─── Static fallback data (used when Sanity fields are empty) ─── */
 
 const fallbackHero = {
-  heading: "Pipeline infrastructure for B2B marketing teams.",
-  body: "The gap between interest and a booked meeting is where most pipeline is lost. ECM.DEV builds the layer that closes it: clean prospect lists, qualification tools, landing flows, CRM workflows and the content structure underneath them.",
+  heading: "Content infrastructure for the AI enterprise.",
+  body: "Most organisations already have a CMS, a content team, and years of content running through both. What's usually missing is the operating system underneath: the architecture, the governance, and the workflow that make it something AI, and your own buyers, can actually find, trust, and reuse.\n\nWe work across three pillars: Content Technology (your CMS and platforms), Content Operations (governance, ownership, workflow), and Content Localisation (multilingual content at AI speed).",
   supportingLine:
-    "Outbound, inbound, campaigns and content, connected to the CRM that has to record the result.",
+    "Content-heavy organisations get a structural audit, not a subscription tool.",
 };
 
-/* Merged "six symptoms" + "what we build" into one paired list: each row
-   states the pipeline leak, then the specific thing ECM.DEV builds to close
-   it. Five rows, not six, because the former opens-but-no-replies and
-   landing-page symptoms are the same underlying gap (no structured path
-   from click to meeting) and share one fix (landing flows). Replaces two
-   separate card grids with one causal list, so the page states the problem
-   and the fix as a single claim instead of asking the visitor to connect
-   them across two sections. */
-const pipelineFixes = [
+/* Three pillars, same wording used in the nav (components/Header.tsx's
+   `services` array) and on each pillar's own page, so a visitor reads one
+   consistent description of each pillar wherever they meet it. See
+   docs/CONTENT-PILLARS-POSITIONING.md and
+   docs/SERVICE-CLARITY-AUDIT-2026-09-20.md. */
+const pillars = [
   {
-    problem: "Opens don't turn into replies, and clicks don't turn into meetings.",
-    fix: "Landing flows",
-    description:
-      "Multi-step landing experiences that turn a campaign click into structured intent: message, questions, scoring logic, routing and CRM handoff.",
+    title: "Content Technology",
+    href: "/content-technology",
+    blurb:
+      "Your CMS, your platforms, and the data connecting them, run as one system instead of three separate problems.",
+    entry: "Starts with a Content Audit.",
   },
   {
-    problem: "Meetings get booked with people nothing qualified first.",
-    fix: "Interactive qualification tools",
-    description:
-      "Assessments, calculators and scorecards that tell a buyer something useful about their own problem while telling you whether they fit.",
+    title: "Content Operations",
+    href: "/content-operations",
+    blurb:
+      "Content that has an owner, a workflow, and someone accountable for keeping it that way.",
+    entry: "Starts with a governance assessment.",
   },
   {
-    problem: "Your list is leaking budget before any campaign runs.",
-    fix: "Prospect list engines",
-    description:
-      "Clean, targeted account and contact lists, built with research logic, enrichment, verification and QA. Lists your team can work from without checking them first.",
-  },
-  {
-    problem: "Campaign signal dies in an inbox instead of reaching the CRM.",
-    fix: "CRM-connected workflows",
-    description:
-      "Campaign activity wired into HubSpot, Salesforce, Pipedrive and the tools you already run, so nothing waits in an inbox and no signal is lost.",
-  },
-  {
-    problem: "Your content isn't doing a job in the pipeline.",
-    fix: "Content and AI operations",
-    description:
-      "Messaging, proof, FAQs, case studies and metadata structured so people and AI systems can both use it. AI-ready content is work someone has done, not a property of the tool.",
+    title: "Content Localisation",
+    href: "/content-localization",
+    blurb:
+      "Multilingual content that holds up under AI-assisted translation, checked continuously, not once a year.",
+    entry: "Starts with the Localisation Cost Estimator.",
   },
 ];
 
-/* AI Content Readiness Audit strip. Copy is kept as literal constants for the
-   same reason the offer ladder below is: this section carries a hard language
+/* Content Audit strip. Copy is kept as literal constants for the same
+   reason howItWorks below is: this section carries a hard language
    guardrail (no certification, guarantee or attestation wording, and no implied
    promise that a client's AI is safe or compliant), and that is enforced in
-   code review, not in a CMS edit. The audit itself is detailed on
-   /content-services; this strip is the homepage door into it. */
-/* Introductory offer cutoff: 00:00 UTC on 1 October 2026, so the whole of
-   30 September is covered in Irish and UK time. Compared at render time; the
-   page carries `revalidate = 3600`, so the switch to the paid framing lands
-   within an hour of the cutoff rather than on the stroke of it. */
-const AUDIT_OFFER_ENDS = Date.UTC(2026, 9, 1);
-
+   code review, not in a CMS edit. This is the same Content Audit priced in
+   ContentAuditTiers (shared across all three pillar pages) and belongs
+   primarily to Content Technology; this strip is the homepage door into it.
+   Previously labelled "AI Content Readiness Audit" here while every pillar
+   page called the identical product "Content Audit" — one name now, see
+   docs/SERVICE-CLARITY-AUDIT-2026-09-20.md. */
 const auditStrip = {
-  eyebrow: "AI Content Readiness Audit",
+  eyebrow: "Content Audit",
   headline: "Can AI systems find, trust and reuse your content?",
   /* Condensed to two lines for the homepage strip (the full four-line
-     version lives in /content-services); keeps the buyer-behaviour framing
+     version lives on /content-technology); keeps the buyer-behaviour framing
      and the payoff question without the extra stacked lines. */
   subhead: [
     "Your buyers are already asking AI tools about vendors, problems and options.",
@@ -159,8 +146,8 @@ const auditStrip = {
   /* Introductory offer, time-bound rather than count-bound so the claim can be
      enforced here instead of depending on someone remembering to edit it. The
      five-at-a-time line is a capacity condition, not the scarcity device: the
-     deadline is what closes the offer. Once AUDIT_OFFER_ENDS passes, the strip
-     renders `paidOffer` below and the badge disappears. */
+     deadline is what closes the offer. Once the offer window (lib/auditOffer.ts)
+     closes, the strip renders `paidOffer` below and the badge disappears. */
   introOffer: {
     badge: "Free for audits requested before 30 September",
     heading: "Why this one is free",
@@ -169,75 +156,65 @@ const auditStrip = {
   },
   /* Shown automatically once the introductory offer closes. No price here by
      design; the homepage strip exists to start a conversation, and the tiers
-     and figures live on /content-services. */
+     and figures live on /content-technology (Content Audit's home pillar;
+     ContentAuditTiers is shared across all three pillar pages). */
   paidOffer: {
     heading: "What this costs",
     body: "This is a paid engagement, scoped to the size of your content estate. Tell us what you are running and we will come back with a scope and a price before any work starts.",
     caveat: "Findings and recommended remediation, delivered as a professional opinion you can act on or argue with.",
-    linkLabel: "See the full service range",
-    linkUrl: "/content-services",
+    linkLabel: "See the Content Audit tiers",
+    linkUrl: "/content-technology",
   },
   formIntro: "Tell us where to send it. We reply personally, not with an automated report.",
   confirmation: "Thanks, we'll be in touch within one business day.",
 };
 
-/* Three-step offer ladder. Kept as literal constants rather than
-   Sanity-sourced: engagement pricing should go through code review, not a
-   CMS edit. Replaces the former ecm-agent engagement tiers — see
-   app/content-services/page.tsx's auditTiers for where that content lives now. */
-const offerLadder = [
+/* How an engagement starts, for each of the three pillars. Kept as literal
+   constants rather than Sanity-sourced: agreed positioning copy should go
+   through code review, not a CMS edit. Mirrors the "priced, bounded
+   onboarding deliverable first, managed package as the sales objective"
+   mechanic in docs/CONTENT-PILLARS-POSITIONING.md, without inventing figures
+   for the two managed packages that doc leaves open. */
+const howItWorks = [
   {
     step: "01",
-    title: "Free assessment",
-    tagline: "Find where your pipeline is leaking.",
-    subtitle: "Five minutes. No sales call, no email gate on the result.",
-    body: "Score your outbound, content and conversion operation across six dimensions. You get a readout of what is slowing the journey from first touch to qualified opportunity, and what to fix first. Not a maturity model, a practical order of work.",
+    title: "Start with a diagnostic",
+    tagline: "A Content Audit, a governance assessment, or the Localisation Cost Estimator.",
+    subtitle: "Whichever pillar you start with, fixed scope, fixed price.",
+    body: "ecm-agent scans your actual content estate rather than relying on self-reporting. A written finding either way: something you can act on, or argue with.",
     ctaLabel: "Take the free assessment",
     ctaUrl: "/assessments",
   },
   {
     step: "02",
-    title: "Fixed-scope build",
-    tagline: "Build one useful piece of the system.",
-    subtitle: "From EUR 1,500. Delivered in one to two weeks.",
-    body: "Pick one problem and we build it: a clean prospect list for a single target segment, a scored assessment or calculator, a campaign landing flow, a CRM-connected follow-up workflow, or a content structure your AI tools can actually use. Fixed price, fixed scope, and you own everything we build.",
-    ctaLabel: "Talk about a first build",
+    title: "See the findings in writing",
+    tagline: "A report you can act on, or argue with.",
+    subtitle: "Real findings from your actual estate, not a self-assessment questionnaire.",
+    body: "A live readout with the person who wrote it, not a generated PDF. If the findings aren't useful, say so, we part on good terms: no obligation either way.",
+    ctaLabel: "Talk to us directly",
     ctaUrl: "/contact",
   },
   {
     step: "03",
-    title: "Retained pipeline engineering",
-    tagline: "Keep the system improving every month.",
-    subtitle: "Monthly. Cancel anytime.",
-    body: "For teams that want a hands-on build partner. We refresh lists, improve flows, build new campaign assets, maintain the CRM connections, review conversion data and keep the content layer usable. Hands-on work every month, not a report that describes progress instead of making it.",
-    ctaLabel: "Talk about a retainer",
+    title: "Turn it into a managed package",
+    tagline: "Or don't. Both are a legitimate outcome.",
+    subtitle: "The diagnostic cost credits toward a managed package if you sign within the window.",
+    body: "Ongoing work on your CMS, your operating model, or your multilingual content, depending on which pillar you started with. The diagnostic proves there is a problem worth fixing. The managed package is where the fix actually happens.",
+    ctaLabel: "Talk about a managed package",
     ctaUrl: "/contact",
   },
 ];
 
 /* Closing section, immediately above the contact form. Placed last, after
    the proof section, so it reads as the closing argument rather than an
-   opener: by this point the visitor has seen the problem, the build, the
+   opener: by this point the visitor has seen the pillars, the audit, the
    offer, and the evidence. */
 const whyEcmDev = {
   heading: "Why ecm.dev?",
-  body: "We build the missing layer between marketing activity and sales pipeline. Modern B2B marketing is not just a content problem. And it is not only a CRM problem. It is a systems problem. Your data, content, tools, landing pages, workflows and AI experiments all need to work together. That is what we build.",
+  body: "Most agencies own the content. Most platform consultancies own the CMS. Few own both, which is exactly where content actually breaks: the technology, the operating model, and the language it has to work in, treated as one connected system instead of three separate vendors.",
   closingLine:
-    "ECM.DEV is the hands-on partner for B2B teams that want their marketing stack to produce cleaner leads, better conversations and stronger pipeline.",
+    "ECM.DEV is the practice for organisations that need their content to hold up under AI, not just look right to a person scrolling past it.",
 };
-
-const fallbackLearnMore = [
-  { title: "Sales and Marketing Sync-Up", subtitle: "Streamlining Shared Content for Bigger Wins" },
-  { title: "The Content Efficiency Playbook", subtitle: "Reduce Production Time, Increase Output" },
-  { title: "Automated Content Creation", subtitle: "Scaling Creativity Through AI-Driven Tools" },
-  { title: "Interactive Content Development", subtitle: "Engaging Audiences Through Innovation" },
-  { title: "Enhanced Personalization Techniques", subtitle: "Enhanced Personalization" },
-  { title: "Integration of AI Recommendations", subtitle: "Personalization and Engagement Strategies" },
-  { title: "Future Trends in AI-Driven Marketing", subtitle: "Exploring Innovations & Opportunities" },
-  { title: "Emphasis on Human Centric Content", subtitle: "Building Connections in a Digital Age" },
-  { title: "Compliance & Data Privacy Management", subtitle: "Ensuring Trust and Transparency in AI-Driven Marketing" },
-  { title: "Smarter AI Content Decisions", subtitle: "From content models to content pipelines" },
-];
 
 const fallbackBlogPosts = [
   { title: "Kentico CMS Cadence Cuts Migration Risk", date: "Sep 16, 2025", slug: "kentico-cadence-cuts-migration-risk" },
@@ -261,31 +238,25 @@ function formatDate(dateString: string): string {
 
 /* Fallback ticker phrases (used when Sanity tickerPhrases is empty). */
 const fallbackTicker = [
-  "A Calendly link is not a conversion layer.",
-  "Your list is only as good as the data in it.",
-  "Content that does not convert is overhead.",
-  "The gap between the email and the meeting is where pipeline leaks.",
-  "Build it once. Let it qualify for you.",
-  "Stack-agnostic. Scope-fixed. Hands-on.",
-  "More meetings from the same outbound volume.",
-  "Your CRM is only as useful as what feeds it.",
+  "Content infrastructure for the AI enterprise.",
+  "A CMS is a system. Treat it like one.",
+  "AI doesn't fix content. It finds out how bad it already was.",
   "Structured content converts. Unstructured content costs.",
-  "The tool is not the problem. The layer around it is.",
-  "List build is infrastructure, not admin.",
-  "We built the assessments on this site. We can build yours.",
-  "Cold outreach works. The landing page after it usually does not.",
-  "Fixed scope. Fast delivery. You own everything.",
+  "Governance is not a document nobody reads.",
+  "An audit is evidence, not an opinion.",
+  "Findable, trustable, reusable, or none of it works.",
+  "The technology, the operating model, the language. One system.",
+  "Multilingual content that holds up, not just translates.",
   "Content is infrastructure now.",
-  "Faster pipeline starts upstream.",
+  "Fixed scope. Fixed price. A written finding either way.",
   "Every market should not cost more than the last.",
-  "Velocity without structure is just noise.",
 ];
 
 /* ─── Page Component ─── */
 
 export default async function HomePage() {
-  // Is the introductory (free) audit offer still open? See AUDIT_OFFER_ENDS.
-  const auditOfferOpen = Date.now() < AUDIT_OFFER_ENDS;
+  // Is the introductory (free) audit offer still open? See lib/auditOffer.ts.
+  const auditOfferOpen = isAuditOfferOpen();
   const auditOffer = auditOfferOpen ? auditStrip.introOffer : auditStrip.paidOffer;
 
   // Fetch Sanity data in parallel
@@ -303,9 +274,6 @@ export default async function HomePage() {
   const heroBody = fallbackHero.body;
   const heroSupportingLine = fallbackHero.supportingLine;
 
-  const learnMoreItems =
-    homePage?.learnMoreItems?.length ? homePage.learnMoreItems : fallbackLearnMore;
-
   // Hero buttons
   const heroCtaPrimaryLabel = homePage?.heroCta?.primaryLabel || "Start with the free assessment";
   const heroCtaPrimaryUrl = homePage?.heroCta?.primaryUrl || "/assessments";
@@ -313,13 +281,12 @@ export default async function HomePage() {
   const heroCtaSecondaryLabel = homePage?.heroCta?.secondaryLabel || "See the work";
   const heroCtaSecondaryUrl = homePage?.heroCta?.secondaryUrl || "/case-study";
 
-  // Pipeline-fixes section headings (merged former "six symptoms" +
-  // "what we build" sections into one problem/fix list; see pipelineFixes).
-  const pipelineFixesHeading =
-    homePage?.symptomsHeading || "Where pipeline leaks, and what we build to fix it.";
-  const pipelineFixesSubhead =
+  // Three-pillars section headings.
+  const pillarsHeading =
+    homePage?.symptomsHeading || "Three pillars, one operating system.";
+  const pillarsSubhead =
     homePage?.symptomsSubhead ||
-    "Any one of these is worth fixing. Here is exactly what closes each gap.";
+    "Content Technology, Content Operations, and Content Localisation. Start with whichever one hurts most.";
 
   // Ticker
   const tickerPhrases = homePage?.tickerPhrases?.length ? homePage.tickerPhrases : fallbackTicker;
@@ -395,69 +362,60 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ─── CONVERSION LAYER DIAGNOSIS ─── */}
+      {/* ─── DIAGNOSIS ─── */}
       <section className="py-20 bg-surface">
         <div className="max-w-3xl mx-auto px-6">
           <h2 className="text-heading font-barlow font-bold text-2xl sm:text-3xl leading-snug mb-6">
-            Your campaigns are not broken. The layer between them is.
+            Your CMS is not broken. The system around it is.
           </h2>
           <p className="text-ink text-base leading-relaxed mb-4">
-            Most B2B teams already have the parts: a website, a CRM, a few campaigns, some outbound tooling, several years of content, and usually some AI running on top of it. What they do not have is a reliable handoff from one part to the next.
-          </p>
-          <p className="text-ink text-base leading-relaxed mb-4">
-            So the right people click and then go quiet. Replies arrive and stall. Meetings get booked against opportunities nothing qualified first. The AI tools promise speed, then meet the content and the data as they actually are.
+            Most organisations already have the parts: a CMS, a content team, a translation process, and usually some AI running on top of all three. What they do not have is an operating system connecting them, so the CMS never quite does what it was bought to do, content has no clear owner once it is published, and every new market costs as much as the last one.
           </p>
           <p className="text-ink text-base leading-relaxed">
-            We engineer that handoff: the conversion layer that carries a prospect from the first sign of interest to an opportunity sales can genuinely work.
+            We find out which of the three areas is actually breaking. Then, if you want, we keep fixing it as a managed package, not a one-off report that goes out of date within a month.
           </p>
         </div>
       </section>
 
-      {/* ─── PIPELINE FIXES (merged former "six symptoms" + "what we build") ─── */}
+      {/* ─── THREE PILLARS ─── */}
       <section className="py-20 bg-surface">
-        <div className="max-w-4xl mx-auto px-6">
+        <div className="max-w-5xl mx-auto px-6">
           <h2 className="text-heading font-barlow font-bold text-3xl lg:text-4xl text-center mb-4">
-            {pipelineFixesHeading}
+            {pillarsHeading}
           </h2>
-          {pipelineFixesSubhead && (
+          {pillarsSubhead && (
             <p className="text-ink text-center text-base mb-12 max-w-2xl mx-auto">
-              {pipelineFixesSubhead}
+              {pillarsSubhead}
             </p>
           )}
-          <div className="flex flex-col gap-4">
-            {pipelineFixes.map((item, i) => (
-              <div
-                key={i}
-                className="bg-ecm-green rounded-xl p-6 sm:p-8 border border-ecm-lime/20 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-8"
+          <div className="grid md:grid-cols-3 gap-6">
+            {pillars.map((pillar) => (
+              <Link
+                key={pillar.href}
+                href={pillar.href}
+                className="group bg-ecm-green rounded-xl p-6 sm:p-8 border border-ecm-lime/20 flex flex-col hover:border-ecm-lime/50 transition-colors"
               >
-                <div className="sm:w-2/5">
-                  <span className="text-white/50 font-barlow font-semibold text-xs uppercase tracking-wide">
-                    The leak
-                  </span>
-                  <p className="text-white/90 text-sm sm:text-base leading-relaxed mt-1">
-                    {item.problem}
-                  </p>
-                </div>
-                <div className="hidden sm:block text-ecm-lime text-xl shrink-0" aria-hidden="true">
-                  &rarr;
-                </div>
-                <div className="sm:w-3/5">
-                  <h3 className="text-ecm-lime font-barlow font-semibold text-base sm:text-lg mb-1">
-                    {item.fix}
-                  </h3>
-                  <p className="text-white/85 text-sm leading-relaxed">
-                    {item.description}
-                  </p>
-                </div>
-              </div>
+                <h3 className="text-ecm-lime font-barlow font-bold text-lg sm:text-xl mb-2">
+                  {pillar.title}
+                </h3>
+                <p className="text-white/85 text-sm leading-relaxed mb-4 flex-1">
+                  {pillar.blurb}
+                </p>
+                <p className="text-ecm-lime/70 font-barlow font-semibold text-xs uppercase tracking-wide">
+                  {pillar.entry}
+                </p>
+                <span className="mt-4 inline-flex items-center gap-1 text-ecm-lime font-barlow font-semibold text-sm group-hover:gap-2 transition-all">
+                  See the service <span aria-hidden="true">&rarr;</span>
+                </span>
+              </Link>
             ))}
           </div>
           <div className="text-center mt-10">
             <Link
-              href="/problems/outbound-conversion"
+              href="/problems"
               className="inline-flex items-center gap-1 text-heading font-barlow font-semibold text-sm hover:opacity-80 transition-opacity"
             >
-              See how we fix it <span aria-hidden="true">&rarr;</span>
+              Not sure which one? See the problems we solve <span aria-hidden="true">&rarr;</span>
             </Link>
           </div>
         </div>
@@ -471,7 +429,7 @@ export default async function HomePage() {
               Featured work.
             </h2>
             <p className="text-ink text-center text-base mb-16 max-w-2xl mx-auto">
-              A closer look at outcomes across content technology, services and localisation.
+              A closer look at outcomes across content technology, operations and localisation.
             </p>
             <div className="mb-12">
               <FeaturedCaseStudies caseStudies={featuredCaseStudies} />
@@ -600,13 +558,13 @@ export default async function HomePage() {
       <section className="py-20 bg-surface">
         <div className="max-w-6xl mx-auto px-6">
           <h2 className="text-heading font-barlow font-bold text-3xl lg:text-4xl text-center mb-4">
-            Three ways to start. One path.
+            How it works.
           </h2>
           <p className="text-ink text-center text-base mb-16 max-w-2xl mx-auto">
-            Diagnose the leak, build the missing part, keep the system improving.
+            The same pattern for all three services: a fixed-price diagnostic first, then ongoing support to fix it properly, if that is worth doing.
           </p>
           <div className="grid md:grid-cols-3 gap-6 mb-6">
-            {offerLadder.map((step) => (
+            {howItWorks.map((step) => (
               <div
                 key={step.step}
                 className="relative bg-ecm-green rounded-xl p-6 sm:p-8 border border-ecm-lime/20 flex flex-col"
@@ -628,8 +586,8 @@ export default async function HomePage() {
             ))}
           </div>
           <p className="text-center text-ink text-xs">
-            Working at larger scale or need a full content infrastructure audit?{" "}
-            <Link href="/content-services" className="underline hover:text-heading">
+            Working at larger scale or need the full content infrastructure picture?{" "}
+            <Link href="/content-operations" className="underline hover:text-heading">
               Full service range
             </Link>
           </p>
@@ -680,16 +638,6 @@ export default async function HomePage() {
               READ MORE
             </Link>
           </div>
-        </div>
-      </section>
-
-      {/* ─── LEARN MORE ─── */}
-      <section className="relative py-20 bg-surface-alt">
-        <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-heading font-barlow font-bold text-3xl lg:text-4xl text-center mb-16">
-            LEARN MORE
-          </h2>
-          <LearnMoreSection items={learnMoreItems} />
         </div>
       </section>
 

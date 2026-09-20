@@ -27,23 +27,10 @@ export async function getHomePage() {
     "services": *[_type == "service"] | order(order asc){
       title, slug, category, summary
     },
-    learnMoreItems[]{title, subtitle},
     testimonials[]{name, role, quote, commentary},
     ctaHeading,
     ctaSubheading,
     seo
-  }`);
-}
-
-// /build landing page
-export async function getBuildPage() {
-  return sanityFetch(`*[_type == "buildPage"][0]{
-    hero, subheadline, primaryCTA, secondaryCTA,
-    problemsHeading, problemsSubheading, problems[],
-    deliverablesHeading, deliverables[],
-    howWeWorkHeading, steps[],
-    ctaHeading, ctaSubheading, ctaButtonLabel, ctaButtonUrl,
-    seo { title, description }
   }`);
 }
 
@@ -625,7 +612,8 @@ export const getServicePageQuery = `
       title,
       description,
       features,
-      order
+      order,
+      href
     }
   }
 `;

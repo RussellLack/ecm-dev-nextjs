@@ -84,12 +84,12 @@ export async function GET() {
     "",
     section("Core pages", null, [
       link("/", "Home", "Overview of ECM.DEV's positioning, services and case studies."),
-      link("/methodology", "Methodology", "How we run engagements: discovery, design, implementation, handover."),
+      link("/methodology", "Localisation Cost Estimator methodology", "The working paper behind the Localisation Cost Estimator: every coefficient, its source, and known limitations."),
       link("/contact", "Contact", "Start a conversation about a project or engagement."),
     ]),
     section("Services", null, [
       link("/content-technology", "Content Technology", "CMS architecture, platform and analytics integration, and the Content Audit diagnostic."),
-      link("/content-services", "Content Operations", "Governance, ownership, workflow and lifecycle, run as a standing function."),
+      link("/content-operations", "Content Operations", "Governance, ownership, workflow and lifecycle, run as a managed package."),
       link("/content-localization", "Content Localization", "Multilingual content, AI-assisted translation QA and in-market publishing."),
     ]),
     section("Platforms", null, [

@@ -36,12 +36,12 @@ export default function EstimatorClient() {
             Localisation Cost Estimator
           </h1>
           <p className="mx-auto max-w-2xl font-barlow text-lg text-white/80">
-            A diagnostic for content operations leaders in multilingual, multichannel environments —
+            A diagnostic for content operations leaders in multilingual, multichannel environments,
             surfacing the five cost layers that traditional calculators miss, and the AI-native
             operating model that could reshape them.
           </p>
           <div className="mt-5 inline-block rounded-full border border-ecm-lime/40 bg-ecm-green-dark/40 px-4 py-1.5 font-barlow text-xs text-white/80">
-            <strong className="text-ecm-lime">Research preview · {MODEL_VERSION}</strong> — based on
+            <strong className="text-ecm-lime">Research preview · {MODEL_VERSION}</strong>, based on
             public benchmarks and ECM.dev estimates, refined quarterly from user feedback
           </div>
         </div>
@@ -55,8 +55,8 @@ export default function EstimatorClient() {
       {/* Tool body */}
       <section className="bg-surface py-12 sm:py-16">
         <div className="mx-auto max-w-7xl px-6">
-          <main className="grid grid-cols-1 items-start gap-10 lg:grid-cols-[420px_1fr] lg:gap-12">
-            <aside className="rounded-2xl border border-surface-border bg-surface-alt p-6 lg:sticky lg:top-5">
+          <main className="grid grid-cols-1 items-start gap-10 lg:grid-cols-[460px_1fr] lg:gap-10">
+            <aside className="rounded-2xl border border-surface-border bg-surface-alt p-7 lg:sticky lg:top-5">
               <EstimatorForm inputs={inputs} onChange={handleChange} onReset={handleReset} />
             </aside>
 

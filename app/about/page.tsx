@@ -3,41 +3,54 @@ import Link from "next/link";
 
 export const revalidate = 3600;
 
-/* Hero and the four body sections below. The hero paragraph is the one
-   given verbatim in the placement review (the user's own words, moved
-   here per their own suggestion: "That should be the top of the About
-   page, not buried"). The four body sections are drafted copy, not
-   pre-approved — the review only outlined the four topics to cover
-   (background, build approach, differentiation, ownership), not the
-   actual sentences. */
+/* Hero, the founder line, the four body sections, and the ICP block below.
+   Rewritten off the three-pillar content infrastructure positioning (see
+   docs/CONTENT-PILLARS-POSITIONING.md and
+   docs/SERVICE-CLARITY-AUDIT-2026-09-20.md), replacing the earlier
+   "pipeline infrastructure for B2B marketing teams" narrative, which had
+   no presence anywhere else on the site (nav, the three pillar pages, case
+   studies and llms.txt all already spoke the pillar model). Kept as literal
+   constants for the same reason the homepage copy is: positioning goes
+   through code review, not a CMS edit. */
 const hero = {
-  heading: "We build the missing layer between marketing activity and sales pipeline.",
-  body: "Modern B2B marketing is not a content problem, or a CRM problem. It is a systems problem: your data, content, tools, landing pages, workflows and AI experiments all need to work together. That is what we build.",
+  heading: "Content infrastructure for the AI enterprise.",
+  body: "Most organisations already have a CMS, a content team, and content running in more than one language. What's usually missing is the operating system underneath: the architecture, the governance, and the workflow that make it something AI, and your own buyers, can actually find, trust, and reuse.",
+};
+
+const founder = {
+  heading: "One person's judgment, not an anonymous team.",
+  body: "ECM.DEV is Russell Lack's independent practice. Engagements aren't sub-contracted: the audit findings, the report, and the live readout come from the person who did the work, which is the point, not a staffing gap to be filled later.",
 };
 
 const sections = [
   {
-    title: "Content, systems, and commercial execution",
-    body: "ECM.DEV was built by people who have run content operations, integrated CRM systems, and been accountable for the pipeline number those systems were meant to produce. Most agencies own the content. Most RevOps consultants own the systems. Few have answered for both at once, which is exactly where pipeline breaks.",
+    title: "Three pillars, one operating system",
+    body: "Content Technology (your CMS, your platforms, and the data connecting them), Content Operations (governance, ownership, workflow, lifecycle), and Content Localisation (multilingual content at AI speed). Most consultancies specialise in one of these and treat the other two as someone else's problem. Content breaks at the seams between them, so we work across all three.",
   },
   {
-    title: "A build, not a retainer for advice",
-    body: "We do not hand over a strategy deck and leave the building to you. Every engagement produces something you can point at: a list, a tool, a landing flow, a workflow, a content structure. Fixed scope, fixed price, a defined delivery window. You own it once it ships.",
+    title: "A diagnostic first, in writing",
+    body: "Every engagement starts with a priced, bounded finding: a Content Audit, a governance assessment, or the Localisation Cost Estimator, depending on which pillar you start with. ecm-agent scans your actual estate rather than relying on self-reporting. Fixed scope, fixed price, a written finding either way, something you can act on or argue with.",
   },
   {
-    title: "Not an agency. Not a RevOps consultancy. Not a content shop.",
-    body: "Agencies sell campaigns, then move to the next brief. RevOps consultants sell process and platform configuration, rarely touching the content running through it. Content shops sell volume. ECM.DEV builds the piece of infrastructure sitting between whatever you have already bought and the pipeline number you are trying to hit.",
+    title: "Not a certification. Not a subscription tool.",
+    body: "This is advisory work: a professional opinion, delivered as a report and a live readout, not an automated score or a guarantee that your content is AI-safe or compliant. Where it makes sense to turn the fix into a managed package, the diagnostic's cost is credited toward it. Where it does not, the diagnostic still stands on its own.",
   },
   {
     title: "What you own when we are done",
-    body: "Everything: built in your stack, under your control, documented, not locked behind our subscription. If you never call us again, it keeps working. Most clients call anyway, for the next piece.",
+    body: "Everything: findings, roadmap, and any remediation work, documented and in your stack, not locked behind an ongoing subscription. Most clients keep the relationship going anyway, for the next audit cycle or the next pillar.",
   },
 ];
+
+const whoThisIsFor = {
+  heading: "Who this is for.",
+  body: "Content-heavy organisations, publishing, professional services, healthcare, financial services, higher education, running a mixed or non-Microsoft AI stack. Roughly the size where one person can approve a five-figure engagement without a procurement committee, and large enough that the problem is actually expensive. Based in the UK, working with UK and Ireland teams.",
+  notFor: "Probably not a fit: a Copilot-first stack already running Purview, an estate too small to produce a defensible finding, or a search for a certification or guarantee. Worth saying plainly rather than finding out on a call.",
+};
 
 export async function generateMetadata(): Promise<Metadata> {
   const title = "About ECM.DEV";
   const description =
-    "ECM.DEV builds the missing layer between marketing activity and sales pipeline, hands-on, fixed scope, and you own everything we build.";
+    "ECM.DEV is Russell Lack's independent practice for content infrastructure: Content Technology, Content Operations, and Content Localisation, run as one system.";
   return {
     title,
     description,
@@ -67,6 +80,18 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* ─── FOUNDER ─── */}
+      <section className="py-16 bg-surface-alt border-b border-surface-border">
+        <div className="max-w-3xl mx-auto px-6">
+          <h2 className="text-heading font-barlow font-bold text-xl sm:text-2xl leading-snug mb-3">
+            {founder.heading}
+          </h2>
+          <p className="text-ink text-base leading-relaxed">
+            {founder.body}
+          </p>
+        </div>
+      </section>
+
       {/* ─── BODY SECTIONS ─── */}
       <section className="py-20 bg-surface">
         <div className="max-w-3xl mx-auto px-6 space-y-16">
@@ -83,11 +108,26 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* ─── WHO THIS IS FOR ─── */}
+      <section className="py-16 bg-surface-alt border-t border-surface-border">
+        <div className="max-w-3xl mx-auto px-6">
+          <h2 className="text-heading font-barlow font-bold text-2xl sm:text-3xl leading-snug mb-4">
+            {whoThisIsFor.heading}
+          </h2>
+          <p className="text-ink text-base leading-relaxed mb-4">
+            {whoThisIsFor.body}
+          </p>
+          <p className="text-ink-muted text-sm leading-relaxed">
+            {whoThisIsFor.notFor}
+          </p>
+        </div>
+      </section>
+
       {/* ─── CLOSING CTA ─── */}
       <section className="bg-ecm-green py-20">
         <div className="max-w-2xl mx-auto px-6 text-center">
           <h2 className="text-white font-barlow font-bold text-3xl lg:text-4xl mb-6">
-            See where your own stack stands.
+            See where your own estate stands.
           </h2>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
