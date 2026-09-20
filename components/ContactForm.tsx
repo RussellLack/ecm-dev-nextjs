@@ -49,10 +49,10 @@ export default function ContactForm() {
         {/* Left: Contact Info */}
         <div>
           <h2 className="text-ecm-lime font-barlow font-bold text-2xl sm:text-3xl mb-4">
-            Tell us what you are running.
+            Tell us where it is breaking.
           </h2>
           <p className="text-white/85 font-barlow font-light text-sm sm:text-base leading-relaxed mb-8 max-w-md">
-            Describe your current outbound motion and where it is losing people. We will come back with a specific observation, not a proposal deck.
+            Which pillar, and what is not working: your CMS, your operating model, or your multilingual content. We reply personally, with a specific next step, not a proposal deck.
           </p>
           <a
             href="https://www.linkedin.com/company/ecm-dev"
@@ -65,9 +65,12 @@ export default function ContactForm() {
             </svg>
           </a>
           <div>
-            <button className="bg-ecm-lime text-ecm-green font-barlow font-semibold px-8 py-3 rounded-full hover:bg-ecm-lime-hover transition-colors">
+            <a
+              href="mailto:rl@ecm.dev"
+              className="inline-block bg-ecm-lime text-ecm-green font-barlow font-semibold px-8 py-3 rounded-full hover:bg-ecm-lime-hover transition-colors"
+            >
               EMAIL US
-            </button>
+            </a>
           </div>
         </div>
 
