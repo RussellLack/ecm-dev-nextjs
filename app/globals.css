@@ -13,6 +13,43 @@
   --ecm-gray: #6e6e6e;
   --ecm-gray-dark: #4a4b4d;
   --ecm-gray-light: #f5f5f5;
+
+  /* Theme-aware tokens for the site's "light" sections (bg-white /
+     bg-gray-50 today). The dark-green brand panels (bg-ecm-green,
+     text-ecm-lime, text-white/NN) are intentionally NOT theme-aware —
+     they're already dark and stay constant brand color in both themes,
+     the same way they read as one fixed "accent block" against the page
+     background today. Only the page's own light canvas inverts. */
+  --color-surface: #ffffff;
+  --color-surface-alt: #f9fafb;      /* was bg-gray-50 */
+  --color-surface-border: #f3f4f6;   /* was border-gray-100 */
+  --color-heading: var(--ecm-green);
+  --color-ink: var(--ecm-gray-dark);
+  --color-ink-muted: var(--ecm-gray);
+}
+
+/* Explicit dark choice (data-theme set by the theme toggle / init script). */
+:root[data-theme="dark"] {
+  --color-surface: #0f1a14;
+  --color-surface-alt: #17251c;
+  --color-surface-border: #26362c;
+  --color-heading: var(--ecm-lime);
+  --color-ink: #d4d4d8;
+  --color-ink-muted: #9a9aa0;
+}
+
+/* No explicit choice stored yet: follow the OS preference, live. Guarded
+   by :not([data-theme="light"]) so an explicit light choice always wins
+   even on a dark-preferring OS. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-surface: #0f1a14;
+    --color-surface-alt: #17251c;
+    --color-surface-border: #26362c;
+    --color-heading: var(--ecm-lime);
+    --color-ink: #d4d4d8;
+    --color-ink-muted: #9a9aa0;
+  }
 }
 
 html {
@@ -21,7 +58,9 @@ html {
 
 body {
   font-family: var(--font-barlow), 'Helvetica Neue', Arial, sans-serif;
-  color: var(--ecm-gray-dark);
+  color: var(--color-ink);
+  background-color: var(--color-surface);
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 /* Marquee animation for testimonials banner */

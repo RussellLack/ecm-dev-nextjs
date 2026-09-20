@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import ThemeToggle from "@/components/ThemeToggle";
 
 /* ── Menu data ─────────────────────────────────────────────── */
 
@@ -273,6 +274,8 @@ export default function Header() {
             Contact
           </Link>
 
+          <ThemeToggle />
+
           {/* CTA */}
           <Link
             href="/assessments"
@@ -282,20 +285,24 @@ export default function Header() {
           </Link>
         </nav>
 
-        {/* Mobile hamburger */}
-        <button
-          className="lg:hidden text-ecm-lime p-2 -mr-2"
-          onClick={() => setMobileOpen(!mobileOpen)}
-          aria-label="Toggle menu"
-        >
-          <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            {mobileOpen ? (
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            ) : (
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-            )}
-          </svg>
-        </button>
+        {/* Mobile: theme toggle sits next to the hamburger, not buried in
+            the menu — it's a quick-access preference, not navigation. */}
+        <div className="lg:hidden flex items-center gap-1">
+          <ThemeToggle />
+          <button
+            className="text-ecm-lime p-2 -mr-2"
+            onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label="Toggle menu"
+          >
+            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              {mobileOpen ? (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              ) : (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              )}
+            </svg>
+          </button>
+        </div>
       </div>
 
       {/* Lime accent line */}
