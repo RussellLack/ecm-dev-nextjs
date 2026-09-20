@@ -276,7 +276,7 @@ export default async function CaseStudyDetailPage({
                 {cs.whatWePropose && (
                   <div className="mt-10">
                     <h2 className="text-heading font-barlow font-bold text-2xl mb-3">
-                      What We Propose
+                      Our Approach
                     </h2>
                     <p className="text-ink leading-relaxed text-base lg:text-lg whitespace-pre-line">
                       {cs.whatWePropose}
@@ -287,7 +287,7 @@ export default async function CaseStudyDetailPage({
                 {cs.whyItMatters && (
                   <div className="mt-10">
                     <h2 className="text-heading font-barlow font-bold text-2xl mb-3">
-                      The Outcome
+                      Impact
                     </h2>
                     <p className="text-ink leading-relaxed text-base lg:text-lg whitespace-pre-line">
                       {cs.whyItMatters}
