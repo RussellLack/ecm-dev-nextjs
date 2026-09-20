@@ -16,20 +16,17 @@ export async function generateMetadata(): Promise<Metadata> {
   const home = await getHomePage().catch(() => null);
   const seo = home?.seo || {};
 
-  // Title and description are literal, not Sanity-overridable: this is the
-  // three-pillar content infrastructure positioning (see
-  // docs/CONTENT-PILLARS-POSITIONING.md and
-  // docs/SERVICE-CLARITY-AUDIT-2026-09-20.md), and must render as written,
-  // not be silently shadowed by a pre-rewrite seo.metaTitle/metaDescription
-  // value still sitting in Sanity. Same reasoning as howItWorks below —
-  // agreed positioning copy goes through code review, not a CMS edit.
-  const title = "ECM.DEV: Content Infrastructure for the AI Era";
+  // Title and description are literal, not Sanity-overridable: agreed
+  // positioning copy goes through code review, not a CMS edit, so it
+  // must render as written rather than be shadowed by a stale
+  // seo.metaTitle/metaDescription value still sitting in Sanity.
+  const title = "ECM.DEV: Fractional Content Operations and AI Readiness";
   const description =
-    "ECM.DEV designs the CMS architecture, governance, and multilingual operations that make content something AI, and your own buyers, can find, trust and reuse. Fixed-scope engagements, clear pricing.";
+    "ECM.DEV is a fractional content operations and AI-readiness service. Senior diagnosis, a working system, and ongoing ownership of it, without the salary or the ramp-up of an in-house hire.";
 
-  const ogTitle = "ECM.DEV: Content Infrastructure for the AI Era";
+  const ogTitle = "ECM.DEV: Fractional Content Operations and AI Readiness";
   const ogDescription =
-    "Content Technology, Content Operations, and Content Localisation, run as one system instead of three separate problems.";
+    "The alternative to building a content function in-house: senior diagnosis, a working system, and ongoing ownership of it, without the salary or the year it takes a new hire to get up to speed.";
 
   const ogImage = seo.ogImage
     ? urlFor(seo.ogImage).width(1200).height(630).fit("crop").crop("center").url()
@@ -58,10 +55,10 @@ export async function generateMetadata(): Promise<Metadata> {
 /* ─── Static fallback data (used when Sanity fields are empty) ─── */
 
 const fallbackHero = {
-  heading: "Content infrastructure for the AI era.",
-  body: "Most organisations already have a CMS, a content team, and years of content running through both. What's usually missing is the operating system underneath: the architecture, the governance, and the workflow that make it something AI, and your own buyers, can actually find, trust, and reuse.\n\nWe work across three pillars: Content Technology (your CMS and platforms), Content Operations (governance, ownership, workflow), and Content Localisation (multilingual content at AI speed).",
+  heading: "Content operations and AI readiness, without the hire.",
+  body: "We're a fractional content operations and AI-readiness service for mid-market and owner-managed businesses that have outgrown ad hoc content production and are weighing whether to build a content function in-house. Senior diagnosis, a working system, and ongoing ownership of it, without the salary, the management overhead, or the year it takes a new hire to get up to speed.\n\nWe work across three pillars: Content Technology (your CMS and platforms), Content Operations (governance, ownership, workflow), and Content Localisation (multilingual content at AI speed).",
   supportingLine:
-    "Content-heavy organisations get a structural audit, not a subscription tool.",
+    "Every engagement starts with a free assessment. No sales call, no email gate on the result.",
 };
 
 /* Three pillars, same wording used in the nav (components/Header.tsx's
@@ -211,9 +208,9 @@ const howItWorks = [
    offer, and the evidence. */
 const whyEcmDev = {
   heading: "Why ecm.dev?",
-  body: "Most agencies own the content. Most platform consultancies own the CMS. Few own both, which is exactly where content actually breaks: the technology, the operating model, and the language it has to work in, treated as one connected system instead of three separate vendors.",
+  body: "There are really only two ways most businesses solve this today: hire for it, or hand tasks to whoever's available and hope the pieces add up to something coherent. Both have a real cost. A hire means recruiting, management time, and months of ramp-up before you see the judgement you're paying for. Handing out tasks means no one owns the outcome, and whatever gets built has to be rebuilt the next time someone new picks it up.",
   closingLine:
-    "ECM.DEV is the practice for organisations that need their content to hold up under AI, not just look right to a person scrolling past it.",
+    "ECM.DEV is neither: a system that runs without needing to staff for it, the same judgement retained month to month rather than re-hired each time, and an AI-readiness score you could defend to your own board.",
 };
 
 const fallbackBlogPosts = [
@@ -238,18 +235,18 @@ function formatDate(dateString: string): string {
 
 /* Fallback ticker phrases (used when Sanity tickerPhrases is empty). */
 const fallbackTicker = [
-  "Content infrastructure for the AI era.",
-  "A CMS is a system. Treat it like one.",
-  "AI doesn't fix content. It finds out how bad it already was.",
-  "Structured content converts. Unstructured content costs.",
-  "Governance is not a document nobody reads.",
-  "An audit is evidence, not an opinion.",
-  "Findable, trustable, reusable, or none of it works.",
-  "The technology, the operating model, the language. One system.",
-  "Multilingual content that holds up, not just translates.",
-  "Content is infrastructure now.",
-  "Fixed scope. Fixed price. A written finding either way.",
-  "Every market should not cost more than the last.",
+  "Content operations, without the headcount.",
+  "Senior diagnosis. A working system. Ongoing ownership.",
+  "Not a hire. Not a freelancer. A retained system.",
+  "AI-readiness scored against evidence, not a search-visibility check in disguise.",
+  "Provenance, not certification.",
+  "The same judgement, retained month to month.",
+  "No fixed term. Step away when the system no longer needs us.",
+  "Every engagement starts with a free assessment.",
+  "A fixed-price build, then a monthly retained service.",
+  "The alternative to a year of ramp-up.",
+  "A system that runs without needing to staff for it.",
+  "An AI-readiness score you could defend to your own board.",
 ];
 
 /* ─── Page Component ─── */
