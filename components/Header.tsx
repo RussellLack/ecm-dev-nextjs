@@ -264,7 +264,7 @@ export default function Header() {
                 </ul>
               </div>
               <p className="border-t border-white/10 px-6 py-3.5 text-ecm-lime/90 text-xs font-barlow font-medium">
-                Fixed-scope engagements with clear pricing.
+                A fixed-price build, then a monthly retained service.
               </p>
             </div>
           </div>
