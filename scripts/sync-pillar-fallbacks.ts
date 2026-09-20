@@ -14,7 +14,6 @@
  *   npm run sync:pillars
  */
 
-import "dotenv/config";
 import { writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { createClient } from "@sanity/client";
