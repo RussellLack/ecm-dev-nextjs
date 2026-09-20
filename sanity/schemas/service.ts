@@ -1,4 +1,5 @@
 import { defineType, defineField } from "sanity";
+import { PILLAR_OPTIONS } from "./taxonomyOptions";
 
 export default defineType({
   name: "service",
@@ -23,11 +24,7 @@ export default defineType({
       title: "Category",
       type: "string",
       options: {
-        list: [
-          { title: "Content Technology", value: "technology" },
-          { title: "Content Services", value: "services" },
-          { title: "Content Localization", value: "localization" },
-        ],
+        list: [...PILLAR_OPTIONS],
       },
     }),
     defineField({

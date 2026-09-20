@@ -24,7 +24,7 @@ const PILLAR_HREF: Record<string, string> = {
 
 const PILLAR_TITLE: Record<string, string> = {
   technology: "Content Technology",
-  services: "Content Services",
+  services: "Content Operations",
   localization: "Content Localization",
 };
 

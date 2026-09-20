@@ -6,7 +6,7 @@ import Link from "next/link";
 const tagColors: Record<string, string> = {
   "Content Localization": "bg-blue-100 text-blue-800",
   "Content Technology": "bg-purple-100 text-purple-800",
-  "Content Services": "bg-green-100 text-green-800",
+  "Content Operations": "bg-green-100 text-green-800",
 };
 
 interface CaseStudy {

@@ -20,9 +20,9 @@ const PILLAR_META: Record<Pillar, { title: string; href: string; blurb: string }
       "Architecture, CMS / DAM / DXP selection, MarTech integration, and findability.",
   },
   services: {
-    title: "Content Services",
+    title: "Content Operations",
     href: "/content-services",
-    blurb: "Workflow design, governance, calendar, training, and measurement.",
+    blurb: "Governance, ownership, workflow, and lifecycle, run as a standing function.",
   },
   localization: {
     title: "Content Localization",

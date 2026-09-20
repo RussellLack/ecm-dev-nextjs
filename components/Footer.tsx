@@ -5,7 +5,7 @@ import { tagToSlug } from "@/lib/tags";
 
 const servicesLinks = [
   { name: "Content Technology", href: "/content-technology" },
-  { name: "Content Services", href: "/content-services" },
+  { name: "Content Operations", href: "/content-services" },
   { name: "Content Localization", href: "/content-localization" },
 ];
 
