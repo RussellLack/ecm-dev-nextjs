@@ -493,8 +493,12 @@ export default async function HomePage() {
           to ~120px into the section at some points along its width; pb-16
           wasn't enough clearance and the wave clipped into the form card's
           bottom edge. Compacting the form (see AuditRequestForm) does most
-          of the work; this is the safety margin on top of that. */}
-      <section id="audit-request" className="relative pt-16 pb-24 bg-ecm-green">
+          of the work; this is the safety margin on top of that.
+          pt-32: same issue at the top, the eyebrow/badge row that opens
+          this section has no padding of its own, so it needs full
+          clearance (the wave-divider SVG is now capped at its viewBox's
+          120px, see globals.css) rather than a partial safety margin. */}
+      <section id="audit-request" className="relative pt-32 pb-24 bg-ecm-green">
         {/* Wave divider: white → green (top) */}
         <div className="wave-divider wave-divider-top">
           <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">

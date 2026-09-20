@@ -91,6 +91,14 @@ body {
   display: block;
   width: 100%;
   height: auto;
+  /* Every wave-divider SVG shares the same 0 0 1440 120 viewBox. Without a
+     cap, height:auto scales with the section's full viewport width (not the
+     narrower max-w-* content column), so on wide screens the wave renders
+     taller than the viewBox's native 120px and, being position:absolute,
+     paints over whatever content sits just below the section's top/bottom
+     padding, however small that padding is. Capping at the viewBox's own
+     height keeps the wave bounded to its intended size everywhere. */
+  max-height: 120px;
 }
 
 /* Hero geometric shape animations — gentle oscillations */
