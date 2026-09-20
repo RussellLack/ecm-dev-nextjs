@@ -78,7 +78,7 @@ export async function GET() {
   const body = [
     "# ECM.DEV",
     "",
-    "> Content infrastructure for the AI enterprise. We design the operating systems, governance frameworks, and structured workflows that turn content into a reliable, AI-ready asset.",
+    "> Content infrastructure for the AI era. We design the operating systems, governance frameworks, and structured workflows that turn content into a reliable, AI-ready asset.",
     "",
     "ECM.DEV is an independent consultancy working with organisations on Enterprise Content Management, headless CMS platforms, content operations and content localisation. Our three service pillars are Content Technology (CMS architecture, platform and analytics integration, a Content Audit diagnostic), Content Operations (governance, ownership, workflow, lifecycle) and Content Localization (multilingual publishing, AI-assisted translation QA, in-market content).",
     "",

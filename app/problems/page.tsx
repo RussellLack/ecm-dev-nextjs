@@ -7,7 +7,7 @@ export const revalidate = 3600;
 export const metadata: Metadata = {
   title: "Problems We Solve | ECM.DEV",
   description:
-    "The problems enterprise marketing teams bring us: marketing that takes too long, AI that isn't delivering, localisation costs that keep growing, a CMS that isn't creating value, and teams working in silos.",
+    "The problems marketing teams bring us: marketing that takes too long, AI that isn't delivering, localisation costs that keep growing, a CMS that isn't creating value, and teams working in silos.",
   alternates: { canonical: "/problems" },
 };
 
@@ -23,7 +23,7 @@ const fallback: ProblemCard[] = [
   { title: "Marketing takes too long", slug: "marketing-takes-too-long", heroSubhead: "Every campaign waits on content that is briefed, chased, reworked, and approved by hand. The bottleneck is the workflow, not the team." },
   { title: "AI isn't delivering", slug: "ai-isnt-delivering", heroSubhead: "Pilots impressed but never scaled, and AI outputs are inconsistent. The cause is fragmented, ungoverned content." },
   { title: "Localisation costs keep growing", slug: "localisation-costs-keep-growing", heroSubhead: "Every new market costs more than the last, because source content was never built to be localised." },
-  { title: "Our CMS isn't creating value", slug: "our-cms-isnt-creating-value", heroSubhead: "The platform is rarely the problem. Without operational design, an enterprise CMS becomes an expensive container for chaos." },
+  { title: "Our CMS isn't creating value", slug: "our-cms-isnt-creating-value", heroSubhead: "The platform is rarely the problem. Without operational design, any CMS becomes an expensive container for chaos." },
   { title: "Our teams work in silos", slug: "our-teams-work-in-silos", heroSubhead: "Marketing, Product, Legal, and Comms duplicate work and recreate content nobody can find. That is a structural problem, not a communication one." },
 ];
 

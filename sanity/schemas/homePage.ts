@@ -116,7 +116,7 @@ export default defineType({
       type: "text",
       rows: 2,
       initialValue:
-        "Real outcomes from enterprise teams who fixed the operation underneath their content, not just the content itself.",
+        "Real outcomes from teams who fixed the operation underneath their content, not just the content itself.",
     }),
     defineField({
       name: "proofTiles",

@@ -13,7 +13,7 @@ export const revalidate = 3600;
    constants for the same reason the homepage copy is: positioning goes
    through code review, not a CMS edit. */
 const hero = {
-  heading: "Content infrastructure for the AI enterprise.",
+  heading: "Content infrastructure for the AI era.",
   body: "Most organisations already have a CMS, a content team, and content running in more than one language. What's usually missing is the operating system underneath: the architecture, the governance, and the workflow that make it something AI, and your own buyers, can actually find, trust, and reuse.",
 };
 

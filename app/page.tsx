@@ -23,11 +23,11 @@ export async function generateMetadata(): Promise<Metadata> {
   // not be silently shadowed by a pre-rewrite seo.metaTitle/metaDescription
   // value still sitting in Sanity. Same reasoning as howItWorks below —
   // agreed positioning copy goes through code review, not a CMS edit.
-  const title = "ECM.DEV: Content Infrastructure for the AI Enterprise";
+  const title = "ECM.DEV: Content Infrastructure for the AI Era";
   const description =
     "ECM.DEV designs the CMS architecture, governance, and multilingual operations that make content something AI, and your own buyers, can find, trust and reuse. Fixed-scope engagements, clear pricing.";
 
-  const ogTitle = "ECM.DEV: Content Infrastructure for the AI Enterprise";
+  const ogTitle = "ECM.DEV: Content Infrastructure for the AI Era";
   const ogDescription =
     "Content Technology, Content Operations, and Content Localisation, run as one system instead of three separate problems.";
 
@@ -58,7 +58,7 @@ export async function generateMetadata(): Promise<Metadata> {
 /* ─── Static fallback data (used when Sanity fields are empty) ─── */
 
 const fallbackHero = {
-  heading: "Content infrastructure for the AI enterprise.",
+  heading: "Content infrastructure for the AI era.",
   body: "Most organisations already have a CMS, a content team, and years of content running through both. What's usually missing is the operating system underneath: the architecture, the governance, and the workflow that make it something AI, and your own buyers, can actually find, trust, and reuse.\n\nWe work across three pillars: Content Technology (your CMS and platforms), Content Operations (governance, ownership, workflow), and Content Localisation (multilingual content at AI speed).",
   supportingLine:
     "Content-heavy organisations get a structural audit, not a subscription tool.",
@@ -238,7 +238,7 @@ function formatDate(dateString: string): string {
 
 /* Fallback ticker phrases (used when Sanity tickerPhrases is empty). */
 const fallbackTicker = [
-  "Content infrastructure for the AI enterprise.",
+  "Content infrastructure for the AI era.",
   "A CMS is a system. Treat it like one.",
   "AI doesn't fix content. It finds out how bad it already was.",
   "Structured content converts. Unstructured content costs.",
