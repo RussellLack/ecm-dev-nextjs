@@ -521,9 +521,9 @@ export const topicSlides: TopicSlides[] = [
     ],
   },
   {
-    title: "From Diagnostic to Standing Function",
-    subtitle: "How a bounded finding becomes an ongoing operating model",
-    slug: "from-diagnostic-to-standing-function",
+    title: "From Diagnostic to Managed Package",
+    subtitle: "How a bounded finding becomes an ongoing service",
+    slug: "from-diagnostic-to-managed-package",
     slides: [
       {
         heading: "Every Pillar Starts the Same Way",
@@ -547,7 +547,7 @@ export const topicSlides: TopicSlides[] = [
       {
         heading: "The Decision Point",
         points: [
-          { text: "After the findings land, it's a genuine choice: fix it yourselves, run it as a one-off project, or hand it to us as a standing function.", bold: false },
+          { text: "After the findings land, it's a genuine choice: fix it yourselves, run it as a one-off project, or hand it to us as an ongoing managed package.", bold: false },
         ],
       },
       {

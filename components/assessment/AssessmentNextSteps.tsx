@@ -29,7 +29,7 @@ const PILLAR_META: Record<Pillar, { title: string; href: string; blurb: string }
   services: {
     title: "Content Operations",
     href: "/content-operations",
-    blurb: "Governance, ownership, workflow, and lifecycle, run as a standing function.",
+    blurb: "Governance, ownership, workflow, and lifecycle, run as a managed package.",
   },
   localization: {
     title: "Content Localization",

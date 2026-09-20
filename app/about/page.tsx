@@ -33,7 +33,7 @@ const sections = [
   },
   {
     title: "Not a certification. Not a subscription tool.",
-    body: "This is advisory work: a professional opinion, delivered as a report and a live readout, not an automated score or a guarantee that your content is AI-safe or compliant. Where the fix is worth running as a standing function, the diagnostic's cost credits toward it. Where it isn't, the diagnostic still stands on its own.",
+    body: "This is advisory work: a professional opinion, delivered as a report and a live readout, not an automated score or a guarantee that your content is AI-safe or compliant. Where it makes sense to turn the fix into a managed package, the diagnostic's cost is credited toward it. Where it does not, the diagnostic still stands on its own.",
   },
   {
     title: "What you own when we are done",

@@ -89,7 +89,7 @@ export async function GET() {
     ]),
     section("Services", null, [
       link("/content-technology", "Content Technology", "CMS architecture, platform and analytics integration, and the Content Audit diagnostic."),
-      link("/content-operations", "Content Operations", "Governance, ownership, workflow and lifecycle, run as a standing function."),
+      link("/content-operations", "Content Operations", "Governance, ownership, workflow and lifecycle, run as a managed package."),
       link("/content-localization", "Content Localization", "Multilingual content, AI-assisted translation QA and in-market publishing."),
     ]),
     section("Platforms", null, [

@@ -17,7 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
     category: "services",
     fallbackTitle: "Content Operations",
     fallbackDescription:
-      "Governance, ownership, workflow, and lifecycle, run as a standing function, not a one-off report that goes stale in a month.",
+      "Governance, ownership, workflow, and lifecycle: ongoing work, not a one-off report that goes stale in a month.",
     canonical: "/content-operations",
   });
 }
@@ -29,7 +29,7 @@ const fallbackData: ServicePageData = {
   title: "Content Operations",
   category: "services",
   heroDescription:
-    "Content that has an owner, a workflow, and a reason it still exists. We diagnose where the operation breaks down, then run it with you as a standing function, governance, ownership, lifecycle, not a one-off report that goes stale in a month.",
+    "Content that has an owner, a workflow, and a reason it still exists. We find out where the operation breaks down. Then, if you want, we keep running it with you as a managed package: governance, ownership, and lifecycle, not a one-off report that goes stale in a month.",
   problemIntro: "",
   diagnosisItems: [],
   reframeStatement: "",

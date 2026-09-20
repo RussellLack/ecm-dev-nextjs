@@ -197,10 +197,10 @@ const howItWorks = [
   },
   {
     step: "03",
-    title: "Run it as a standing function",
+    title: "Turn it into a managed package",
     tagline: "Or don't. Both are a legitimate outcome.",
     subtitle: "The diagnostic cost credits toward a managed package if you sign within the window.",
-    body: "Ongoing technology stewardship, operating-model stewardship, or multilingual governance, whichever pillar you started in. Same shape every time: the diagnostic proves the finding, the managed package is where the fix actually lives.",
+    body: "Ongoing work on your CMS, your operating model, or your multilingual content, depending on which pillar you started with. The diagnostic proves there is a problem worth fixing. The managed package is where the fix actually happens.",
     ctaLabel: "Talk about a managed package",
     ctaUrl: "/contact",
   },
@@ -217,17 +217,21 @@ const whyEcmDev = {
     "ECM.DEV is the practice for organisations that need their content to hold up under AI, not just look right to a person scrolling past it.",
 };
 
+// Titles and subtitles here must match lib/learnMoreSlides.ts exactly
+// (LearnMoreSection matches a clicked card to its slide deck by title, case
+// insensitive) — if the Sanity homePage document has its own learnMoreItems,
+// those need the same titles or their cards won't open either.
 const fallbackLearnMore = [
-  { title: "Sales and Marketing Sync-Up", subtitle: "Streamlining Shared Content for Bigger Wins" },
-  { title: "The Content Efficiency Playbook", subtitle: "Reduce Production Time, Increase Output" },
-  { title: "Automated Content Creation", subtitle: "Scaling Creativity Through AI-Driven Tools" },
-  { title: "Interactive Content Development", subtitle: "Engaging Audiences Through Innovation" },
-  { title: "Enhanced Personalization Techniques", subtitle: "Enhanced Personalization" },
-  { title: "Integration of AI Recommendations", subtitle: "Personalization and Engagement Strategies" },
-  { title: "Future Trends in AI-Driven Marketing", subtitle: "Exploring Innovations & Opportunities" },
-  { title: "Emphasis on Human Centric Content", subtitle: "Building Connections in a Digital Age" },
-  { title: "Compliance & Data Privacy Management", subtitle: "Ensuring Trust and Transparency in AI-Driven Marketing" },
-  { title: "Smarter AI Content Decisions", subtitle: "From content models to content pipelines" },
+  { title: "Content Governance: Who Actually Owns What", subtitle: "Decision rights, not a style guide" },
+  { title: "Content Debt: What Accumulates When Nobody's Accountable", subtitle: "Like technical debt, but for content" },
+  { title: "The Content Lifecycle, End to End", subtitle: "Publishing is the midpoint, not the finish line" },
+  { title: "Workflow Redesign: Where Content Actually Gets Stuck", subtitle: "It's rarely the writing that's slow" },
+  { title: "Measurement That Connects to Outcomes", subtitle: "Not vanity metrics with a dashboard around them" },
+  { title: "The Content Efficiency Playbook", subtitle: "Reduce production time without losing quality" },
+  { title: "Content Governance for Regulated Content", subtitle: "The same discipline, higher stakes" },
+  { title: "The Seam Between Content Operations and Content Technology", subtitle: "Two pillars, one failure mode" },
+  { title: "AI Readiness Starts With Governance, Not Tools", subtitle: "The instinct is to buy something. That's rarely the fix." },
+  { title: "From Diagnostic to Managed Package", subtitle: "How a bounded finding becomes an ongoing service" },
 ];
 
 const fallbackBlogPosts = [
@@ -389,7 +393,7 @@ export default async function HomePage() {
             Most organisations already have the parts: a CMS, a content team, a translation process, and usually some AI running on top of all three. What they do not have is an operating system connecting them, so the CMS never quite does what it was bought to do, content has no clear owner once it is published, and every new market costs as much as the last one.
           </p>
           <p className="text-ink text-base leading-relaxed">
-            We diagnose which of the three pillars is actually breaking, then run the fix as a standing function, not a one-off report that goes stale in a month.
+            We find out which of the three areas is actually breaking. Then, if you want, we keep fixing it as a managed package, not a one-off report that goes out of date within a month.
           </p>
         </div>
       </section>
@@ -578,7 +582,7 @@ export default async function HomePage() {
             How it works.
           </h2>
           <p className="text-ink text-center text-base mb-16 max-w-2xl mx-auto">
-            Same shape across all three pillars: a priced, bounded diagnostic first, a standing function if it's worth running that way.
+            The same pattern for all three services: a fixed-price diagnostic first, then ongoing support to fix it properly, if that is worth doing.
           </p>
           <div className="grid md:grid-cols-3 gap-6 mb-6">
             {howItWorks.map((step) => (
