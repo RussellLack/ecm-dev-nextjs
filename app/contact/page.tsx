@@ -3,7 +3,7 @@ import ContactForm from "@/components/ContactForm";
 export const metadata = {
   title: "Contact | ECM.DEV",
   description:
-    "Get in touch with ECM.DEV — content infrastructure, strategy, and operations for the AI enterprise.",
+    "Get in touch with ECM.DEV: content infrastructure, strategy, and operations for the AI era.",
 };
 
 export default function ContactPage() {

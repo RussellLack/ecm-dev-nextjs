@@ -7,7 +7,7 @@ export const revalidate = 3600;
 export const metadata: Metadata = {
   title: "Solutions | ECM.DEV",
   description:
-    "Outcome-led solutions for enterprise marketing: improve campaign velocity, scale global marketing, increase CMS ROI, prepare content for AI, and build a marketing operating system.",
+    "Outcome-led solutions for growing marketing teams: improve campaign velocity, scale global marketing, increase CMS ROI, prepare content for AI, and build a marketing operating system.",
   alternates: { canonical: "/solutions" },
 };
 

@@ -29,7 +29,7 @@ const siteDescription =
 export const metadata: Metadata = {
     metadataBase: new URL(siteUrl),
     title: {
-      default: `${siteName} | Content Infrastructure for the AI Enterprise`,
+      default: `${siteName} | Content Infrastructure for the AI Era`,
           template: `%s | ${siteName}`,
     },
     description: siteDescription,
@@ -47,12 +47,12 @@ export const metadata: Metadata = {
           locale: "en_GB",
           url: siteUrl,
           siteName,
-          title: `${siteName} | Content Infrastructure for the AI Enterprise`,
+          title: `${siteName} | Content Infrastructure for the AI Era`,
           description: siteDescription,
     },
     twitter: {
           card: "summary_large_image",
-          title: `${siteName} | Content Infrastructure for the AI Enterprise`,
+          title: `${siteName} | Content Infrastructure for the AI Era`,
           description: siteDescription,
     },
     robots: {
