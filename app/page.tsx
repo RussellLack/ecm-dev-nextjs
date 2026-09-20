@@ -160,7 +160,7 @@ const auditStrip = {
      ContentAuditTiers is shared across all three pillar pages). */
   paidOffer: {
     heading: "What this costs",
-    body: "This is a paid engagement, scoped to the size of your content estate. Tell us what you are running and we will come back with a scope and a price before any work starts.",
+    body: "This is a paid engagement, scoped to the size of your content estate. Tell us what you are working with and we will come back with a scope and a price before any work starts.",
     caveat: "Findings and recommended remediation, delivered as a professional opinion you can act on or argue with.",
     linkLabel: "See the Content Audit tiers",
     linkUrl: "/content-technology",
