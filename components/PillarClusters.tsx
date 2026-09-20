@@ -33,13 +33,12 @@ const HARDCODED_ASSESSMENT_LINKS: Record<Pillar, { title: string; href: string; 
       href: "/assessment/lead-magnet",
     },
   ],
-  localization: [
-    {
-      title: "Localisation Cost Estimator",
-      subtitle: "Six-layer cost model for multilingual content operations.",
-      href: "/assessment/localisation-cost",
-    },
-  ],
+  // Localisation Cost Estimator is deliberately not listed here: it
+  // already gets top billing on this pillar page (a package card that
+  // links straight to it, plus the closing CTA band), so a second,
+  // smaller thumbnail down here was pure duplication. See
+  // docs/SERVICE-CLARITY-AUDIT-2026-09-20.md.
+  localization: [],
 };
 
 /**

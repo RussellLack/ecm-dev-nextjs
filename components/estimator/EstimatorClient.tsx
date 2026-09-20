@@ -55,8 +55,8 @@ export default function EstimatorClient() {
       {/* Tool body */}
       <section className="bg-surface py-12 sm:py-16">
         <div className="mx-auto max-w-7xl px-6">
-          <main className="grid grid-cols-1 items-start gap-10 lg:grid-cols-[420px_1fr] lg:gap-12">
-            <aside className="rounded-2xl border border-surface-border bg-surface-alt p-6 lg:sticky lg:top-5">
+          <main className="grid grid-cols-1 items-start gap-10 lg:grid-cols-[460px_1fr] lg:gap-10">
+            <aside className="rounded-2xl border border-surface-border bg-surface-alt p-7 lg:sticky lg:top-5">
               <EstimatorForm inputs={inputs} onChange={handleChange} onReset={handleReset} />
             </aside>
 
