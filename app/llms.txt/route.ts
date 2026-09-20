@@ -78,9 +78,9 @@ export async function GET() {
   const body = [
     "# ECM.DEV",
     "",
-    "> Content infrastructure for the AI era. We design the operating systems, governance frameworks, and structured workflows that turn content into a reliable, AI-ready asset.",
+    "> A fractional content operations and AI-readiness service. Senior diagnosis, a working system, and ongoing ownership of it, without the salary or the ramp-up of an in-house hire.",
     "",
-    "ECM.DEV is an independent consultancy working with organisations on Enterprise Content Management, headless CMS platforms, content operations and content localisation. Our three service pillars are Content Technology (CMS architecture, platform and analytics integration, a Content Audit diagnostic), Content Operations (governance, ownership, workflow, lifecycle) and Content Localization (multilingual publishing, AI-assisted translation QA, in-market content).",
+    "ECM.DEV is Russell Lack's independent practice, working with mid-market and owner-managed businesses that have outgrown ad hoc content production and are weighing whether to build a content function in-house. Engagements run across three pillars: Content Technology (CMS architecture, platform and analytics integration, a Content Audit diagnostic), Content Operations (governance, ownership, workflow, lifecycle) and Content Localization (multilingual publishing, AI-assisted translation QA, in-market content). Every engagement starts with a free assessment, moving into a fixed-price build and then a monthly retained service, no fixed term.",
     "",
     section("Core pages", null, [
       link("/", "Home", "Overview of ECM.DEV's positioning, services and case studies."),

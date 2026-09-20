@@ -10,6 +10,7 @@ import JsonLd from "@/components/JsonLd";
 import { serviceSchema } from "@/lib/structuredData";
 import type { ServicePageData } from "@/lib/serviceTypes";
 import { topicSlides } from "@/lib/learnMoreSlides";
+import { PILLAR_FALLBACKS } from "@/lib/generated/pillarFallbacks";
 
 // Moved here from the homepage (see docs/SERVICE-CLARITY-AUDIT-2026-09-20.md):
 // every deck is now a Content Operations deep dive, so this is where they
@@ -29,33 +30,15 @@ export async function generateMetadata(): Promise<Metadata> {
   return buildPillarMetadata({
     category: "services",
     fallbackTitle: "Content Operations",
-    fallbackDescription:
-      "Governance, ownership, workflow, and lifecycle: ongoing work, not a one-off report that goes stale in a month.",
+    fallbackDescription: PILLAR_FALLBACKS.services.metaDescription,
     canonical: "/content-operations",
   });
 }
 
-// Static fallback in case Sanity isn't connected or the new editorial fields
-// haven't been filled in yet. Only heroDescription + packages are provided;
-// the problem/diagnosis/reframe/CTA sections collapse cleanly when empty.
-const fallbackData: ServicePageData = {
-  title: "Content Operations",
-  category: "services",
-  heroDescription:
-    "Content that has an owner, a workflow, and a reason it still exists. We find out where the operation breaks down. Then, if you want, we keep running it with you as a managed package: governance, ownership, and lifecycle, not a one-off report that goes stale in a month.",
-  problemIntro: "",
-  diagnosisItems: [],
-  reframeStatement: "",
-  ctaText: "",
-  ctaUrl: "",
-  packages: [
-    { title: "Content Operations Assessment", description: "A scored look at ownership, workflow, and decision rights across your content estate. Where the bottlenecks actually are, not where you assume they are.", features: [], order: 1 },
-    { title: "Managed Content Operations", description: "Standing governance and workflow stewardship: a documented operating model, a decision cadence, and someone accountable for keeping it current.", features: [], order: 2 },
-    { title: "Governance Framework", description: "Roles, approvals, quality standards, and lifecycle management, built to actually get used, not filed away.", features: [], order: 3 },
-    { title: "Workflow Redesign", description: "End-to-end review of how content moves from idea to published, with bottlenecks named and ownership assigned.", features: [], order: 4 },
-    { title: "Measurement That Connects to Outcomes", description: "Reporting that ties content activity to what the business actually cares about, so you know what to keep and what to cut.", features: [], order: 5 },
-  ],
-};
+// Generated from the live Sanity `service-services` + `servicePackage`
+// documents by `npm run sync:pillars` — see lib/generated/pillarFallbacks.ts.
+// Used only if Sanity isn't connected.
+const fallbackData: ServicePageData = PILLAR_FALLBACKS.services.data;
 
 export default async function ContentOperationsPage() {
   const data =
