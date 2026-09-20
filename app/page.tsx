@@ -493,8 +493,12 @@ export default async function HomePage() {
           to ~120px into the section at some points along its width; pb-16
           wasn't enough clearance and the wave clipped into the form card's
           bottom edge. Compacting the form (see AuditRequestForm) does most
-          of the work; this is the safety margin on top of that. */}
-      <section id="audit-request" className="relative pt-16 pb-24 bg-ecm-green">
+          of the work; this is the safety margin on top of that.
+          pt-32: same issue at the top, the eyebrow/badge row that opens
+          this section has no padding of its own, so it needs full
+          clearance (the wave-divider SVG is now capped at its viewBox's
+          120px, see globals.css) rather than a partial safety margin. */}
+      <section id="audit-request" className="relative pt-32 pb-24 bg-ecm-green">
         {/* Wave divider: white → green (top) */}
         <div className="wave-divider wave-divider-top">
           <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
@@ -502,35 +506,12 @@ export default async function HomePage() {
           </svg>
         </div>
         <div className="max-w-6xl mx-auto px-6">
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mb-3">
-            <p className="text-ecm-lime/70 font-barlow font-semibold text-xs tracking-widest uppercase">
-              {auditStrip.eyebrow}
-            </p>
-            {auditOfferOpen && (
-              <p className="inline-flex items-center rounded-full border border-ecm-lime/50 px-3 py-1 text-ecm-lime font-barlow font-semibold text-xs">
-                {auditStrip.introOffer.badge}
-              </p>
-            )}
-          </div>
-          <h2 className="text-ecm-lime font-barlow font-bold text-3xl lg:text-4xl mb-4 max-w-3xl">
-            {auditStrip.headline}
-          </h2>
-          <div className="mb-4 max-w-3xl space-y-1">
-            {auditStrip.subhead.map((line, i) => (
-              <p key={i} className="text-white/85 text-base sm:text-lg leading-relaxed">
-                {line}
-              </p>
-            ))}
-          </div>
-          {/* Single payoff line replacing the former three-negation stack:
-              same counter-claim, a fraction of the vertical space. */}
-          <p className="mb-8 max-w-3xl text-ecm-lime font-barlow font-semibold text-sm leading-relaxed border-l-2 border-ecm-lime/40 pl-4">
-            {auditStrip.differentiatorLine}
-          </p>
-
           <div className="grid lg:grid-cols-5 gap-10 lg:gap-14 items-start">
-            {/* Left: what the audit covers, as a compact tag row rather than
-                five full description cards, plus the signup form. Top-aligned
+            {/* Left: eyebrow, headline, and what the audit covers, as a
+                compact tag row rather than five full description cards.
+                Lives inside the grid (rather than spanning full width above
+                it) specifically so this column starts level with the form
+                card on the right, not just with the tag row. Top-aligned
                 rather than vertically centered: centering relied on the
                 section's green background to make the balancing whitespace
                 read as intentional, which broke under forced-colors mode
@@ -538,6 +519,31 @@ export default async function HomePage() {
                 mid-section). Trailing space below the shorter column is a
                 normal, unremarkable pattern in any color scheme. */}
             <div className="lg:col-span-3">
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mb-3">
+                <p className="text-ecm-lime/70 font-barlow font-semibold text-xs tracking-widest uppercase">
+                  {auditStrip.eyebrow}
+                </p>
+                {auditOfferOpen && (
+                  <p className="inline-flex items-center rounded-full border border-ecm-lime/50 px-3 py-1 text-ecm-lime font-barlow font-semibold text-xs">
+                    {auditStrip.introOffer.badge}
+                  </p>
+                )}
+              </div>
+              <h2 className="text-ecm-lime font-barlow font-bold text-3xl lg:text-4xl mb-4">
+                {auditStrip.headline}
+              </h2>
+              <div className="mb-4 space-y-1">
+                {auditStrip.subhead.map((line, i) => (
+                  <p key={i} className="text-white/85 text-base sm:text-lg leading-relaxed">
+                    {line}
+                  </p>
+                ))}
+              </div>
+              {/* Single payoff line replacing the former three-negation stack:
+                  same counter-claim, a fraction of the vertical space. */}
+              <p className="mb-8 text-ecm-lime font-barlow font-semibold text-sm leading-relaxed border-l-2 border-ecm-lime/40 pl-4">
+                {auditStrip.differentiatorLine}
+              </p>
               <div className="flex flex-wrap gap-2">
                 {auditStrip.coverage.map((item) => (
                   <span
