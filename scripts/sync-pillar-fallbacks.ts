@@ -92,7 +92,7 @@ async function main(): Promise<void> {
     dataset: DATASET,
     apiVersion: "2026-04-01",
     token,
-    useCdn: false, // this script wants the current published state, not a cached edge copy
+    useCdn: false, // sanity-economy: allow-no-cdn one-off sync script, not a page request path — wants the current published state, not a cached edge copy
     perspective: "published",
   });
 
