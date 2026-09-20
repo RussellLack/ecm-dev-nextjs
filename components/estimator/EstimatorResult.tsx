@@ -162,16 +162,16 @@ export default function EstimatorResult({ inputs, result, scenario }: Props) {
         {isBrokenState ? (
           <>
             An estimated <strong className="text-heading-dark">{fmtCurrency(result.layers.friction, currency)}</strong> of
-            your annual spend — about <strong className="text-heading-dark">{fmtPct(result.layers.friction / result.total)}</strong> —
+            your annual spend (about <strong className="text-heading-dark">{fmtPct(result.layers.friction / result.total)}</strong>)
             is being absorbed by friction. For operations at this level of fragmentation,
             moving up one AI maturity level alone won&apos;t recover most of it.{" "}
-            <strong className="text-heading-dark">What&apos;s needed is operating-model redesign</strong> — ECM.dev&apos;s
+            <strong className="text-heading-dark">What&apos;s needed is operating-model redesign.</strong> ECM.dev&apos;s
             work sits exactly here.
           </>
         ) : (
           <>
             An estimated <strong className="text-heading-dark">{fmtCurrency(result.layers.friction, currency)}</strong> of
-            your annual spend — about <strong className="text-heading-dark">{fmtPct(result.layers.friction / result.total)}</strong> —
+            your annual spend (about <strong className="text-heading-dark">{fmtPct(result.layers.friction / result.total)}</strong>)
             is being absorbed by friction and uncoordinated AI spend. Your AI investment
             isn&apos;t translating to bottom-line savings because the operating model around AI
             is still the legacy one.{" "}
@@ -193,9 +193,30 @@ export default function EstimatorResult({ inputs, result, scenario }: Props) {
         <EmailCaptureCTA inputs={inputs} result={result} />
       </div>
 
+      {/* What the fix actually looks like as an ongoing service, right at the
+          point of highest engagement (just after the visitor has seen their
+          own number), rather than only appearing in AssessmentNextSteps at
+          the very bottom of the page. See
+          docs/SERVICE-CLARITY-AUDIT-2026-09-20.md. */}
+      <div className="mb-8 rounded-xl border border-surface-border bg-surface-alt p-6">
+        <p className="mb-1.5 font-barlow text-[11px] font-bold uppercase tracking-[0.16em] text-ink-muted">
+          What this becomes as a managed package
+        </p>
+        <p className="mb-3 font-barlow text-sm leading-relaxed text-ink">
+          Ongoing quality assurance across every language you publish in, catching drift and
+          AI-translation errors as new content lands, not once a year.
+        </p>
+        <a
+          href="/content-localization"
+          className="inline-flex items-center gap-1 font-barlow text-sm font-semibold text-heading hover:text-heading-dark"
+        >
+          See the Content Localisation service →
+        </a>
+      </div>
+
       <p className="mb-8 border-t border-surface-border pt-3 font-barlow text-xs text-ink-muted">
         Model version {MODEL_VERSION}. Coefficients sourced from public benchmarks
-        (CSA, Slator, Nimdzi, published LLM API pricing) and ECM.dev estimates — see{" "}
+        (CSA, Slator, Nimdzi, published LLM API pricing) and ECM.dev estimates. See{" "}
         <a href="/methodology" className="underline hover:text-heading">
           methodology
         </a>

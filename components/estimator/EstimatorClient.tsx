@@ -36,12 +36,12 @@ export default function EstimatorClient() {
             Localisation Cost Estimator
           </h1>
           <p className="mx-auto max-w-2xl font-barlow text-lg text-white/80">
-            A diagnostic for content operations leaders in multilingual, multichannel environments —
+            A diagnostic for content operations leaders in multilingual, multichannel environments,
             surfacing the five cost layers that traditional calculators miss, and the AI-native
             operating model that could reshape them.
           </p>
           <div className="mt-5 inline-block rounded-full border border-ecm-lime/40 bg-ecm-green-dark/40 px-4 py-1.5 font-barlow text-xs text-white/80">
-            <strong className="text-ecm-lime">Research preview · {MODEL_VERSION}</strong> — based on
+            <strong className="text-ecm-lime">Research preview · {MODEL_VERSION}</strong>, based on
             public benchmarks and ECM.dev estimates, refined quarterly from user feedback
           </div>
         </div>

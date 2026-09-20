@@ -79,11 +79,11 @@ export default function EstimatorForm({ inputs, onChange, onReset }: Props) {
           label="AI maturity"
           value={inputs.maturity}
           options={[
-            { value: 0, label: "L0 — no AI" },
-            { value: 1, label: "L1 — ad-hoc AI" },
-            { value: 2, label: "L2 — systematic MT+PE" },
-            { value: 3, label: "L3 — AI creation + translation" },
-            { value: 4, label: "L4 — fully AI-native" },
+            { value: 0, label: "L0: no AI" },
+            { value: 1, label: "L1: ad-hoc AI" },
+            { value: 2, label: "L2: systematic MT+PE" },
+            { value: 3, label: "L3: AI creation + translation" },
+            { value: 4, label: "L4: fully AI-native" },
           ]}
           onChange={(v) => onChange({ maturity: v as MaturityLevel })}
         />
@@ -101,7 +101,7 @@ export default function EstimatorForm({ inputs, onChange, onReset }: Props) {
         />
       </Group>
 
-      <Group title="Friction signals (0–3)">
+      <Group title="Friction signals (0 to 3)">
         <RangeRow
           label="Rework frequency"
           value={inputs.rework}
