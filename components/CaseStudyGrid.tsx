@@ -2,12 +2,14 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { TagChip, PILLAR_TAG_COLORS } from "@/components/TagChip";
+import { INDUSTRY_OPTIONS } from "@/sanity/schemas/taxonomyOptions";
 
-const tagColors: Record<string, string> = {
-  "Content Localization": "bg-blue-100 text-blue-800",
-  "Content Technology": "bg-purple-100 text-purple-800",
-  "Content Operations": "bg-green-100 text-green-800",
-};
+// Cards never show the real client name (anonymised by design), the
+// subtitle uses the industry taxonomy instead.
+const INDUSTRY_LABEL: Record<string, string> = Object.fromEntries(
+  INDUSTRY_OPTIONS.map((o) => [o.value, o.title])
+);
 
 // The filter bar shows only the 3 pillars, not the much larger set of
 // free-text industry/technique tags stored on each case study (those still
@@ -25,6 +27,7 @@ interface CaseStudy {
   title: string;
   slug: { current: string };
   client: string;
+  industry?: string;
   tags?: string[];
   pillars?: string[];
   description: string;
@@ -62,7 +65,7 @@ export default function CaseStudyGrid({
         </button>
         {pillarsWithCounts.map((p) => {
           const isActive = activePillar === p.slug;
-          const colorClass = tagColors[p.title] || "bg-gray-200 text-gray-700";
+          const colorClass = PILLAR_TAG_COLORS[p.title] || "bg-gray-200 text-gray-700";
 
           return (
             <button
@@ -91,22 +94,17 @@ export default function CaseStudyGrid({
           >
             <div className="flex flex-wrap gap-2 mb-4">
               {cs.tags?.map((tag: string) => (
-                <span
-                  key={tag}
-                  className={`${
-                    tagColors[tag] || "bg-gray-200 text-gray-700"
-                  } text-xs font-barlow font-medium px-3 py-1 rounded-full`}
-                >
-                  {tag}
-                </span>
+                <TagChip key={tag} tag={tag} />
               ))}
             </div>
             <h3 className="text-ecm-lime font-barlow font-bold text-xl mb-2 group-hover:text-white transition-colors">
               {cs.title}
             </h3>
-            <p className="text-white/60 text-sm font-medium mb-3">
-              {cs.client}
-            </p>
+            {cs.industry && (
+              <p className="text-white/60 text-sm font-medium mb-3">
+                {INDUSTRY_LABEL[cs.industry] ?? cs.industry}
+              </p>
+            )}
             <p className="text-white/70 text-sm leading-relaxed line-clamp-3">
               {cs.description}
             </p>

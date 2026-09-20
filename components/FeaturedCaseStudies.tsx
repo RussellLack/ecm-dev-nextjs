@@ -2,12 +2,20 @@ import Link from "next/link";
 import Image from "next/image";
 import CaseStudyIllustration from "@/components/case-study/CaseStudyIllustration";
 import { urlFor } from "@/lib/sanity";
+import { INDUSTRY_OPTIONS } from "@/sanity/schemas/taxonomyOptions";
+
+// Cards never show the real client name (anonymised by design), the
+// subtitle uses the industry taxonomy instead.
+const INDUSTRY_LABEL: Record<string, string> = Object.fromEntries(
+  INDUSTRY_OPTIONS.map((o) => [o.value, o.title])
+);
 
 interface FeaturedCaseStudy {
   _id?: string;
   title: string;
   slug: { current: string } | string;
   client?: string;
+  industry?: string;
   description?: string;
   image?: any;
   imageWidth?: number;
@@ -55,8 +63,10 @@ export default function FeaturedCaseStudies({
               <h3 className="text-ecm-lime font-barlow font-bold text-xl mb-2 group-hover:text-white transition-colors">
                 {cs.title}
               </h3>
-              {cs.client && (
-                <p className="text-white/60 text-sm font-medium mb-2">{cs.client}</p>
+              {cs.industry && (
+                <p className="text-white/60 text-sm font-medium mb-2">
+                  {INDUSTRY_LABEL[cs.industry] ?? cs.industry}
+                </p>
               )}
               {cs.featuredTagline && (
                 <p className="text-ecm-lime/70 text-xs font-barlow font-semibold uppercase tracking-wide mb-3">

@@ -126,7 +126,7 @@ export default defineType({
       name: "attribution",
       title: "Attribution",
       description:
-        "For work delivered while employed elsewhere: Russell's role, the employer/team, and a non-endorsement note. Shown in small text at the end of the case study. Leave blank for ECM.DEV's own work.",
+        "For work delivered while employed elsewhere: the role, the employer/team, and a non-endorsement note. Do not name Russell personally, refer instead to \"the people now behind ECM.DEV\" so the attribution reads as institutional. Shown in small text at the end of the case study. Leave blank for ECM.DEV's own work.",
       type: "text",
       rows: 3,
     }),

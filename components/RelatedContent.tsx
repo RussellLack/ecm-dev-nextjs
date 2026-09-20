@@ -10,7 +10,6 @@ type RelatedItem = {
   publishedAt?: string;
   mainImage?: any;
   image?: any;
-  client?: string;
   tags?: string[];
   // Optional fallback when no image is set — used by case-study callers to
   // supply a CaseStudyIllustration so cards aren't blank when a case study
@@ -57,7 +56,7 @@ export default function RelatedContent({
               const slug = slugString(item.slug);
               if (!slug) return null;
               const img = imageFor(item);
-              const blurb = item.excerpt || item.description || item.client;
+              const blurb = item.excerpt || item.description;
               return (
                 <Link
                   key={item._id ?? slug}
