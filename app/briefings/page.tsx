@@ -45,15 +45,15 @@ export default async function BriefingsIndexPage() {
         </div>
         <div className="wave-divider wave-divider-bottom">
           <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="#ffffff" />
+            <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="var(--color-surface)" />
           </svg>
         </div>
       </section>
 
       {/* Cornerstone cards */}
-      <section className="bg-white py-20">
+      <section className="bg-surface py-20">
         <div className="max-w-4xl mx-auto px-6">
-          <p className="text-ecm-green font-barlow font-bold text-xs tracking-[0.2em] uppercase mb-8">
+          <p className="text-heading font-barlow font-bold text-xs tracking-[0.2em] uppercase mb-8">
             Start here
           </p>
           <div className="space-y-6">
@@ -63,13 +63,13 @@ export default async function BriefingsIndexPage() {
                 href={`/briefings/${c.slug}`}
                 className="block bg-ecm-gray-light border-l-[5px] border-ecm-lime p-8 rounded-r-2xl hover:shadow-lg transition-all group"
               >
-                <h2 className="text-ecm-green font-barlow font-bold text-xl sm:text-2xl mb-3 group-hover:text-ecm-green-dark transition-colors">
+                <h2 className="text-heading font-barlow font-bold text-xl sm:text-2xl mb-3 group-hover:text-heading-dark transition-colors">
                   {c.title}
                 </h2>
                 {c.standfirst && (
-                  <p className="text-ecm-gray-dark text-base leading-relaxed">{c.standfirst}</p>
+                  <p className="text-ink text-base leading-relaxed">{c.standfirst}</p>
                 )}
-                <span className="mt-5 inline-flex items-center gap-2 text-ecm-green font-barlow font-semibold text-sm">
+                <span className="mt-5 inline-flex items-center gap-2 text-heading font-barlow font-semibold text-sm">
                   Read the briefing <span aria-hidden="true">&rarr;</span>
                 </span>
               </Link>

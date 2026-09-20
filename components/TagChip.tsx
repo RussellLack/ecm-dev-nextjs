@@ -5,6 +5,10 @@
 // category, everything else is descriptive metadata, the two should never
 // read as the same kind of thing.
 
+// Left as fixed light-palette colors (not theme-aware) rather than
+// invented dark-mode variants for a 3-color category code — same
+// tradeoff as GitHub-style labels staying constant regardless of theme.
+// Revisit if this reads as broken against a dark canvas.
 export const PILLAR_TAG_COLORS: Record<string, string> = {
   "Content Localization": "bg-blue-100 text-blue-800",
   "Content Technology": "bg-purple-100 text-purple-800",
@@ -26,7 +30,7 @@ export function TagChip({ tag }: { tag: string }) {
     );
   }
   return (
-    <span className="inline-flex items-center rounded-full font-barlow font-medium text-xs px-2.5 py-1 bg-gray-100 text-gray-600 border border-gray-200">
+    <span className="inline-flex items-center rounded-full font-barlow font-medium text-xs px-2.5 py-1 bg-surface-alt text-ink-muted border border-surface-border">
       {tag}
     </span>
   );

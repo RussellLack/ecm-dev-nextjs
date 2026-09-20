@@ -48,12 +48,12 @@ export async function generateMetadata({
 const introComponents = {
   block: {
     normal: ({ children }: any) => (
-      <p className="text-ecm-gray-dark leading-relaxed mb-4 last:mb-0">{children}</p>
+      <p className="text-ink leading-relaxed mb-4 last:mb-0">{children}</p>
     ),
   },
   marks: {
     strong: ({ children }: any) => (
-      <strong className="font-semibold text-ecm-green-dark">{children}</strong>
+      <strong className="font-semibold text-heading-dark">{children}</strong>
     ),
   },
 };
@@ -113,14 +113,14 @@ export default async function GuideSeriesPage({
         </div>
         <div className="wave-divider wave-divider-bottom">
           <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="#ffffff" />
+            <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="var(--color-surface)" />
           </svg>
         </div>
       </section>
 
       {/* Intro */}
       {series.intro && (
-        <section className="bg-white pt-12 pb-4">
+        <section className="bg-surface pt-12 pb-4">
           <div className="max-w-3xl mx-auto px-6 font-barlow text-base">
             <PortableText value={series.intro} components={introComponents} />
           </div>
@@ -128,10 +128,10 @@ export default async function GuideSeriesPage({
       )}
 
       {/* Guides in this series */}
-      <section className="bg-white py-12">
+      <section className="bg-surface py-12">
         <div className="max-w-5xl mx-auto px-6">
           {guides.length === 0 ? (
-            <p className="text-ecm-gray text-center py-16 font-barlow">
+            <p className="text-ink-muted text-center py-16 font-barlow">
               No guides in this series yet.
             </p>
           ) : (
@@ -140,9 +140,9 @@ export default async function GuideSeriesPage({
                 <Link
                   key={guide._id}
                   href={`/guide/${guide.slug?.current}`}
-                  className="group bg-white rounded-xl border border-gray-100 hover:border-ecm-green/20 hover:shadow-lg transition-all overflow-hidden flex flex-col"
+                  className="group bg-surface rounded-xl border border-surface-border hover:border-heading/20 hover:shadow-lg transition-all overflow-hidden flex flex-col"
                 >
-                  <div className="h-40 overflow-hidden bg-ecm-green/5 flex items-center justify-center relative border-b border-gray-100">
+                  <div className="h-40 overflow-hidden bg-ecm-green/5 flex items-center justify-center relative border-b border-surface-border">
                     {guide.mainImage ? (
                       <img
                         src={urlFor(guide.mainImage).width(480).height(270).fit("crop").url()}
@@ -162,25 +162,25 @@ export default async function GuideSeriesPage({
                   </div>
 
                   <div className="p-6 flex flex-col flex-1">
-                    <h2 className="text-ecm-green font-barlow font-bold text-lg leading-snug mb-1 group-hover:text-ecm-green-dark transition-colors">
+                    <h2 className="text-heading font-barlow font-bold text-lg leading-snug mb-1 group-hover:text-heading-dark transition-colors">
                       {guide.title}
                     </h2>
                     {guide.subtitle && (
-                      <p className="text-ecm-gray text-sm font-barlow italic mb-3">
+                      <p className="text-ink-muted text-sm font-barlow italic mb-3">
                         {guide.subtitle}
                       </p>
                     )}
                     {guide.excerpt && (
-                      <p className="text-ecm-gray-dark text-sm leading-relaxed line-clamp-5 mb-4">
+                      <p className="text-ink text-sm leading-relaxed line-clamp-5 mb-4">
                         {guide.excerpt}
                       </p>
                     )}
                     {guide.tags && guide.tags.length > 0 && (
-                      <div className="flex flex-wrap gap-1 mt-auto pt-3 border-t border-gray-100">
+                      <div className="flex flex-wrap gap-1 mt-auto pt-3 border-t border-surface-border">
                         {guide.tags.slice(0, 3).map((tag) => (
                           <span
                             key={tag}
-                            className="inline-block border border-ecm-green/20 text-ecm-green text-[10px] font-barlow font-semibold px-2 py-0.5 rounded-full"
+                            className="inline-block border border-heading/20 text-heading text-[10px] font-barlow font-semibold px-2 py-0.5 rounded-full"
                           >
                             {tag}
                           </span>
@@ -197,9 +197,9 @@ export default async function GuideSeriesPage({
 
       {/* Other series */}
       {otherSeries.length > 0 && (
-        <section className="bg-gray-50 py-14 border-t border-gray-100">
+        <section className="bg-surface-alt py-14 border-t border-surface-border">
           <div className="max-w-5xl mx-auto px-6">
-            <h2 className="text-ecm-green font-barlow font-bold text-xl sm:text-2xl mb-6">
+            <h2 className="text-heading font-barlow font-bold text-xl sm:text-2xl mb-6">
               Other series
             </h2>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -207,17 +207,17 @@ export default async function GuideSeriesPage({
                 <Link
                   key={s._id}
                   href={`/guides/${s.slug?.current}`}
-                  className="group bg-white rounded-xl border border-gray-100 hover:border-ecm-green/20 hover:shadow-md transition-all p-5"
+                  className="group bg-surface rounded-xl border border-surface-border hover:border-heading/20 hover:shadow-md transition-all p-5"
                 >
-                  <h3 className="text-ecm-green font-barlow font-semibold text-base leading-snug group-hover:text-ecm-green-dark transition-colors mb-1">
+                  <h3 className="text-heading font-barlow font-semibold text-base leading-snug group-hover:text-heading-dark transition-colors mb-1">
                     {s.title}
                   </h3>
                   {s.tagline && (
-                    <p className="text-ecm-gray text-xs font-barlow leading-relaxed mb-2 line-clamp-2">
+                    <p className="text-ink-muted text-xs font-barlow leading-relaxed mb-2 line-clamp-2">
                       {s.tagline}
                     </p>
                   )}
-                  <span className="text-ecm-gray text-xs font-barlow">
+                  <span className="text-ink-muted text-xs font-barlow">
                     {s.guideCount} guide{s.guideCount !== 1 ? "s" : ""}
                   </span>
                 </Link>
@@ -228,7 +228,7 @@ export default async function GuideSeriesPage({
       )}
 
       {/* Back to all guides */}
-      <section className="bg-gray-50 pb-16 text-center">
+      <section className="bg-surface-alt pb-16 text-center">
         <Link
           href="/guides"
           className="inline-block bg-ecm-green text-white font-barlow font-semibold px-8 py-3 rounded-full hover:bg-ecm-green-dark transition-colors"

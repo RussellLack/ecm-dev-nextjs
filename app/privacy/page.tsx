@@ -27,23 +27,23 @@ export default function PrivacyPage() {
           >
             <path
               d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z"
-              fill="#ffffff"
+              fill="var(--color-surface)"
             />
           </svg>
         </div>
       </section>
 
       {/* Policy content */}
-      <section className="py-16 sm:py-20 bg-white">
+      <section className="py-16 sm:py-20 bg-surface">
         <div className="max-w-3xl mx-auto px-6">
           <p className="text-gray-500 font-barlow text-sm mb-12">
             Last updated: April 2026
           </p>
 
-          <div className="space-y-10 text-ecm-gray font-barlow text-[15px] leading-relaxed">
+          <div className="space-y-10 text-ink-muted font-barlow text-[15px] leading-relaxed">
             {/* 1 */}
             <div>
-              <h2 className="text-ecm-green font-bold text-xl mb-3">
+              <h2 className="text-heading font-bold text-xl mb-3">
                 1. Who we are
               </h2>
               <p>
@@ -52,7 +52,7 @@ export default function PrivacyPage() {
                 website address is{" "}
                 <a
                   href="https://ecm.dev"
-                  className="text-ecm-green underline hover:text-ecm-green-dark transition-colors"
+                  className="text-heading underline hover:text-heading-dark transition-colors"
                 >
                   https://ecm.dev
                 </a>
@@ -62,14 +62,14 @@ export default function PrivacyPage() {
 
             {/* 2 */}
             <div>
-              <h2 className="text-ecm-green font-bold text-xl mb-3">
+              <h2 className="text-heading font-bold text-xl mb-3">
                 2. Information we collect
               </h2>
               <p className="mb-3">
                 We collect information in the following ways:
               </p>
 
-              <h3 className="font-semibold text-ecm-green/80 mt-4 mb-2">
+              <h3 className="font-semibold text-heading/80 mt-4 mb-2">
                 2.1 Contact form
               </h3>
               <p>
@@ -78,7 +78,7 @@ export default function PrivacyPage() {
                 used solely to respond to your enquiry.
               </p>
 
-              <h3 className="font-semibold text-ecm-green/80 mt-4 mb-2">
+              <h3 className="font-semibold text-heading/80 mt-4 mb-2">
                 2.2 Assessment tools
               </h3>
               <p>
@@ -89,7 +89,7 @@ export default function PrivacyPage() {
                 assessment responses with third parties.
               </p>
 
-              <h3 className="font-semibold text-ecm-green/80 mt-4 mb-2">
+              <h3 className="font-semibold text-heading/80 mt-4 mb-2">
                 2.3 Cookies and analytics
               </h3>
               <p>
@@ -103,7 +103,7 @@ export default function PrivacyPage() {
 
             {/* 3 */}
             <div>
-              <h2 className="text-ecm-green font-bold text-xl mb-3">
+              <h2 className="text-heading font-bold text-xl mb-3">
                 3. How we use your information
               </h2>
               <p>We use the information we collect to:</p>
@@ -128,12 +128,12 @@ export default function PrivacyPage() {
 
             {/* 4 */}
             <div>
-              <h2 className="text-ecm-green font-bold text-xl mb-3">
+              <h2 className="text-heading font-bold text-xl mb-3">
                 4. Cookies
               </h2>
               <p className="mb-3">Our site uses the following types of cookies:</p>
 
-              <h3 className="font-semibold text-ecm-green/80 mt-4 mb-2">
+              <h3 className="font-semibold text-heading/80 mt-4 mb-2">
                 Essential cookies
               </h3>
               <p>
@@ -142,7 +142,7 @@ export default function PrivacyPage() {
                 disabled.
               </p>
 
-              <h3 className="font-semibold text-ecm-green/80 mt-4 mb-2">
+              <h3 className="font-semibold text-heading/80 mt-4 mb-2">
                 Analytics cookies
               </h3>
               <p>
@@ -155,7 +155,7 @@ export default function PrivacyPage() {
 
             {/* 5 */}
             <div>
-              <h2 className="text-ecm-green font-bold text-xl mb-3">
+              <h2 className="text-heading font-bold text-xl mb-3">
                 5. Data storage and security
               </h2>
               <p>
@@ -169,7 +169,7 @@ export default function PrivacyPage() {
 
             {/* 6 */}
             <div>
-              <h2 className="text-ecm-green font-bold text-xl mb-3">
+              <h2 className="text-heading font-bold text-xl mb-3">
                 6. Third-party services
               </h2>
               <p>We use the following third-party services:</p>
@@ -196,7 +196,7 @@ export default function PrivacyPage() {
 
             {/* 7 */}
             <div>
-              <h2 className="text-ecm-green font-bold text-xl mb-3">
+              <h2 className="text-heading font-bold text-xl mb-3">
                 7. Your rights
               </h2>
               <p>Under applicable data protection laws, you have the right to:</p>
@@ -215,7 +215,7 @@ export default function PrivacyPage() {
 
             {/* 8 */}
             <div>
-              <h2 className="text-ecm-green font-bold text-xl mb-3">
+              <h2 className="text-heading font-bold text-xl mb-3">
                 8. Data retention
               </h2>
               <p>
@@ -228,7 +228,7 @@ export default function PrivacyPage() {
 
             {/* 9 */}
             <div>
-              <h2 className="text-ecm-green font-bold text-xl mb-3">
+              <h2 className="text-heading font-bold text-xl mb-3">
                 9. Changes to this policy
               </h2>
               <p>
@@ -240,7 +240,7 @@ export default function PrivacyPage() {
 
             {/* 10 */}
             <div>
-              <h2 className="text-ecm-green font-bold text-xl mb-3">
+              <h2 className="text-heading font-bold text-xl mb-3">
                 10. Contact
               </h2>
               <p>
@@ -248,7 +248,7 @@ export default function PrivacyPage() {
                 handle your data, please contact us at{" "}
                 <a
                   href="/contact"
-                  className="text-ecm-green underline hover:text-ecm-green-dark transition-colors"
+                  className="text-heading underline hover:text-heading-dark transition-colors"
                 >
                   ecm.dev/contact
                 </a>

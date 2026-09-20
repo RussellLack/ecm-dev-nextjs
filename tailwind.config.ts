@@ -30,7 +30,10 @@ const config: Config = {
           alt: "var(--color-surface-alt)",
           border: "var(--color-surface-border)",
         },
-        heading: "var(--color-heading)",
+        heading: {
+          DEFAULT: "var(--color-heading)",
+          dark: "var(--color-heading-dark)",
+        },
         ink: {
           DEFAULT: "var(--color-ink)",
           muted: "var(--color-ink-muted)",

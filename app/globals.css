@@ -21,9 +21,14 @@
      the same way they read as one fixed "accent block" against the page
      background today. Only the page's own light canvas inverts. */
   --color-surface: #ffffff;
-  --color-surface-alt: #f9fafb;      /* was bg-gray-50 */
-  --color-surface-border: #f3f4f6;   /* was border-gray-100 */
+  --color-surface-alt: #f9fafb;      /* was bg-gray-50 / bg-gray-100 */
+  --color-surface-border: #f3f4f6;   /* was border-gray-100 / border-gray-200 */
   --color-heading: var(--ecm-green);
+  /* Darker/richer variant of --color-heading: was text-ecm-green-dark,
+     used for hover states (paired with text-heading) and for inline
+     emphasis (<strong>, <dt>) in long-form copy. Reuses the lime-hover
+     shade in dark mode rather than a third bespoke color. */
+  --color-heading-dark: var(--ecm-green-dark);
   --color-ink: var(--ecm-gray-dark);
   --color-ink-muted: var(--ecm-gray);
 }
@@ -34,6 +39,7 @@
   --color-surface-alt: #17251c;
   --color-surface-border: #26362c;
   --color-heading: var(--ecm-lime);
+  --color-heading-dark: var(--ecm-lime-hover);
   --color-ink: #d4d4d8;
   --color-ink-muted: #9a9aa0;
 }
@@ -47,6 +53,7 @@
     --color-surface-alt: #17251c;
     --color-surface-border: #26362c;
     --color-heading: var(--ecm-lime);
+    --color-heading-dark: var(--ecm-lime-hover);
     --color-ink: #d4d4d8;
     --color-ink-muted: #9a9aa0;
   }

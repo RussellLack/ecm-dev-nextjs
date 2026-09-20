@@ -35,29 +35,29 @@ const portableTextComponents: PortableTextComponents = {
   },
   block: {
     h2: ({ children }) => (
-      <h2 className="text-ecm-green font-barlow font-bold text-2xl mt-8 mb-3">
+      <h2 className="text-heading font-barlow font-bold text-2xl mt-8 mb-3">
         {children}
       </h2>
     ),
     h3: ({ children }) => (
-      <h3 className="text-ecm-green font-barlow font-bold text-xl mt-6 mb-2">
+      <h3 className="text-heading font-barlow font-bold text-xl mt-6 mb-2">
         {children}
       </h3>
     ),
     normal: ({ children }) => (
-      <p className="text-ecm-gray-dark leading-relaxed text-base lg:text-lg mb-4">
+      <p className="text-ink leading-relaxed text-base lg:text-lg mb-4">
         {children}
       </p>
     ),
   },
   list: {
     bullet: ({ children }) => (
-      <ul className="list-disc pl-6 mb-4 text-ecm-gray-dark space-y-2">
+      <ul className="list-disc pl-6 mb-4 text-ink space-y-2">
         {children}
       </ul>
     ),
     number: ({ children }) => (
-      <ol className="list-decimal pl-6 mb-4 text-ecm-gray-dark space-y-2">
+      <ol className="list-decimal pl-6 mb-4 text-ink space-y-2">
         {children}
       </ol>
     ),
@@ -66,7 +66,7 @@ const portableTextComponents: PortableTextComponents = {
     link: ({ children, value }) => (
       <a
         href={value?.href}
-        className="text-ecm-green underline hover:text-ecm-green/80"
+        className="text-heading underline hover:text-heading/80"
       >
         {children}
       </a>
@@ -77,7 +77,7 @@ const portableTextComponents: PortableTextComponents = {
       return (
         <Link
           href={href}
-          className="text-ecm-green underline hover:text-ecm-green/80"
+          className="text-heading underline hover:text-heading/80"
         >
           {children}
         </Link>
@@ -217,7 +217,7 @@ export default async function CaseStudyDetailPage({
         {/* Wave divider: green → white */}
         <div className="wave-divider wave-divider-bottom">
           <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="#ffffff" />
+            <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="var(--color-surface)" />
           </svg>
         </div>
       </section>
@@ -232,31 +232,31 @@ export default async function CaseStudyDetailPage({
           negative margin pulling this card up would clip through green
           at some horizontal position, whatever the offset. */}
       <div className="max-w-4xl mx-auto px-6 mt-8 sm:mt-10 lg:mt-12 relative z-10">
-        <div className="max-w-[220px] rounded-xl shadow-sm bg-ecm-green/5 border border-gray-100 aspect-[280/144] overflow-hidden">
+        <div className="max-w-[220px] rounded-xl shadow-sm bg-ecm-green/5 border border-surface-border aspect-[280/144] overflow-hidden">
           <CaseStudyIllustration slug={slug} />
         </div>
       </div>
 
       {/* Content */}
-      <section className="py-12 sm:py-16 lg:py-24 bg-white">
+      <section className="py-12 sm:py-16 lg:py-24 bg-surface">
         <div className="max-w-4xl mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
             {/* Main content */}
             <div className="lg:col-span-2">
               <div className="prose prose-lg max-w-none">
-                <h2 className="text-ecm-green font-barlow font-bold text-2xl mb-3">
+                <h2 className="text-heading font-barlow font-bold text-2xl mb-3">
                   Overview
                 </h2>
-                <p className="text-ecm-gray-dark leading-relaxed text-base lg:text-lg">
+                <p className="text-ink leading-relaxed text-base lg:text-lg">
                   {cs.description}
                 </p>
 
                 {cs.whoThisIsFor && (
                   <div className="mt-10">
-                    <h2 className="text-ecm-green font-barlow font-bold text-2xl mb-3">
+                    <h2 className="text-heading font-barlow font-bold text-2xl mb-3">
                       Who This Is For
                     </h2>
-                    <p className="text-ecm-gray-dark leading-relaxed text-base lg:text-lg whitespace-pre-line">
+                    <p className="text-ink leading-relaxed text-base lg:text-lg whitespace-pre-line">
                       {cs.whoThisIsFor}
                     </p>
                   </div>
@@ -264,10 +264,10 @@ export default async function CaseStudyDetailPage({
 
                 {cs.theChallenge && (
                   <div className="mt-10">
-                    <h2 className="text-ecm-green font-barlow font-bold text-2xl mb-3">
+                    <h2 className="text-heading font-barlow font-bold text-2xl mb-3">
                       The Challenge
                     </h2>
-                    <p className="text-ecm-gray-dark leading-relaxed text-base lg:text-lg whitespace-pre-line">
+                    <p className="text-ink leading-relaxed text-base lg:text-lg whitespace-pre-line">
                       {cs.theChallenge}
                     </p>
                   </div>
@@ -275,10 +275,10 @@ export default async function CaseStudyDetailPage({
 
                 {cs.whatWePropose && (
                   <div className="mt-10">
-                    <h2 className="text-ecm-green font-barlow font-bold text-2xl mb-3">
+                    <h2 className="text-heading font-barlow font-bold text-2xl mb-3">
                       Our Approach
                     </h2>
-                    <p className="text-ecm-gray-dark leading-relaxed text-base lg:text-lg whitespace-pre-line">
+                    <p className="text-ink leading-relaxed text-base lg:text-lg whitespace-pre-line">
                       {cs.whatWePropose}
                     </p>
                   </div>
@@ -286,10 +286,10 @@ export default async function CaseStudyDetailPage({
 
                 {cs.whyItMatters && (
                   <div className="mt-10">
-                    <h2 className="text-ecm-green font-barlow font-bold text-2xl mb-3">
+                    <h2 className="text-heading font-barlow font-bold text-2xl mb-3">
                       Impact
                     </h2>
-                    <p className="text-ecm-gray-dark leading-relaxed text-base lg:text-lg whitespace-pre-line">
+                    <p className="text-ink leading-relaxed text-base lg:text-lg whitespace-pre-line">
                       {cs.whyItMatters}
                     </p>
                   </div>
@@ -305,7 +305,7 @@ export default async function CaseStudyDetailPage({
                 )}
 
                 {cs.attribution && (
-                  <p className="mt-10 text-xs text-ecm-gray leading-relaxed">
+                  <p className="mt-10 text-xs text-ink-muted leading-relaxed">
                     {cs.attribution}
                   </p>
                 )}
@@ -314,17 +314,17 @@ export default async function CaseStudyDetailPage({
 
             {/* Sidebar */}
             <div className="lg:col-span-1">
-              <div className="bg-gray-50 rounded-xl p-6 lg:sticky lg:top-20">
-                <h3 className="text-ecm-green font-barlow font-bold text-sm uppercase tracking-wider mb-4">
+              <div className="bg-surface-alt rounded-xl p-6 lg:sticky lg:top-20">
+                <h3 className="text-heading font-barlow font-bold text-sm uppercase tracking-wider mb-4">
                   Project Details
                 </h3>
 
                 {cs.client && (
                   <div className="mb-4">
-                    <p className="text-ecm-gray text-xs uppercase tracking-wider mb-1">
+                    <p className="text-ink-muted text-xs uppercase tracking-wider mb-1">
                       Client
                     </p>
-                    <p className="text-ecm-green font-barlow font-semibold text-sm">
+                    <p className="text-heading font-barlow font-semibold text-sm">
                       {cs.client}
                     </p>
                   </div>
@@ -332,12 +332,12 @@ export default async function CaseStudyDetailPage({
 
                 {cs.industry && (
                   <div className="mb-4">
-                    <p className="text-ecm-gray text-xs uppercase tracking-wider mb-1">
+                    <p className="text-ink-muted text-xs uppercase tracking-wider mb-1">
                       Industry
                     </p>
                     <Link
                       href={`/industries/${cs.industry}`}
-                      className="inline-block bg-ecm-green/10 text-ecm-green text-xs font-barlow font-semibold px-3 py-1 rounded-full hover:bg-ecm-green hover:text-white transition-colors"
+                      className="inline-block bg-ecm-green/10 text-heading text-xs font-barlow font-semibold px-3 py-1 rounded-full hover:bg-ecm-green hover:text-white transition-colors"
                     >
                       {INDUSTRY_LABEL[cs.industry] ?? cs.industry}
                     </Link>
@@ -346,7 +346,7 @@ export default async function CaseStudyDetailPage({
 
                 {cs.tags && cs.tags.length > 0 && (
                   <div className="mb-6">
-                    <p className="text-ecm-gray text-xs uppercase tracking-wider mb-2">
+                    <p className="text-ink-muted text-xs uppercase tracking-wider mb-2">
                       Services
                     </p>
                     <div className="flex flex-wrap gap-1.5">
@@ -391,7 +391,7 @@ export default async function CaseStudyDetailPage({
         {/* Wave divider: white → green */}
         <div className="wave-divider wave-divider-top">
           <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0,60 C360,0 1080,120 1440,60 L1440,0 L0,0 Z" fill="#ffffff" />
+            <path d="M0,60 C360,0 1080,120 1440,60 L1440,0 L0,0 Z" fill="var(--color-surface)" />
           </svg>
         </div>
         <div className="max-w-3xl mx-auto px-6 text-center">

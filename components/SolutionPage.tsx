@@ -21,7 +21,7 @@ export interface SolutionPageData {
 const WAVE_TO_WHITE = (
   <div className="wave-divider wave-divider-bottom">
     <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="#ffffff" />
+      <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="var(--color-surface)" />
     </svg>
   </div>
 );
@@ -29,7 +29,7 @@ const WAVE_TO_WHITE = (
 const WAVE_FROM_WHITE = (
   <div className="wave-divider wave-divider-top">
     <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M0,60 C360,0 1080,120 1440,60 L1440,0 L0,0 Z" fill="#ffffff" />
+      <path d="M0,60 C360,0 1080,120 1440,60 L1440,0 L0,0 Z" fill="var(--color-surface)" />
     </svg>
   </div>
 );
@@ -66,13 +66,13 @@ export default function SolutionPage({ data }: { data: SolutionPageData }) {
 
       {/* How it works */}
       {howParas.length > 0 && (
-        <section className="bg-white pt-20 pb-10">
+        <section className="bg-surface pt-20 pb-10">
           <div className="max-w-3xl mx-auto px-6">
-            <h2 className="text-ecm-green font-barlow font-bold text-2xl sm:text-3xl mb-8">
+            <h2 className="text-heading font-barlow font-bold text-2xl sm:text-3xl mb-8">
               How it works
             </h2>
             {howParas.map((p, i) => (
-              <p key={i} className="text-ecm-gray-dark text-base sm:text-lg leading-relaxed mb-5">
+              <p key={i} className="text-ink text-base sm:text-lg leading-relaxed mb-5">
                 {p}
               </p>
             ))}
@@ -82,24 +82,24 @@ export default function SolutionPage({ data }: { data: SolutionPageData }) {
 
       {/* What's included */}
       {data.includes && data.includes.length > 0 && (
-        <section className="bg-white pt-8 pb-24">
+        <section className="bg-surface pt-8 pb-24">
           <div className="max-w-6xl mx-auto px-6">
-            <div className="border-t-2 border-ecm-green pt-10 mb-10">
-              <h2 className="text-ecm-green font-barlow font-bold text-2xl sm:text-3xl">
+            <div className="border-t-2 border-heading pt-10 mb-10">
+              <h2 className="text-heading font-barlow font-bold text-2xl sm:text-3xl">
                 What's included
               </h2>
             </div>
             <div className="grid md:grid-cols-2 gap-10">
               {data.includes.map((step, i) => (
-                <article key={i} className="border-t border-ecm-green pt-6 flex flex-col">
-                  <p className="text-ecm-green/40 font-barlow font-bold text-sm mb-4 tracking-wider">
+                <article key={i} className="border-t border-heading pt-6 flex flex-col">
+                  <p className="text-heading/40 font-barlow font-bold text-sm mb-4 tracking-wider">
                     {String(i + 1).padStart(2, "0")}
                   </p>
-                  <h3 className="text-ecm-green font-barlow font-bold text-xl mb-3 leading-tight">
+                  <h3 className="text-heading font-barlow font-bold text-xl mb-3 leading-tight">
                     {step.title}
                   </h3>
                   {step.description && (
-                    <p className="text-ecm-gray-dark text-sm leading-relaxed">{step.description}</p>
+                    <p className="text-ink text-sm leading-relaxed">{step.description}</p>
                   )}
                 </article>
               ))}
@@ -110,9 +110,9 @@ export default function SolutionPage({ data }: { data: SolutionPageData }) {
 
       {/* Proof */}
       {data.proof && data.proof.length > 0 && (
-        <section className="bg-gray-50 py-20">
+        <section className="bg-surface-alt py-20">
           <div className="max-w-6xl mx-auto px-6">
-            <h2 className="text-ecm-green font-barlow font-bold text-2xl sm:text-3xl mb-10">
+            <h2 className="text-heading font-barlow font-bold text-2xl sm:text-3xl mb-10">
               Proof it works.
             </h2>
             <div className="grid sm:grid-cols-2 gap-6">
@@ -136,12 +136,12 @@ export default function SolutionPage({ data }: { data: SolutionPageData }) {
       )}
 
       {/* Where to start */}
-      <section className="bg-white pt-20 pb-16">
+      <section className="bg-surface pt-20 pb-16">
         <div className="max-w-3xl mx-auto px-6">
-          <h2 className="text-ecm-green font-barlow font-bold text-2xl sm:text-3xl mb-4">
+          <h2 className="text-heading font-barlow font-bold text-2xl sm:text-3xl mb-4">
             Where to start
           </h2>
-          <p className="text-ecm-gray-dark text-base sm:text-lg leading-relaxed mb-8 max-w-2xl">
+          <p className="text-ink text-base sm:text-lg leading-relaxed mb-8 max-w-2xl">
             Find out where you stand in about ten minutes, then we scope the highest-leverage fix first.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
@@ -150,12 +150,12 @@ export default function SolutionPage({ data }: { data: SolutionPageData }) {
               className="inline-flex items-center justify-center bg-ecm-lime text-ecm-green font-barlow font-bold text-base px-8 py-4 rounded-full hover:bg-ecm-lime-hover transition-colors"
             >
               {diagnosticLabel}
-              <span className="ml-2 text-ecm-green/70 font-medium text-sm">10 min</span>
+              <span className="ml-2 text-heading/70 font-medium text-sm">10 min</span>
             </Link>
             {data.depthUrl && data.depthLabel && (
               <Link
                 href={data.depthUrl}
-                className="inline-flex items-center justify-center border-2 border-ecm-green text-ecm-green font-barlow font-semibold text-base px-8 py-4 rounded-full hover:bg-ecm-green hover:text-white transition-colors"
+                className="inline-flex items-center justify-center border-2 border-heading text-heading font-barlow font-semibold text-base px-8 py-4 rounded-full hover:bg-ecm-green hover:text-white transition-colors"
               >
                 {data.depthLabel}
               </Link>

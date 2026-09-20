@@ -26,24 +26,24 @@ export default function ServicePage({ data }: { data: ServicePageData }) {
           >
             <path
               d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z"
-              fill="#ffffff"
+              fill="var(--color-surface)"
             />
           </svg>
         </div>
       </section>
 
       {/* Problem intro */}
-      <section className="bg-white pt-20 pb-10">
+      <section className="bg-surface pt-20 pb-10">
         <div className="max-w-3xl mx-auto px-6">
           {leadParagraph && (
-            <p className="text-ecm-green font-barlow font-bold text-2xl sm:text-3xl leading-snug mb-8">
+            <p className="text-heading font-barlow font-bold text-2xl sm:text-3xl leading-snug mb-8">
               {leadParagraph}
             </p>
           )}
           {restParagraphs.map((p, i) => (
             <p
               key={i}
-              className="text-ecm-gray-dark text-base sm:text-lg leading-relaxed mb-5"
+              className="text-ink text-base sm:text-lg leading-relaxed mb-5"
             >
               {p}
             </p>
@@ -52,19 +52,19 @@ export default function ServicePage({ data }: { data: ServicePageData }) {
       </section>
 
       {/* Diagnosis box */}
-      <section className="bg-white pb-20">
+      <section className="bg-surface pb-20">
         <div className="max-w-3xl mx-auto px-6">
           <div className="bg-ecm-gray-light border-l-[5px] border-ecm-lime p-8 sm:p-10 rounded-r-2xl">
-            <p className="text-ecm-green font-barlow font-bold text-xs tracking-[0.2em] uppercase mb-6">
+            <p className="text-heading font-barlow font-bold text-xs tracking-[0.2em] uppercase mb-6">
               You probably recognise this
             </p>
             <ul className="space-y-3">
               {(data.diagnosisItems ?? []).map((item, i) => (
                 <li
                   key={i}
-                  className="text-ecm-gray-dark text-base leading-relaxed flex gap-3"
+                  className="text-ink text-base leading-relaxed flex gap-3"
                 >
-                  <span className="text-ecm-green flex-shrink-0 font-bold">
+                  <span className="text-heading flex-shrink-0 font-bold">
                     —
                   </span>
                   <span>{item}</span>
@@ -86,7 +86,7 @@ export default function ServicePage({ data }: { data: ServicePageData }) {
           >
             <path
               d="M0,60 C360,120 1080,0 1440,60 L1440,0 L0,0 Z"
-              fill="#ffffff"
+              fill="var(--color-surface)"
             />
           </svg>
         </div>
@@ -104,17 +104,17 @@ export default function ServicePage({ data }: { data: ServicePageData }) {
           >
             <path
               d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z"
-              fill="#ffffff"
+              fill="var(--color-surface)"
             />
           </svg>
         </div>
       </section>
 
       {/* What we do */}
-      <section className="bg-white pt-20 pb-8">
+      <section className="bg-surface pt-20 pb-8">
         <div className="max-w-6xl mx-auto px-6">
-          <div className="border-t-2 border-ecm-green pt-10">
-            <h2 className="text-ecm-green font-barlow font-bold text-2xl sm:text-3xl">
+          <div className="border-t-2 border-heading pt-10">
+            <h2 className="text-heading font-barlow font-bold text-2xl sm:text-3xl">
               What we do
             </h2>
           </div>
@@ -122,35 +122,35 @@ export default function ServicePage({ data }: { data: ServicePageData }) {
       </section>
 
       {/* Service cards */}
-      <section className="bg-white pb-24">
+      <section className="bg-surface pb-24">
         <div className="max-w-6xl mx-auto px-6">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
             {(data.packages ?? []).map((pkg) => (
               <article
                 key={pkg.order}
-                className="border-t border-ecm-green pt-6 flex flex-col"
+                className="border-t border-heading pt-6 flex flex-col"
               >
-                <p className="text-ecm-green/40 font-barlow font-bold text-sm mb-4 tracking-wider">
+                <p className="text-heading/40 font-barlow font-bold text-sm mb-4 tracking-wider">
                   {String(pkg.order).padStart(2, "0")}
                 </p>
-                <h3 className="text-ecm-green font-barlow font-bold text-xl mb-4 leading-tight">
+                <h3 className="text-heading font-barlow font-bold text-xl mb-4 leading-tight">
                   {pkg.title}
                 </h3>
-                <p className="text-ecm-gray-dark text-sm leading-relaxed mb-6">
+                <p className="text-ink text-sm leading-relaxed mb-6">
                   {pkg.description}
                 </p>
                 {pkg.features && pkg.features.length > 0 && (
                   <div className="mb-6">
-                    <p className="text-ecm-green font-barlow font-bold text-xs tracking-[0.2em] uppercase mb-3">
+                    <p className="text-heading font-barlow font-bold text-xs tracking-[0.2em] uppercase mb-3">
                       What this delivers
                     </p>
                     <ul className="space-y-2">
                       {pkg.features.map((feature, i) => (
                         <li
                           key={i}
-                          className="text-ecm-gray-dark text-sm leading-relaxed flex gap-2"
+                          className="text-ink text-sm leading-relaxed flex gap-2"
                         >
-                          <span className="text-ecm-green flex-shrink-0 font-bold">
+                          <span className="text-heading flex-shrink-0 font-bold">
                             —
                           </span>
                           <span>{feature}</span>
@@ -182,7 +182,7 @@ export default function ServicePage({ data }: { data: ServicePageData }) {
           >
             <path
               d="M0,60 C360,0 1080,120 1440,60 L1440,0 L0,0 Z"
-              fill="#ffffff"
+              fill="var(--color-surface)"
             />
           </svg>
         </div>

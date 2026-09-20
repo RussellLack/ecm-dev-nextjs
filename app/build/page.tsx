@@ -158,18 +158,18 @@ export default async function BuildPage() {
         </div>
         <div className="wave-divider wave-divider-bottom">
           <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="#ffffff" />
+            <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="var(--color-surface)" />
           </svg>
         </div>
       </section>
 
       {/* ─── PROBLEMS ─── */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-surface">
         <div className="max-w-4xl mx-auto px-6">
-          <h2 className="text-ecm-green font-barlow font-bold text-3xl lg:text-4xl text-center mb-4">
+          <h2 className="text-heading font-barlow font-bold text-3xl lg:text-4xl text-center mb-4">
             {problemsHeading}
           </h2>
-          <p className="text-ecm-gray-dark text-center text-base mb-16 max-w-2xl mx-auto">
+          <p className="text-ink text-center text-base mb-16 max-w-2xl mx-auto">
             {problemsSubheading}
           </p>
           <div className="grid md:grid-cols-3 gap-6">
@@ -188,22 +188,22 @@ export default async function BuildPage() {
       </section>
 
       {/* ─── DELIVERABLES ─── */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-20 bg-surface-alt">
         <div className="max-w-4xl mx-auto px-6">
-          <h2 className="text-ecm-green font-barlow font-bold text-3xl lg:text-4xl text-center mb-16">
+          <h2 className="text-heading font-barlow font-bold text-3xl lg:text-4xl text-center mb-16">
             {deliverablesHeading}
           </h2>
           <div className="grid md:grid-cols-3 gap-6">
             {deliverables.map((item: any, i: number) => (
               <div
                 key={i}
-                className="bg-white rounded-xl p-6 sm:p-8 border border-ecm-green/15 shadow-sm flex flex-col"
+                className="bg-surface rounded-xl p-6 sm:p-8 border border-heading/15 shadow-sm flex flex-col"
               >
-                <h3 className="text-ecm-green font-barlow font-bold text-lg mb-3">{item.title}</h3>
-                <p className="text-ecm-gray-dark text-sm leading-relaxed mb-6 flex-1">{item.body}</p>
-                <div className="flex items-center justify-between border-t border-gray-100 pt-4">
-                  <span className="text-ecm-green font-barlow font-bold text-sm">{item.price}</span>
-                  <span className="text-ecm-gray text-xs">{item.turnaround}</span>
+                <h3 className="text-heading font-barlow font-bold text-lg mb-3">{item.title}</h3>
+                <p className="text-ink text-sm leading-relaxed mb-6 flex-1">{item.body}</p>
+                <div className="flex items-center justify-between border-t border-surface-border pt-4">
+                  <span className="text-heading font-barlow font-bold text-sm">{item.price}</span>
+                  <span className="text-ink-muted text-xs">{item.turnaround}</span>
                 </div>
               </div>
             ))}
@@ -212,20 +212,20 @@ export default async function BuildPage() {
       </section>
 
       {/* ─── HOW WE WORK ─── */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-surface">
         <div className="max-w-3xl mx-auto px-6">
-          <h2 className="text-ecm-green font-barlow font-bold text-3xl lg:text-4xl text-center mb-16">
+          <h2 className="text-heading font-barlow font-bold text-3xl lg:text-4xl text-center mb-16">
             {howWeWorkHeading}
           </h2>
           <div className="space-y-10">
             {steps.map((step: any, i: number) => (
               <div key={i} className="flex gap-6">
                 <div className="shrink-0 w-10 h-10 bg-ecm-lime rounded-lg flex items-center justify-center">
-                  <span className="text-ecm-green-dark font-barlow font-bold text-lg">{step.number}</span>
+                  <span className="text-heading-dark font-barlow font-bold text-lg">{step.number}</span>
                 </div>
                 <div>
-                  <h3 className="text-ecm-green font-barlow font-bold text-lg mb-2">{step.title}</h3>
-                  <p className="text-ecm-gray-dark text-sm leading-relaxed">{step.body}</p>
+                  <h3 className="text-heading font-barlow font-bold text-lg mb-2">{step.title}</h3>
+                  <p className="text-ink text-sm leading-relaxed">{step.body}</p>
                 </div>
               </div>
             ))}

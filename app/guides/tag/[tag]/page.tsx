@@ -96,15 +96,15 @@ export default async function GuidesTagPage({
         </div>
         <div className="wave-divider wave-divider-bottom">
           <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="#ffffff" />
+            <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="var(--color-surface)" />
           </svg>
         </div>
       </section>
 
-      <section className="py-12 bg-white">
+      <section className="py-12 bg-surface">
         <div className="max-w-5xl mx-auto px-6">
           {guides.length === 0 ? (
-            <p className="text-ecm-gray text-center py-16 font-barlow">
+            <p className="text-ink-muted text-center py-16 font-barlow">
               No guides found for this tag.
             </p>
           ) : (
@@ -113,7 +113,7 @@ export default async function GuidesTagPage({
                 <Link
                   key={guide._id}
                   href={`/guide/${guide.slug?.current}`}
-                  className="group bg-white rounded-xl border border-gray-100 hover:border-ecm-green/20 hover:shadow-lg transition-all overflow-hidden flex flex-col"
+                  className="group bg-surface rounded-xl border border-surface-border hover:border-heading/20 hover:shadow-lg transition-all overflow-hidden flex flex-col"
                 >
                   <div className="h-36 overflow-hidden bg-ecm-green/5 flex items-center justify-center relative">
                     {guide.mainImage ? (
@@ -142,16 +142,16 @@ export default async function GuidesTagPage({
                         {guide.series}
                       </p>
                     )}
-                    <h2 className="text-ecm-green font-barlow font-bold text-base leading-snug mb-1 group-hover:text-ecm-green-dark transition-colors">
+                    <h2 className="text-heading font-barlow font-bold text-base leading-snug mb-1 group-hover:text-heading-dark transition-colors">
                       {guide.title}
                     </h2>
                     {guide.subtitle && (
-                      <p className="text-ecm-gray text-xs font-barlow italic mb-3">
+                      <p className="text-ink-muted text-xs font-barlow italic mb-3">
                         {guide.subtitle}
                       </p>
                     )}
                     {guide.excerpt && (
-                      <p className="text-ecm-gray-dark text-sm leading-relaxed line-clamp-3 mb-4">
+                      <p className="text-ink text-sm leading-relaxed line-clamp-3 mb-4">
                         {guide.excerpt}
                       </p>
                     )}

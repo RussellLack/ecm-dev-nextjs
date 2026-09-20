@@ -21,7 +21,7 @@ type Guide = {
 
 // Alternating band colours: odd = white, even = light gray
 const bandBg = (idx: number) =>
-  idx % 2 === 0 ? "bg-white" : "bg-gray-50";
+  idx % 2 === 0 ? "bg-surface" : "bg-surface-alt";
 
 export default function GuidesClientPage({ guides }: { guides: Guide[] }) {
   // Group guides by series, preserving seriesNumber order
@@ -56,7 +56,7 @@ export default function GuidesClientPage({ guides }: { guides: Guide[] }) {
         {/* Wave divider */}
         <div className="wave-divider wave-divider-bottom">
           <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="#ffffff" />
+            <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="var(--color-surface)" />
           </svg>
         </div>
       </section>
@@ -66,19 +66,19 @@ export default function GuidesClientPage({ guides }: { guides: Guide[] }) {
         <section
           key={series}
           id={`series-${tagToSlug(series)}`}
-          className={`${bandBg(bandIdx)} py-16 border-b border-gray-100 scroll-mt-24`}
+          className={`${bandBg(bandIdx)} py-16 border-b border-surface-border scroll-mt-24`}
         >
           <div className="max-w-5xl mx-auto px-6">
             {/* Series header */}
             <div className="flex items-baseline gap-4 mb-8">
               <div className="flex-shrink-0">
-                <p className="text-ecm-green/50 font-barlow font-semibold text-xs uppercase tracking-widest mb-1">
+                <p className="text-heading/50 font-barlow font-semibold text-xs uppercase tracking-widest mb-1">
                   Series
                 </p>
-                <h2 className="text-ecm-green font-barlow font-bold text-2xl sm:text-3xl">
+                <h2 className="text-heading font-barlow font-bold text-2xl sm:text-3xl">
                   <Link
                     href={`/guides/${tagToSlug(series)}`}
-                    className="hover:text-ecm-green-dark transition-colors"
+                    className="hover:text-heading-dark transition-colors"
                   >
                     {series}
                   </Link>
@@ -86,12 +86,12 @@ export default function GuidesClientPage({ guides }: { guides: Guide[] }) {
               </div>
               <div className="flex-1 h-px bg-ecm-green/10 mb-1" />
               <div className="flex flex-col items-end gap-1 flex-shrink-0">
-                <span className="text-ecm-gray text-xs font-barlow">
+                <span className="text-ink-muted text-xs font-barlow">
                   {guides.length} guide{guides.length !== 1 ? "s" : ""}
                 </span>
                 <Link
                   href={`/guides/${tagToSlug(series)}`}
-                  className="text-ecm-green text-xs font-barlow font-semibold hover:text-ecm-green-dark transition-colors"
+                  className="text-heading text-xs font-barlow font-semibold hover:text-heading-dark transition-colors"
                 >
                   View series →
                 </Link>
@@ -104,7 +104,7 @@ export default function GuidesClientPage({ guides }: { guides: Guide[] }) {
                 <Link
                   key={guide._id}
                   href={`/guide/${guide.slug?.current}`}
-                  className="group bg-white rounded-xl border border-gray-100 hover:border-ecm-green/20 hover:shadow-lg transition-all overflow-hidden flex flex-col"
+                  className="group bg-surface rounded-xl border border-surface-border hover:border-heading/20 hover:shadow-lg transition-all overflow-hidden flex flex-col"
                 >
                   {/* Image or number badge */}
                   <div className="h-36 overflow-hidden bg-ecm-green/5 flex items-center justify-center relative">
@@ -128,25 +128,25 @@ export default function GuidesClientPage({ guides }: { guides: Guide[] }) {
                   </div>
 
                   <div className="p-5 flex flex-col flex-1">
-                    <h3 className="text-ecm-green font-barlow font-bold text-base leading-snug mb-1 group-hover:text-ecm-green-dark transition-colors">
+                    <h3 className="text-heading font-barlow font-bold text-base leading-snug mb-1 group-hover:text-heading-dark transition-colors">
                       {guide.title}
                     </h3>
                     {guide.subtitle && (
-                      <p className="text-ecm-gray text-xs font-barlow italic mb-3">
+                      <p className="text-ink-muted text-xs font-barlow italic mb-3">
                         {guide.subtitle}
                       </p>
                     )}
                     {guide.excerpt && (
-                      <p className="text-ecm-gray-dark text-sm leading-relaxed line-clamp-3 mb-4">
+                      <p className="text-ink text-sm leading-relaxed line-clamp-3 mb-4">
                         {guide.excerpt}
                       </p>
                     )}
                     {guide.tags?.length > 0 && (
-                      <div className="flex flex-wrap gap-1 mt-auto pt-3 border-t border-gray-100">
+                      <div className="flex flex-wrap gap-1 mt-auto pt-3 border-t border-surface-border">
                         {guide.tags.slice(0, 3).map((tag, j) => (
                           <span
                             key={j}
-                            className="inline-block border border-ecm-green/20 text-ecm-green text-[10px] font-barlow font-semibold px-2 py-0.5 rounded-full"
+                            className="inline-block border border-heading/20 text-heading text-[10px] font-barlow font-semibold px-2 py-0.5 rounded-full"
                           >
                             {tag}
                           </span>
@@ -163,8 +163,8 @@ export default function GuidesClientPage({ guides }: { guides: Guide[] }) {
 
       {/* Empty state */}
       {seriesBands.length === 0 && (
-        <section className="py-32 bg-white text-center">
-          <p className="text-ecm-gray font-barlow text-lg">Guides coming soon.</p>
+        <section className="py-32 bg-surface text-center">
+          <p className="text-ink-muted font-barlow text-lg">Guides coming soon.</p>
         </section>
       )}
     </>

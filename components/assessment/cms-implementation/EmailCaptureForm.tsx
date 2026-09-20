@@ -159,11 +159,11 @@ export default function EmailCaptureForm({ inputs, result }: Props) {
 
   if (status.kind === "thanks") {
     return (
-      <div className="rounded-xl border border-ecm-green/20 bg-ecm-green/5 p-5">
-        <p className="mb-2 font-barlow text-sm font-bold text-ecm-green-dark">
+      <div className="rounded-xl border border-heading/20 bg-ecm-green/5 p-5">
+        <p className="mb-2 font-barlow text-sm font-bold text-heading-dark">
           {status.bookCall ? "Got it — we'll be in touch." : "Sent — check your inbox."}
         </p>
-        <p className="mb-3 font-barlow text-xs leading-relaxed text-ecm-gray-dark">
+        <p className="mb-3 font-barlow text-xs leading-relaxed text-ink">
           {status.bookCall
             ? "Your TCO summary is on its way. Someone from ECM.dev will reach out within one working day to schedule the benchmarking call."
             : "Your TCO summary is on its way."}{" "}
@@ -175,7 +175,7 @@ export default function EmailCaptureForm({ inputs, result }: Props) {
             href={status.resultsUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="font-barlow text-xs font-semibold text-ecm-green underline hover:text-ecm-green-dark"
+            className="font-barlow text-xs font-semibold text-heading underline hover:text-heading-dark"
           >
             Open shareable link →
           </a>
@@ -200,17 +200,17 @@ export default function EmailCaptureForm({ inputs, result }: Props) {
 
   return (
     <form onSubmit={handleSubmitEmail} className="space-y-3">
-      <p className="mb-1 font-barlow text-sm font-semibold text-ecm-gray-dark">
+      <p className="mb-1 font-barlow text-sm font-semibold text-ink">
         Get the take-away by email
       </p>
-      <p className="mb-4 font-barlow text-xs leading-relaxed text-ecm-gray">
+      <p className="mb-4 font-barlow text-xs leading-relaxed text-ink-muted">
         We'll send a one-page TCO summary plus a shareable link your CFO can
         open without filling in the form. Just your work email — nothing else
         required.
       </p>
 
       <label className="block font-barlow">
-        <span className="mb-1 block text-xs text-ecm-gray-dark">
+        <span className="mb-1 block text-xs text-ink">
           Work email <span className="text-red-500">*</span>
         </span>
         <input
@@ -221,17 +221,17 @@ export default function EmailCaptureForm({ inputs, result }: Props) {
           disabled={submitting}
           autoComplete="email"
           placeholder="you@company.com"
-          className="w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm text-ecm-gray-dark focus:border-ecm-green focus:outline-none disabled:opacity-50"
+          className="w-full rounded-md border border-surface-border bg-surface px-3 py-2 text-sm text-ink focus:border-heading focus:outline-none disabled:opacity-50"
         />
       </label>
 
-      <p className="font-barlow text-[11px] leading-relaxed text-ecm-gray">
+      <p className="font-barlow text-[11px] leading-relaxed text-ink-muted">
         We'll email your TCO estimate and store the submission per our{" "}
         <a
           href="/privacy"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-ecm-green underline hover:text-ecm-green-dark"
+          className="text-heading underline hover:text-heading-dark"
         >
           privacy policy
         </a>
@@ -288,11 +288,11 @@ function EnrichmentForm({
 
   return (
     <div>
-      <div className="mb-4 rounded-lg border border-ecm-green/20 bg-ecm-green/5 p-3">
-        <p className="mb-1 font-barlow text-sm font-bold text-ecm-green-dark">
+      <div className="mb-4 rounded-lg border border-heading/20 bg-ecm-green/5 p-3">
+        <p className="mb-1 font-barlow text-sm font-bold text-heading-dark">
           PDF on its way
         </p>
-        <p className="font-barlow text-xs text-ecm-gray-dark">
+        <p className="font-barlow text-xs text-ink">
           Check your inbox in a moment.
           {resultsUrl && (
             <>
@@ -302,7 +302,7 @@ function EnrichmentForm({
                 href={resultsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-semibold text-ecm-green underline hover:text-ecm-green-dark"
+                className="font-semibold text-heading underline hover:text-heading-dark"
               >
                 shareable link
               </a>{" "}
@@ -313,52 +313,52 @@ function EnrichmentForm({
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-3">
-        <p className="mb-1 font-barlow text-sm font-semibold text-ecm-gray-dark">
+        <p className="mb-1 font-barlow text-sm font-semibold text-ink">
           Want a tighter estimate?
         </p>
-        <p className="mb-3 font-barlow text-xs leading-relaxed text-ecm-gray">
+        <p className="mb-3 font-barlow text-xs leading-relaxed text-ink-muted">
           Add a few details below and we'll prep a 30-min benchmarking call —
           we'll stress-test your inputs and pull on negotiated pricing where we
           can. Optional; skip if you'd rather just take the PDF.
         </p>
 
         <label className="block font-barlow">
-          <span className="mb-1 block text-xs text-ecm-gray-dark">First name</span>
+          <span className="mb-1 block text-xs text-ink">First name</span>
           <input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
             disabled={submitting}
             autoComplete="given-name"
-            className="w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm text-ecm-gray-dark focus:border-ecm-green focus:outline-none disabled:opacity-50"
+            className="w-full rounded-md border border-surface-border bg-surface px-3 py-2 text-sm text-ink focus:border-heading focus:outline-none disabled:opacity-50"
           />
         </label>
 
         <label className="block font-barlow">
-          <span className="mb-1 block text-xs text-ecm-gray-dark">Company</span>
+          <span className="mb-1 block text-xs text-ink">Company</span>
           <input
             type="text"
             value={company}
             onChange={(e) => setCompany(e.target.value)}
             disabled={submitting}
             autoComplete="organization"
-            className="w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm text-ecm-gray-dark focus:border-ecm-green focus:outline-none disabled:opacity-50"
+            className="w-full rounded-md border border-surface-border bg-surface px-3 py-2 text-sm text-ink focus:border-heading focus:outline-none disabled:opacity-50"
           />
         </label>
 
         <label className="block font-barlow">
-          <span className="mb-1 block text-xs text-ecm-gray-dark">Role / job title</span>
+          <span className="mb-1 block text-xs text-ink">Role / job title</span>
           <input
             type="text"
             value={role}
             onChange={(e) => setRole(e.target.value)}
             disabled={submitting}
             autoComplete="organization-title"
-            className="w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm text-ecm-gray-dark focus:border-ecm-green focus:outline-none disabled:opacity-50"
+            className="w-full rounded-md border border-surface-border bg-surface px-3 py-2 text-sm text-ink focus:border-heading focus:outline-none disabled:opacity-50"
           />
         </label>
 
-        <label className="flex cursor-pointer items-start gap-2 pt-1 font-barlow text-xs text-ecm-gray-dark">
+        <label className="flex cursor-pointer items-start gap-2 pt-1 font-barlow text-xs text-ink">
           <input
             type="checkbox"
             checked={bookCall}
@@ -369,7 +369,7 @@ function EnrichmentForm({
           <span>I'd like a 30-min benchmarking call</span>
         </label>
 
-        <label className="flex cursor-pointer items-start gap-2 font-barlow text-xs text-ecm-gray-dark">
+        <label className="flex cursor-pointer items-start gap-2 font-barlow text-xs text-ink">
           <input
             type="checkbox"
             checked={marketingOptIn}
@@ -392,7 +392,7 @@ function EnrichmentForm({
             type="button"
             onClick={onSkip}
             disabled={submitting}
-            className="rounded-full border border-gray-200 px-4 py-2.5 font-barlow text-xs font-semibold uppercase tracking-wider text-ecm-gray-dark transition-colors hover:border-ecm-gray hover:text-ecm-green disabled:cursor-not-allowed disabled:opacity-50"
+            className="rounded-full border border-surface-border px-4 py-2.5 font-barlow text-xs font-semibold uppercase tracking-wider text-ink transition-colors hover:border-ecm-gray hover:text-heading disabled:cursor-not-allowed disabled:opacity-50"
           >
             Skip
           </button>

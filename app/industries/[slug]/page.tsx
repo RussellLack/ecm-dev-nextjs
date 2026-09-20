@@ -94,15 +94,15 @@ export default async function IndustryDetailPage({
         </div>
         <div className="wave-divider wave-divider-bottom">
           <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="#ffffff" />
+            <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="var(--color-surface)" />
           </svg>
         </div>
       </section>
 
-      <section className="py-12 bg-white">
+      <section className="py-12 bg-surface">
         <div className="max-w-5xl mx-auto px-6">
           {caseStudies.length === 0 ? (
-            <p className="text-ecm-gray text-center py-16 font-barlow">
+            <p className="text-ink-muted text-center py-16 font-barlow">
               No projects to show for this industry yet.
             </p>
           ) : (
@@ -111,17 +111,17 @@ export default async function IndustryDetailPage({
                 <Link
                   key={cs._id}
                   href={`/case-study/${cs.slug?.current}`}
-                  className="group bg-gray-50 rounded-xl border border-gray-100 hover:border-ecm-green/20 hover:shadow-lg transition-all overflow-hidden flex flex-col"
+                  className="group bg-surface-alt rounded-xl border border-surface-border hover:border-heading/20 hover:shadow-lg transition-all overflow-hidden flex flex-col"
                 >
                   <div className="h-32 overflow-hidden bg-ecm-green/5 flex items-center justify-center">
                     <CaseStudyIllustration slug={cs.slug?.current} />
                   </div>
                   <div className="p-4 flex flex-col flex-1">
-                    <h2 className="text-ecm-green font-barlow font-semibold text-sm leading-snug mb-2 group-hover:text-ecm-green-dark transition-colors line-clamp-2">
+                    <h2 className="text-heading font-barlow font-semibold text-sm leading-snug mb-2 group-hover:text-heading-dark transition-colors line-clamp-2">
                       {cs.title}
                     </h2>
                     {cs.description && (
-                      <p className="text-ecm-gray text-xs leading-relaxed line-clamp-3">
+                      <p className="text-ink-muted text-xs leading-relaxed line-clamp-3">
                         {cs.description}
                       </p>
                     )}

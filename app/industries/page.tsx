@@ -69,15 +69,15 @@ export default async function IndustriesIndexPage() {
         </div>
         <div className="wave-divider wave-divider-bottom">
           <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="#ffffff" />
+            <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="var(--color-surface)" />
           </svg>
         </div>
       </section>
 
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-surface">
         <div className="max-w-5xl mx-auto px-6">
           {items.length === 0 ? (
-            <p className="text-ecm-gray text-center py-16 font-barlow">
+            <p className="text-ink-muted text-center py-16 font-barlow">
               Industry data coming soon.
             </p>
           ) : (
@@ -86,12 +86,12 @@ export default async function IndustriesIndexPage() {
                 <Link
                   key={item.slug}
                   href={`/industries/${item.slug}`}
-                  className="group bg-gray-50 rounded-xl border border-gray-100 hover:border-ecm-green/20 hover:shadow-lg transition-all p-6 flex flex-col"
+                  className="group bg-surface-alt rounded-xl border border-surface-border hover:border-heading/20 hover:shadow-lg transition-all p-6 flex flex-col"
                 >
-                  <h2 className="text-ecm-green font-barlow font-bold text-lg leading-snug mb-2 group-hover:text-ecm-green-dark transition-colors">
+                  <h2 className="text-heading font-barlow font-bold text-lg leading-snug mb-2 group-hover:text-heading-dark transition-colors">
                     {item.title}
                   </h2>
-                  <p className="text-ecm-gray text-sm">
+                  <p className="text-ink-muted text-sm">
                     {item.count} {item.count === 1 ? "project" : "projects"}
                   </p>
                 </Link>

@@ -47,8 +47,8 @@ export default function RelatedContent({
   return (
     <section className="pb-16">
       <div className="max-w-3xl mx-auto px-6">
-        <div className="border-t border-gray-100 pt-8">
-          <p className="text-ecm-gray text-xs font-barlow font-semibold uppercase tracking-widest mb-5">
+        <div className="border-t border-surface-border pt-8">
+          <p className="text-ink-muted text-xs font-barlow font-semibold uppercase tracking-widest mb-5">
             {heading}
           </p>
           <div className="grid sm:grid-cols-2 gap-4">
@@ -61,7 +61,7 @@ export default function RelatedContent({
                 <Link
                   key={item._id ?? slug}
                   href={`${hrefPrefix}/${slug}`}
-                  className="group flex gap-4 p-4 rounded-xl border border-gray-100 hover:border-ecm-green/20 hover:shadow-md transition-all bg-white"
+                  className="group flex gap-4 p-4 rounded-xl border border-surface-border hover:border-heading/20 hover:shadow-md transition-all bg-surface"
                 >
                   <div className="flex-shrink-0 w-16 h-16 rounded-lg bg-ecm-green/8 overflow-hidden flex items-center justify-center">
                     {item.fallback ? (
@@ -75,17 +75,17 @@ export default function RelatedContent({
                         loading="lazy"
                       />
                     ) : (
-                      <span className="text-ecm-green/40 text-xs font-barlow font-semibold">
+                      <span className="text-heading/40 text-xs font-barlow font-semibold">
                         ECM
                       </span>
                     )}
                   </div>
                   <div className="min-w-0">
-                    <p className="text-ecm-green font-barlow font-semibold text-sm leading-snug group-hover:text-ecm-green-dark transition-colors line-clamp-2">
+                    <p className="text-heading font-barlow font-semibold text-sm leading-snug group-hover:text-heading-dark transition-colors line-clamp-2">
                       {item.title}
                     </p>
                     {blurb && (
-                      <p className="text-ecm-gray text-xs mt-1 line-clamp-2">
+                      <p className="text-ink-muted text-xs mt-1 line-clamp-2">
                         {blurb}
                       </p>
                     )}

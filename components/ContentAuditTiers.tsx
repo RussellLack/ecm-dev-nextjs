@@ -28,15 +28,15 @@ const auditTiers = [
 
 export default function ContentAuditTiers() {
   return (
-    <section className="py-20 bg-white border-t border-gray-100">
+    <section className="py-20 bg-surface border-t border-surface-border">
       <div className="max-w-6xl mx-auto px-6">
-        <p className="text-center text-ecm-green/70 font-barlow font-semibold text-xs tracking-widest uppercase mb-3">
+        <p className="text-center text-heading/70 font-barlow font-semibold text-xs tracking-widest uppercase mb-3">
           Content Audit
         </p>
-        <h2 className="text-ecm-green font-barlow font-bold text-3xl lg:text-4xl text-center mb-4">
+        <h2 className="text-heading font-barlow font-bold text-3xl lg:text-4xl text-center mb-4">
           Deeper proof, when you need it in writing.
         </h2>
-        <p className="text-ecm-gray-dark text-center text-base mb-16 max-w-2xl mx-auto">
+        <p className="text-ink text-center text-base mb-16 max-w-2xl mx-auto">
           ecm-agent scans your actual content estate rather than relying on
           self-reporting. Two depths, both fixed scope.
         </p>
@@ -65,7 +65,7 @@ export default function ContentAuditTiers() {
             </div>
           ))}
         </div>
-        <p className="text-center text-ecm-gray-dark text-xs mt-8 max-w-2xl mx-auto">
+        <p className="text-center text-ink text-xs mt-8 max-w-2xl mx-auto">
           All prices exclude VAT where applicable.
         </p>
       </div>

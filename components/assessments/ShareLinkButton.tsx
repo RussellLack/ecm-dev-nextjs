@@ -16,7 +16,7 @@ export default function ShareLinkButton({ anchor }: { anchor: string }) {
   return (
     <button
       onClick={handleCopy}
-      className="inline-flex items-center gap-1.5 text-gray-400 hover:text-ecm-green font-barlow text-sm transition-colors cursor-pointer"
+      className="inline-flex items-center gap-1.5 text-gray-400 hover:text-heading font-barlow text-sm transition-colors cursor-pointer"
       title="Copy shareable link"
     >
       {copied ? (

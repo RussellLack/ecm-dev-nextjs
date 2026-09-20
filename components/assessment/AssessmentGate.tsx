@@ -130,10 +130,10 @@ export default function AssessmentGate({ slug, title, children }: Props) {
   if (mode === "checking") {
     return (
       <div
-        className="flex min-h-[60vh] items-center justify-center bg-white"
+        className="flex min-h-[60vh] items-center justify-center bg-surface"
         aria-busy="true"
       >
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-ecm-green/20 border-t-ecm-green" />
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-heading/20 border-t-ecm-green" />
       </div>
     );
   }
@@ -144,7 +144,7 @@ export default function AssessmentGate({ slug, title, children }: Props) {
 
   // ── Registration gate ──
   return (
-    <div className="bg-white">
+    <div className="bg-surface">
       <section className="relative overflow-hidden bg-ecm-green py-14 pb-24 sm:py-20 sm:pb-28 lg:py-24 lg:pb-32">
         <div className="mx-auto max-w-3xl px-6 text-center">
           <div className="mb-3 font-barlow text-xs font-bold uppercase tracking-[0.14em] text-ecm-lime/80">
@@ -166,15 +166,15 @@ export default function AssessmentGate({ slug, title, children }: Props) {
           >
             <path
               d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z"
-              fill="#ffffff"
+              fill="var(--color-surface)"
             />
           </svg>
         </div>
       </section>
 
-      <section className="bg-white pb-20">
+      <section className="bg-surface pb-20">
         <div className="mx-auto -mt-12 max-w-md px-6">
-          <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-lg sm:p-8">
+          <div className="rounded-2xl border border-surface-border bg-surface p-6 shadow-lg sm:p-8">
             <form onSubmit={handleSubmit} noValidate className="space-y-4">
               {/* Honeypot — visually hidden, bots fill it. */}
               <div className="hidden" aria-hidden="true">
@@ -185,7 +185,7 @@ export default function AssessmentGate({ slug, title, children }: Props) {
               </div>
 
               <label className="block font-barlow">
-                <span className="mb-1 block text-xs font-semibold text-ecm-gray-dark">
+                <span className="mb-1 block text-xs font-semibold text-ink">
                   Work email <span className="text-red-500">*</span>
                 </span>
                 <input
@@ -199,10 +199,10 @@ export default function AssessmentGate({ slug, title, children }: Props) {
                   disabled={submitting}
                   autoComplete="email"
                   placeholder="you@company.com"
-                  className={`w-full rounded-md border bg-white px-3 py-2.5 text-sm text-ecm-gray-dark focus:outline-none disabled:opacity-50 ${
+                  className={`w-full rounded-md border bg-surface px-3 py-2.5 text-sm text-ink focus:outline-none disabled:opacity-50 ${
                     emailError
                       ? "border-red-400 bg-red-50"
-                      : "border-gray-200 focus:border-ecm-green"
+                      : "border-surface-border focus:border-heading"
                   }`}
                 />
                 {emailError && (
@@ -214,7 +214,7 @@ export default function AssessmentGate({ slug, title, children }: Props) {
 
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                 <label className="block font-barlow">
-                  <span className="mb-1 block text-xs font-semibold text-ecm-gray-dark">
+                  <span className="mb-1 block text-xs font-semibold text-ink">
                     First name
                   </span>
                   <input
@@ -224,11 +224,11 @@ export default function AssessmentGate({ slug, title, children }: Props) {
                     disabled={submitting}
                     autoComplete="given-name"
                     placeholder="Optional"
-                    className="w-full rounded-md border border-gray-200 bg-white px-3 py-2.5 text-sm text-ecm-gray-dark focus:border-ecm-green focus:outline-none disabled:opacity-50"
+                    className="w-full rounded-md border border-surface-border bg-surface px-3 py-2.5 text-sm text-ink focus:border-heading focus:outline-none disabled:opacity-50"
                   />
                 </label>
                 <label className="block font-barlow">
-                  <span className="mb-1 block text-xs font-semibold text-ecm-gray-dark">
+                  <span className="mb-1 block text-xs font-semibold text-ink">
                     Company
                   </span>
                   <input
@@ -238,13 +238,13 @@ export default function AssessmentGate({ slug, title, children }: Props) {
                     disabled={submitting}
                     autoComplete="organization"
                     placeholder="Optional"
-                    className="w-full rounded-md border border-gray-200 bg-white px-3 py-2.5 text-sm text-ecm-gray-dark focus:border-ecm-green focus:outline-none disabled:opacity-50"
+                    className="w-full rounded-md border border-surface-border bg-surface px-3 py-2.5 text-sm text-ink focus:border-heading focus:outline-none disabled:opacity-50"
                   />
                 </label>
               </div>
 
               {/* Optional: consultant read-through — an offer, not consent. */}
-              <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-ecm-green/25 bg-ecm-lime/10 p-3 transition-colors hover:bg-ecm-lime/20">
+              <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-heading/25 bg-ecm-lime/10 p-3 transition-colors hover:bg-ecm-lime/20">
                 <span className="mt-0.5 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-ecm-green">
                   <svg
                     className="h-4 w-4 text-ecm-lime"
@@ -260,8 +260,8 @@ export default function AssessmentGate({ slug, title, children }: Props) {
                     />
                   </svg>
                 </span>
-                <span className="font-barlow text-xs leading-relaxed text-ecm-gray-dark">
-                  <span className="block text-[13px] font-bold text-ecm-green-dark">
+                <span className="font-barlow text-xs leading-relaxed text-ink">
+                  <span className="block text-[13px] font-bold text-heading-dark">
                     Book a read-through with a consultant
                   </span>
                   Have someone from ECM.DEV walk you through your results and
@@ -281,7 +281,7 @@ export default function AssessmentGate({ slug, title, children }: Props) {
                 className={`flex cursor-pointer items-start gap-2.5 rounded-lg border p-3 transition-colors ${
                   consentError
                     ? "border-red-400 bg-red-50"
-                    : "border-gray-200 bg-gray-50/60"
+                    : "border-surface-border bg-surface-alt/60"
                 }`}
               >
                 <input
@@ -294,8 +294,8 @@ export default function AssessmentGate({ slug, title, children }: Props) {
                   disabled={submitting}
                   className="mt-0.5 h-4 w-4 flex-shrink-0 accent-ecm-green"
                 />
-                <span className="font-barlow text-xs leading-relaxed text-ecm-gray-dark">
-                  <span className="mb-0.5 block text-[10.5px] font-bold uppercase tracking-wider text-ecm-green">
+                <span className="font-barlow text-xs leading-relaxed text-ink">
+                  <span className="mb-0.5 block text-[10.5px] font-bold uppercase tracking-wider text-heading">
                     Required
                   </span>
                   I agree that ECM.DEV can process the details above to run this
@@ -303,7 +303,7 @@ export default function AssessmentGate({ slug, title, children }: Props) {
                   <Link
                     href="/privacy"
                     target="_blank"
-                    className="text-ecm-green underline hover:text-ecm-green-dark"
+                    className="text-heading underline hover:text-heading-dark"
                   >
                     Privacy Policy
                   </Link>
@@ -317,7 +317,7 @@ export default function AssessmentGate({ slug, title, children }: Props) {
               )}
 
               {/* Optional marketing opt-in. */}
-              <label className="flex cursor-pointer items-start gap-2.5 rounded-lg border border-gray-200 p-3">
+              <label className="flex cursor-pointer items-start gap-2.5 rounded-lg border border-surface-border p-3">
                 <input
                   type="checkbox"
                   checked={marketingOptIn}
@@ -325,8 +325,8 @@ export default function AssessmentGate({ slug, title, children }: Props) {
                   disabled={submitting}
                   className="mt-0.5 h-4 w-4 flex-shrink-0 accent-ecm-green"
                 />
-                <span className="font-barlow text-xs leading-relaxed text-ecm-gray-dark">
-                  <span className="mb-0.5 block text-[10.5px] font-bold uppercase tracking-wider text-ecm-gray">
+                <span className="font-barlow text-xs leading-relaxed text-ink">
+                  <span className="mb-0.5 block text-[10.5px] font-bold uppercase tracking-wider text-ink-muted">
                     Optional
                   </span>
                   Yes, keep me posted. I would like ECM.DEV to send occasional
@@ -364,7 +364,7 @@ export default function AssessmentGate({ slug, title, children }: Props) {
                 )}
               </button>
 
-              <p className="font-barlow text-[11px] leading-relaxed text-ecm-gray">
+              <p className="font-barlow text-[11px] leading-relaxed text-ink-muted">
                 Two separate choices, by design. The first is what we need to
                 deliver your results. The second is a genuine opt-in for future
                 communications, never pre-ticked. We never share your details,

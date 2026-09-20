@@ -58,7 +58,7 @@ export default function CaseStudyGrid({
           className={`text-sm font-barlow font-medium px-4 py-2 rounded-full transition-all ${
             activePillar === null
               ? "bg-ecm-green text-white shadow-md"
-              : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+              : "bg-surface-alt text-gray-600 hover:bg-gray-200"
           }`}
         >
           All ({caseStudies.length})
@@ -117,7 +117,7 @@ export default function CaseStudyGrid({
 
       {/* Empty state */}
       {filtered.length === 0 && (
-        <p className="text-center text-ecm-gray font-barlow text-lg py-12">
+        <p className="text-center text-ink-muted font-barlow text-lg py-12">
           No projects found for this filter.
         </p>
       )}

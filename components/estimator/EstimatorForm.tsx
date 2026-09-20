@@ -171,7 +171,7 @@ export default function EstimatorForm({ inputs, onChange, onReset }: Props) {
       <button
         type="button"
         onClick={onReset}
-        className="mt-5 w-full rounded-full border border-gray-200 bg-white px-4 py-2.5 text-xs font-semibold uppercase tracking-wider text-ecm-gray transition-colors hover:border-ecm-green hover:text-ecm-green"
+        className="mt-5 w-full rounded-full border border-surface-border bg-surface px-4 py-2.5 text-xs font-semibold uppercase tracking-wider text-ink-muted transition-colors hover:border-heading hover:text-heading"
       >
         Reset to defaults
       </button>
@@ -184,7 +184,7 @@ export default function EstimatorForm({ inputs, onChange, onReset }: Props) {
 function Group({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section className="mb-5 last:mb-0">
-      <h2 className="mb-3 border-b border-gray-200 pb-2 text-[11px] font-bold uppercase tracking-[0.16em] text-ecm-gray">
+      <h2 className="mb-3 border-b border-surface-border pb-2 text-[11px] font-bold uppercase tracking-[0.16em] text-ink-muted">
         {title}
       </h2>
       {children}
@@ -205,7 +205,7 @@ interface RangeRowProps {
 function RangeRow({ label, value, min, max, step, onChange, format }: RangeRowProps) {
   return (
     <div className="mb-2 flex items-center justify-between gap-3 text-sm">
-      <label className="flex-1 text-ecm-gray-dark">{label}</label>
+      <label className="flex-1 text-ink">{label}</label>
       <div className="flex items-center gap-2.5">
         <input
           type="range"
@@ -216,7 +216,7 @@ function RangeRow({ label, value, min, max, step, onChange, format }: RangeRowPr
           onChange={(e) => onChange(parseFloat(e.target.value))}
           className="w-[140px] accent-ecm-green"
         />
-        <span className="min-w-[80px] text-right text-[13px] tabular-nums text-ecm-gray-dark">
+        <span className="min-w-[80px] text-right text-[13px] tabular-nums text-ink">
           {format(value)}
         </span>
       </div>
@@ -239,14 +239,14 @@ function NumberRow({
 }) {
   return (
     <div className="mb-2 flex items-center justify-between gap-3 text-sm">
-      <label className="flex-1 text-ecm-gray-dark">{label}</label>
+      <label className="flex-1 text-ink">{label}</label>
       <input
         type="number"
         min={min}
         max={max}
         value={value}
         onChange={(e) => onChange(parseInt(e.target.value, 10) || 0)}
-        className="w-[100px] rounded-md border border-gray-200 bg-white px-2 py-1 text-right text-sm text-ecm-gray-dark focus:border-ecm-green focus:outline-none"
+        className="w-[100px] rounded-md border border-surface-border bg-surface px-2 py-1 text-right text-sm text-ink focus:border-heading focus:outline-none"
       />
     </div>
   );
@@ -267,7 +267,7 @@ function SelectRow<T extends string | number>({
 }: SelectRowProps<T>) {
   return (
     <div className="mb-2 flex items-center justify-between gap-3 text-sm">
-      <label className="flex-1 text-ecm-gray-dark">{label}</label>
+      <label className="flex-1 text-ink">{label}</label>
       <select
         value={value}
         onChange={(e) => {
@@ -275,7 +275,7 @@ function SelectRow<T extends string | number>({
           const first = options[0].value;
           onChange((typeof first === "number" ? parseInt(raw, 10) : raw) as T);
         }}
-        className="w-[220px] rounded-md border border-gray-200 bg-white px-2 py-1 text-sm text-ecm-gray-dark focus:border-ecm-green focus:outline-none"
+        className="w-[220px] rounded-md border border-surface-border bg-surface px-2 py-1 text-sm text-ink focus:border-heading focus:outline-none"
       >
         {options.map((opt) => (
           <option key={String(opt.value)} value={opt.value}>
@@ -291,8 +291,8 @@ function SumCheck({ total }: { total: number }) {
   const ok = Math.abs(total - 1) < 0.01;
   return (
     <div
-      className={`mt-2.5 border-t border-dashed border-gray-200 pt-1.5 text-xs ${
-        ok ? "text-ecm-gray" : "text-red-600"
+      className={`mt-2.5 border-t border-dashed border-surface-border pt-1.5 text-xs ${
+        ok ? "text-ink-muted" : "text-red-600"
       }`}
     >
       Total: {pct(total)}

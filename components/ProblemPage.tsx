@@ -22,7 +22,7 @@ export interface ProblemPageData {
 const WAVE_TO_WHITE = (
   <div className="wave-divider wave-divider-bottom">
     <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="#ffffff" />
+      <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="var(--color-surface)" />
     </svg>
   </div>
 );
@@ -30,7 +30,7 @@ const WAVE_TO_WHITE = (
 const WAVE_FROM_WHITE = (
   <div className="wave-divider wave-divider-top">
     <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M0,60 C360,0 1080,120 1440,60 L1440,0 L0,0 Z" fill="#ffffff" />
+      <path d="M0,60 C360,0 1080,120 1440,60 L1440,0 L0,0 Z" fill="var(--color-surface)" />
     </svg>
   </div>
 );
@@ -65,15 +65,15 @@ export default function ProblemPage({ data }: { data: ProblemPageData }) {
 
       {/* Does this sound familiar? */}
       {data.symptoms && data.symptoms.length > 0 && (
-        <section className="bg-white pt-20 pb-10">
+        <section className="bg-surface pt-20 pb-10">
           <div className="max-w-3xl mx-auto px-6">
             <div className="bg-ecm-gray-light border-l-[5px] border-ecm-lime p-8 sm:p-10 rounded-r-2xl">
-              <p className="text-ecm-green font-barlow font-bold text-xs tracking-[0.2em] uppercase mb-6">
+              <p className="text-heading font-barlow font-bold text-xs tracking-[0.2em] uppercase mb-6">
                 Does this sound familiar?
               </p>
               <ul className="space-y-3">
                 {data.symptoms.map((item, i) => (
-                  <li key={i} className="text-ecm-gray-dark text-base leading-relaxed flex gap-3">
+                  <li key={i} className="text-ink text-base leading-relaxed flex gap-3">
                     <span className="mt-2 flex-shrink-0 w-2 h-2 rounded-full bg-ecm-lime" />
                     <span>{item}</span>
                   </li>
@@ -86,18 +86,18 @@ export default function ProblemPage({ data }: { data: ProblemPageData }) {
 
       {/* The real cause */}
       {(data.realCauseLead || causeParas.length > 0) && (
-        <section className="bg-white pb-16">
+        <section className="bg-surface pb-16">
           <div className="max-w-3xl mx-auto px-6">
-            <p className="text-ecm-green font-barlow font-bold text-xs tracking-[0.2em] uppercase mb-6">
+            <p className="text-heading font-barlow font-bold text-xs tracking-[0.2em] uppercase mb-6">
               The real cause
             </p>
             {data.realCauseLead && (
-              <p className="text-ecm-green font-barlow font-bold text-2xl sm:text-3xl leading-snug mb-8">
+              <p className="text-heading font-barlow font-bold text-2xl sm:text-3xl leading-snug mb-8">
                 {data.realCauseLead}
               </p>
             )}
             {causeParas.map((p, i) => (
-              <p key={i} className="text-ecm-gray-dark text-base sm:text-lg leading-relaxed mb-5">
+              <p key={i} className="text-ink text-base sm:text-lg leading-relaxed mb-5">
                 {p}
               </p>
             ))}
@@ -122,12 +122,12 @@ export default function ProblemPage({ data }: { data: ProblemPageData }) {
       )}
 
       {/* Where to start */}
-      <section className="bg-white pt-20 pb-16">
+      <section className="bg-surface pt-20 pb-16">
         <div className="max-w-3xl mx-auto px-6">
-          <h2 className="text-ecm-green font-barlow font-bold text-2xl sm:text-3xl mb-4">
+          <h2 className="text-heading font-barlow font-bold text-2xl sm:text-3xl mb-4">
             Where to start
           </h2>
-          <p className="text-ecm-gray-dark text-base sm:text-lg leading-relaxed mb-8 max-w-2xl">
+          <p className="text-ink text-base sm:text-lg leading-relaxed mb-8 max-w-2xl">
             Find out exactly where this is happening in your operation, in about ten minutes, then see how we fix it.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
@@ -136,12 +136,12 @@ export default function ProblemPage({ data }: { data: ProblemPageData }) {
               className="inline-flex items-center justify-center bg-ecm-lime text-ecm-green font-barlow font-bold text-base px-8 py-4 rounded-full hover:bg-ecm-lime-hover transition-colors"
             >
               {diagnosticLabel}
-              <span className="ml-2 text-ecm-green/70 font-medium text-sm">10 min</span>
+              <span className="ml-2 text-heading/70 font-medium text-sm">10 min</span>
             </Link>
             {data.solutionUrl && data.solutionLabel && (
               <Link
                 href={data.solutionUrl}
-                className="inline-flex items-center justify-center border-2 border-ecm-green text-ecm-green font-barlow font-semibold text-base px-8 py-4 rounded-full hover:bg-ecm-green hover:text-white transition-colors"
+                className="inline-flex items-center justify-center border-2 border-heading text-heading font-barlow font-semibold text-base px-8 py-4 rounded-full hover:bg-ecm-green hover:text-white transition-colors"
               >
                 {data.solutionLabel}
               </Link>
@@ -152,9 +152,9 @@ export default function ProblemPage({ data }: { data: ProblemPageData }) {
 
       {/* Proof */}
       {data.proof && data.proof.length > 0 && (
-        <section className="bg-gray-50 py-20">
+        <section className="bg-surface-alt py-20">
           <div className="max-w-6xl mx-auto px-6">
-            <h2 className="text-ecm-green font-barlow font-bold text-2xl sm:text-3xl mb-10">
+            <h2 className="text-heading font-barlow font-bold text-2xl sm:text-3xl mb-10">
               Organisations like yours have already fixed this.
             </h2>
             <div className="grid sm:grid-cols-2 gap-6">
@@ -179,9 +179,9 @@ export default function ProblemPage({ data }: { data: ProblemPageData }) {
 
       {/* Related reading */}
       {data.relatedReading && data.relatedReading.length > 0 && (
-        <section className="bg-white py-16">
+        <section className="bg-surface py-16">
           <div className="max-w-3xl mx-auto px-6">
-            <p className="text-ecm-green font-barlow font-bold text-xs tracking-[0.2em] uppercase mb-6">
+            <p className="text-heading font-barlow font-bold text-xs tracking-[0.2em] uppercase mb-6">
               Read more
             </p>
             <ul className="space-y-4">
@@ -189,7 +189,7 @@ export default function ProblemPage({ data }: { data: ProblemPageData }) {
                 <li key={i}>
                   <Link
                     href={item.url || "/guides"}
-                    className="text-ecm-green font-barlow font-semibold text-lg hover:text-ecm-green-dark transition-colors inline-flex items-center gap-2"
+                    className="text-heading font-barlow font-semibold text-lg hover:text-heading-dark transition-colors inline-flex items-center gap-2"
                   >
                     {item.title}
                     <span aria-hidden="true">&rarr;</span>

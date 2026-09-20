@@ -25,7 +25,7 @@ export default function EstimatorClient() {
   }, []);
 
   return (
-    <div className="bg-white" data-testid="assessment-interactive">
+    <div className="bg-surface" data-testid="assessment-interactive">
       {/* Hero — matches Assessments landing page style */}
       <section className="relative overflow-hidden bg-ecm-green py-14 pb-24 sm:py-20 sm:pb-28 lg:py-28 lg:pb-36">
         <div className="mx-auto max-w-5xl px-6 text-center">
@@ -47,16 +47,16 @@ export default function EstimatorClient() {
         </div>
         <div className="wave-divider wave-divider-bottom">
           <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="#ffffff" />
+            <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="var(--color-surface)" />
           </svg>
         </div>
       </section>
 
       {/* Tool body */}
-      <section className="bg-white py-12 sm:py-16">
+      <section className="bg-surface py-12 sm:py-16">
         <div className="mx-auto max-w-7xl px-6">
           <main className="grid grid-cols-1 items-start gap-10 lg:grid-cols-[420px_1fr] lg:gap-12">
-            <aside className="rounded-2xl border border-gray-200 bg-gray-50 p-6 lg:sticky lg:top-5">
+            <aside className="rounded-2xl border border-surface-border bg-surface-alt p-6 lg:sticky lg:top-5">
               <EstimatorForm inputs={inputs} onChange={handleChange} onReset={handleReset} />
             </aside>
 
@@ -66,20 +66,20 @@ export default function EstimatorClient() {
             </section>
           </main>
 
-          <footer className="mt-12 border-t border-gray-200 pt-6 font-barlow text-xs text-ecm-gray">
-            <Link href="/methodology" className="mr-5 hover:text-ecm-green">
+          <footer className="mt-12 border-t border-surface-border pt-6 font-barlow text-xs text-ink-muted">
+            <Link href="/methodology" className="mr-5 hover:text-heading">
               Methodology
             </Link>
-            <Link href="/methodology#changelog" className="mr-5 hover:text-ecm-green">
+            <Link href="/methodology#changelog" className="mr-5 hover:text-heading">
               Model changelog
             </Link>
-            <Link href="/privacy" className="mr-5 hover:text-ecm-green">
+            <Link href="/privacy" className="mr-5 hover:text-heading">
               Privacy
             </Link>
-            <Link href="/" className="mr-5 hover:text-ecm-green">
+            <Link href="/" className="mr-5 hover:text-heading">
               About ECM.dev
             </Link>
-            <span className="ml-5 text-ecm-gray">© ECM.dev · Last reviewed April 2026</span>
+            <span className="ml-5 text-ink-muted">© ECM.dev · Last reviewed April 2026</span>
           </footer>
         </div>
       </section>

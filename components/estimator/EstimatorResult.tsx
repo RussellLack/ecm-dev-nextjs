@@ -35,8 +35,8 @@ const LAYER_TEXT_ON: Record<number, string> = {
   1: "text-white",
   2: "text-white",
   3: "text-white",
-  4: "text-ecm-gray-dark",
-  5: "text-ecm-green-dark",
+  4: "text-ink",
+  5: "text-heading-dark",
   6: "text-white",
 };
 
@@ -50,17 +50,17 @@ export default function EstimatorResult({ inputs, result, scenario }: Props) {
   return (
     <>
       {/* Headline */}
-      <section className="mb-8 border-b border-gray-200 pb-7">
+      <section className="mb-8 border-b border-surface-border pb-7">
         <SectionTitle>Estimated annual localisation cost</SectionTitle>
-        <p className="mb-1.5 font-barlow text-5xl font-bold leading-none tracking-tight text-ecm-green sm:text-6xl">
+        <p className="mb-1.5 font-barlow text-5xl font-bold leading-none tracking-tight text-heading sm:text-6xl">
           {fmtCurrency(result.total, currency)}
         </p>
-        <p className="mb-3.5 font-barlow text-lg text-ecm-gray">
+        <p className="mb-3.5 font-barlow text-lg text-ink-muted">
           {fmtCurrency(result.total, secondary)}
         </p>
-        <p className="font-barlow text-sm text-ecm-gray-dark">
+        <p className="font-barlow text-sm text-ink">
           Confidence band ±{Math.round(CONFIDENCE_BAND * 100)}%
-          <span className="text-ecm-gray">
+          <span className="text-ink-muted">
             {" "}
             ({fmtCurrency(low, currency)} to {fmtCurrency(high, currency)})
           </span>
@@ -70,7 +70,7 @@ export default function EstimatorResult({ inputs, result, scenario }: Props) {
       {/* Six-layer breakdown */}
       <section className="mb-10">
         <SectionTitle>Six-layer breakdown</SectionTitle>
-        <div className="mb-4 flex h-11 overflow-hidden rounded-md border border-gray-200">
+        <div className="mb-4 flex h-11 overflow-hidden rounded-md border border-surface-border">
           {LAYER_META.map((meta) => {
             const val = result.layers[meta.key as keyof TResult["layers"]];
             const pctVal = val / result.total;
@@ -95,18 +95,18 @@ export default function EstimatorResult({ inputs, result, scenario }: Props) {
             return (
               <div
                 key={meta.key}
-                className="group relative flex items-center justify-between gap-2 border-b border-dotted border-gray-200 py-2"
+                className="group relative flex items-center justify-between gap-2 border-b border-dotted border-surface-border py-2"
               >
-                <span className="flex items-center gap-2 text-ecm-gray-dark">
+                <span className="flex items-center gap-2 text-ink">
                   <span
                     className="inline-block h-3 w-3 flex-shrink-0 rounded-sm"
                     style={{ background: LAYER_COLOURS[meta.n] }}
                   />
                   {meta.n}. {meta.name}
                 </span>
-                <span className="text-ecm-gray-dark">
+                <span className="text-ink">
                   {fmtCurrency(val, currency)}
-                  <span className="ml-1 text-[11px] text-ecm-gray">{fmtPct(pctVal)}</span>
+                  <span className="ml-1 text-[11px] text-ink-muted">{fmtPct(pctVal)}</span>
                 </span>
                 <div className="pointer-events-none invisible absolute bottom-[calc(100%+6px)] left-0 right-0 z-10 rounded-md bg-ecm-green-dark px-3 py-2.5 text-xs leading-snug text-white opacity-0 transition-opacity duration-150 group-hover:visible group-hover:opacity-100">
                   {meta.desc}
@@ -121,14 +121,14 @@ export default function EstimatorResult({ inputs, result, scenario }: Props) {
       </section>
 
       {/* AI-native comparison */}
-      <section className="mb-10 rounded-xl border border-gray-200 bg-gray-50 p-6">
+      <section className="mb-10 rounded-xl border border-surface-border bg-surface-alt p-6">
         <SectionTitle>AI-native comparison</SectionTitle>
-        <div className="mb-4 flex items-baseline justify-between font-barlow text-sm text-ecm-gray-dark">
+        <div className="mb-4 flex items-baseline justify-between font-barlow text-sm text-ink">
           <div>
-            Current maturity: <strong className="text-ecm-green-dark">L{inputs.maturity}</strong>
+            Current maturity: <strong className="text-heading-dark">L{inputs.maturity}</strong>
           </div>
           <div>
-            Target maturity: <strong className="text-ecm-green-dark">L{scenario.targetMaturity}</strong>
+            Target maturity: <strong className="text-heading-dark">L{scenario.targetMaturity}</strong>
           </div>
         </div>
 
@@ -147,35 +147,35 @@ export default function EstimatorResult({ inputs, result, scenario }: Props) {
           />
         </div>
 
-        <div className="mt-4 flex flex-wrap items-baseline justify-between gap-2.5 border-t border-gray-200 pt-4">
-          <span className="font-barlow text-xs font-semibold uppercase tracking-wider text-ecm-gray">
+        <div className="mt-4 flex flex-wrap items-baseline justify-between gap-2.5 border-t border-surface-border pt-4">
+          <span className="font-barlow text-xs font-semibold uppercase tracking-wider text-ink-muted">
             Potential annual recovery
           </span>
-          <span className="font-barlow text-2xl font-bold tracking-tight text-ecm-green">
+          <span className="font-barlow text-2xl font-bold tracking-tight text-heading">
             {fmtCurrency(recovery, currency)}
           </span>
         </div>
       </section>
 
       {/* Wedge */}
-      <section className="mb-8 border-l-[3px] border-ecm-green bg-gray-50 px-6 py-5 font-barlow text-base leading-relaxed text-ecm-gray-dark sm:text-lg">
+      <section className="mb-8 border-l-[3px] border-heading bg-surface-alt px-6 py-5 font-barlow text-base leading-relaxed text-ink sm:text-lg">
         {isBrokenState ? (
           <>
-            An estimated <strong className="text-ecm-green-dark">{fmtCurrency(result.layers.friction, currency)}</strong> of
-            your annual spend — about <strong className="text-ecm-green-dark">{fmtPct(result.layers.friction / result.total)}</strong> —
+            An estimated <strong className="text-heading-dark">{fmtCurrency(result.layers.friction, currency)}</strong> of
+            your annual spend — about <strong className="text-heading-dark">{fmtPct(result.layers.friction / result.total)}</strong> —
             is being absorbed by friction. For operations at this level of fragmentation,
             moving up one AI maturity level alone won&apos;t recover most of it.{" "}
-            <strong className="text-ecm-green-dark">What&apos;s needed is operating-model redesign</strong> — ECM.dev&apos;s
+            <strong className="text-heading-dark">What&apos;s needed is operating-model redesign</strong> — ECM.dev&apos;s
             work sits exactly here.
           </>
         ) : (
           <>
-            An estimated <strong className="text-ecm-green-dark">{fmtCurrency(result.layers.friction, currency)}</strong> of
-            your annual spend — about <strong className="text-ecm-green-dark">{fmtPct(result.layers.friction / result.total)}</strong> —
+            An estimated <strong className="text-heading-dark">{fmtCurrency(result.layers.friction, currency)}</strong> of
+            your annual spend — about <strong className="text-heading-dark">{fmtPct(result.layers.friction / result.total)}</strong> —
             is being absorbed by friction and uncoordinated AI spend. Your AI investment
             isn&apos;t translating to bottom-line savings because the operating model around AI
             is still the legacy one.{" "}
-            <strong className="text-ecm-green-dark">ECM.dev redesigns the operating system, not just the tools.</strong>
+            <strong className="text-heading-dark">ECM.dev redesigns the operating system, not just the tools.</strong>
           </>
         )}
       </section>
@@ -193,10 +193,10 @@ export default function EstimatorResult({ inputs, result, scenario }: Props) {
         <EmailCaptureCTA inputs={inputs} result={result} />
       </div>
 
-      <p className="mb-8 border-t border-gray-200 pt-3 font-barlow text-xs text-ecm-gray">
+      <p className="mb-8 border-t border-surface-border pt-3 font-barlow text-xs text-ink-muted">
         Model version {MODEL_VERSION}. Coefficients sourced from public benchmarks
         (CSA, Slator, Nimdzi, published LLM API pricing) and ECM.dev estimates — see{" "}
-        <a href="/methodology" className="underline hover:text-ecm-green">
+        <a href="/methodology" className="underline hover:text-heading">
           methodology
         </a>
         .
@@ -207,7 +207,7 @@ export default function EstimatorResult({ inputs, result, scenario }: Props) {
 
 function SectionTitle({ children }: { children: React.ReactNode }) {
   return (
-    <h3 className="mb-3.5 font-barlow text-[11px] font-bold uppercase tracking-[0.16em] text-ecm-gray">
+    <h3 className="mb-3.5 font-barlow text-[11px] font-bold uppercase tracking-[0.16em] text-ink-muted">
       {children}
     </h3>
   );
@@ -226,10 +226,10 @@ function ScenarioBar({
 }) {
   return (
     <div>
-      <div className="mb-1.5 font-barlow text-[11px] font-semibold uppercase tracking-wider text-ecm-gray">
+      <div className="mb-1.5 font-barlow text-[11px] font-semibold uppercase tracking-wider text-ink-muted">
         {label}
       </div>
-      <div className="flex flex-col overflow-hidden rounded-md border border-gray-200 bg-white">
+      <div className="flex flex-col overflow-hidden rounded-md border border-surface-border bg-surface">
         {LAYER_META.map((meta) => {
           const val = layers[meta.key as keyof TResult["layers"]];
           if (val <= 0) return null;
@@ -246,7 +246,7 @@ function ScenarioBar({
           );
         })}
       </div>
-      <div className="border-t-2 border-ecm-green-dark bg-gray-50 px-2 py-2.5 font-barlow text-sm font-bold text-ecm-gray-dark">
+      <div className="border-t-2 border-heading-dark bg-surface-alt px-2 py-2.5 font-barlow text-sm font-bold text-ink">
         {fmtCurrency(sumLayers(layers), currency)}
       </div>
     </div>

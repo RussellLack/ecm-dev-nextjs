@@ -36,20 +36,20 @@ export default function RunningTotal({ result, inputs }: Props) {
   };
 
   return (
-    <aside className="sticky top-6 rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
+    <aside className="sticky top-6 rounded-2xl border border-surface-border bg-surface p-5 shadow-sm">
       <div className="mb-3 flex items-baseline justify-between">
-        <h2 className="font-barlow text-[11px] font-bold uppercase tracking-[0.16em] text-ecm-gray">
+        <h2 className="font-barlow text-[11px] font-bold uppercase tracking-[0.16em] text-ink-muted">
           Indicative {horizon}-year TCO
         </h2>
-        <span className="font-barlow text-[10px] font-semibold uppercase tracking-wider text-ecm-gray">
+        <span className="font-barlow text-[10px] font-semibold uppercase tracking-wider text-ink-muted">
           {result.modelVersion}
         </span>
       </div>
 
-      <div className="mb-1 font-barlow text-2xl font-bold text-ecm-green-dark">
+      <div className="mb-1 font-barlow text-2xl font-bold text-heading-dark">
         {fmt(horizonTotal.low * m, sym)} – {fmt(horizonTotal.high * m, sym)}
       </div>
-      <p className="mb-4 font-barlow text-xs text-ecm-gray">
+      <p className="mb-4 font-barlow text-xs text-ink-muted">
         Mid case: {fmt(horizonTotal.mid * m, sym)} ·{" "}
         <ConfidenceBadge confidence={result.flags.confidence} />
       </p>
@@ -107,33 +107,33 @@ export default function RunningTotal({ result, inputs }: Props) {
       <Separator />
 
       <div className="mt-3">
-        <p className="mb-1 font-barlow text-[11px] font-bold uppercase tracking-[0.16em] text-ecm-gray">
+        <p className="mb-1 font-barlow text-[11px] font-bold uppercase tracking-[0.16em] text-ink-muted">
           Net {horizon}-year cost
         </p>
-        <div className="font-barlow text-lg font-bold text-ecm-green-dark">
+        <div className="font-barlow text-lg font-bold text-heading-dark">
           {fmt(net.low * m, sym)} – {fmt(net.high * m, sym)}
         </div>
-        <p className="font-barlow text-xs text-ecm-gray">
+        <p className="font-barlow text-xs text-ink-muted">
           Mid: {fmt(net.mid * m, sym)}
         </p>
       </div>
 
       {result.flags.notes.length > 0 && (
-        <ul className="mt-4 space-y-1.5 border-t border-gray-100 pt-3 text-[11px] text-ecm-gray">
+        <ul className="mt-4 space-y-1.5 border-t border-surface-border pt-3 text-[11px] text-ink-muted">
           {result.flags.notes.map((note, i) => (
             <li key={i} className="leading-snug">
-              <span className="text-ecm-green">•</span> {note}
+              <span className="text-heading">•</span> {note}
             </li>
           ))}
         </ul>
       )}
 
-      <p className="mt-4 border-t border-gray-100 pt-3 text-[10px] leading-relaxed text-ecm-gray">
+      <p className="mt-4 border-t border-surface-border pt-3 text-[10px] leading-relaxed text-ink-muted">
         Indicative range based on public benchmarks and ECM.dev estimates.
         Methodology + sources:{" "}
         <a
           href="/assessment/cms-implementation/methodology"
-          className="text-ecm-green underline hover:text-ecm-green-dark"
+          className="text-heading underline hover:text-heading-dark"
         >
           read the docs
         </a>
@@ -162,10 +162,10 @@ function Row({
 }) {
   return (
     <div className="mb-1.5 flex items-baseline justify-between gap-3 text-xs">
-      <span className="text-ecm-gray-dark">{label}</span>
+      <span className="text-ink">{label}</span>
       <span
         className={`tabular-nums ${
-          positive ? "text-ecm-green" : "text-ecm-gray-dark"
+          positive ? "text-heading" : "text-ink"
         }`}
       >
         {fmt(low, sym)} – {fmt(high, sym)}
@@ -175,12 +175,12 @@ function Row({
 }
 
 function Separator() {
-  return <div className="my-3 border-t border-gray-100" />;
+  return <div className="my-3 border-t border-surface-border" />;
 }
 
 function ConfidenceBadge({ confidence }: { confidence: "A" | "B" | "C" }) {
   const map = {
-    A: { label: "High confidence", color: "text-ecm-green" },
+    A: { label: "High confidence", color: "text-heading" },
     B: { label: "Medium confidence", color: "text-amber-600" },
     C: { label: "Indicative only", color: "text-orange-600" },
   };

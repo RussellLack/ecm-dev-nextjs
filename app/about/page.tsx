@@ -62,20 +62,20 @@ export default function AboutPage() {
         </div>
         <div className="wave-divider wave-divider-bottom">
           <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="#ffffff" />
+            <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="var(--color-surface)" />
           </svg>
         </div>
       </section>
 
       {/* ─── BODY SECTIONS ─── */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-surface">
         <div className="max-w-3xl mx-auto px-6 space-y-16">
           {sections.map((section, i) => (
             <div key={i}>
-              <h2 className="text-ecm-green font-barlow font-bold text-2xl sm:text-3xl leading-snug mb-4">
+              <h2 className="text-heading font-barlow font-bold text-2xl sm:text-3xl leading-snug mb-4">
                 {section.title}
               </h2>
-              <p className="text-ecm-gray-dark text-base leading-relaxed">
+              <p className="text-ink text-base leading-relaxed">
                 {section.body}
               </p>
             </div>

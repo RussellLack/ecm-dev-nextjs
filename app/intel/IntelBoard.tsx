@@ -79,7 +79,7 @@ export default function IntelBoard({
             className={`rounded-full border px-3 py-1 text-sm transition ${
               activeTopic === null
                 ? "border-neutral-900 bg-neutral-900 text-white"
-                : "border-neutral-300 bg-white text-neutral-700 hover:border-neutral-500"
+                : "border-neutral-300 bg-surface text-neutral-700 hover:border-neutral-500"
             }`}
           >
             All
@@ -94,7 +94,7 @@ export default function IntelBoard({
                 className={`rounded-full border px-3 py-1 text-sm transition ${
                   active
                     ? "border-neutral-900 bg-neutral-900 text-white"
-                    : "border-neutral-300 bg-white text-neutral-700 hover:border-neutral-500"
+                    : "border-neutral-300 bg-surface text-neutral-700 hover:border-neutral-500"
                 }`}
               >
                 {t.title}
@@ -166,7 +166,7 @@ export default function IntelBoard({
                     <Link
                       key={`topic-${t.slug}`}
                       href={`/intel/topic/${t.slug}`}
-                      className="text-xs rounded-full border border-neutral-300 bg-white px-3 py-1 text-neutral-700 hover:border-neutral-500 transition-colors"
+                      className="text-xs rounded-full border border-neutral-300 bg-surface px-3 py-1 text-neutral-700 hover:border-neutral-500 transition-colors"
                     >
                       {t.title}
                     </Link>

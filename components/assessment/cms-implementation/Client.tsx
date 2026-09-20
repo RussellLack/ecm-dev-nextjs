@@ -75,7 +75,7 @@ export default function CmsImplementationClient() {
   }, []);
 
   return (
-    <div className="bg-white" data-testid="assessment-interactive">
+    <div className="bg-surface" data-testid="assessment-interactive">
       {/* Hero */}
       <section className="relative overflow-hidden bg-ecm-green py-14 pb-24 sm:py-20 sm:pb-28 lg:py-28 lg:pb-36">
         <div className="mx-auto max-w-5xl px-6 text-center">
@@ -106,20 +106,20 @@ export default function CmsImplementationClient() {
           >
             <path
               d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z"
-              fill="#ffffff"
+              fill="var(--color-surface)"
             />
           </svg>
         </div>
       </section>
 
       {/* Sample-scenario quick-fill */}
-      <section className="bg-white pt-10 sm:pt-14">
+      <section className="bg-surface pt-10 sm:pt-14">
         <div className="mx-auto max-w-6xl px-6">
-          <div className="rounded-2xl border border-gray-100 bg-gradient-to-br from-ecm-green/5 to-ecm-lime/10 p-5 sm:p-6">
-            <p className="mb-1 font-barlow text-[11px] font-bold uppercase tracking-[0.16em] text-ecm-gray">
+          <div className="rounded-2xl border border-surface-border bg-gradient-to-br from-ecm-green/5 to-ecm-lime/10 p-5 sm:p-6">
+            <p className="mb-1 font-barlow text-[11px] font-bold uppercase tracking-[0.16em] text-ink-muted">
               First time? Try a sample scenario
             </p>
-            <p className="mb-4 font-barlow text-xs text-ecm-gray">
+            <p className="mb-4 font-barlow text-xs text-ink-muted">
               Loads a representative scenario into the form so you can see how
               the model behaves before entering your own.
             </p>
@@ -130,13 +130,13 @@ export default function CmsImplementationClient() {
                   type="button"
                   data-testid="assessment-option"
                   onClick={() => handleScenario(s.id)}
-                  className="group flex-1 rounded-xl border border-gray-200 bg-white p-3 text-left transition-all hover:border-ecm-green hover:shadow-md"
+                  className="group flex-1 rounded-xl border border-surface-border bg-surface p-3 text-left transition-all hover:border-heading hover:shadow-md"
                   title={s.blurb}
                 >
-                  <p className="mb-0.5 font-barlow text-sm font-semibold text-ecm-green-dark group-hover:text-ecm-green">
+                  <p className="mb-0.5 font-barlow text-sm font-semibold text-heading-dark group-hover:text-heading">
                     {s.label}
                   </p>
-                  <p className="font-barlow text-[11px] leading-snug text-ecm-gray">
+                  <p className="font-barlow text-[11px] leading-snug text-ink-muted">
                     {s.blurb}
                   </p>
                 </button>
@@ -147,10 +147,10 @@ export default function CmsImplementationClient() {
       </section>
 
       {/* Form + running total */}
-      <section className="bg-white py-8 sm:py-10 pb-24 md:pb-16">
+      <section className="bg-surface py-8 sm:py-10 pb-24 md:pb-16">
         <div className="mx-auto max-w-6xl px-6">
           <div className="grid items-start gap-6 lg:grid-cols-[1fr_360px]">
-            <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
+            <div className="rounded-2xl border border-surface-border bg-surface p-6 shadow-sm">
               <Form
                 inputs={inputs}
                 onChange={handleChange}

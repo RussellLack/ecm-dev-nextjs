@@ -53,7 +53,7 @@ export default function PreviewButton({
       <button
         type="button"
         onClick={openPreview}
-        className="inline-flex items-center gap-2 rounded-full border border-ecm-green/30 bg-white px-6 py-3 font-barlow text-sm font-semibold text-ecm-green transition-colors hover:border-ecm-green hover:bg-ecm-lime/15"
+        className="inline-flex items-center gap-2 rounded-full border border-heading/30 bg-surface px-6 py-3 font-barlow text-sm font-semibold text-heading transition-colors hover:border-heading hover:bg-ecm-lime/15"
       >
         <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
           <path d="M8 5v14l11-7z" />

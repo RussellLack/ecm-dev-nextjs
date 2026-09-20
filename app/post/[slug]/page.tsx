@@ -76,20 +76,20 @@ const ptComponents = {
   },
   block: {
     h2: ({ children }: any) => (
-      <h2 className="text-ecm-green font-barlow font-bold text-2xl mt-10 mb-4">
+      <h2 className="text-heading font-barlow font-bold text-2xl mt-10 mb-4">
         {children}
       </h2>
     ),
     h3: ({ children }: any) => (
-      <h3 className="text-ecm-green font-barlow font-semibold text-xl mt-8 mb-3">
+      <h3 className="text-heading font-barlow font-semibold text-xl mt-8 mb-3">
         {children}
       </h3>
     ),
     normal: ({ children }: any) => (
-      <p className="text-ecm-gray-dark leading-relaxed mb-4">{children}</p>
+      <p className="text-ink leading-relaxed mb-4">{children}</p>
     ),
     blockquote: ({ children }: any) => (
-      <blockquote className="border-l-4 border-ecm-lime pl-6 my-6 italic text-ecm-gray">
+      <blockquote className="border-l-4 border-ecm-lime pl-6 my-6 italic text-ink-muted">
         {children}
       </blockquote>
     ),
@@ -100,7 +100,7 @@ const ptComponents = {
         href={value?.href}
         target="_blank"
         rel="noopener noreferrer"
-        className="text-ecm-green underline hover:text-ecm-lime transition-colors"
+        className="text-heading underline hover:text-ecm-lime transition-colors"
       >
         {children}
       </a>
@@ -111,24 +111,24 @@ const ptComponents = {
       return (
         <Link
           href={href}
-          className="text-ecm-green underline hover:text-ecm-lime transition-colors"
+          className="text-heading underline hover:text-ecm-lime transition-colors"
         >
           {children}
         </Link>
       );
     },
     strong: ({ children }: any) => (
-      <strong className="font-semibold text-ecm-green-dark">{children}</strong>
+      <strong className="font-semibold text-heading-dark">{children}</strong>
     ),
   },
   list: {
     bullet: ({ children }: any) => (
-      <ul className="list-disc pl-6 mb-4 space-y-2 text-ecm-gray-dark">
+      <ul className="list-disc pl-6 mb-4 space-y-2 text-ink">
         {children}
       </ul>
     ),
     number: ({ children }: any) => (
-      <ol className="list-decimal pl-6 mb-4 space-y-2 text-ecm-gray-dark">
+      <ol className="list-decimal pl-6 mb-4 space-y-2 text-ink">
         {children}
       </ol>
     ),
@@ -220,7 +220,7 @@ export default async function PostPage({
       {/* Hero visual — bespoke slug SVG → editor mainImage → GenericMotif,
           picked inside PostIllustration. */}
       <div className="max-w-3xl mx-auto px-6 -mt-8">
-        <div className="rounded-2xl w-full shadow-lg bg-white border border-gray-100 aspect-[280/144] overflow-hidden">
+        <div className="rounded-2xl w-full shadow-lg bg-surface border border-surface-border aspect-[280/144] overflow-hidden">
           <PostIllustration slug={slug} mainImage={post.mainImage} />
         </div>
       </div>
@@ -231,7 +231,7 @@ export default async function PostPage({
           {post.body ? (
             <PortableText value={post.body} components={ptComponents} />
           ) : (
-            <p className="text-ecm-gray text-center italic">
+            <p className="text-ink-muted text-center italic">
               Full article content coming soon.
             </p>
           )}
@@ -242,8 +242,8 @@ export default async function PostPage({
       {post.tags?.length > 0 && (
         <section className="pb-10">
           <div className="max-w-3xl mx-auto px-6">
-            <div className="border-t border-gray-100 pt-8">
-              <p className="text-ecm-gray text-xs font-barlow font-semibold uppercase tracking-widest mb-3">
+            <div className="border-t border-surface-border pt-8">
+              <p className="text-ink-muted text-xs font-barlow font-semibold uppercase tracking-widest mb-3">
                 Filed under
               </p>
               <div className="flex flex-wrap gap-2">
@@ -251,7 +251,7 @@ export default async function PostPage({
                   <Link
                     key={tag}
                     href={`/blog/tag/${tagToSlug(tag)}`}
-                    className="inline-block border border-ecm-green/30 text-ecm-green text-xs font-barlow font-semibold px-4 py-1.5 rounded-full hover:bg-ecm-green hover:text-white transition-colors"
+                    className="inline-block border border-heading/30 text-heading text-xs font-barlow font-semibold px-4 py-1.5 rounded-full hover:bg-ecm-green hover:text-white transition-colors"
                   >
                     {tag}
                   </Link>

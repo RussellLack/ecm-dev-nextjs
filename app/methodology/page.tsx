@@ -38,19 +38,19 @@ export default async function MethodologyPage() {
         </div>
         <div className="wave-divider wave-divider-bottom">
           <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="#ffffff" />
+            <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="var(--color-surface)" />
           </svg>
         </div>
       </section>
 
       {/* Body */}
-      <section className="bg-white py-12 sm:py-16">
-        <article className="mx-auto max-w-3xl px-6 font-barlow text-base leading-relaxed text-ecm-gray-dark">
+      <section className="bg-surface py-12 sm:py-16">
+        <article className="mx-auto max-w-3xl px-6 font-barlow text-base leading-relaxed text-ink">
           <H2>What this page is</H2>
           <P>
             This is not a brochure. It is the working paper that underlies the Localisation Cost
             Estimator at{" "}
-            <Link href="/assessment/localisation-cost" className="text-ecm-green underline hover:text-ecm-green-dark">
+            <Link href="/assessment/localisation-cost" className="text-heading underline hover:text-heading-dark">
               ecm.dev/assessment/localisation-cost
             </Link>
             . It sets out every coefficient the model uses, where each one comes from, and why we
@@ -67,7 +67,7 @@ export default async function MethodologyPage() {
           </P>
           <P>
             The model will be refined quarterly. Each refresh will appear as a dated entry in the{" "}
-            <a href="#changelog" className="text-ecm-green underline hover:text-ecm-green-dark">
+            <a href="#changelog" className="text-heading underline hover:text-heading-dark">
               changelog
             </a>{" "}
             at the bottom of this page, showing what changed and why. Where user feedback has
@@ -390,7 +390,7 @@ export default async function MethodologyPage() {
           </P>
           <P>
             The regulated-industry uplift uses a gentler blend:{" "}
-            <code className="rounded bg-gray-100 px-1.5 py-0.5 font-mono text-sm">
+            <code className="rounded bg-surface-alt px-1.5 py-0.5 font-mono text-sm">
               reg_scale = 0.5 + 0.5 × scale_factor
             </code>
             . Compliance cost has a large genuinely-fixed component — a regulated operation needs
@@ -510,24 +510,24 @@ export default async function MethodologyPage() {
           </P>
 
           <H2 id="changelog">Changelog</H2>
-          <div className="mb-4 rounded-xl border border-gray-200 bg-gray-50 px-5 py-4">
-            <div className="mb-1 font-barlow text-sm font-bold text-ecm-green">
+          <div className="mb-4 rounded-xl border border-surface-border bg-surface-alt px-5 py-4">
+            <div className="mb-1 font-barlow text-sm font-bold text-heading">
               22 April 2026 — v0.2 (research preview launch)
             </div>
-            <p className="mb-2 text-sm leading-relaxed text-ecm-gray-dark">
+            <p className="mb-2 text-sm leading-relaxed text-ink">
               Fixed-cost layers (base tooling, AI governance, prompt library, regulated uplift) now
               scale sub-linearly with volume using{" "}
-              <code className="rounded bg-white px-1 py-0.5 font-mono text-[13px]">
+              <code className="rounded bg-surface px-1 py-0.5 font-mono text-[13px]">
                 scale_factor = max(0.15, (volume/1M)^0.6)
               </code>
               . Previous v0.1 treated these as flat and produced implausibly high costs for small
               operations.
             </p>
-            <p className="mb-2 text-sm leading-relaxed text-ecm-gray-dark">
+            <p className="mb-2 text-sm leading-relaxed text-ink">
               Default scenario lowered from 1M words / 8 languages to 250k / 6 languages,
               representative of a mid-sized international firm rather than a global enterprise.
             </p>
-            <p className="text-sm leading-relaxed text-ecm-gray-dark">
+            <p className="text-sm leading-relaxed text-ink">
               Base tooling baseline reduced from $60,000 (v0.1) to $30,000 (v0.2) at the 1M-word
               reference scale; AI governance baseline reduced from $50,000 to $35,000; prompt
               library baseline reduced from $40,000 to $25,000; regulated uplift reduced from
@@ -536,23 +536,23 @@ export default async function MethodologyPage() {
               gold-plated.
             </p>
           </div>
-          <div className="mb-4 rounded-xl border border-gray-200 bg-gray-50 px-5 py-4">
-            <div className="mb-1 font-barlow text-sm font-bold text-ecm-gray">Earlier versions</div>
-            <p className="text-sm leading-relaxed text-ecm-gray-dark">
+          <div className="mb-4 rounded-xl border border-surface-border bg-surface-alt px-5 py-4">
+            <div className="mb-1 font-barlow text-sm font-bold text-ink-muted">Earlier versions</div>
+            <p className="text-sm leading-relaxed text-ink">
               v0.1 was internal only; not publicly released.
             </p>
           </div>
 
-          <div className="mt-12 flex flex-wrap items-center gap-4 border-t border-gray-200 pt-8">
+          <div className="mt-12 flex flex-wrap items-center gap-4 border-t border-surface-border pt-8">
             <Link
               href="/assessment/localisation-cost"
               className="inline-flex items-center gap-2 rounded-full bg-ecm-green px-6 py-3 font-barlow text-sm font-semibold text-white transition-colors hover:bg-ecm-green-dark"
             >
               ← Back to the estimator
             </Link>
-            <span className="text-xs text-ecm-gray">
+            <span className="text-xs text-ink-muted">
               Corrections, challenges, and suggestions:{" "}
-              <Link href="/contact" className="text-ecm-green underline hover:text-ecm-green-dark">
+              <Link href="/contact" className="text-heading underline hover:text-heading-dark">
                 contact us
               </Link>
               .
@@ -580,7 +580,7 @@ function H2({ children, id }: { children: React.ReactNode; id?: string }) {
   return (
     <h2
       id={id}
-      className="mb-4 mt-10 scroll-mt-24 border-b border-gray-200 pb-2 font-barlow text-2xl font-bold text-ecm-green sm:text-3xl"
+      className="mb-4 mt-10 scroll-mt-24 border-b border-surface-border pb-2 font-barlow text-2xl font-bold text-heading sm:text-3xl"
     >
       {children}
     </h2>
@@ -589,7 +589,7 @@ function H2({ children, id }: { children: React.ReactNode; id?: string }) {
 
 function H3({ children }: { children: React.ReactNode }) {
   return (
-    <h3 className="mb-3 mt-6 font-barlow text-lg font-bold text-ecm-green-dark sm:text-xl">
+    <h3 className="mb-3 mt-6 font-barlow text-lg font-bold text-heading-dark sm:text-xl">
       {children}
     </h3>
   );
@@ -610,7 +610,7 @@ function Dl({ children }: { children: React.ReactNode }) {
   return <dl className="mb-4 space-y-3">{children}</dl>;
 }
 function Dt({ children }: { children: React.ReactNode }) {
-  return <dt className="font-bold text-ecm-green-dark">{children}</dt>;
+  return <dt className="font-bold text-heading-dark">{children}</dt>;
 }
 function Dd({ children }: { children: React.ReactNode }) {
   return <dd className="mb-2 pl-4 leading-relaxed">{children}</dd>;
@@ -618,7 +618,7 @@ function Dd({ children }: { children: React.ReactNode }) {
 
 function Equation({ children }: { children: React.ReactNode }) {
   return (
-    <div className="my-4 rounded-md border border-gray-200 bg-gray-50 px-4 py-3 font-mono text-sm text-ecm-gray-dark">
+    <div className="my-4 rounded-md border border-surface-border bg-surface-alt px-4 py-3 font-mono text-sm text-ink">
       {children}
     </div>
   );

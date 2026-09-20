@@ -24,23 +24,23 @@ export default function TestimonialsClient({
   const t = testimonials[current];
 
   return (
-    <section className="py-20 bg-white">
+    <section className="py-20 bg-surface">
       <div className="max-w-4xl mx-auto px-6 text-center">
-        <p className="text-ecm-green font-barlow text-sm font-medium mb-2">
+        <p className="text-heading font-barlow text-sm font-medium mb-2">
           {t.name}
         </p>
-        <p className="text-ecm-gray text-sm mb-8">{t.role}</p>
-        <blockquote className="text-ecm-green font-barlow font-medium text-xl lg:text-2xl mb-6 leading-relaxed">
+        <p className="text-ink-muted text-sm mb-8">{t.role}</p>
+        <blockquote className="text-heading font-barlow font-medium text-xl lg:text-2xl mb-6 leading-relaxed">
           {t.quote}
         </blockquote>
-        <p className="text-ecm-gray-dark text-sm leading-relaxed max-w-2xl mx-auto mb-10">
+        <p className="text-ink text-sm leading-relaxed max-w-2xl mx-auto mb-10">
           <span className="font-semibold">Why this matters:</span>{" "}
           {t.commentary}
         </p>
         <div className="flex items-center justify-center gap-4">
           <button
             onClick={prev}
-            className="w-11 h-11 rounded-full border-2 border-ecm-green text-ecm-green hover:bg-ecm-green hover:text-white transition-colors flex items-center justify-center"
+            className="w-11 h-11 rounded-full border-2 border-heading text-heading hover:bg-ecm-green hover:text-white transition-colors flex items-center justify-center"
             aria-label="Previous testimonial"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -66,7 +66,7 @@ export default function TestimonialsClient({
           </div>
           <button
             onClick={next}
-            className="w-11 h-11 rounded-full border-2 border-ecm-green text-ecm-green hover:bg-ecm-green hover:text-white transition-colors flex items-center justify-center"
+            className="w-11 h-11 rounded-full border-2 border-heading text-heading hover:bg-ecm-green hover:text-white transition-colors flex items-center justify-center"
             aria-label="Next testimonial"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">

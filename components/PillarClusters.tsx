@@ -71,7 +71,7 @@ export default async function PillarClusters({ pillar }: { pillar: Pillar }) {
   }
 
   return (
-    <section className="py-20 bg-white border-t border-gray-100">
+    <section className="py-20 bg-surface border-t border-surface-border">
       <div className="max-w-6xl mx-auto px-6 space-y-16">
         {guides?.length > 0 && (
           <Cluster
@@ -183,12 +183,12 @@ function Cluster({
   return (
     <div>
       <div className="flex items-baseline justify-between mb-6 gap-4">
-        <h2 className="text-ecm-green font-barlow font-bold text-2xl lg:text-3xl">
+        <h2 className="text-heading font-barlow font-bold text-2xl lg:text-3xl">
           {heading}
         </h2>
         <Link
           href={indexHref}
-          className="text-ecm-green text-sm font-barlow font-semibold hover:text-ecm-green-dark whitespace-nowrap"
+          className="text-heading text-sm font-barlow font-semibold hover:text-heading-dark whitespace-nowrap"
         >
           {indexLabel} →
         </Link>
@@ -216,7 +216,7 @@ function Card({
   return (
     <Link
       href={href}
-      className="group bg-gray-50 rounded-xl border border-gray-100 hover:border-ecm-green/20 hover:shadow-lg transition-all overflow-hidden flex flex-col"
+      className="group bg-surface-alt rounded-xl border border-surface-border hover:border-heading/20 hover:shadow-lg transition-all overflow-hidden flex flex-col"
     >
       <div className="h-32 overflow-hidden bg-ecm-green/5 flex items-center justify-center">
         {/* image wins when present (guides still prefer editor mainImage);
@@ -233,7 +233,7 @@ function Card({
         ) : fallback ? (
           fallback
         ) : (
-          <span className="text-ecm-green/30 text-xs font-barlow font-semibold tracking-widest">
+          <span className="text-heading/30 text-xs font-barlow font-semibold tracking-widest">
             ECM
           </span>
         )}
@@ -244,11 +244,11 @@ function Card({
             {eyebrow}
           </p>
         )}
-        <h3 className="text-ecm-green font-barlow font-semibold text-sm leading-snug mb-2 group-hover:text-ecm-green-dark line-clamp-2">
+        <h3 className="text-heading font-barlow font-semibold text-sm leading-snug mb-2 group-hover:text-heading-dark line-clamp-2">
           {title}
         </h3>
         {subtitle && (
-          <p className="text-ecm-gray text-xs leading-relaxed line-clamp-3">
+          <p className="text-ink-muted text-xs leading-relaxed line-clamp-3">
             {subtitle}
           </p>
         )}

@@ -52,7 +52,7 @@ export default function Result({
   };
 
   return (
-    <section className="border-t border-gray-100 bg-gray-50 py-12 sm:py-16">
+    <section className="border-t border-surface-border bg-surface-alt py-12 sm:py-16">
       <div className="mx-auto max-w-5xl px-6">
         {/* 1. Headline summary */}
         <Headline
@@ -219,8 +219,8 @@ function BreakdownTable({
 
   return (
     <Section title="Cost breakdown">
-      <div className="overflow-hidden rounded-xl border border-gray-200 bg-white">
-        <div className="grid grid-cols-[1fr_auto_auto] gap-4 border-b border-gray-200 bg-gray-50 px-5 py-3 font-barlow text-[10px] font-bold uppercase tracking-[0.14em] text-ecm-gray sm:grid-cols-[1fr_120px_180px]">
+      <div className="overflow-hidden rounded-xl border border-surface-border bg-surface">
+        <div className="grid grid-cols-[1fr_auto_auto] gap-4 border-b border-surface-border bg-surface-alt px-5 py-3 font-barlow text-[10px] font-bold uppercase tracking-[0.14em] text-ink-muted sm:grid-cols-[1fr_120px_180px]">
           <span>Line item</span>
           <span className="text-right">Cadence</span>
           <span className="text-right">Range</span>
@@ -228,18 +228,18 @@ function BreakdownTable({
         {lines.map((line) => (
           <div
             key={line.label}
-            className="grid grid-cols-[1fr_auto_auto] gap-4 border-b border-gray-100 px-5 py-3 last:border-b-0 sm:grid-cols-[1fr_120px_180px]"
+            className="grid grid-cols-[1fr_auto_auto] gap-4 border-b border-surface-border px-5 py-3 last:border-b-0 sm:grid-cols-[1fr_120px_180px]"
           >
             <div>
-              <p className="font-barlow text-sm font-semibold text-ecm-gray-dark">
+              <p className="font-barlow text-sm font-semibold text-ink">
                 {line.label}
               </p>
-              <p className="font-barlow text-xs text-ecm-gray">{line.sublabel}</p>
+              <p className="font-barlow text-xs text-ink-muted">{line.sublabel}</p>
             </div>
-            <p className="self-center text-right font-barlow text-xs text-ecm-gray">
+            <p className="self-center text-right font-barlow text-xs text-ink-muted">
               {line.oneOff ? "One-off" : "Annual"}
             </p>
-            <p className="self-center text-right font-barlow text-sm tabular-nums text-ecm-gray-dark">
+            <p className="self-center text-right font-barlow text-sm tabular-nums text-ink">
               {fmt(line.r.low * mul, sym)} – {fmt(line.r.high * mul, sym)}
             </p>
           </div>
@@ -264,23 +264,23 @@ function YearByYear({
   const maxMid = Math.max(...totals.map((t) => t.mid));
   return (
     <Section title={`${horizon}-year cash flow`}>
-      <div className="overflow-hidden rounded-xl border border-gray-200 bg-white">
+      <div className="overflow-hidden rounded-xl border border-surface-border bg-surface">
         {totals.map((y) => {
           const widthPct = maxMid > 0 ? (y.mid / maxMid) * 100 : 0;
           return (
             <div
               key={y.year}
-              className="border-b border-gray-100 px-5 py-3 last:border-b-0"
+              className="border-b border-surface-border px-5 py-3 last:border-b-0"
             >
               <div className="mb-1.5 flex items-baseline justify-between font-barlow">
-                <span className="text-sm font-semibold text-ecm-gray-dark">
+                <span className="text-sm font-semibold text-ink">
                   Year {y.year}
                 </span>
-                <span className="text-sm tabular-nums text-ecm-gray-dark">
+                <span className="text-sm tabular-nums text-ink">
                   {fmt(y.low * mul, sym)} – {fmt(y.high * mul, sym)}
                 </span>
               </div>
-              <div className="relative h-2 w-full overflow-hidden rounded-full bg-gray-100">
+              <div className="relative h-2 w-full overflow-hidden rounded-full bg-surface-alt">
                 <div
                   className="h-full rounded-full bg-ecm-green"
                   style={{ width: `${widthPct}%` }}
@@ -313,8 +313,8 @@ function RiskBand({
 
   return (
     <Section title="Risk band">
-      <div className="rounded-xl border border-gray-200 bg-white p-5">
-        <div className="mb-4 flex items-baseline justify-between font-barlow text-xs text-ecm-gray-dark">
+      <div className="rounded-xl border border-surface-border bg-surface p-5">
+        <div className="mb-4 flex items-baseline justify-between font-barlow text-xs text-ink">
           <span>Conservative</span>
           <span className="font-semibold">Mid case</span>
           <span>Aggressive</span>
@@ -322,15 +322,15 @@ function RiskBand({
 
         <div className="relative mb-3 h-3 w-full overflow-hidden rounded-full bg-gradient-to-r from-ecm-green via-amber-300 to-orange-500">
           <div
-            className="absolute top-1/2 h-5 w-1 -translate-y-1/2 -translate-x-1/2 rounded-full bg-white shadow-md ring-2 ring-ecm-green-dark"
+            className="absolute top-1/2 h-5 w-1 -translate-y-1/2 -translate-x-1/2 rounded-full bg-surface shadow-md ring-2 ring-ecm-green-dark"
             style={{ left: `${midOffset}%` }}
             title="Mid case"
           />
         </div>
 
-        <div className="mb-4 flex items-baseline justify-between font-barlow text-sm tabular-nums text-ecm-gray-dark">
+        <div className="mb-4 flex items-baseline justify-between font-barlow text-sm tabular-nums text-ink">
           <span>{fmt(total.low * mul, sym)}</span>
-          <span className="font-semibold text-ecm-green">
+          <span className="font-semibold text-heading">
             {fmt(total.mid * mul, sym)}
           </span>
           <span>{fmt(total.high * mul, sym)}</span>
@@ -384,15 +384,15 @@ function BenefitPanel({
 
   return (
     <Section title="Benefit side (indicative)">
-      <div className="rounded-xl border border-gray-200 bg-white p-5">
+      <div className="rounded-xl border border-surface-border bg-surface p-5">
         <div className="mb-4 flex flex-wrap items-baseline justify-between gap-3">
-          <p className="font-barlow text-2xl font-bold text-ecm-green">
+          <p className="font-barlow text-2xl font-bold text-heading">
             {fmt(horizonValue.low * mul, sym)} – {fmt(horizonValue.high * mul, sym)}{" "}
-            <span className="font-barlow text-sm font-normal text-ecm-gray">
+            <span className="font-barlow text-sm font-normal text-ink-muted">
               over {horizon} years
             </span>
           </p>
-          <label className="flex items-center gap-2 font-barlow text-xs text-ecm-gray-dark">
+          <label className="flex items-center gap-2 font-barlow text-xs text-ink">
             <input
               type="checkbox"
               checked={useTei}
@@ -403,8 +403,8 @@ function BenefitPanel({
           </label>
         </div>
 
-        <p className="mb-4 font-barlow text-xs text-ecm-gray">
-          Currently showing <strong className="text-ecm-gray-dark">{useTei ? "vendor-cited TEI benchmark" : "conservative case"}</strong>.
+        <p className="mb-4 font-barlow text-xs text-ink-muted">
+          Currently showing <strong className="text-ink">{useTei ? "vendor-cited TEI benchmark" : "conservative case"}</strong>.
           Toggle would change to {fmt(altHorizonValue.low * mul, sym)} – {fmt(altHorizonValue.high * mul, sym)}.
         </p>
 
@@ -426,7 +426,7 @@ function BenefitPanel({
           />
         </div>
 
-        <p className="mt-4 border-t border-gray-100 pt-3 font-barlow text-[11px] leading-relaxed text-ecm-gray">
+        <p className="mt-4 border-t border-surface-border pt-3 font-barlow text-[11px] leading-relaxed text-ink-muted">
           Benefit numbers drawn from Forrester TEI studies of Contentstack (295% ROI),
           Kontent.ai (320% ROI) and Storyblok (582% ROI). These are
           vendor-commissioned composite-organisation studies — directional, not
@@ -448,14 +448,14 @@ function BenefitTile({
   sublabel: string;
 }) {
   return (
-    <div className="rounded-lg border border-gray-100 bg-gray-50 p-4">
-      <p className="mb-1 font-barlow text-[10px] font-bold uppercase tracking-[0.14em] text-ecm-gray">
+    <div className="rounded-lg border border-surface-border bg-surface-alt p-4">
+      <p className="mb-1 font-barlow text-[10px] font-bold uppercase tracking-[0.14em] text-ink-muted">
         {label}
       </p>
-      <p className="mb-0.5 font-barlow text-2xl font-bold tabular-nums text-ecm-green">
+      <p className="mb-0.5 font-barlow text-2xl font-bold tabular-nums text-heading">
         {value}
       </p>
-      <p className="font-barlow text-xs text-ecm-gray">{sublabel}</p>
+      <p className="font-barlow text-xs text-ink-muted">{sublabel}</p>
     </div>
   );
 }
@@ -469,7 +469,7 @@ function Notes({
 }) {
   return (
     <Section title="Notes & disclaimers">
-      <div className="rounded-xl border border-gray-200 bg-white p-5">
+      <div className="rounded-xl border border-surface-border bg-surface p-5">
         {salesGated && (
           <div className="mb-4 rounded-lg border border-orange-200 bg-orange-50 p-3 font-barlow text-xs text-orange-900">
             <strong className="font-bold">
@@ -483,8 +483,8 @@ function Notes({
         )}
         <ul className="space-y-2">
           {notes.map((note, i) => (
-            <li key={i} className="flex gap-2 font-barlow text-xs text-ecm-gray-dark">
-              <span className="text-ecm-green">•</span>
+            <li key={i} className="flex gap-2 font-barlow text-xs text-ink">
+              <span className="text-heading">•</span>
               <span className="leading-relaxed">{note}</span>
             </li>
           ))}
@@ -535,18 +535,18 @@ function ShareAndMethodology({
         }
       >
         {showEmailCapture && (
-          <div className="rounded-xl border border-gray-200 bg-white p-5">
+          <div className="rounded-xl border border-surface-border bg-surface p-5">
             <EmailCaptureForm inputs={inputs} result={result} />
           </div>
         )}
 
-        <div className="rounded-xl border border-gray-200 bg-white p-5">
-          <p className="mb-2 font-barlow text-sm font-semibold text-ecm-gray-dark">
+        <div className="rounded-xl border border-surface-border bg-surface p-5">
+          <p className="mb-2 font-barlow text-sm font-semibold text-ink">
             {showEmailCapture
               ? "Share this estimate"
               : "Pass it on"}
           </p>
-          <p className="mb-3 font-barlow text-xs text-ecm-gray">
+          <p className="mb-3 font-barlow text-xs text-ink-muted">
             {showEmailCapture
               ? "Skip the email gate — your inputs are baked into the URL. Anyone with the link sees the same scenario, ready to tweak. No contact details captured."
               : "Anyone with this link sees the same numbers. No login, no email gate, no further contact details captured."}
@@ -554,15 +554,15 @@ function ShareAndMethodology({
           <button
             type="button"
             onClick={handleCopy}
-            className="w-full rounded-full border border-ecm-green bg-white px-4 py-2.5 font-barlow text-xs font-semibold uppercase tracking-wider text-ecm-green transition-colors hover:bg-ecm-green hover:text-white"
+            className="w-full rounded-full border border-heading bg-surface px-4 py-2.5 font-barlow text-xs font-semibold uppercase tracking-wider text-heading transition-colors hover:bg-ecm-green hover:text-white"
           >
             {copied ? "Link copied" : "Copy shareable link"}
           </button>
-          <p className="mt-4 border-t border-gray-100 pt-3 font-barlow text-[11px] leading-relaxed text-ecm-gray">
+          <p className="mt-4 border-t border-surface-border pt-3 font-barlow text-[11px] leading-relaxed text-ink-muted">
             Curious how the numbers are derived?{" "}
             <a
               href="/assessment/cms-implementation/methodology"
-              className="font-semibold text-ecm-green underline hover:text-ecm-green-dark"
+              className="font-semibold text-heading underline hover:text-heading-dark"
             >
               Read the methodology and sources
             </a>{" "}
@@ -570,11 +570,11 @@ function ShareAndMethodology({
             rating.
           </p>
           {!showEmailCapture && (
-            <p className="mt-3 font-barlow text-[11px] leading-relaxed text-ecm-gray">
+            <p className="mt-3 font-barlow text-[11px] leading-relaxed text-ink-muted">
               Want to run your own scenario?{" "}
               <a
                 href="/assessment/cms-implementation"
-                className="font-semibold text-ecm-green underline hover:text-ecm-green-dark"
+                className="font-semibold text-heading underline hover:text-heading-dark"
               >
                 Open the calculator
               </a>{" "}
@@ -590,7 +590,7 @@ function ShareAndMethodology({
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section className="mb-10 last:mb-0">
-      <h2 className="mb-3 font-barlow text-[11px] font-bold uppercase tracking-[0.16em] text-ecm-gray">
+      <h2 className="mb-3 font-barlow text-[11px] font-bold uppercase tracking-[0.16em] text-ink-muted">
         {title}
       </h2>
       {children}
