@@ -4,6 +4,7 @@ import { getServicePageQuery } from "@/lib/queries";
 import { buildPillarMetadata } from "@/lib/pillarMetadata";
 import ServicePage from "@/components/ServicePage";
 import PillarClusters from "@/components/PillarClusters";
+import ContentAuditTiers from "@/components/ContentAuditTiers";
 import JsonLd from "@/components/JsonLd";
 import { serviceSchema } from "@/lib/structuredData";
 import type { ServicePageData } from "@/lib/serviceTypes";
@@ -16,7 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
     category: "technology",
     fallbackTitle: "Content Technology",
     fallbackDescription:
-      "CMS / DAM / DXP selection, MarTech integration, search and findability, content architecture — picking the right platforms and connecting them properly.",
+      "Your CMS, your platforms, and the data connecting them, working as one system. We start with a Content Audit, then run the fix as a standing technology function.",
     canonical: "/content-technology",
   });
 }
@@ -28,19 +29,18 @@ const fallbackData: ServicePageData = {
   title: "Content Technology",
   category: "technology",
   heroDescription:
-    "Elevate your content with cutting-edge technology. Maximize your content’s potential with our Content Technology Management Services. We offer advisory and implementation services to help you create, manage, store, and distribute content seamlessly across multiple channels.",
+    "Your CMS, your platforms, and the data connecting them, working as one system instead of three separate problems. We start with a Content Audit that shows you exactly where the technology is breaking down, then run the fix as a standing technology function, not a one-off project.",
   problemIntro: "",
   diagnosisItems: [],
   reframeStatement: "",
   ctaText: "",
   ctaUrl: "",
   packages: [
-    { title: "Build a Better Navigation & Site Structure", description: "We redesign your navigation and site hierarchy so content is easy to find, logically organised, and aligned with how users actually search and browse.", features: [], order: 1 },
-    { title: "Optimise Your CMS for Efficiency", description: "We audit your current CMS setup, fix configuration issues, and streamline templates and workflows to make content publishing faster and more consistent.", features: [], order: 2 },
-    { title: "Integrate Content with Your MarTech Stack", description: "We connect your CMS with analytics, marketing automation, CRM, and other tools — so content flows seamlessly across your digital ecosystem.", features: [], order: 3 },
-    { title: "Set Up Digital Asset Management", description: "We implement or optimise your DAM platform to centralise brand assets, reduce duplication, and ensure teams always find the right file fast.", features: [], order: 4 },
-    { title: "Enterprise Search & Findability", description: "We design and implement search experiences that make content discoverable across intranets, websites, and content repositories.", features: [], order: 5 },
-    { title: "Content Platform Selection & Advisory", description: "We evaluate CMS, DAM, and DXP options against your real needs — cutting through vendor noise to recommend the right fit for your organisation.", features: [], order: 6 },
+    { title: "Content Audit", description: "A scored diagnostic of your CMS, structure, and integrations against a versioned rubric. Real findings from your actual estate, not a self-assessment questionnaire.", features: [], order: 1 },
+    { title: "Managed Content Technology", description: "Standing technology stewardship: CMS architecture, MarTech and analytics integration, and a scheduled re-audit cadence so drift gets caught before it compounds.", features: [], order: 2 },
+    { title: "CMS Architecture & Optimisation", description: "Fixing configuration issues, templates, and workflows so publishing gets faster and more consistent.", features: [], order: 3 },
+    { title: "Platform & Analytics Integration", description: "Connecting your CMS to the tools that measure what content actually does, analytics, behavioural data, MarTech.", features: [], order: 4 },
+    { title: "Findability & Structure", description: "Search, navigation, and information architecture that make content discoverable, for people and for AI systems reading it.", features: [], order: 5 },
   ],
 };
 
@@ -54,13 +54,14 @@ export default async function ContentTechnologyPage() {
     <>
       <JsonLd
         data={serviceSchema({
-          name: "Content Technology Consulting",
+          name: "Content Technology",
           description: data.heroDescription,
           path: "/content-technology",
           serviceType: "Content Technology",
         })}
       />
       <ServicePage data={data} />
+      <ContentAuditTiers />
       <PillarClusters pillar="technology" />
     </>
   );

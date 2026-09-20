@@ -4,6 +4,7 @@ import { getServicePageQuery } from "@/lib/queries";
 import { buildPillarMetadata } from "@/lib/pillarMetadata";
 import ServicePage from "@/components/ServicePage";
 import PillarClusters from "@/components/PillarClusters";
+import ContentAuditTiers from "@/components/ContentAuditTiers";
 import JsonLd from "@/components/JsonLd";
 import { serviceSchema } from "@/lib/structuredData";
 import type { ServicePageData } from "@/lib/serviceTypes";
@@ -16,7 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
     category: "localization",
     fallbackTitle: "Content Localization",
     fallbackDescription:
-      "Multilingual content operations, translation management, regional findability, and AI-native localisation — making content scale across languages and markets.",
+      "Multilingual content that holds up, across languages, across markets, and under AI-assisted translation, with ongoing quality assurance as content gets added.",
     canonical: "/content-localization",
   });
 }
@@ -28,19 +29,17 @@ const fallbackData: ServicePageData = {
   title: "Content Localization",
   category: "localization",
   heroDescription:
-    "Our marketing collateral localization services offer a combination of machine translation with human editing to ensure high-quality translations. These packages cover documents, websites, presentations, social media posts, graphics, and videos.",
+    "Multilingual content that holds up, across languages, across markets, and under AI-assisted translation. We start with a scoped estimate of what your localisation actually costs today, then run ongoing quality assurance as content gets added.",
   problemIntro: "",
   diagnosisItems: [],
   reframeStatement: "",
   ctaText: "",
   ctaUrl: "",
   packages: [
-    { title: "Fast Turnaround Translation – 4 Hour Delivery", description: "Get urgent, premium translations in 4 business hours — every time. Our subscription lets teams rely on fast, consistent translations in fixed language pairs, with no drop in quality or tone.", features: [], order: 1 },
-    { title: "Large Localization Package", description: "A full-scale content localization solution for large websites, product documentation, or platform UIs. Designed to deliver consistency, speed, and language accuracy across multiple regions and content formats.", features: [], order: 2 },
-    { title: "Find & Fix Underperforming Global Content", description: "We help you identify which content is underperforming in specific markets and deliver actionable recommendations to improve relevance, engagement, and conversions.", features: [], order: 3 },
-    { title: "Multilingual SEO Optimisation", description: "We audit and optimise your multilingual content for search engines — including hreflang implementation, keyword localisation, and metadata translation.", features: [], order: 4 },
-    { title: "Website Translation Setup & Configuration", description: "We set up and configure translation management tools integrated with your CMS, ensuring efficient workflows for ongoing multilingual content delivery.", features: [], order: 5 },
-    { title: "Marketing Collateral Localization", description: "We localise documents, presentations, social media posts, graphics, and videos with machine translation enhanced by human editing for quality assurance.", features: [], order: 6 },
+    { title: "Localisation Cost Estimator", description: "A scoped, honest estimate of what your localisation actually costs, before you commit to a vendor or a platform.", features: [], order: 1 },
+    { title: "Managed Multilingual Content", description: "Ongoing quality assurance across every language you publish in, catching drift and AI-translation errors as new content lands, not once a year.", features: [], order: 2 },
+    { title: "Multilingual SEO", description: "hreflang, keyword localisation, and metadata translation, audited and fixed.", features: [], order: 3 },
+    { title: "Translation Workflow Setup", description: "Tooling configured against your CMS so multilingual publishing doesn't require a manual handoff every time.", features: [], order: 4 },
   ],
 };
 
@@ -61,6 +60,7 @@ export default async function ContentLocalizationPage() {
         })}
       />
       <ServicePage data={data} />
+      <ContentAuditTiers />
       <PillarClusters pillar="localization" />
     </>
   );
