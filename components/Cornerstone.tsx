@@ -29,7 +29,7 @@ const components: PortableTextComponents = {
       <p className="text-ink leading-relaxed text-base lg:text-lg mb-5">{children}</p>
     ),
     blockquote: ({ children }) => (
-      <blockquote className="border-l-[5px] border-ecm-lime bg-ecm-gray-light rounded-r-2xl px-8 py-6 my-8 text-heading font-barlow font-semibold text-xl leading-snug">
+      <blockquote className="border-l-[5px] border-ecm-lime bg-surface-alt rounded-r-2xl px-8 py-6 my-8 text-heading font-barlow font-semibold text-xl leading-snug">
         {children}
       </blockquote>
     ),
@@ -95,7 +95,7 @@ export default function Cornerstone({ data }: { data: CornerstoneData }) {
         <div className="max-w-3xl mx-auto px-6">
           {/* In short */}
           {data.keyTakeaways && data.keyTakeaways.length > 0 && (
-            <div className="bg-ecm-gray-light border-l-[5px] border-ecm-lime p-8 rounded-r-2xl mb-12">
+            <div className="bg-surface-alt border-l-[5px] border-ecm-lime p-8 rounded-r-2xl mb-12">
               <p className="text-heading font-barlow font-bold text-xs tracking-[0.2em] uppercase mb-4">
                 In short
               </p>
