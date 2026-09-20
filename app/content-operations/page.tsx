@@ -38,10 +38,7 @@ export async function generateMetadata(): Promise<Metadata> {
 // Mirrors the live `service-services` and `servicePackage` (category:
 // "services") documents in Sanity, so this fallback (used only if Sanity
 // isn't connected) reads the same as the CMS-managed page. Keep the two in
-// sync when either one changes. `title` is kept as "Content Operations"
-// (matching the nav, the URL, and every other page that links here) rather
-// than the CMS record's own "Content Services" label — see the naming
-// mismatch flagged separately.
+// sync when either one changes.
 const fallbackData: ServicePageData = {
   title: "Content Operations",
   category: "services",
