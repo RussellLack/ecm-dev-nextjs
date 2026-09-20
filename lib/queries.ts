@@ -90,7 +90,7 @@ export async function getServiceHero(category: string) {
 // Case studies
 export async function getCaseStudies() {
   return sanityFetch(`*[_type == "caseStudy"] | order(order asc){
-    title, slug, client, tags, description, image
+    title, slug, client, tags, pillars, description, image
   }`);
 }
 

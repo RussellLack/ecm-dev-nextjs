@@ -9,12 +9,24 @@ const tagColors: Record<string, string> = {
   "Content Operations": "bg-green-100 text-green-800",
 };
 
+// The filter bar shows only the 3 pillars, not the much larger set of
+// free-text industry/technique tags stored on each case study (those still
+// render as descriptive chips on the cards below). Matching is done against
+// the `pillars` slug field, not `tags`, since most case studies carry a
+// pillars value without the matching literal string in tags.
+const PILLARS: { slug: string; title: string }[] = [
+  { slug: "technology", title: "Content Technology" },
+  { slug: "services", title: "Content Operations" },
+  { slug: "localization", title: "Content Localization" },
+];
+
 interface CaseStudy {
   _id?: string;
   title: string;
   slug: { current: string };
   client: string;
   tags?: string[];
+  pillars?: string[];
   description: string;
 }
 
@@ -23,49 +35,46 @@ export default function CaseStudyGrid({
 }: {
   caseStudies: CaseStudy[];
 }) {
-  const [activeTag, setActiveTag] = useState<string | null>(null);
+  const [activePillar, setActivePillar] = useState<string | null>(null);
 
-  // Collect all unique tags from the data
-  const allTags = Array.from(
-    new Set(caseStudies.flatMap((cs) => cs.tags || []))
-  ).sort();
+  const pillarsWithCounts = PILLARS.map((p) => ({
+    ...p,
+    count: caseStudies.filter((cs) => cs.pillars?.includes(p.slug)).length,
+  })).filter((p) => p.count > 0);
 
-  const filtered = activeTag
-    ? caseStudies.filter((cs) => cs.tags?.includes(activeTag))
+  const filtered = activePillar
+    ? caseStudies.filter((cs) => cs.pillars?.includes(activePillar))
     : caseStudies;
 
   return (
     <>
-      {/* Tag filter bar */}
+      {/* Pillar filter bar */}
       <div className="flex flex-wrap gap-3 mb-12 justify-center">
         <button
-          onClick={() => setActiveTag(null)}
+          onClick={() => setActivePillar(null)}
           className={`text-sm font-barlow font-medium px-4 py-2 rounded-full transition-all ${
-            activeTag === null
+            activePillar === null
               ? "bg-ecm-green text-white shadow-md"
               : "bg-gray-100 text-gray-600 hover:bg-gray-200"
           }`}
         >
           All ({caseStudies.length})
         </button>
-        {allTags.map((tag) => {
-          const count = caseStudies.filter((cs) =>
-            cs.tags?.includes(tag)
-          ).length;
-          const isActive = activeTag === tag;
-          const colorClass = tagColors[tag] || "bg-gray-200 text-gray-700";
+        {pillarsWithCounts.map((p) => {
+          const isActive = activePillar === p.slug;
+          const colorClass = tagColors[p.title] || "bg-gray-200 text-gray-700";
 
           return (
             <button
-              key={tag}
-              onClick={() => setActiveTag(isActive ? null : tag)}
+              key={p.slug}
+              onClick={() => setActivePillar(isActive ? null : p.slug)}
               className={`text-sm font-barlow font-medium px-4 py-2 rounded-full transition-all ${
                 isActive
                   ? `${colorClass} shadow-md ring-2 ring-offset-1 ring-current`
                   : `${colorClass} hover:opacity-80`
               }`}
             >
-              {tag} ({count})
+              {p.title} ({p.count})
             </button>
           );
         })}
