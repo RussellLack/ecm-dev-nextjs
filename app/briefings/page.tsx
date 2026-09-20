@@ -61,7 +61,7 @@ export default async function BriefingsIndexPage() {
               <Link
                 key={c.slug}
                 href={`/briefings/${c.slug}`}
-                className="block bg-ecm-gray-light border-l-[5px] border-ecm-lime p-8 rounded-r-2xl hover:shadow-lg transition-all group"
+                className="block bg-surface-alt border-l-[5px] border-ecm-lime p-8 rounded-r-2xl hover:shadow-lg transition-all group"
               >
                 <h2 className="text-heading font-barlow font-bold text-xl sm:text-2xl mb-3 group-hover:text-heading-dark transition-colors">
                   {c.title}

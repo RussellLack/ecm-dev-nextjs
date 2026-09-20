@@ -54,7 +54,7 @@ export default function ServicePage({ data }: { data: ServicePageData }) {
       {/* Diagnosis box */}
       <section className="bg-surface pb-20">
         <div className="max-w-3xl mx-auto px-6">
-          <div className="bg-ecm-gray-light border-l-[5px] border-ecm-lime p-8 sm:p-10 rounded-r-2xl">
+          <div className="bg-surface-alt border-l-[5px] border-ecm-lime p-8 sm:p-10 rounded-r-2xl">
             <p className="text-heading font-barlow font-bold text-xs tracking-[0.2em] uppercase mb-6">
               You probably recognise this
             </p>
