@@ -475,6 +475,7 @@ export default function ResultsDashboard({
                       className="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/15 text-white font-barlow placeholder-white/30 focus:outline-none focus:border-ecm-lime transition-colors"
                     />
                     <input
+                      data-testid="assessment-email"
                       type="email"
                       value={reportEmail}
                       onChange={(e) => setReportEmail(e.target.value)}
@@ -485,6 +486,7 @@ export default function ResultsDashboard({
                   {/* GDPR consent */}
                   <label className="flex items-start gap-3 cursor-pointer group">
                     <div
+                      data-testid="assessment-consent"
                       onClick={() => setConsentGiven(!consentGiven)}
                       className={`mt-0.5 flex-shrink-0 w-5 h-5 rounded border-2 transition-all flex items-center justify-center ${consentGiven ? "bg-ecm-lime border-ecm-lime" : "border-white/30 group-hover:border-white/50"}`}
                     >
@@ -506,6 +508,7 @@ export default function ResultsDashboard({
                   {/* Save / Share actions */}
                   <div className={`grid grid-cols-2 gap-3 transition-opacity ${consentGiven && reportEmail.includes("@") && reportEmail.includes(".") ? "opacity-100" : "opacity-30 pointer-events-none"}`}>
                     <button
+                      data-testid="assessment-submit"
                       type="submit"
                       disabled={reportSending}
                       className="bg-ecm-lime hover:bg-ecm-lime-hover text-ecm-green font-barlow font-bold py-3 rounded-xl text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
@@ -528,7 +531,7 @@ export default function ResultsDashboard({
                 </form>
               </>
             ) : (
-              <div className="text-center py-4">
+              <div className="text-center py-4" data-testid="assessment-email-sent">
                 <svg className="w-10 h-10 text-ecm-lime mx-auto mb-3" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>

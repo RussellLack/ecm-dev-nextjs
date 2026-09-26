@@ -175,7 +175,12 @@ export default function AssessmentGate({ slug, title, children }: Props) {
       <section className="bg-surface pb-20">
         <div className="mx-auto -mt-12 max-w-md px-6">
           <div className="rounded-2xl border border-surface-border bg-surface p-6 shadow-lg sm:p-8">
-            <form onSubmit={handleSubmit} noValidate className="space-y-4">
+            <form
+              onSubmit={handleSubmit}
+              noValidate
+              className="space-y-4"
+              data-testid="gate-form"
+            >
               {/* Honeypot — visually hidden, bots fill it. */}
               <div className="hidden" aria-hidden="true">
                 <label>
@@ -189,6 +194,7 @@ export default function AssessmentGate({ slug, title, children }: Props) {
                   Work email <span className="text-red-500">*</span>
                 </span>
                 <input
+                  data-testid="gate-email"
                   type="email"
                   required
                   value={email}
@@ -285,6 +291,7 @@ export default function AssessmentGate({ slug, title, children }: Props) {
                 }`}
               >
                 <input
+                  data-testid="gate-consent"
                   type="checkbox"
                   checked={consent}
                   onChange={(e) => {
@@ -342,6 +349,7 @@ export default function AssessmentGate({ slug, title, children }: Props) {
               )}
 
               <button
+                data-testid="gate-submit"
                 type="submit"
                 disabled={submitting}
                 className="flex w-full items-center justify-center gap-2 rounded-full bg-ecm-green px-6 py-3 font-barlow text-sm font-semibold uppercase tracking-wider text-white transition-colors hover:bg-ecm-green-dark disabled:cursor-not-allowed disabled:opacity-50"

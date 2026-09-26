@@ -214,6 +214,7 @@ export default function EmailCaptureForm({ inputs, result }: Props) {
           Work email <span className="text-red-500">*</span>
         </span>
         <input
+          data-testid="assessment-email"
           type="email"
           required
           value={email}
@@ -246,6 +247,7 @@ export default function EmailCaptureForm({ inputs, result }: Props) {
       )}
 
       <button
+        data-testid="assessment-submit"
         type="submit"
         disabled={submitting}
         className="mt-1 w-full rounded-full bg-ecm-green px-4 py-2.5 font-barlow text-xs font-semibold uppercase tracking-wider text-white transition-colors hover:bg-ecm-green-dark disabled:cursor-not-allowed disabled:opacity-50"
@@ -288,7 +290,10 @@ function EnrichmentForm({
 
   return (
     <div>
-      <div className="mb-4 rounded-lg border border-heading/20 bg-ecm-green/5 p-3">
+      <div
+        className="mb-4 rounded-lg border border-heading/20 bg-ecm-green/5 p-3"
+        data-testid="assessment-email-sent"
+      >
         <p className="mb-1 font-barlow text-sm font-bold text-heading-dark">
           PDF on its way
         </p>
