@@ -923,6 +923,7 @@ export default function ProcessAssessment() {
               <div>
                 <label className="block text-xs font-barlow font-semibold text-white/60 uppercase tracking-wide mb-1.5">Email</label>
                 <input
+                  data-testid="assessment-email"
                   value={assessment.email}
                   onChange={e => pick("email", e.target.value)}
                   placeholder="e.g. sarah@acme.com"
@@ -934,6 +935,7 @@ export default function ProcessAssessment() {
             {/* GDPR consent */}
             <label className="flex items-start gap-3 cursor-pointer group">
               <div
+                data-testid="assessment-consent"
                 onClick={() => setConsentGiven(!consentGiven)}
                 className={`mt-0.5 flex-shrink-0 w-5 h-5 rounded border-2 transition-all flex items-center justify-center ${consentGiven ? "bg-ecm-lime border-ecm-lime" : "border-white/30 group-hover:border-white/50"}`}
               >
@@ -952,6 +954,7 @@ export default function ProcessAssessment() {
             {/* Save / Share actions */}
             <div className={`grid grid-cols-2 gap-3 mt-4 transition-opacity ${consentGiven && assessment.email.trim() ? "opacity-100" : "opacity-30 pointer-events-none"}`}>
               <button
+                data-testid="assessment-submit"
                 onClick={handleEmailResults}
                 disabled={saving}
                 className="bg-ecm-lime hover:bg-ecm-lime-hover text-ecm-green font-barlow font-bold py-3 rounded-xl text-sm transition-colors disabled:opacity-50"
@@ -1009,7 +1012,7 @@ export default function ProcessAssessment() {
 
         {/* STAGE 1 — About you */}
         {stage === 1 && (
-          <div className="space-y-6">
+          <div className="space-y-6" data-testid="assessment-question-group">
             <QLabel label="Which department owns this process?" hint="Select the area that best describes where this process sits." />
             <div className="grid grid-cols-2 gap-2">
               {DOMAINS.map(d => (
@@ -1022,7 +1025,7 @@ export default function ProcessAssessment() {
         {/* STAGE 2 — Process basics */}
         {stage === 2 && (
           <div className="space-y-8">
-            <div>
+            <div data-testid="assessment-question-group">
               <QLabel label="Which of these best describes the process you're assessing?" hint="Choose the one that fits closest. You'll have a chance to add detail later." />
               <div className="grid grid-cols-3 gap-3">
                 {PROCESS_TYPES.map(p => (
@@ -1030,7 +1033,7 @@ export default function ProcessAssessment() {
                 ))}
               </div>
             </div>
-            <div>
+            <div data-testid="assessment-question-group">
               <QLabel label="How often does this process run?" />
               <div className="grid grid-cols-3 gap-2">
                 {FREQUENCIES.map(f => (
@@ -1038,7 +1041,7 @@ export default function ProcessAssessment() {
                 ))}
               </div>
             </div>
-            <div>
+            <div data-testid="assessment-question-group">
               <QLabel label="Roughly how many people are typically involved?" hint="Count everyone who touches this process — not just the person who starts it." />
               <div className="grid grid-cols-2 gap-3">
                 {PEOPLE.map(p => (
@@ -1046,7 +1049,7 @@ export default function ProcessAssessment() {
                 ))}
               </div>
             </div>
-            <div>
+            <div data-testid="assessment-question-group">
               <QLabel label="How long does it take from start to finish?" hint="Think about an average run — not the best case or worst case." />
               <div className="grid grid-cols-2 gap-2">
                 {DURATIONS.map(d => (
@@ -1060,7 +1063,7 @@ export default function ProcessAssessment() {
         {/* STAGE 3 — Current state */}
         {stage === 3 && (
           <div className="space-y-8">
-            <div>
+            <div data-testid="assessment-question-group">
               <QLabel label="How would you honestly rate the current state of this process?" />
               <div className="grid grid-cols-2 gap-3">
                 {RATINGS.map(r => (
@@ -1068,7 +1071,7 @@ export default function ProcessAssessment() {
                 ))}
               </div>
             </div>
-            <div>
+            <div data-testid="assessment-question-group">
               <QLabel label="Where does time most often get lost?" hint="Select everything that applies." />
               <div className="grid grid-cols-2 gap-2">
                 {TIME_LOST.map(t => (
@@ -1076,7 +1079,7 @@ export default function ProcessAssessment() {
                 ))}
               </div>
             </div>
-            <div>
+            <div data-testid="assessment-question-group">
               <QLabel label="How is most of the work in this process carried out?" />
               <div className="space-y-2">
                 {WORK_STYLES.map(w => (
@@ -1101,7 +1104,7 @@ export default function ProcessAssessment() {
         {/* STAGE 4 — Ownership */}
         {stage === 4 && (
           <div className="space-y-8">
-            <div>
+            <div data-testid="assessment-question-group">
               <QLabel label="Is there a clear, named person or role accountable for this process?" />
               <div className="space-y-2">
                 {OWNER_OPTIONS.map(o => (
@@ -1109,7 +1112,7 @@ export default function ProcessAssessment() {
                 ))}
               </div>
             </div>
-            <div>
+            <div data-testid="assessment-question-group">
               <QLabel label="How are approvals and key decisions handled within this process?" />
               <div className="grid grid-cols-2 gap-3">
                 {APPROVAL_OPTIONS.map(o => (
@@ -1117,7 +1120,7 @@ export default function ProcessAssessment() {
                 ))}
               </div>
             </div>
-            <div>
+            <div data-testid="assessment-question-group">
               <QLabel label="When something goes wrong or gets stuck, what typically happens?" />
               <div className="grid grid-cols-2 gap-3">
                 {WRONG_OPTIONS.map(o => (
@@ -1131,7 +1134,7 @@ export default function ProcessAssessment() {
         {/* STAGE 5 — Pain & impact */}
         {stage === 5 && (
           <div className="space-y-8">
-            <div>
+            <div data-testid="assessment-question-group">
               <QLabel label="Which of these describe your current process?" hint="Select all that apply — honesty here leads to the most useful brief." />
               <div className="grid grid-cols-2 gap-2">
                 {PAIN_OPTIONS.map(p => (
@@ -1139,7 +1142,7 @@ export default function ProcessAssessment() {
                 ))}
               </div>
             </div>
-            <div>
+            <div data-testid="assessment-question-group">
               <QLabel label="What is the overall business impact of these issues?" />
               <div className="grid grid-cols-2 gap-3">
                 {IMPACT_OPTIONS.map(o => (
@@ -1165,7 +1168,7 @@ export default function ProcessAssessment() {
         {/* STAGE 6 — Readiness */}
         {stage === 6 && (
           <div className="space-y-8">
-            <div>
+            <div data-testid="assessment-question-group">
               <QLabel label="Has your organisation discussed automating or improving this process?" />
               <div className="space-y-2">
                 {AUTO_OPTIONS.map(o => (
@@ -1173,7 +1176,7 @@ export default function ProcessAssessment() {
                 ))}
               </div>
             </div>
-            <div>
+            <div data-testid="assessment-question-group">
               <QLabel label="Do you have documented process guidelines or standard operating procedures (SOPs)?" />
               <div className="space-y-2">
                 {SOP_OPTIONS.map(o => (
@@ -1181,7 +1184,7 @@ export default function ProcessAssessment() {
                 ))}
               </div>
             </div>
-            <div>
+            <div data-testid="assessment-question-group">
               <QLabel label="How would you describe your team's appetite for change?" />
               <div className="grid grid-cols-2 gap-3">
                 {APPETITE_OPTIONS.map(o => (

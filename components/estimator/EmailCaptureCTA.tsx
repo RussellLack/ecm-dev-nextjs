@@ -61,6 +61,7 @@ export default function EmailCaptureCTA({ inputs, result }: Props) {
   if (view === "button") {
     return (
       <button
+        data-testid="assessment-email-open"
         type="button"
         onClick={() => setView("form")}
         className="inline-flex items-center gap-2 rounded-full border border-heading bg-transparent px-7 py-3.5 font-barlow text-sm font-semibold text-heading transition-colors hover:bg-ecm-green hover:text-white"
@@ -72,7 +73,10 @@ export default function EmailCaptureCTA({ inputs, result }: Props) {
 
   if (view === "sent") {
     return (
-      <div className="rounded-xl border border-heading/30 bg-ecm-green/5 px-5 py-4 font-barlow text-sm text-heading-dark">
+      <div
+        className="rounded-xl border border-heading/30 bg-ecm-green/5 px-5 py-4 font-barlow text-sm text-heading-dark"
+        data-testid="assessment-email-sent"
+      >
         Thanks, we&apos;ve got it. We&apos;ll be in touch when the full breakdown is ready and
         when the next model refresh ships material changes.
       </div>
@@ -88,6 +92,7 @@ export default function EmailCaptureCTA({ inputs, result }: Props) {
         Email me the full breakdown
       </label>
       <input
+        data-testid="assessment-email"
         type="email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
@@ -99,6 +104,7 @@ export default function EmailCaptureCTA({ inputs, result }: Props) {
 
       <label className="mt-3 flex cursor-pointer items-start gap-2.5 text-xs leading-relaxed text-ink-muted">
         <span
+          data-testid="assessment-consent"
           onClick={(e) => {
             e.preventDefault();
             setConsentGiven(!consentGiven);
@@ -131,6 +137,7 @@ export default function EmailCaptureCTA({ inputs, result }: Props) {
 
       <div className="mt-4 flex flex-wrap gap-2.5">
         <button
+          data-testid="assessment-submit"
           type="submit"
           disabled={!canSubmit}
           className="inline-flex items-center gap-2 rounded-full bg-ecm-green px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-ecm-green-dark disabled:cursor-not-allowed disabled:opacity-40"
