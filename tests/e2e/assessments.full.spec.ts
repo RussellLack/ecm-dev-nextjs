@@ -3,6 +3,7 @@ import { test, expect, type Page } from "@playwright/test";
 import { TARGETS_FILE } from "./global-setup";
 import { BESPOKE_SLUGS, type AssessmentTarget } from "./helpers/targets";
 import { attachConsoleGuard } from "./helpers/hydration";
+import { completeShell, expectReportForm } from "./helpers/flows";
 import {
   TEST_EMAIL,
   gateIsShowing,
@@ -225,35 +226,6 @@ function sanityTargets(): AssessmentTarget[] {
   return all.filter((t) => !bespoke.has(t.slug));
 }
 
-/**
- * Drive an AssessmentShell questionnaire to the end. Single-select questions
- * auto-advance after 400ms; multi-select ones need an explicit Next. After
- * the last answer the shell scores the submission and redirects to /results.
- */
-async function completeShell(page: Page) {
-  const heading = page.getByTestId("assessment-question").locator("h2");
-  for (let i = 0; i < 100; i++) {
-    if (/\/results/.test(page.url())) return;
-    const before = await heading.textContent().catch(() => null);
-    if (before === null) break; // submitting screen
-    await page.getByTestId("assessment-option").first().click();
-
-    const advanced = await expect
-      .poll(
-        async () =>
-          /\/results/.test(page.url()) ||
-          (await heading.count()) === 0 ||
-          (await heading.textContent().catch(() => null)) !== before,
-        { timeout: 2_000 },
-      )
-      .toBe(true)
-      .then(() => true, () => false);
-
-    if (!advanced) await clickNext(page);
-  }
-  await page.waitForURL(/\/results\?sid=/, { timeout: 60_000 });
-}
-
 test("sanity-authored: register → complete → email report", async ({ browser }) => {
   const targets = sanityTargets();
   test.skip(targets.length === 0, "no Sanity-authored assessments discovered");
@@ -287,6 +259,7 @@ test("sanity-authored: register → complete → email report", async ({ browser
           await completeShell(page);
 
           // Results page → email the full report.
+          await expectReportForm(page);
           const submit = page.getByTestId("assessment-submit");
           await page.getByTestId("assessment-email").fill(TEST_EMAIL);
           await page.getByTestId("assessment-consent").click();
