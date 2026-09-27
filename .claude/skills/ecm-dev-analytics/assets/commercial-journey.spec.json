@@ -1,0 +1,18 @@
+{
+  "variables": [
+    {"name": "DLV - offer", "key": "offer"},
+    {"name": "DLV - pillar", "key": "pillar"},
+    {"name": "DLV - source_page", "key": "source_page"}
+  ],
+  "triggers": [
+    {"name": "CE - commercial journey",
+     "events": ["journey_selected", "offer_viewed", "enquiry_submitted"]}
+  ],
+  "tags": [
+    {"name": "GA4 - commercial journey events",
+     "trigger": "CE - commercial journey",
+     "measurement_id": "G-33HFQC8STP",
+     "params": {"offer": "{{DLV - offer}}", "pillar": "{{DLV - pillar}}", "source_page": "{{DLV - source_page}}"},
+     "notes": "Do not mark enquiry_submitted as a key event: close_convert_lead already counts those enquiries."}
+  ]
+}
