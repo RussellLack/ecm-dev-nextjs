@@ -303,6 +303,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${siteUrl}/content-operations`, lastModified: STATIC_LAST_MODIFIED, changeFrequency: "monthly", priority: 0.9 },
     { url: `${siteUrl}/content-localization`, lastModified: STATIC_LAST_MODIFIED, changeFrequency: "monthly", priority: 0.9 },
     { url: `${siteUrl}/case-study`, lastModified: caseStudiesMax, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${siteUrl}/content-audit/sample`, lastModified: new Date("2026-09-27T00:00:00.000Z"), changeFrequency: "monthly", priority: 0.7 },
     { url: `${siteUrl}/methodology`, lastModified: STATIC_LAST_MODIFIED, changeFrequency: "monthly", priority: 0.7 },
     { url: `${siteUrl}/assessments`, lastModified: assessmentsMax, changeFrequency: "weekly", priority: 0.8 },
     { url: `${siteUrl}/blog`, lastModified: postsMax, changeFrequency: "weekly", priority: 0.8 },

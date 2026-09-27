@@ -218,7 +218,7 @@ const firstProject = [
     ],
     ctaLabel: "Discuss a Snapshot",
     ctaUrl: enquiryHref("snapshot"),
-    secondary: { label: "See both audit depths", url: `/content-technology#${CONTENT_AUDIT.anchor}` },
+    secondary: { label: "See a sample Snapshot report", url: CONTENT_AUDIT.samplePath },
     featured: true,
   },
   {

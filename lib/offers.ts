@@ -89,7 +89,7 @@ export const CONTENT_AUDIT = {
     name: "Snapshot",
     price: "£2,000 to £3,000",
     duration: "5 to 7 business days",
-    scope: "a real sample of your estate, up to 100 items or 10% of it",
+    scope: "a real sample of your estate: 10% of it, at least 50 items and at most 100",
     outputs: [
       "A 5 to 10 page report",
       "Your top five findings",
@@ -112,6 +112,22 @@ export const CONTENT_AUDIT = {
     ],
   },
   vatNote: "All prices exclude VAT where applicable.",
+  /** How estate size and the Snapshot sample are counted. Approved by
+   * Russell, 27 September 2026. */
+  itemDefinition: {
+    summary:
+      "An item is one published piece of content with its own address: a web page, an article, or a standalone document such as a PDF.",
+    counted:
+      "Product and service pages, articles and blog posts, support and help articles, landing pages, and standalone documents (PDFs, datasheets, whitepapers) published at their own link.",
+    notCounted:
+      "Navigation, search results, tag and listing pages, images and video, pages that redirect elsewhere, and duplicates of the same content at a second address.",
+    languages:
+      "Each language version is a separate item. A Snapshot covers one language, so only that language's items count.",
+    sampleRule:
+      "Your estate is the number of countable items in that language. A Snapshot samples 10% of it, at least 50 items and at most 100. If you have fewer than 50 items, we review all of them.",
+  },
+  /** Illustrative Snapshot report for a fictional company. */
+  samplePath: "/content-audit/sample",
 } as const;
 
 /* ─── Time-bound introductory offer ─── */

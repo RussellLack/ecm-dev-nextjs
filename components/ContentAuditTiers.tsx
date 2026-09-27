@@ -24,7 +24,7 @@ const tiers = [
     kicker: "First real proof",
     tier: CONTENT_AUDIT.snapshot,
     description:
-      "ecm-agent scans a genuine sample of your content, up to 100 items or 10% of the estate. A report of 5 to 10 pages, your top five findings, and one or two shown actually failing in an AI answer. 45-minute recorded readout.",
+      "ecm-agent scans a genuine sample of your content: 10% of the estate, at least 50 items and at most 100. A report of 5 to 10 pages, your top five findings, and one or two shown actually failing in an AI answer. 45-minute recorded readout.",
     note: CONTENT_AUDIT.snapshot.credit,
   },
   {
@@ -91,8 +91,23 @@ export default function ContentAuditTiers({ pillar }: { pillar?: Pillar }) {
             </div>
           ))}
         </div>
-        <p className="text-center text-ink text-xs mt-8 max-w-2xl mx-auto">
-          {CONTENT_AUDIT.vatNote}
+        <details className="mt-8 max-w-2xl mx-auto rounded-xl border border-surface-border px-5 py-3 text-sm text-ink">
+          <summary className="cursor-pointer text-heading font-barlow font-semibold">
+            What counts as an item?
+          </summary>
+          <div className="mt-3 space-y-2 leading-relaxed">
+            <p>{CONTENT_AUDIT.itemDefinition.summary}</p>
+            <p><strong className="text-heading">Counted:</strong> {CONTENT_AUDIT.itemDefinition.counted}</p>
+            <p><strong className="text-heading">Not counted:</strong> {CONTENT_AUDIT.itemDefinition.notCounted}</p>
+            <p>{CONTENT_AUDIT.itemDefinition.languages}</p>
+            <p>{CONTENT_AUDIT.itemDefinition.sampleRule}</p>
+          </div>
+        </details>
+        <p className="text-center text-ink text-xs mt-6 max-w-2xl mx-auto">
+          {CONTENT_AUDIT.vatNote}{" "}
+          <Link href={CONTENT_AUDIT.samplePath} className="underline hover:text-heading">
+            See what a Snapshot report looks like (illustrative sample)
+          </Link>
         </p>
       </div>
     </section>

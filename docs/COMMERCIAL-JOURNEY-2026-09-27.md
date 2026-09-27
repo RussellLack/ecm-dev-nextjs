@@ -38,10 +38,10 @@ None of these appear in public copy until decided.
 | **O2** | Does a diagnostic credit toward ongoing work? If so: which diagnostic, what percentage, what window? | It was published with an undefined window. | Removed. It can go back as a field in `lib/offers.ts` once defined. |
 | **O3** | Standalone trial project or pilot: offered or not? | The brief recommends one. `CONTENT-PILLARS-POSITIONING.md` says one-offs are sold only inside a managed relationship, so the two conflict. | Not offered. The third homepage column says "Fixing it, together" with a separately agreed scope, and implies no pilot product. |
 | **O4** | Does the Snapshot need pillar-specific framing (governance, CMS, localisation) or stay one AI-oriented audit? | Its outputs include "failing in an AI answer", which reads naturally for AI readiness but less so for localisation cost. | Kept as one offer. Each pillar page frames the buyer's question above it but adds no scope. |
-| **O5** | What does "up to 100 items or 10% of the estate" mean in practice? (Whichever is smaller? What counts as an item?) | Scope clarity at the point of purchase. | Published wording unchanged. |
+| **O5** | What does "up to 100 items or 10% of the estate" mean in practice? | Scope clarity at the point of purchase. | **Decided 27 September.** Sample = 10% of the estate, minimum 50, maximum 100 (all items if fewer than 50). "Item" defined in `CONTENT_AUDIT.itemDefinition` and published as "What counts as an item?" under the audit tiers. |
 | **O6** | Response time for the contact form. | The audit form promises "within one business day". The contact form promises only a personal reply. | Only the personal reply is stated. Add a time once it is supported operationally. |
 | **O7** | Managed package pricing and structure for all three pillars. | Open in `CONTENT-PILLARS-POSITIONING.md`. | Described as "quoted against the agreed scope". |
-| **O8** | A sample Snapshot output (synthetic or anonymised). | The brief treats this as core proof of deliverable quality. | Not yet built. A "View a sample output" link is the natural next addition. |
+| **O8** | A sample Snapshot output. | The brief treats this as core proof of deliverable quality. | **Built:** `/content-audit/sample`, an illustrative report for a fictional company, labelled synthetic at the top, on the report and at the close. Linked from the homepage Snapshot card, every pillar first-step panel and the audit tiers. Russell to review the fictional findings for realism against real delivery. |
 
 ## 3. Page-by-page change map
 
@@ -73,7 +73,7 @@ Published facts are filled in. **MISSING** marks business facts that must not be
 
 ### Expert: Content Audit, Snapshot
 - **Buyer and trigger:** someone who needs evidence from their real estate, especially on AI retrievability, before committing budget.
-- **Scope:** a sample of up to 100 items or 10% of the estate (**MISSING:** tie-break rule and what counts as an item).
+- **Scope:** 10% of the estate, at least 50 items and at most 100 (all items if fewer than 50); "item" as defined in `CONTENT_AUDIT.itemDefinition`.
 - **Exclusions:** implementation. **MISSING:** a named exclusion list (e.g. platform code review, translation QA).
 - **Inputs:** access to the sample. **MISSING:** the access method, roles and interviews needed.
 - **Outputs:** a 5 to 10 page report, top five findings, one or two AI-answer failure examples and a 45-minute recorded readout.
@@ -130,7 +130,7 @@ Primary measures: qualified first-project enquiries per month, enquiry to scopin
 
 ## 8. Suggested next steps (after O1 to O8)
 
-1. Build a sample Snapshot output page (O8) and link it from the first-project section and the pillar panels.
+1. ~~Build a sample Snapshot output page (O8).~~ Done: `/content-audit/sample`.
 2. Reorganise `/assessments` by commitment type: free and ungated, free with email, expert-led.
 3. Add a compact, substantiated proof line directly under the hero (the brief's section 2). At the moment, proof is the full featured-work block further down.
 4. Instrument the three events above.
