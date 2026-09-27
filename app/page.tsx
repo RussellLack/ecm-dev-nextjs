@@ -165,9 +165,9 @@ const auditStrip = {
      deadline is what closes the offer. Once the offer window (lib/auditOffer.ts)
      closes, the strip renders `paidOffer` below and the badge disappears. */
   introOffer: {
-    badge: `Free for audits requested before ${AUDIT_OFFER_COPY.deadlineLabel}`,
+    badge: `Free for audits requested by ${AUDIT_OFFER_COPY.deadlineLabel}`,
     heading: "Why this one is free",
-    body: "This is a new service and it will normally be paid work. We are running it free of charge for audits requested before 30 September, in exchange for a recommendation if the analysis turns out to be something you can use.",
+    body: `This is a new service and it will normally be paid work. We are running it free of charge for audits requested by ${AUDIT_OFFER_COPY.deadlineLabel}, in exchange for a recommendation if the analysis turns out to be something you can use.`,
     caveat: `This is a person reviewing your content, not the automated self-check. ${AUDIT_OFFER_COPY.capacity} If we are at capacity we will tell you when we can start rather than leave you waiting. If the findings are not useful, say so and we part on good terms: no recommendation, no invoice, no obligation either way.`,
   },
   /* Shown automatically once the introductory offer closes. No price here by

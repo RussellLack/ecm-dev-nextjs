@@ -58,7 +58,7 @@ export default function ContentAuditTiers({ pillar }: { pillar?: Pillar }) {
         </p>
         {offerOpen && (
           <p className="text-center text-sm mb-10 max-w-2xl mx-auto bg-ecm-lime/10 border border-ecm-lime/30 rounded-2xl px-5 py-2.5 text-heading">
-            Audits requested before {AUDIT_OFFER_COPY.deadlineLabel} are
+            Audits requested by {AUDIT_OFFER_COPY.deadlineLabel} are
             free, in exchange for a recommendation if the findings are
             useful. {AUDIT_OFFER_COPY.capacity} The prices below are what
             this becomes afterwards.

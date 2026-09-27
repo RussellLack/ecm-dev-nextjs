@@ -11,7 +11,7 @@
  * paid framing lands within an hour of the cutoff rather than on the stroke
  * of it.
  */
-export const AUDIT_OFFER_ENDS = Date.UTC(2026, 9, 1); // 00:00 UTC, 1 October 2026
+export const AUDIT_OFFER_ENDS = Date.UTC(2026, 10, 1); // 00:00 UTC, 1 November 2026 (extended from 1 October)
 
 export function isAuditOfferOpen(): boolean {
   return Date.now() < AUDIT_OFFER_ENDS;

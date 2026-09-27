@@ -120,7 +120,7 @@ export const CONTENT_AUDIT = {
  * (previously "five at a time" on the homepage, "the first five" on the
  * pillar pages). */
 export const AUDIT_OFFER_COPY = {
-  deadlineLabel: "30 September",
+  deadlineLabel: "31 October",
   capacity: "We take on five at a time.",
 } as const;
 
