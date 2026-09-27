@@ -12,7 +12,7 @@ Read directly from the repository (not the cached search index the brief warns a
 
 | # | Discrepancy found | Where | Status |
 |---|---|---|---|
-| D1 | Hero promised "no email gate on the result" but linked to `/assessments`, where three of four tools register an email first. Only `content-operations-maturity` is ungated (`UNGATED_SLUGS`). | `app/page.tsx` | **Fixed.** The hero names the one ungated tool and links straight to it. |
+| D1 | Hero promised "no email gate on the result" but linked to `/assessments`, where three of four tools register an email first. Only `content-operations-maturity` is ungated (now `UNGATED_ASSESSMENT_SLUGS` in `lib/offers.ts`). | `app/page.tsx` | **Fixed.** The hero names the one ungated tool and links straight to it. |
 | D2 | First step called "free assessment" (hero), "fixed scope, fixed price" diagnostic (How it works) and a free expert audit (promotion) on one page. | `app/page.tsx` | **Fixed.** Replaced by a "Your first project" section that shows free self-check, Content Audit Snapshot and ongoing work side by side, with you get / commitment / fee / boundary for each. |
 | D3 | The Operations card said "Starts with a governance assessment". No such offer exists. | `app/page.tsx` | **Fixed.** Cards now name only real starting points. |
 | D4 | "Diagnostic cost credits toward a managed package if you sign within the window." The window has never been defined (open item in `CONTENT-PILLARS-POSITIONING.md`). | `app/page.tsx` | **Removed pending decision** (see O2). The defined Snapshot to Full Estate Audit credit (30 days) is kept. |

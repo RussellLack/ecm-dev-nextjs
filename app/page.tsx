@@ -65,7 +65,7 @@ export async function generateMetadata(): Promise<Metadata> {
    three-pillar explanation moved into the starting-points section below.
    The supporting line names the one tool it describes, because "no email
    gate" is only true of the maturity assessment (the other tools register
-   an email first; see UNGATED_SLUGS in app/assessment/[slug]/page.tsx).
+   an email first; see UNGATED_ASSESSMENT_SLUGS in lib/offers.ts).
    See docs/COMMERCIAL-JOURNEY-2026-09-27.md. */
 const fallbackHero = {
   heading: "Content operations and AI readiness, without the hire.",

@@ -61,7 +61,7 @@ export default function FirstStepPanel({ pillar }: { pillar: Pillar }) {
               </div>
               <div>
                 <dt className="inline font-semibold text-heading">It is not: </dt>
-                <dd className="inline">a review of your actual content, a quotation or a guaranteed saving.</dd>
+                <dd className="inline">a review of your actual content, a quotation or a promise of savings.</dd>
               </div>
             </dl>
             <Link

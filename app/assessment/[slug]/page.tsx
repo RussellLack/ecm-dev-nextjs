@@ -2,18 +2,17 @@ import type { Metadata } from "next";
 import { getAssessment } from "@/lib/assessment/queries";
 import AssessmentShell from "@/components/assessment/AssessmentShell";
 import AssessmentGate from "@/components/assessment/AssessmentGate";
+import { UNGATED_ASSESSMENT_SLUGS } from "@/lib/offers";
 import { notFound } from "next/navigation";
 
 export const revalidate = 3600;
 
 /**
- * Sanity-authored assessments that skip the registration gate. Content
- * Infrastructure Maturity is the front door promised by every homepage CTA
- * ("no sign-up required" -- see AssessmentShell's own intro copy), so it
- * stays open; every other assessment (the four bespoke tools, and any future
- * Sanity-authored one not listed here) keeps the email gate by default.
+ * Sanity-authored assessments in UNGATED_ASSESSMENT_SLUGS (lib/offers.ts)
+ * skip the registration gate. Content Operations Maturity is the front door
+ * promised by every homepage CTA ("no email needed"), so it stays open;
+ * every other assessment keeps the email gate by default.
  */
-const UNGATED_SLUGS = new Set(["content-operations-maturity"]);
 
 export async function generateMetadata({
   params,
@@ -52,7 +51,7 @@ export default async function AssessmentPage({
     notFound();
   }
 
-  if (UNGATED_SLUGS.has(slug)) {
+  if (UNGATED_ASSESSMENT_SLUGS.has(slug)) {
     return <AssessmentShell assessment={assessment} />;
   }
 
