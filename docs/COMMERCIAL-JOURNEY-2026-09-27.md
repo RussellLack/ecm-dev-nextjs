@@ -20,7 +20,7 @@ Read directly from the repository (not the cached search index the brief warns a
 | D6 | Maturity tool: the homepage sticky bar said "Assess your content infrastructure · 10 min". The tool is named Content Operations Maturity Assessment and seeded at 5 minutes. | `app/page.tsx` | **Fixed.** |
 | D7 | Problem and solution pages showed a hard-coded "10 min" and "about ten minutes" whatever tool the CMS linked to. | `ProblemPage.tsx`, `SolutionPage.tsx` | **Fixed.** Duration comes from `toolDurationFor()`. It is hidden when the link isn't a known tool. |
 | D8 | Pillar pages reached the only priced offer after the full capability catalogue. Operations also put ten explainers before pricing. | `app/content-*/page.tsx` | **Fixed.** A first-step panel follows the symptoms. Operations explainers now sit after pricing. |
-| D9 | The Operations browser title still read "Content Services" (a stale Sanity `seo.metaTitle`). | `lib/pillarMetadata.ts` | **Fixed in code** via `forceTitle`. Also correct the Sanity field when convenient. |
+| D9 | The Operations browser title still read "Content Services" (a stale Sanity `seo.metaTitle`). | Sanity `service-services` | **Fixed in Sanity** (27 September): now "Content Operations & Governance Consulting \| ECM.DEV". The temporary code pin (`forceTitle`) has been removed. |
 | D10 | Contact form ignored the `?service=` context that pillar pages already sent. It had no "what happens next" copy, and a failed send gave no fallback route. | `ContactForm.tsx` | **Fixed.** See section 3. |
 | D11 | The mobile sticky CTA and the cookie banner were both fixed to the bottom on first visit. | `app/page.tsx` | **Fixed.** The sticky bar appears only once consent is answered. |
 | D12 | The ticker fallback said "A fixed-price build, then a monthly retained service". No fixed-price build offer is published. | `app/page.tsx` | **Fixed in fallback.** The ticker is Sanity-overridable, so check `homePage.tickerPhrases` in Studio for the same line. |
@@ -54,7 +54,6 @@ None of these appear in public copy until decided.
 | `ContactForm.tsx`, `/api/contact`, `public/__forms.html` | Reads `?offer=` and `?pillar=` against fixed lists, plus the older `?service=` / `?topic=` (length-capped). Shows the context as a visible, clearable "About:" line. Submits it as `enquiryContext`. Adds "What happens next" steps and a mailing-list disclaimer. Success is confirmed via `role=status`. On error, input is kept, `role=alert` is set and `rl@ecm.dev` is offered as a fallback. |
 | `MobileStickyCta.tsx` (new) | Homepage sticky bar, shown only after the cookie choice. |
 | `ProblemPage.tsx`, `SolutionPage.tsx`, `app/assessments/page.tsx` | Durations come from `lib/offers.ts`. |
-| `lib/pillarMetadata.ts` | `forceTitle` option (used for Operations). |
 
 **Route map:** no routes added, removed or renamed. `/contact?offer=<topic>&pillar=<pillar>#contact` is the new contextual enquiry pattern (`enquiryHref()`).
 
