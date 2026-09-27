@@ -532,21 +532,25 @@ export default async function HomePage() {
                   href={offer.ctaUrl}
                   className={`inline-flex items-center justify-center font-barlow font-semibold text-sm px-6 py-3 rounded-full transition-colors ${
                     offer.featured
-                      ? "bg-ecm-lime text-ecm-green hover:bg-ecm-lime-hover"
+                      ? "border-2 border-transparent bg-ecm-lime text-ecm-green hover:bg-ecm-lime-hover"
                       : "border-2 border-heading text-heading hover:bg-ecm-green hover:text-white"
                   }`}
                 >
                   {offer.ctaLabel}
                 </Link>
-                {offer.secondary && (
+                {/* Every card reserves the same secondary-link row, filled or
+                    not, so the three primary buttons sit on one line. */}
+                {offer.secondary ? (
                   <Link
                     href={offer.secondary.url}
-                    className={`mt-3 text-center text-xs underline ${
+                    className={`mt-3 text-center text-xs leading-4 underline ${
                       offer.featured ? "text-ecm-lime hover:text-ecm-lime-hover" : "text-ink hover:text-heading"
                     }`}
                   >
                     {offer.secondary.label}
                   </Link>
+                ) : (
+                  <span aria-hidden="true" className="mt-3 block h-4" />
                 )}
               </div>
             ))}

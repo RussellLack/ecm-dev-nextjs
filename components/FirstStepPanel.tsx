@@ -14,6 +14,11 @@ import {
    produces and what it commits them to before the detail. Everything it
    states is read from lib/offers.ts; it introduces no new terms. See
    docs/COMMERCIAL-JOURNEY-2026-09-27.md. */
+/* Both cards end with the primary button, then a row of secondary links
+   with the same reserved height (room for two wrapped lines), so the two
+   buttons stay level however many links sit under each. */
+const LINK_ROW = "mt-3 min-h-[2.75rem] flex flex-wrap content-start gap-x-4 gap-y-1 leading-5";
+
 export default function FirstStepPanel({ pillar }: { pillar: Pillar }) {
   const step = PILLAR_FIRST_STEP[pillar];
   const tool = TOOLS[step.tool];
@@ -70,6 +75,11 @@ export default function FirstStepPanel({ pillar }: { pillar: Pillar }) {
             >
               Start the free self-check
             </Link>
+            <div className={LINK_ROW}>
+              <Link href="/assessments" className="text-heading text-sm underline hover:opacity-80">
+                Or choose a different free tool
+              </Link>
+            </div>
           </div>
 
           {/* Expert Content Audit, Snapshot depth */}
@@ -100,13 +110,13 @@ export default function FirstStepPanel({ pillar }: { pillar: Pillar }) {
                 <dd className="inline">stop, act on it yourselves, or talk to us about the fix. Your choice.</dd>
               </div>
             </dl>
-            <div className="flex flex-wrap items-center gap-4">
-              <Link
-                href={enquiryHref("snapshot", pillar)}
-                className="inline-flex items-center justify-center bg-ecm-lime text-ecm-green font-barlow font-semibold text-sm px-6 py-3 rounded-full hover:bg-ecm-lime-hover transition-colors"
-              >
-                Discuss a {snap.name}
-              </Link>
+            <Link
+              href={enquiryHref("snapshot", pillar)}
+              className="self-start inline-flex items-center justify-center border-2 border-transparent bg-ecm-lime text-ecm-green font-barlow font-semibold text-sm px-6 py-3 rounded-full hover:bg-ecm-lime-hover transition-colors"
+            >
+              Discuss a {snap.name}
+            </Link>
+            <div className={LINK_ROW}>
               <Link
                 href={CONTENT_AUDIT.samplePath}
                 className="text-ecm-lime text-sm underline hover:text-ecm-lime-hover"
