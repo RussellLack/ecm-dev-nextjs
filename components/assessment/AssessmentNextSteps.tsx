@@ -9,6 +9,7 @@ import { getAssessmentsByPillar } from "@/lib/assessment/queries";
 import GuideIllustration from "@/components/guides/GuideIllustration";
 import CaseStudyIllustration from "@/components/case-study/CaseStudyIllustration";
 import PostIllustration from "@/components/post/PostIllustration";
+import AssessmentIllustration from "@/components/assessments/AssessmentIllustration";
 import { INDUSTRY_OPTIONS } from "@/sanity/schemas/taxonomyOptions";
 
 // Cards never show the real client name (anonymised by design), the
@@ -251,6 +252,7 @@ export default async function AssessmentNextSteps({
                 href={a.href}
                 title={a.title}
                 subtitle={a.subtitle}
+                fallback={<AssessmentIllustration slug={a.href} />}
               />
             ))}
           </Cluster>
