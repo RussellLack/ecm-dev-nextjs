@@ -174,7 +174,7 @@ Primary measures: qualified first-project enquiries per month, enquiry to scopin
 2. ~~Reorganise `/assessments` by commitment type.~~ Done (#96).
 3. ~~Add a compact, substantiated proof line under the hero.~~ Done (#98).
 4. ~~Instrument the three journey events.~~ Done in code (#99); GTM configuration outstanding (section 9).
-5. ~~Point each problem page at a single named tool.~~ Done in Sanity for all problem and solution pages (section 0). Review two calls: "Our CMS isn't creating value" uses the CMS estimator (replatform framing; the maturity assessment may suit an improve-what-you-have buyer better), and "Cold outbound isn't converting" is a leftover from the older outbound positioning (consider retiring it).
+5. ~~Point each problem page at a single named tool.~~ Done in Sanity for all problem and solution pages (section 0). Review two calls: "Our CMS isn't creating value" uses the CMS estimator (replatform framing; the maturity assessment may suit an improve-what-you-have buyer better), and "Cold outbound isn't converting" was a leftover from the older outbound positioning: retired on 27 September (unpublished in Sanity, `/problems/outbound-conversion` permanently redirected to `/problems`).
 6. Once ECM.DEV Intel has around ten published items (it had none on 27 September), switch the field-note slot to show the latest Intel signals.
 7. The CMS estimator's methodology notes still use "guarantees" in a negated sense (`app/assessment/cms-implementation/methodology/page.tsx`, `components/assessment/cms-implementation/Result.tsx`). Review against the language rule.
 

@@ -50,6 +50,15 @@ const nextConfig = {
                       permanent: false,
             },
             {
+                      // "Cold outbound isn't converting" belonged to the retired
+                      // outbound-stack positioning (see /build above). Page
+                      // unpublished in Sanity 27 September 2026; send any
+                      // inbound links to the current problems hub.
+                      source: "/problems/outbound-conversion",
+                      destination: "/problems",
+                      permanent: true,
+            },
+            {
                       source: "/case-study/crm-activation-program",
                       destination: "/case-study/advertising-sales-platform",
                       permanent: true,
