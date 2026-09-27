@@ -122,17 +122,70 @@ Every event also carries `source_page` (the path). Values come from fixed
 lists (`JOURNEY_OFFER`, the pillar keys); nothing the visitor typed and no
 assessment answers are ever sent.
 
-**GTM wiring (to do in the container UI, not yet configured):**
+### GTM and GA4 setup (to do in the container UI; not yet configured)
 
-1. Data Layer Variables: `offer`, `pillar`, `source_page`.
-2. Trigger: Custom Event, event name matches RegEx
-   `^(journey_selected|offer_viewed|enquiry_submitted)$`.
-3. Tag: GA4 Event, event name `{{Event}}`, parameters `offer`, `pillar`,
-   `source_page`; fire on the trigger above. Respect the existing consent
-   settings (same as the lead-event tag).
-4. In GA4, register `offer` and `pillar` as event-scoped custom dimensions.
-5. Verify in GTM Preview: scroll to "Your first project" on `/` and check
-   one `offer_viewed` with `offer = first-project`.
+About 10 minutes. Mirrors the existing "GA4 - assessment funnel events"
+setup: same GA4 property (`G-33HFQC8STP`), same consent handling. The events
+only fire on the live site once the deploy containing #99 is live.
+
+**1. Variables** (Variables → User-Defined Variables → New → Data Layer Variable, Version 2)
+
+| Variable name | Data Layer Variable Name |
+| --- | --- |
+| `DLV - offer` | `offer` |
+| `DLV - pillar` | `pillar` |
+| `DLV - source_page` | `source_page` |
+
+The lead events already send `source_page`; reuse an existing variable for it
+if one exists. Confirm the built-in **Event** variable is enabled
+(Variables → Built-In Variables → Configure).
+
+**2. Trigger** (Triggers → New → Custom Event)
+
+- Name: `CE - commercial journey`
+- Event name: `^(journey_selected|offer_viewed|enquiry_submitted)$`
+- Tick "Use regex matching"; fires on All Custom Events.
+
+**3. Tag** (Tags → New → Google Analytics: GA4 Event)
+
+- Name: `GA4 - commercial journey events`
+- Measurement ID: `G-33HFQC8STP`, or the existing Google tag, matching the
+  lead-event tag.
+- Event Name: `{{Event}}`
+- Event Parameters: `offer` = `{{DLV - offer}}`, `pillar` = `{{DLV - pillar}}`,
+  `source_page` = `{{DLV - source_page}}`
+- Consent Settings: as the lead-event tag (GA4 tags have built-in consent
+  checks; the site already passes the cookie choice to GTM).
+- Triggering: `CE - commercial journey`
+
+**4. Test in Preview** on `https://ecm.dev`, after accepting cookies:
+
+1. Scroll to "Your first project" on `/`: one `offer_viewed`, `offer = first-project`; scrolling past again does not fire it twice.
+2. Click "Localisation costs keep growing": `journey_selected`, `pillar = localization`.
+3. On that pillar page, scroll to "Where to start": `offer_viewed`, `offer = snapshot`, `pillar = localization`.
+4. Optional, and doubles as the real-form test: send an enquiry from `/contact?offer=snapshot&pillar=services`: `enquiry_submitted`, `offer = snapshot`, `pillar = services`.
+
+Each time, "GA4 - commercial journey events" should appear under Tags Fired
+with all three parameters filled.
+
+**5. Publish** as `Version 10: commercial journey events`.
+
+**6. GA4 custom dimensions** (Admin → Data display → Custom definitions →
+Create custom dimension, scope Event): `Offer` from `offer`, `Pillar` from
+`pillar`. Add `source_page` only if not already registered. Create them the
+day you publish: custom dimensions do not backfill.
+
+**7. Verify** in GA4 DebugView with Preview open; standard reports take 24 to
+48 hours.
+
+**Do not mark `enquiry_submitted` as a key event.** The same submissions
+already fire `close_convert_lead`, which is the conversion; marking both would
+double-count every enquiry. Use `enquiry_submitted` for its offer and pillar
+breakdown.
+
+First report worth building: a free-form exploration with Event name and
+Offer as rows, filtered to `offer_viewed` and `enquiry_submitted`, which shows
+per offer how many saw it and how many then enquired.
 
 Suggested reading of the data, with low traffic in mind: compare
 `offer_viewed` to `enquiry_submitted` per offer and pillar over a month, and
