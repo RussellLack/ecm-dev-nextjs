@@ -11,8 +11,8 @@ import { CONTENT_AUDIT, enquiryHref } from "@/lib/offers";
    edited to resemble a real client.
 
    Scope mirrors the published Snapshot exactly (lib/offers.ts and the
-   audit-service definition): a sample of up to 100 items or 10% of the
-   estate, whichever is smaller; one language; structural and coverage
+   audit-service definition): 10% of the estate, at least 50 and at most
+   100 items (CONTENT_AUDIT.itemDefinition); one language; structural and coverage
    findings; top five findings; one or two shown failing in an AI answer;
    a recorded readout. Finding categories are the five the homepage audit
    strip already publishes. Language guardrail applies: no certification,
@@ -35,7 +35,7 @@ const cover = {
   client: "Calder & Finch Instruments Ltd",
   descriptor: "A fictional UK manufacturer of industrial measurement equipment",
   estate: "About 1,400 published pages on one English-language site",
-  sample: "100 items (the smaller of 100 items or 10% of the estate)",
+  sample: "100 items (10% of the estate is 140, capped at 100)",
   language: "English only",
 };
 
