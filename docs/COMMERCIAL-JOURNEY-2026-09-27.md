@@ -1,12 +1,12 @@
 # Commercial Journey: First Release
 
-Status: implemented and merged to `main` on 27 September 2026 across PRs #93 to #99
+Status: implemented and merged to `main` on 27 September 2026 across PRs #93 to #101
 (see section 0 for the release log and section 9 for what is left).
 Source brief: *ECM.dev Commercial Architecture Review, September 2026*.
 ## 0. Release log, 27 September 2026
 
 All PRs were merged into `main` (auto-deployed by Netlify) only after every check
-passed, including the Playwright e2e suite. #99 is the last; confirm it merged.
+passed, including the Playwright e2e suite. #101 is the last; confirm it merged.
 
 | PR | What it shipped |
 |---|---|
@@ -17,6 +17,8 @@ passed, including the Playwright e2e suite. #99 is the last; confirm it merged.
 | RussellLack/ecm-dev-nextjs#97 | Field notes moved into Sanity (`homePage.fieldNotes`), with a code fallback. |
 | RussellLack/ecm-dev-nextjs#98 | "Selected work" proof line under the hero: four documented case studies, count from Sanity. |
 | RussellLack/ecm-dev-nextjs#99 | Commercial journey analytics events; rewritten homepage "Why not hire, or share it out?" section; this document update. |
+| RussellLack/ecm-dev-nextjs#100 | Records the problem and solution page tool mapping (a Sanity change, below); retires "Cold outbound isn't converting" with a permanent redirect from `/problems/outbound-conversion` to `/problems`. |
+| RussellLack/ecm-dev-nextjs#101 | Cover illustrations for self-assessment cards (previously a bare "ECM" placeholder), on pillar pages, results pages and related-content cards. |
 
 **Sanity changes made directly (project `0dep7ult`, dataset `production`, all published):**
 
@@ -86,6 +88,8 @@ None of these appear in public copy until decided.
 | Proof line (#98) | "Selected work" under the hero: Nordic retail procurement (the one delivered through ECM.DEV) first, then maritime platform, paints and coatings product finding, seafood localisation. Clients by type, attribution note, "See all N case studies" from the existing homepage query. |
 | "Why" section (#99) | Heading "Why not hire, or share it out?"; body shows the cost of each option; ends on "a system your own team can run" and "evidence you could put in front of your board". |
 | Analytics (#99) | See section 6. |
+| Assessment illustrations (#101) | New `components/assessments/AssessmentIllustration.tsx`: one line motif per tool in the house illustration style (280x144, ECM green, lime accent), showing what each tool does: six-axis radar (maturity), a flow with a blocked step (process), three ranked cards (lead magnet), stacked cost layers with hidden ones dashed (localisation), a multi-year cost band (CMS); a questionnaire motif for any new assessment. Used as the card cover in `PillarClusters`, `AssessmentNextSteps` and `MixedRelated`. |
+| Retired route (#100) | `/problems/outbound-conversion` redirects permanently to `/problems`; the Sanity page is unpublished once that deploy is live (draft kept). |
 | Language rule | "Guaranteed saving" reworded to "promise of savings" in the hub and `FirstStepPanel`. |
 
 **Route map:** no routes added, removed or renamed. `/contact?offer=<topic>&pillar=<pillar>#contact` is the new contextual enquiry pattern (`enquiryHref()`).
@@ -165,6 +169,8 @@ Primary measures: qualified first-project enquiries per month, enquiry to scopin
 | CTA alignment | Button tops and heights identical across cards at 768, 1024, 1280 and 1600px. |
 | Field notes | "Another note" changes the note; `aria-live` switches to `polite` only after the first click. Fallback renders when Sanity is unreachable; the production GROQ projection returns all nine notes. |
 | Proof line | All four case-study slugs and the count (72) confirmed against production Sanity. |
+| Assessment illustrations | All six motifs rendered side by side; the `/content-operations` "Self-assessments" cluster shows both cards with covers, no page errors. |
+| Production vs preview Lighthouse | Production scores 100 on Best Practices; every preview scores 83. Confirms the preview figure is environmental. |
 | Analytics | `dataLayer` read in Chromium: `offer_viewed` once per panel and not on load; `journey_selected` carries the pillar; `enquiry_submitted` carries `snapshot` / `services` from the URL and `general` / `null` for junk params. |
 | Not verified here | Real form submission to Netlify (needs deploy and CSRF secret), GA4 receipt (GTM not yet configured), dark mode on the new sections, keyboard focus order on the new sections. The deploy previews could not be opened from this environment. |
 
@@ -186,6 +192,6 @@ Primary measures: qualified first-project enquiries per month, enquiry to scopin
 - Configure GTM: Data Layer Variables `offer`, `pillar`, `source_page`; one Custom Event trigger for `^(journey_selected|offer_viewed|enquiry_submitted)$`; one GA4 event tag; register `offer` and `pillar` as GA4 custom dimensions. Steps in `ANALYTICS.md`.
 - Send one real contact enquiry via `/contact?offer=snapshot&pillar=services` and check that `enquiryContext` appears in the Netlify form notification.
 - Read `/content-audit/sample` for realism against real Snapshot delivery.
-- Check the new sections in dark mode.
+- Check the new sections in dark mode, including the assessment card illustrations, which use white fills like the existing case-study illustrations.
 
 **Commercial decisions still open (section 2):** O1 free audit depth; O2 any credit toward ongoing work; O3 trial projects; O4 pillar-specific Snapshot framing; O6 contact response time; O7 managed package pricing. O5 and O8 are closed.
