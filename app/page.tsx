@@ -283,10 +283,13 @@ const journeySteps = [
    opener: by this point the visitor has seen the pillars, the audit, the
    offer, and the evidence. */
 const whyEcmDev = {
-  heading: "Why ecm.dev?",
-  body: "There are really only two ways most businesses solve this today: hire for it, or hand tasks to whoever's available and hope the pieces add up to something coherent. Both have a real cost. A hire means recruiting, management time, and months of ramp-up before you see the judgement you're paying for. Handing out tasks means no one owns the outcome, and whatever gets built has to be rebuilt the next time someone new picks it up.",
+  heading: "Why not hire, or share it out?",
+  paragraphs: [
+    "When content starts to matter, most businesses do one of two things. They hire someone, or they spread the work across whoever has time.",
+    "Hiring is the tidier answer on paper. In practice it means recruiting, managing, and several months before the new person knows the organisation well enough to exercise the judgement you hired them for. Sharing the work out is quicker to start, but nobody owns the result, so each new person rebuilds what the last one left behind.",
+  ],
   closingLine:
-    "ECM.DEV is neither: a system that runs without needing to staff for it, the same judgement retained month to month rather than re-hired each time, and an AI-readiness score you could defend to your own board.",
+    "ECM.DEV sits between the two. The judgement stays with you from one month to the next instead of being hired again, and what gets built is a system your own team can run. When the question is AI readiness, the answer comes with evidence you could put in front of your board.",
 };
 
 const fallbackBlogPosts = [
@@ -851,9 +854,11 @@ export default async function HomePage() {
           <h2 className="text-heading font-barlow font-bold text-3xl lg:text-4xl mb-6">
             {whyEcmDev.heading}
           </h2>
-          <p className="text-ink text-base leading-relaxed mb-6">
-            {whyEcmDev.body}
-          </p>
+          {whyEcmDev.paragraphs.map((para) => (
+            <p key={para.slice(0, 24)} className="text-ink text-base leading-relaxed mb-6">
+              {para}
+            </p>
+          ))}
           <p className="text-heading font-barlow font-semibold text-base leading-relaxed">
             {whyEcmDev.closingLine}
           </p>
