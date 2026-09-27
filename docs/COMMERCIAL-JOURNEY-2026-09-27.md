@@ -173,7 +173,7 @@ Primary measures: qualified first-project enquiries per month, enquiry to scopin
 | Dark mode (27 September, #101) | All new sections reviewed with `data-theme="dark"`: proof line, starting points, first project, field note, "Why", pillar first-step panel, audit tiers and item disclosure, sample report, `/assessments`, contact form. Two fixes: the sample report's amber notice and badge (a bright cream block) and the assessment illustrations (dark-green lines near-invisible, white fills glaring) now use CSS variables (`--notice-*`, `--illus-*` in `app/globals.css`) with dark values; light mode unchanged. The older guide and case-study illustrations were not changed and share the low-contrast issue in dark mode. |
 | Production vs preview Lighthouse | Production scores 100 on Best Practices; every preview scores 83. Confirms the preview figure is environmental. |
 | Analytics | `dataLayer` read in Chromium: `offer_viewed` once per panel and not on load; `journey_selected` carries the pillar; `enquiry_submitted` carries `snapshot` / `services` from the URL and `general` / `null` for junk params. |
-| Not verified here | Real form submission to Netlify (needs deploy and CSRF secret), GA4 receipt (GTM not yet configured), dark mode on the new sections, keyboard focus order on the new sections. The deploy previews could not be opened from this environment. |
+| Not verified here | Real form submission to Netlify (needs deploy and CSRF secret), GA4 receipt (GTM not yet configured), keyboard focus order on the new sections. The deploy previews could not be opened from this environment. |
 
 ## 8. Suggested next steps
 
