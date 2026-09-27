@@ -17,12 +17,18 @@ import React from "react";
  *
  * Style invariants, shared with GuideIllustration and CaseStudyIllustration:
  *   viewBox 0 0 280 144, primary #316148 (ECM green), accent #AAF870 (lime),
- *   strokes 1.0 to 1.5, low-alpha fills.
+ *   strokes 1.0 to 1.5, low-alpha fills. Line, paper and fill colours are CSS
+ *   variables, lightened for dark mode.
  */
 
-const G = "#316148";
+// Colours come from CSS variables (app/globals.css) so the motifs stay
+// legible in dark mode; the fallbacks are the light-mode values.
+const G = "var(--illus-line, #316148)";
+const PAPER = "var(--illus-paper, #ffffff)";
+// Text drawn on a lime shape stays dark green in both themes.
+const ON_LIME = "#316148";
 const L = "#AAF870";
-const FILL_G = "rgba(49,97,72,0.06)";
+const FILL_G = "var(--illus-fill, rgba(49,97,72,0.06))";
 const FILL_L = "rgba(170,248,112,0.14)";
 
 function Frame({ children }: { children: React.ReactNode }) {
@@ -58,7 +64,7 @@ function MaturityMotif() {
       <polygon points={shape} stroke={G} strokeWidth="1.5" fill={FILL_L} />
       {scores.map((s, i) => {
         const [x, y] = point(i, 52 * s);
-        return <circle key={i} cx={x} cy={y} r="3" fill={i === 3 ? L : "white"} stroke={G} strokeWidth="1.2" />;
+        return <circle key={i} cx={x} cy={y} r="3" fill={i === 3 ? L : PAPER} stroke={G} strokeWidth="1.2" />;
       })}
     </Frame>
   );
@@ -99,7 +105,7 @@ function ProcessMotif() {
       ))}
       {/* the blocker, and the owner question mark above it */}
       <circle cx={170} cy={36} r="10" fill={L} stroke={G} strokeWidth="1.2" />
-      <text x={170} y={40} textAnchor="middle" fontSize="12" fontFamily="sans-serif" fill={G}>
+      <text x={170} y={40} textAnchor="middle" fontSize="12" fontFamily="sans-serif" fill={ON_LIME}>
         ?
       </text>
       <line x1={170} y1={46} x2={170} y2={56} stroke={G} strokeWidth="1" strokeDasharray="2 2" />
@@ -131,8 +137,8 @@ function LeadMagnetMotif() {
             strokeWidth="1.2"
             fill={i === 0 ? FILL_L : FILL_G}
           />
-          <circle cx={c.x + 14} cy={c.y + 14} r="7" fill={i === 0 ? L : "white"} stroke={G} strokeWidth="1.1" />
-          <text x={c.x + 14} y={c.y + 17.5} textAnchor="middle" fontSize="9" fontFamily="sans-serif" fill={G}>
+          <circle cx={c.x + 14} cy={c.y + 14} r="7" fill={i === 0 ? L : PAPER} stroke={G} strokeWidth="1.1" />
+          <text x={c.x + 14} y={c.y + 17.5} textAnchor="middle" fontSize="9" fontFamily="sans-serif" fill={i === 0 ? ON_LIME : G}>
             {c.rank}
           </text>
           <line x1={c.x + 10} y1={c.y + 32} x2={c.x + 46} y2={c.y + 32} stroke={G} strokeWidth="1" strokeOpacity="0.5" />
@@ -168,13 +174,13 @@ function LocalisationMotif() {
           stroke={G}
           strokeWidth="1.1"
           strokeDasharray={layer.hidden ? "4 3" : undefined}
-          fill={i === 2 ? FILL_L : layer.hidden ? "white" : FILL_G}
+          fill={i === 2 ? FILL_L : layer.hidden ? PAPER : FILL_G}
         />
       ))}
       {/* language tags on the left */}
       {["EN", "DE", "FR"].map((t, i) => (
         <g key={t}>
-          <rect x={16} y={30 + i * 26} width="26" height="16" rx="3" stroke={G} strokeWidth="1" fill="white" />
+          <rect x={16} y={30 + i * 26} width="26" height="16" rx="3" stroke={G} strokeWidth="1" fill={PAPER} />
           <text x={29} y={41 + i * 26} textAnchor="middle" fontSize="8" fontFamily="sans-serif" fill={G}>
             {t}
           </text>
@@ -214,7 +220,7 @@ function CmsMotif() {
               stroke={G}
               strokeWidth="1"
               strokeDasharray="3 2"
-              fill={i === 0 ? FILL_L : "white"}
+              fill={i === 0 ? FILL_L : PAPER}
             />
           </g>
         );
@@ -232,7 +238,7 @@ function QuestionnaireMotif() {
       <rect x={80} y={18} width="120" height="108" rx="6" stroke={G} strokeWidth="1.2" fill={FILL_G} />
       {[0, 1, 2, 3].map((i) => (
         <g key={i}>
-          <circle cx={98} cy={42 + i * 22} r="5" stroke={G} strokeWidth="1.1" fill={i === 1 ? L : "white"} />
+          <circle cx={98} cy={42 + i * 22} r="5" stroke={G} strokeWidth="1.1" fill={i === 1 ? L : PAPER} />
           <line x1={110} y1={42 + i * 22} x2={i % 2 ? 170 : 182} y2={42 + i * 22} stroke={G} strokeWidth="1" strokeOpacity="0.5" />
         </g>
       ))}

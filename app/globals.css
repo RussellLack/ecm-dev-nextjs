@@ -34,6 +34,13 @@
   --color-heading-dark: var(--ecm-green-dark);
   --color-ink: var(--ecm-gray-dark);
   --color-ink-muted: var(--ecm-gray);
+  /* Synthetic-content notice (sample report) and line illustrations. */
+  --notice-bg: #fffbeb;
+  --notice-border: #fcd34d;
+  --notice-ink: #451a03;
+  --illus-line: #316148;
+  --illus-paper: #ffffff;
+  --illus-fill: rgba(49, 97, 72, 0.06);
 }
 
 /* Explicit dark choice (data-theme set by the theme toggle / init script).
@@ -48,6 +55,12 @@
   --color-heading-dark: var(--ecm-lime-hover);
   --color-ink: #d4d4d8;
   --color-ink-muted: #9a9aa0;
+  --notice-bg: #2a2412;
+  --notice-border: #8a6d1f;
+  --notice-ink: #f5e6b8;
+  --illus-line: #8cc49c;
+  --illus-paper: #17251c;
+  --illus-fill: rgba(170, 248, 112, 0.06);
 }
 
 html {

@@ -170,6 +170,7 @@ Primary measures: qualified first-project enquiries per month, enquiry to scopin
 | Field notes | "Another note" changes the note; `aria-live` switches to `polite` only after the first click. Fallback renders when Sanity is unreachable; the production GROQ projection returns all nine notes. |
 | Proof line | All four case-study slugs and the count (72) confirmed against production Sanity. |
 | Assessment illustrations | All six motifs rendered side by side; the `/content-operations` "Self-assessments" cluster shows both cards with covers, no page errors. |
+| Dark mode (27 September, #101) | All new sections reviewed with `data-theme="dark"`: proof line, starting points, first project, field note, "Why", pillar first-step panel, audit tiers and item disclosure, sample report, `/assessments`, contact form. Two fixes: the sample report's amber notice and badge (a bright cream block) and the assessment illustrations (dark-green lines near-invisible, white fills glaring) now use CSS variables (`--notice-*`, `--illus-*` in `app/globals.css`) with dark values; light mode unchanged. The older guide and case-study illustrations were not changed and share the low-contrast issue in dark mode. |
 | Production vs preview Lighthouse | Production scores 100 on Best Practices; every preview scores 83. Confirms the preview figure is environmental. |
 | Analytics | `dataLayer` read in Chromium: `offer_viewed` once per panel and not on load; `journey_selected` carries the pillar; `enquiry_submitted` carries `snapshot` / `services` from the URL and `general` / `null` for junk params. |
 | Not verified here | Real form submission to Netlify (needs deploy and CSRF secret), GA4 receipt (GTM not yet configured), dark mode on the new sections, keyboard focus order on the new sections. The deploy previews could not be opened from this environment. |
@@ -192,6 +193,5 @@ Primary measures: qualified first-project enquiries per month, enquiry to scopin
 - Configure GTM: Data Layer Variables `offer`, `pillar`, `source_page`; one Custom Event trigger for `^(journey_selected|offer_viewed|enquiry_submitted)$`; one GA4 event tag; register `offer` and `pillar` as GA4 custom dimensions. Steps in `ANALYTICS.md`.
 - Send one real contact enquiry via `/contact?offer=snapshot&pillar=services` and check that `enquiryContext` appears in the Netlify form notification.
 - Read `/content-audit/sample` for realism against real Snapshot delivery.
-- Check the new sections in dark mode, including the assessment card illustrations, which use white fills like the existing case-study illustrations.
 
 **Commercial decisions still open (section 2):** O1 free audit depth; O2 any credit toward ongoing work; O3 trial projects; O4 pillar-specific Snapshot framing; O6 contact response time; O7 managed package pricing. O5 and O8 are closed.
