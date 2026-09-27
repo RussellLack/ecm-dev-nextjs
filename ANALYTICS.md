@@ -106,7 +106,39 @@ This is a **consent bridge only** — it does **NOT** load GTM. It:
 - The active GA4 measurement ID (`G-33HFQC8STP`) is wired through the GTM
   container — **do not** add a separate hardcoded GA4 tag outside of GTM.
 
-## GA4 Dashboard
+## Commercial Journey Events (September 2026)
+
+Pushed to `window.dataLayer` by `pushJourneyEvent()` in `lib/analytics.ts`.
+Like the lead events, they only reach GA4 once GTM is configured and consent
+allows it; the push itself is harmless without either.
+
+| Event | Fires when | `offer` | `pillar` |
+| --- | --- | --- | --- |
+| `journey_selected` | A homepage "What is getting in your way?" card is clicked (`TrackedLink`) | `null` | `services` / `technology` / `localization` |
+| `offer_viewed` | An offer panel first scrolls into view, once per page view (`OfferViewTracker`) | `first-project` (homepage), `snapshot` (pillar first-step panel), `content-audit-tiers` (pillar pages, `/assessments`), `snapshot-sample` (`/content-audit/sample`) | the pillar page's key, else `null` |
+| `enquiry_submitted` | Contact form or audit-request form sent successfully | contact: the `?offer=` value if it is a known topic, else `general`; audit form: `audit-request` | contact: the `?pillar=` value if known, else `null` |
+
+Every event also carries `source_page` (the path). Values come from fixed
+lists (`JOURNEY_OFFER`, the pillar keys); nothing the visitor typed and no
+assessment answers are ever sent.
+
+**GTM wiring (to do in the container UI, not yet configured):**
+
+1. Data Layer Variables: `offer`, `pillar`, `source_page`.
+2. Trigger: Custom Event, event name matches RegEx
+   `^(journey_selected|offer_viewed|enquiry_submitted)$`.
+3. Tag: GA4 Event, event name `{{Event}}`, parameters `offer`, `pillar`,
+   `source_page`; fire on the trigger above. Respect the existing consent
+   settings (same as the lead-event tag).
+4. In GA4, register `offer` and `pillar` as event-scoped custom dimensions.
+5. Verify in GTM Preview: scroll to "Your first project" on `/` and check
+   one `offer_viewed` with `offer = first-project`.
+
+Suggested reading of the data, with low traffic in mind: compare
+`offer_viewed` to `enquiry_submitted` per offer and pillar over a month, and
+review the enquiries themselves before drawing conclusions from small counts.
+
+
 
 - **Collection:** ECM.dev Performance 2026 (published, best-practice 2026 setup)
 - The "24frames Performance Dashboard" collection may still appear in the left

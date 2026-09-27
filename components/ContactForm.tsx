@@ -2,7 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { useCsrf } from "@/lib/useCsrf";
-import { pushLeadEvent, referringToolName, LEAD_TYPE } from "@/lib/analytics";
+import {
+  pushLeadEvent,
+  pushJourneyEvent,
+  referringToolName,
+  LEAD_TYPE,
+  JOURNEY_OFFER,
+  type JourneyOffer,
+} from "@/lib/analytics";
 import {
   ENQUIRY_TOPICS,
   PILLAR_LABEL,
@@ -66,6 +73,18 @@ export default function ContactForm() {
       pushLeadEvent("close_convert_lead", {
         tool_name: referringToolName(),
         lead_type: LEAD_TYPE.bookedCall,
+      });
+      // Commercial journey: which offer and pillar the enquiry came from,
+      // read from the same fixed lists as the "About:" line. Never the
+      // visitor's message or details.
+      const params = new URLSearchParams(window.location.search);
+      const offerParam = params.get("offer");
+      const pillarParam = params.get("pillar");
+      pushJourneyEvent("enquiry_submitted", {
+        offer: isEnquiryTopic(offerParam)
+          ? (offerParam as JourneyOffer)
+          : JOURNEY_OFFER.general,
+        pillar: isPillar(pillarParam) ? pillarParam : null,
       });
       setFormData({ firstName: "", lastName: "", email: "", message: "" });
     } catch {

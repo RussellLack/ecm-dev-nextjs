@@ -101,7 +101,7 @@ One complete journey, available from every pillar:
 
 Deliberately left out of this release: new offers, pricing changes, a sample-output page, a pilot page, restructuring the assessments hub by intent, new analytics events and the promotion's end state (it switches automatically).
 
-## 6. Measurement definitions (proposed, not yet instrumented)
+## 6. Measurement definitions (instrumented 27 September; GTM tag still to configure, see ANALYTICS.md)
 
 The existing `close_convert_lead` event already fires on contact and audit submissions. Proposed additions, keeping the vocabulary small:
 

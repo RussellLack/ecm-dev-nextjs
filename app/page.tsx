@@ -11,6 +11,9 @@ import { urlFor } from "@/lib/sanity";
 import { isAuditOfferOpen } from "@/lib/auditOffer";
 import MobileStickyCta from "@/components/MobileStickyCta";
 import FieldNote from "@/components/FieldNote";
+import TrackedLink from "@/components/analytics/TrackedLink";
+import OfferViewTracker from "@/components/analytics/OfferViewTracker";
+import { JOURNEY_OFFER } from "@/lib/analytics";
 import { resolveFieldNotes } from "@/lib/fieldNotes";
 import {
   AUDIT_OFFER_COPY,
@@ -116,6 +119,7 @@ const pillars = [
   {
     title: "Publishing takes too long.",
     pillar: "Content Operations",
+    pillarKey: "services" as const,
     href: "/content-operations",
     blurb:
       "Find where approvals, handoffs and ownership slow work down, then give content an owner and a workflow that holds.",
@@ -124,6 +128,7 @@ const pillars = [
   {
     title: "Your CMS is getting in the way.",
     pillar: "Content Technology",
+    pillarKey: "technology" as const,
     href: "/content-technology",
     blurb:
       "Understand which problems come from the platform and which come from how it is set up, before anyone mentions a migration.",
@@ -132,6 +137,7 @@ const pillars = [
   {
     title: "Localisation costs keep growing.",
     pillar: "Content Localisation",
+    pillarKey: "localization" as const,
     href: "/content-localization",
     blurb:
       "Identify the source-content and workflow issues creating avoidable effort in every new language.",
@@ -471,9 +477,11 @@ export default async function HomePage() {
           )}
           <div className="grid md:grid-cols-3 gap-6">
             {pillars.map((pillar) => (
-              <Link
+              <TrackedLink
                 key={pillar.href}
                 href={pillar.href}
+                event="journey_selected"
+                params={{ pillar: pillar.pillarKey }}
                 className="group bg-ecm-green rounded-xl p-6 sm:p-8 border border-ecm-lime/20 flex flex-col hover:border-ecm-lime/50 transition-colors"
               >
                 <p className="text-ecm-lime/70 font-barlow font-semibold text-xs uppercase tracking-wide mb-2">
@@ -491,7 +499,7 @@ export default async function HomePage() {
                 <span className="mt-4 inline-flex items-center gap-1 text-ecm-lime font-barlow font-semibold text-sm group-hover:gap-2 transition-all">
                   See where to start <span aria-hidden="true">&rarr;</span>
                 </span>
-              </Link>
+              </TrackedLink>
             ))}
           </div>
           {/* AI readiness is a route across all three pillars, not a fourth
@@ -531,6 +539,7 @@ export default async function HomePage() {
           <h2 className="text-heading font-barlow font-bold text-3xl lg:text-4xl text-center mb-4">
             Your first project.
           </h2>
+          <OfferViewTracker offer={JOURNEY_OFFER.firstProject} />
           <p className="text-ink text-center text-base mb-12 max-w-2xl mx-auto">
             Three levels of commitment, the same for every pillar. Each one is
             useful on its own, and none of them commits you to the next.
