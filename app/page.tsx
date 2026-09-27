@@ -11,6 +11,7 @@ import { urlFor } from "@/lib/sanity";
 import { isAuditOfferOpen } from "@/lib/auditOffer";
 import MobileStickyCta from "@/components/MobileStickyCta";
 import FieldNote from "@/components/FieldNote";
+import { resolveFieldNotes } from "@/lib/fieldNotes";
 import {
   AUDIT_OFFER_COPY,
   CONTENT_AUDIT,
@@ -758,7 +759,7 @@ export default async function HomePage() {
       </section>
 
       {/* ─── FIELD NOTE (replaced the scrolling ticker) ─── */}
-      <FieldNote />
+      <FieldNote notes={resolveFieldNotes(homePage?.fieldNotes)} />
 
       {/* Wave divider (green → white) bridging the field note into "Why
           ecm.dev" below. Rendered in normal flow, like the field note's own

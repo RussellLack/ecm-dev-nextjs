@@ -8,8 +8,9 @@
  * restrained wit aimed at institutions, never at the people working around
  * them). No invented statistics, clients or quotes. No em or en dashes.
  *
- * Code-owned rather than Sanity-sourced for now, like the other homepage
- * positioning copy: see docs/COMMERCIAL-JOURNEY-2026-09-27.md.
+ * Editor-managed in Sanity (homePage.fieldNotes). This list is the
+ * fallback when that field is empty or Sanity is unreachable, and the
+ * source the Sanity content was seeded from.
  */
 
 export type FieldNote = {
@@ -65,3 +66,18 @@ export const FIELD_NOTES: FieldNote[] = [
     linkLabel: "How a Snapshot finds this",
   },
 ];
+
+/** Notes from Sanity, keeping only complete, internal-link entries; falls
+ * back to FIELD_NOTES when none survive. */
+export function resolveFieldNotes(fromCms: unknown): FieldNote[] {
+  const valid = Array.isArray(fromCms)
+    ? (fromCms as Partial<FieldNote>[]).filter(
+        (n): n is FieldNote =>
+          !!n &&
+          typeof n.text === "string" && n.text.trim() !== "" &&
+          typeof n.href === "string" && n.href.startsWith("/") &&
+          typeof n.linkLabel === "string" && n.linkLabel.trim() !== ""
+      )
+    : [];
+  return valid.length ? valid : FIELD_NOTES;
+}

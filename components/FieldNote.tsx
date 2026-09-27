@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { FIELD_NOTES } from "@/lib/fieldNotes";
+import type { FieldNote as FieldNoteType } from "@/lib/fieldNotes";
 
 /**
  * One field note at a time, still and readable, replacing the scrolling
@@ -12,17 +12,17 @@ import { FIELD_NOTES } from "@/lib/fieldNotes";
  * one. "Another note" steps through the rest, and only then does the
  * region become aria-live, so screen readers announce requested changes.
  */
-export default function FieldNote() {
+export default function FieldNote({ notes }: { notes: FieldNoteType[] }) {
   const [index, setIndex] = useState(0);
   // Announce changes only once the visitor asks for one, not on the
   // random pick after mount.
   const [asked, setAsked] = useState(false);
 
   useEffect(() => {
-    setIndex(Math.floor(Math.random() * FIELD_NOTES.length));
+    setIndex(Math.floor(Math.random() * notes.length));
   }, []);
 
-  const note = FIELD_NOTES[index];
+  const note = notes[index];
 
   return (
     <section aria-labelledby="field-note-label" className="bg-ecm-green pb-16 sm:pb-20">
@@ -54,7 +54,7 @@ export default function FieldNote() {
               type="button"
               onClick={() => {
                 setAsked(true);
-                setIndex((i) => (i + 1) % FIELD_NOTES.length);
+                setIndex((i) => (i + 1) % notes.length);
               }}
               className="inline-flex items-center rounded-full border border-ecm-lime/40 px-4 py-2 text-ecm-lime font-barlow font-semibold text-sm hover:bg-ecm-lime hover:text-ecm-green transition-colors"
             >
