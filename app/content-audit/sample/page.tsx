@@ -218,9 +218,20 @@ const decisionOptions = [
   },
 ];
 
+/* Amber "synthetic content" notice colours, from CSS variables so the
+   banner and badge are not a bright block in dark mode. */
+const NOTICE_STYLE = {
+  backgroundColor: "var(--notice-bg)",
+  borderColor: "var(--notice-border)",
+  color: "var(--notice-ink)",
+} as const;
+
 function SampleLabel() {
   return (
-    <span className="inline-flex items-center rounded-full border border-amber-500/60 bg-amber-100 px-2.5 py-0.5 text-[11px] font-barlow font-semibold uppercase tracking-wide text-amber-900">
+    <span
+      className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-[11px] font-barlow font-semibold uppercase tracking-wide"
+      style={NOTICE_STYLE}
+    >
       Illustrative sample
     </span>
   );
@@ -272,8 +283,8 @@ export default function SampleSnapshotPage() {
       </section>
 
       {/* ─── SYNTHETIC NOTICE ─── */}
-      <div className="bg-amber-50 border-y border-amber-300">
-        <div className="max-w-4xl mx-auto px-6 py-4 text-sm text-amber-950 leading-relaxed">
+      <div className="border-y" style={NOTICE_STYLE}>
+        <div className="max-w-4xl mx-auto px-6 py-4 text-sm leading-relaxed">
           <strong className="font-semibold">Illustrative sample.</strong>{" "}
           Calder &amp; Finch Instruments is a fictional company. Every product,
           count, finding and AI answer on this page is synthetic, written to

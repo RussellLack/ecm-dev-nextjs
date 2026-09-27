@@ -9,6 +9,7 @@ import { getAssessmentsByPillar } from "@/lib/assessment/queries";
 import GuideIllustration from "@/components/guides/GuideIllustration";
 import CaseStudyIllustration from "@/components/case-study/CaseStudyIllustration";
 import PostIllustration from "@/components/post/PostIllustration";
+import AssessmentIllustration from "@/components/assessments/AssessmentIllustration";
 import { INDUSTRY_OPTIONS } from "@/sanity/schemas/taxonomyOptions";
 
 // Cards never show the real client name (anonymised by design), the
@@ -151,6 +152,7 @@ export default async function PillarClusters({ pillar }: { pillar: Pillar }) {
                 href={a.href}
                 title={a.title}
                 subtitle={a.subtitle}
+                fallback={<AssessmentIllustration slug={a.href} />}
               />
             ))}
             {dynamicAssessments.map((a: any) => (
@@ -159,6 +161,7 @@ export default async function PillarClusters({ pillar }: { pillar: Pillar }) {
                 href={`/assessment/${a.slug?.current}`}
                 title={a.title}
                 subtitle={a.subtitle || a.introText}
+                fallback={<AssessmentIllustration slug={a.slug?.current} />}
               />
             ))}
           </Cluster>

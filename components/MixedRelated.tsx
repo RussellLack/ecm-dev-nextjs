@@ -10,6 +10,7 @@ import { findOneIntelTopicForTags } from "@/lib/intel/queries";
 import GuideIllustration from "@/components/guides/GuideIllustration";
 import CaseStudyIllustration from "@/components/case-study/CaseStudyIllustration";
 import PostIllustration from "@/components/post/PostIllustration";
+import AssessmentIllustration from "@/components/assessments/AssessmentIllustration";
 import { INDUSTRY_OPTIONS } from "@/sanity/schemas/taxonomyOptions";
 
 // Cards never show the real client name (anonymised by design), the
@@ -141,6 +142,7 @@ export default async function MixedRelated({
       eyebrow: EYEBROW.assessment,
       title: assessment.title,
       blurb: assessment.subtitle || assessment.introText,
+      fallback: <AssessmentIllustration slug={assessment.slug.current} />,
     });
   }
 
