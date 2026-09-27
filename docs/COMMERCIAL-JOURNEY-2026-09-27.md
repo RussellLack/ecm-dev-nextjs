@@ -23,6 +23,7 @@ passed, including the Playwright e2e suite. #99 is the last; confirm it merged.
 - `service-services.seo.metaTitle` set to "Content Operations & Governance Consulting | ECM.DEV" (was "Content Services...").
 - Maturity assessment (`DoFxt9hc4cRN1iDurUoG3v`) intro text now says "content operations maturity" (was "content infrastructure maturity"). `estimatedMinutes` confirmed as 5.
 - `homePage.fieldNotes` seeded with the nine field notes.
+- All six `problemPage` and five `solutionPage` documents: `diagnosticUrl` now points at one named tool instead of `/assessments`, and `diagnosticLabel` uses that tool's real name (the old labels promised diagnostics that do not exist, such as a "CMS value assessment"). Mapping: AI, silos, marketing operating system and AI content preparation to the Content Operations Maturity Assessment; marketing speed and campaign velocity to the Process Assessment; CMS value and CMS ROI to the CMS Implementation Cost Estimator; localisation and global marketing to the Localisation Cost Estimator; cold outbound to the Lead Magnet Ideation Tool. Duration badges now show, via `toolDurationFor()`.
 - Checked, no change needed: `homePage.tickerPhrases` never contained the "fixed-price build" line, and the site never read that field.
 
 This file does four jobs. It records the current-state inventory, lists the commercial
@@ -173,7 +174,7 @@ Primary measures: qualified first-project enquiries per month, enquiry to scopin
 2. ~~Reorganise `/assessments` by commitment type.~~ Done (#96).
 3. ~~Add a compact, substantiated proof line under the hero.~~ Done (#98).
 4. ~~Instrument the three journey events.~~ Done in code (#99); GTM configuration outstanding (section 9).
-5. Point each `/problems/*` page's CMS `diagnosticUrl` at a single named tool so its duration label shows.
+5. ~~Point each problem page at a single named tool.~~ Done in Sanity for all problem and solution pages (section 0). Review two calls: "Our CMS isn't creating value" uses the CMS estimator (replatform framing; the maturity assessment may suit an improve-what-you-have buyer better), and "Cold outbound isn't converting" is a leftover from the older outbound positioning (consider retiring it).
 6. Once ECM.DEV Intel has around ten published items (it had none on 27 September), switch the field-note slot to show the latest Intel signals.
 7. The CMS estimator's methodology notes still use "guarantees" in a negated sense (`app/assessment/cms-implementation/methodology/page.tsx`, `components/assessment/cms-implementation/Result.tsx`). Review against the language rule.
 
