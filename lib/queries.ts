@@ -30,6 +30,7 @@ export async function getHomePage() {
     testimonials[]{name, role, quote, commentary},
     ctaHeading,
     ctaSubheading,
+    fieldNotes[]{text, href, linkLabel},
     seo
   }`);
 }

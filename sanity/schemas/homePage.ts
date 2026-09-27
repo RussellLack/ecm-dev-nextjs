@@ -176,12 +176,64 @@ export default defineType({
       ...linkUrl,
     }),
 
-    // ── Ticker ──
+    // ── Field notes (replaced the scrolling ticker, September 2026) ──
+    defineField({
+      name: "fieldNotes",
+      title: "Field Notes",
+      description:
+        "Short observations shown one at a time on the homepage, each linking to the page that explains it. Start from something observable, then name what is really going on. No invented figures or clients, and no em or en dashes. Leave empty to show the built-in set.",
+      type: "array",
+      of: [
+        {
+          type: "object",
+          name: "fieldNote",
+          title: "Field note",
+          fields: [
+            {
+              name: "text",
+              title: "Note",
+              type: "text",
+              rows: 3,
+              validation: (Rule) =>
+                Rule.required()
+                  .max(240)
+                  .custom((v) =>
+                    typeof v === "string" && /[\u2013\u2014]/.test(v)
+                      ? "Use a comma, colon or full stop instead of an em or en dash."
+                      : true
+                  ),
+            },
+            {
+              name: "href",
+              title: "Links to",
+              description: "An internal path, for example /problems/ai-isnt-delivering",
+              type: "string",
+              validation: (Rule) =>
+                Rule.required().custom((v) =>
+                  typeof v === "string" && !v.startsWith("/")
+                    ? "Use an internal path starting with /"
+                    : true
+                ),
+            },
+            {
+              name: "linkLabel",
+              title: "Link text",
+              type: "string",
+              validation: (Rule) => Rule.required().max(60),
+            },
+          ],
+          preview: { select: { title: "text", subtitle: "href" } },
+        },
+      ],
+      validation: (Rule) => Rule.min(3).warning("At least three notes keeps \"Another note\" worthwhile."),
+    }),
     defineField({
       name: "tickerPhrases",
-      title: "Ticker Phrases",
+      title: "Ticker Phrases (retired)",
+      description: "No longer shown on the site. Replaced by Field Notes.",
       type: "array",
       of: [{ type: "string" }],
+      hidden: true,
     }),
 
     // ── Testimonials ──
