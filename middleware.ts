@@ -42,6 +42,8 @@ export function middleware(request: NextRequest) {
         "'strict-dynamic'",
         isDev ? "'unsafe-eval'" : "",
         "https://ssl.google-analytics.com",
+        "https://www.googletagmanager.com",
+        "https://tagmanager.google.com",
       ]
       .filter(Boolean)
       .join(" ");
@@ -51,10 +53,10 @@ export function middleware(request: NextRequest) {
         `script-src ${scriptSrc}`,
         // Tailwind / Next inject inline <style> tags — style-src needs
         // 'unsafe-inline'. googletagmanager.com is the GTM Preview debug badge.
-        `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://www.googletagmanager.com`,
-        `font-src 'self' https://fonts.gstatic.com`,
+        `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://www.googletagmanager.com https://tagmanager.google.com`,
+        `font-src 'self' data: https://fonts.gstatic.com`,
         `img-src 'self' data: blob: https://cdn.sanity.io https://*.google-analytics.com https://www.googletagmanager.com https://*.gstatic.com`,
-        `connect-src 'self' https://cdn.sanity.io https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://tagmanager.google.com`,
+        `connect-src 'self' https://cdn.sanity.io https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://tagmanager.google.com https://tagassistant.google.com`,
         // GTM <noscript> iframe + Tag Assistant / Preview overlay load from these.
         `frame-src 'self' https://www.googletagmanager.com https://tagmanager.google.com`,
         // Allow tagassistant.google.com to embed ecm.dev for Preview mode.
