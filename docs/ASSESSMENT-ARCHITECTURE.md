@@ -308,8 +308,8 @@ Implemented as an allowlist, not a schema/CMS toggle:
 
 ```ts
 // app/assessment/[slug]/page.tsx
-const UNGATED_SLUGS = new Set(["content-operations-maturity"]);
-if (UNGATED_SLUGS.has(slug)) return <AssessmentShell assessment={assessment} />;
+// UNGATED_ASSESSMENT_SLUGS lives in lib/offers.ts
+if (UNGATED_ASSESSMENT_SLUGS.has(slug)) return <AssessmentShell assessment={assessment} />;
 // otherwise falls through to <AssessmentGate>
 ```
 

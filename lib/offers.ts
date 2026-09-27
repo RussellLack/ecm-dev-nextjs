@@ -22,7 +22,16 @@ export type ToolKey =
   | "maturity"
   | "cms-estimator"
   | "localisation-estimator"
-  | "process";
+  | "process"
+  | "lead-magnet";
+
+/** Assessment slugs that show their result without an email registration.
+ * Read by app/assessment/[slug]/page.tsx (which skips AssessmentGate for
+ * these) and by the /assessments hub (which groups tools by commitment), so
+ * a "no email needed" label can never drift from the actual gate. */
+export const UNGATED_ASSESSMENT_SLUGS: ReadonlySet<string> = new Set([
+  "content-operations-maturity",
+]);
 
 export const TOOLS: Record<
   ToolKey,
@@ -32,7 +41,7 @@ export const TOOLS: Record<
     /** Display label for completion time, e.g. "5 min". */
     duration: string;
     /** True only when the result is shown without registering an email.
-     * Mirrors UNGATED_SLUGS in app/assessment/[slug]/page.tsx. */
+     * Must agree with UNGATED_ASSESSMENT_SLUGS above. */
     ungated: boolean;
     /** What the result actually is, stated plainly. */
     result: string;
@@ -65,6 +74,13 @@ export const TOOLS: Record<
     duration: "10 to 15 min",
     ungated: false,
     result: "A map of one process with its blockers and ownership gaps.",
+  },
+  "lead-magnet": {
+    name: "Lead Magnet Ideation Tool",
+    href: "/assessment/lead-magnet",
+    duration: "5 min",
+    ungated: false,
+    result: "Three ranked lead magnet formats with topic ideas and capability gaps.",
   },
 };
 
