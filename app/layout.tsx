@@ -131,14 +131,21 @@ gtag('consent', 'default', {
                   var f=d.getElementsByTagName(s)[0],
                       j=d.createElement(s),
                       dl=l!='dataLayer'?'&l='+l:'';
-                  // Forward gtm_debug from the page URL so Tag Assistant /
-                  // GTM Preview can attach. Without this, the proxy /gtm/js
-                  // call strips it and gtm.js never enters debug mode.
+                  // Tag Assistant / GTM Preview: when the page URL carries
+                  // gtm_debug (plus gtm_auth / gtm_preview for environments),
+                  // load gtm.js straight from Google instead of the /gtm/js
+                  // proxy. Google rejects debug requests relayed from
+                  // Netlify's servers, so the debug container never loads
+                  // and Tag Assistant reports "Could not connect".
+                  // Normal traffic keeps using the first-party proxy.
                   var dbg='';
-                  var m=w.location.search.match(/[?&]gtm_debug=([^&]+)/);
-                  if(m){dbg='&gtm_debug='+m[1];}
+                  ['gtm_debug','gtm_auth','gtm_preview'].forEach(function(k){
+                    var m=w.location.search.match(new RegExp('[?&]'+k+'=([^&]+)'));
+                    if(m){dbg+='&'+k+'='+m[1];}
+                  });
+                  var base=dbg?'https://www.googletagmanager.com/gtm.js':'/gtm/js';
                   j.async=true;
-                  j.src='/gtm/js?id='+i+dl+dbg;
+                  j.src=base+'?id='+i+dl+dbg;
                   f.parentNode.insertBefore(j,f);
                 })(window,document,'script','dataLayer','${GTM_ID}');
                                       `;
