@@ -23,11 +23,13 @@ export async function POST(request: Request) {
     });
     if (!guard.ok) return guard.response;
 
-    const { firstName, lastName, email, message } = body as {
+    const { firstName, lastName, email, message, enquiryContext } = body as {
       firstName?: string;
       lastName?: string;
       email?: string;
       message?: string;
+      /** Offer/pillar label carried from the page the visitor came from. */
+      enquiryContext?: string;
     };
 
     if (!email || !message) {
@@ -51,6 +53,8 @@ export async function POST(request: Request) {
       lastName: lastName ?? "",
       email,
       message,
+      enquiryContext:
+        typeof enquiryContext === "string" ? enquiryContext.slice(0, 200) : "",
     });
 
     const netlifyRes = await fetch(`${siteUrl.replace(/\/$/, "")}/__forms.html`, {

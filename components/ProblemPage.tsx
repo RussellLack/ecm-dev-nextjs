@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { toolDurationFor } from "@/lib/offers";
 
 export interface ProblemPageData {
   title: string;
@@ -39,6 +40,10 @@ export default function ProblemPage({ data }: { data: ProblemPageData }) {
   const heading = data.heroHeading || data.title;
   const causeParas = (data.realCause ?? "").split(/\n{2,}/).filter(Boolean);
   const diagnosticUrl = data.diagnosticUrl || "/assessments";
+  // Duration of the linked tool, from lib/offers.ts; null (no label) when
+  // the link isn't a single known tool, rather than a hard-coded "10 min"
+  // that matched none of them.
+  const diagnosticDuration = toolDurationFor(diagnosticUrl);
   const diagnosticLabel = data.diagnosticLabel || "Take the assessment";
 
   return (
@@ -128,7 +133,7 @@ export default function ProblemPage({ data }: { data: ProblemPageData }) {
             Where to start
           </h2>
           <p className="text-ink text-base sm:text-lg leading-relaxed mb-8 max-w-2xl">
-            Find out exactly where this is happening in your operation, in about ten minutes, then see how we fix it.
+            Find out exactly where this is happening in your operation, then see how we fix it.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
             <Link
@@ -136,7 +141,9 @@ export default function ProblemPage({ data }: { data: ProblemPageData }) {
               className="inline-flex items-center justify-center bg-ecm-lime text-ecm-green font-barlow font-bold text-base px-8 py-4 rounded-full hover:bg-ecm-lime-hover transition-colors"
             >
               {diagnosticLabel}
-              <span className="ml-2 text-heading/70 font-medium text-sm">10 min</span>
+              {diagnosticDuration && (
+                <span className="ml-2 text-heading/70 font-medium text-sm">{diagnosticDuration}</span>
+              )}
             </Link>
             {data.solutionUrl && data.solutionLabel && (
               <Link
