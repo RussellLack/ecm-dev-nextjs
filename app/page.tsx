@@ -10,6 +10,7 @@ import { getHomePage, getBlogPosts, getFeaturedCaseStudies } from "@/lib/queries
 import { urlFor } from "@/lib/sanity";
 import { isAuditOfferOpen } from "@/lib/auditOffer";
 import MobileStickyCta from "@/components/MobileStickyCta";
+import FieldNote from "@/components/FieldNote";
 import {
   AUDIT_OFFER_COPY,
   CONTENT_AUDIT,
@@ -273,20 +274,6 @@ function formatDate(dateString: string): string {
   });
 }
 
-/* Fallback ticker phrases (used when Sanity tickerPhrases is empty). */
-const fallbackTicker = [
-  "Content operations, without the headcount.",
-  "Senior diagnosis. A working system. Ongoing ownership.",
-  "Not a hire. Not a freelancer. A retained system.",
-  "AI-readiness scored against evidence, not a search-visibility check in disguise.",
-  "Provenance, not certification.",
-  "The same judgement, retained month to month.",
-  "No fixed term. Step away when the system no longer needs us.",
-  "Start with a free self-check, or a fixed-scope Content Audit.",
-  "The alternative to a year of ramp-up.",
-  "A system that runs without needing to staff for it.",
-  "An AI-readiness score you could defend to your own board.",
-];
 
 /* ─── Page Component ─── */
 
@@ -324,8 +311,6 @@ export default async function HomePage() {
   const pillarsSubhead =
     "We work across three pillars: Content Operations, Content Technology and Content Localisation. Start with whichever problem you recognise.";
 
-  // Ticker
-  const tickerPhrases = homePage?.tickerPhrases?.length ? homePage.tickerPhrases : fallbackTicker;
 
   // Blog posts: use Sanity data if available, map to display format
   const blogPosts =
@@ -772,28 +757,13 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ─── TICKER TAPE ─── */}
-      {(() => {
-        const truths = tickerPhrases;
-        return (
-          <section style={{ background: "rgb(49,97,72)", padding: "12px 0", overflow: "hidden", width: "100%" }}>
-            <style>{`.ecm-ticker-inner{display:inline-block;white-space:nowrap;animation:ecm-ticker 200s linear infinite}.ecm-ticker-item{font-family:"Courier New",Courier,monospace;font-weight:bold;font-size:1.2rem;color:#AAF870;display:inline-block;margin:0 120px}.ecm-ticker-sep{font-family:"Courier New",Courier,monospace;font-size:1.2rem;color:#AAF870;opacity:0.4}@keyframes ecm-ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}`}</style>
-            <div className="ecm-ticker-inner">
-              {[...truths, ...truths].map((t, i) => (
-                <span key={i}><span className="ecm-ticker-item">{t}</span><span className="ecm-ticker-sep">✦</span></span>
-              ))}
-            </div>
-          </section>
-        );
-      })()}
+      {/* ─── FIELD NOTE (replaced the scrolling ticker) ─── */}
+      <FieldNote />
 
-      {/* Wave divider (green → white) bridging the ticker tape into "Why
-          ecm.dev" below, now that the outcome cards section which used to
-          carry this transition has been removed. Rendered in normal flow
-          (not the wave-divider absolute-positioning classes) since the
-          ticker tape above is far too short to contain an absolutely
-          positioned wave without it clipping against the ticker's own
-          overflow:hidden. */}
+      {/* Wave divider (green → white) bridging the field note into "Why
+          ecm.dev" below. Rendered in normal flow, like the field note's own
+          top wave, rather than with the absolutely positioned
+          wave-divider classes. */}
       <div className="bg-ecm-green" style={{ lineHeight: 0 }}>
         <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" style={{ display: "block", width: "100%", height: "auto" }}>
           <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="var(--color-surface)" />
