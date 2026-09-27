@@ -181,7 +181,7 @@ Primary measures: qualified first-project enquiries per month, enquiry to scopin
 
 **Operational (a few minutes each):**
 
-- Run `npx sanity deploy` from the repo so the Field Notes field appears in the hosted Studio (ecm-dev.sanity.studio). The notes are already stored and live.
+- Open ecm-dev.sanity.studio and check the Field Notes field on the Home Page document. No manual deploy is needed: `.github/workflows/studio-deploy.yml` redeploys the Studio whenever Studio files change on `main`, and it ran successfully after #97 merged (27 September, 13:51 UTC).
 - Configure GTM: Data Layer Variables `offer`, `pillar`, `source_page`; one Custom Event trigger for `^(journey_selected|offer_viewed|enquiry_submitted)$`; one GA4 event tag; register `offer` and `pillar` as GA4 custom dimensions. Steps in `ANALYTICS.md`.
 - Send one real contact enquiry via `/contact?offer=snapshot&pillar=services` and check that `enquiryContext` appears in the Netlify form notification.
 - Read `/content-audit/sample` for realism against real Snapshot delivery.
