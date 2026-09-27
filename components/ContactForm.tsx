@@ -1,8 +1,33 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useCsrf } from "@/lib/useCsrf";
 import { pushLeadEvent, referringToolName, LEAD_TYPE } from "@/lib/analytics";
+import {
+  ENQUIRY_TOPICS,
+  PILLAR_LABEL,
+  isEnquiryTopic,
+  isPillar,
+} from "@/lib/offers";
+
+/** Where the visitor came from, as a short human-readable label, so the
+ * enquiry keeps the offer they were looking at and they don't have to
+ * restate it. `offer` and `pillar` are matched against fixed lists in
+ * lib/offers.ts; the older free-text `service` / `topic` params (package and
+ * explainer titles from our own links) are length-capped. Nothing the
+ * visitor types is ever put into a URL. */
+function readEnquiryContext(): string {
+  if (typeof window === "undefined") return "";
+  const params = new URLSearchParams(window.location.search);
+  const offer = params.get("offer");
+  const pillar = params.get("pillar");
+  const parts: string[] = [];
+  if (isEnquiryTopic(offer)) parts.push(ENQUIRY_TOPICS[offer]);
+  const legacy = (params.get("service") || params.get("topic") || "").trim();
+  if (!parts.length && legacy) parts.push(legacy.slice(0, 80));
+  if (isPillar(pillar)) parts.push(PILLAR_LABEL[pillar]);
+  return parts.join(" · ");
+}
 
 export default function ContactForm() {
   const { withCsrf } = useCsrf();
@@ -12,7 +37,12 @@ export default function ContactForm() {
     email: "",
     message: "",
   });
+  const [context, setContext] = useState("");
   const [hp, setHp] = useState(""); // honeypot — should stay empty
+
+  useEffect(() => {
+    setContext(readEnquiryContext());
+  }, []);
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -24,7 +54,7 @@ export default function ContactForm() {
         method: "POST",
         credentials: "same-origin",
         headers: withCsrf({ "Content-Type": "application/json" }),
-        body: JSON.stringify({ ...formData, _hp: hp }),
+        body: JSON.stringify({ ...formData, enquiryContext: context, _hp: hp }),
       });
 
       if (!res.ok) throw new Error("Failed to send");
@@ -54,6 +84,17 @@ export default function ContactForm() {
           <p className="text-white/85 font-barlow font-light text-sm sm:text-base leading-relaxed mb-8 max-w-md">
             Which pillar, and what is not working: your CMS, your operating model, or your multilingual content. We reply personally, with a specific next step, not a proposal deck.
           </p>
+          <div className="mb-8 max-w-md">
+            <p className="text-ecm-lime font-barlow font-semibold text-sm mb-2">What happens next</p>
+            <ol className="text-white/80 text-sm leading-relaxed space-y-1 list-decimal list-inside">
+              <li>We read your message and reply by email, personally.</li>
+              <li>If it looks like a fit, we suggest a short scoping conversation.</li>
+              <li>You get a written scope and fee before any paid work starts.</li>
+            </ol>
+            <p className="text-white/60 text-xs mt-3">
+              Sending this does not sign you up to anything, including our mailing list.
+            </p>
+          </div>
           <a
             href="https://www.linkedin.com/company/ecm-dev"
             target="_blank"
@@ -90,6 +131,21 @@ export default function ContactForm() {
               />
             </label>
           </div>
+          {context && (
+            <div className="flex flex-wrap items-center gap-3 rounded-2xl border border-ecm-lime/30 bg-white/5 px-4 py-3">
+              <p className="text-white/85 text-sm">
+                <span className="text-white/60">About: </span>
+                {context}
+              </p>
+              <button
+                type="button"
+                onClick={() => setContext("")}
+                className="text-ecm-lime text-xs underline hover:text-ecm-lime-hover"
+              >
+                Not this, clear it
+              </button>
+            </div>
+          )}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label htmlFor="contact-first-name" className="block text-white text-sm mb-1">First name</label>
@@ -157,10 +213,14 @@ export default function ContactForm() {
             {status === "sending" ? "Sending..." : "Send"}
           </button>
           {status === "sent" && (
-            <p className="text-ecm-lime text-sm mt-3">Thank you! Your message has been sent.</p>
+            <p role="status" className="text-ecm-lime text-sm mt-3">
+              Thank you, your message has reached us. We will reply personally by email.
+            </p>
           )}
           {status === "error" && (
-            <p className="text-red-400 text-sm mt-3">Something went wrong. Please try again.</p>
+            <p role="alert" className="text-red-400 text-sm mt-3">
+              Something went wrong and your message was not sent. What you wrote is still here, so please try again, or email rl@ecm.dev directly.
+            </p>
           )}
         </form>
       </div>

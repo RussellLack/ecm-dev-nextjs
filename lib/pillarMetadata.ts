@@ -13,12 +13,15 @@ export async function buildPillarMetadata(opts: {
   fallbackTitle: string;
   fallbackDescription: string;
   canonical: string;
+  /** Overrides the editor-managed metaTitle when the CMS value is known to
+   * be stale. */
+  forceTitle?: string;
 }): Promise<Metadata> {
   const service = await getServiceHero(opts.category).catch(() => null);
   const seo = service?.seo || {};
 
   const title =
-    seo.metaTitle || `${opts.fallbackTitle} | ECM.DEV`;
+    opts.forceTitle || seo.metaTitle || `${opts.fallbackTitle} | ECM.DEV`;
 
   const heroBlurb = service?.heroDescription
     ? String(service.heroDescription).split(/\n+/)[0].slice(0, 155).trim()

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { ReactNode } from "react";
 import type { ServicePageData } from "@/lib/serviceTypes";
 
 /* The closing CTA band used to be one hardcoded button ("Take the Content
@@ -32,7 +33,15 @@ const PILLAR_CTA: Record<
   },
 };
 
-export default function ServicePage({ data }: { data: ServicePageData }) {
+export default function ServicePage({
+  data,
+  afterDiagnosis,
+}: {
+  data: ServicePageData;
+  /** Rendered straight after the symptoms list, ahead of the capability
+   * catalogue: the pillar's recommended first step (FirstStepPanel). */
+  afterDiagnosis?: ReactNode;
+}) {
   const pillarCta = PILLAR_CTA[data.category];
   const paragraphs = (data.problemIntro ?? "").split(/\n{2,}/).filter(Boolean);
   const [leadParagraph, ...restParagraphs] = paragraphs;
@@ -106,6 +115,8 @@ export default function ServicePage({ data }: { data: ServicePageData }) {
           </div>
         </div>
       </section>
+
+      {afterDiagnosis}
 
       {/* Reframe panel */}
       <section className="relative bg-ecm-green-dark pt-28 pb-28 overflow-hidden">

@@ -5,6 +5,7 @@ import { buildPillarMetadata } from "@/lib/pillarMetadata";
 import ServicePage from "@/components/ServicePage";
 import PillarClusters from "@/components/PillarClusters";
 import ContentAuditTiers from "@/components/ContentAuditTiers";
+import FirstStepPanel from "@/components/FirstStepPanel";
 import JsonLd from "@/components/JsonLd";
 import { serviceSchema } from "@/lib/structuredData";
 import type { ServicePageData } from "@/lib/serviceTypes";
@@ -43,8 +44,11 @@ export default async function ContentTechnologyPage() {
           serviceType: "Content Technology",
         })}
       />
-      <ServicePage data={data} />
-      <ContentAuditTiers />
+      <ServicePage
+        data={data}
+        afterDiagnosis={<FirstStepPanel pillar="technology" />}
+      />
+      <ContentAuditTiers pillar="technology" />
       <PillarClusters pillar="technology" />
     </>
   );

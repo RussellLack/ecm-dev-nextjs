@@ -9,6 +9,13 @@ import FeaturedCaseStudies from "@/components/FeaturedCaseStudies";
 import { getHomePage, getBlogPosts, getFeaturedCaseStudies } from "@/lib/queries";
 import { urlFor } from "@/lib/sanity";
 import { isAuditOfferOpen } from "@/lib/auditOffer";
+import MobileStickyCta from "@/components/MobileStickyCta";
+import {
+  AUDIT_OFFER_COPY,
+  CONTENT_AUDIT,
+  DEFAULT_TOOL,
+  enquiryHref,
+} from "@/lib/offers";
 
 export const revalidate = 3600;
 
@@ -54,11 +61,16 @@ export async function generateMetadata(): Promise<Metadata> {
 
 /* ─── Static fallback data (used when Sanity fields are empty) ─── */
 
+/* Hero shortened so the primary action sits higher on a phone: the
+   three-pillar explanation moved into the starting-points section below.
+   The supporting line names the one tool it describes, because "no email
+   gate" is only true of the maturity assessment (the other tools register
+   an email first; see UNGATED_SLUGS in app/assessment/[slug]/page.tsx).
+   See docs/COMMERCIAL-JOURNEY-2026-09-27.md. */
 const fallbackHero = {
   heading: "Content operations and AI readiness, without the hire.",
-  body: "We're a fractional content operations and AI-readiness service for mid-market and owner-managed businesses that have outgrown ad hoc content production and are weighing whether to build a content function in-house. Senior diagnosis, a working system, and ongoing ownership of it, without the salary, the management overhead, or the year it takes a new hire to get up to speed.\n\nWe work across three pillars: Content Technology (your CMS and platforms), Content Operations (governance, ownership, workflow), and Content Localisation (multilingual content at AI speed).",
-  supportingLine:
-    "Every engagement starts with a free assessment. No sales call, no email gate on the result.",
+  body: "A senior content partner for mid-market and owner-managed businesses that have outgrown ad hoc production. We diagnose the problem, build a working system and can take ongoing responsibility for it.",
+  supportingLine: `Start with the free ${DEFAULT_TOOL.name}: about ${DEFAULT_TOOL.duration.replace(" min", " minutes")}, result on screen, no email needed. Then decide whether you need expert help.`,
 };
 
 /* Three pillars, same wording used in the nav (components/Header.tsx's
@@ -66,32 +78,39 @@ const fallbackHero = {
    consistent description of each pillar wherever they meet it. See
    docs/CONTENT-PILLARS-POSITIONING.md and
    docs/SERVICE-CLARITY-AUDIT-2026-09-20.md. */
+/* Cards lead with the buyer's problem; the pillar name stays visible as
+   the eyebrow so the specialist discipline isn't lost. `entry` names only
+   starting points that actually exist: the former "Starts with a
+   governance assessment" pointed at no published offer. */
 const pillars = [
   {
-    title: "Content Technology",
-    href: "/content-technology",
-    blurb:
-      "Your CMS, your platforms, and the data connecting them, run as one system instead of three separate problems.",
-    entry: "Starts with a Content Audit.",
-  },
-  {
-    title: "Content Operations",
+    title: "Publishing takes too long.",
+    pillar: "Content Operations",
     href: "/content-operations",
     blurb:
-      "Content that has an owner, a workflow, and someone accountable for keeping it that way.",
-    entry: "Starts with a governance assessment.",
+      "Find where approvals, handoffs and ownership slow work down, then give content an owner and a workflow that holds.",
+    entry: "Free maturity self-check, or a Content Audit.",
   },
   {
-    title: "Content Localisation",
+    title: "Your CMS is getting in the way.",
+    pillar: "Content Technology",
+    href: "/content-technology",
+    blurb:
+      "Understand which problems come from the platform and which come from how it is set up, before anyone mentions a migration.",
+    entry: "Free cost estimator, or a Content Audit.",
+  },
+  {
+    title: "Localisation costs keep growing.",
+    pillar: "Content Localisation",
     href: "/content-localization",
     blurb:
-      "Multilingual content that holds up under AI-assisted translation, checked continuously, not once a year.",
-    entry: "Starts with the Localisation Cost Estimator.",
+      "Identify the source-content and workflow issues creating avoidable effort in every new language.",
+    entry: "Free cost estimator, or a Content Audit.",
   },
 ];
 
 /* Content Audit strip. Copy is kept as literal constants for the same
-   reason howItWorks below is: this section carries a hard language
+   reason firstProject below is: this section carries a hard language
    guardrail (no certification, guarantee or attestation wording, and no implied
    promise that a client's AI is safe or compliant), and that is enforced in
    code review, not in a CMS edit. This is the same Content Audit priced in
@@ -101,7 +120,7 @@ const pillars = [
    page called the identical product "Content Audit" — one name now, see
    docs/SERVICE-CLARITY-AUDIT-2026-09-20.md. */
 const auditStrip = {
-  eyebrow: "Content Audit",
+  eyebrow: "Content Audit · expert-led",
   headline: "Can AI systems find, trust and reuse your content?",
   /* Condensed to two lines for the homepage strip (the full four-line
      version lives on /content-technology); keeps the buyer-behaviour framing
@@ -146,10 +165,10 @@ const auditStrip = {
      deadline is what closes the offer. Once the offer window (lib/auditOffer.ts)
      closes, the strip renders `paidOffer` below and the badge disappears. */
   introOffer: {
-    badge: "Free for audits requested before 30 September",
+    badge: `Free for audits requested by ${AUDIT_OFFER_COPY.deadlineLabel}`,
     heading: "Why this one is free",
-    body: "This is a new service and it will normally be paid work. We are running it free of charge for audits requested before 30 September, in exchange for a recommendation if the analysis turns out to be something you can use.",
-    caveat: "We take on five at a time, so if we are at capacity we will tell you when we can start rather than leave you waiting. If the findings are not useful, say so and we part on good terms: no recommendation, no invoice, no obligation either way.",
+    body: `This is a new service and it will normally be paid work. We are running it free of charge for audits requested by ${AUDIT_OFFER_COPY.deadlineLabel}, in exchange for a recommendation if the analysis turns out to be something you can use.`,
+    caveat: `This is a person reviewing your content, not the automated self-check. ${AUDIT_OFFER_COPY.capacity} If we are at capacity we will tell you when we can start rather than leave you waiting. If the findings are not useful, say so and we part on good terms: no recommendation, no invoice, no obligation either way.`,
   },
   /* Shown automatically once the introductory offer closes. No price here by
      design; the homepage strip exists to start a conversation, and the tiers
@@ -160,46 +179,67 @@ const auditStrip = {
     body: "This is a paid engagement, scoped to the size of your content estate. Tell us what you are working with and we will come back with a scope and a price before any work starts.",
     caveat: "Findings and recommended remediation, delivered as a professional opinion you can act on or argue with.",
     linkLabel: "See the Content Audit tiers",
-    linkUrl: "/content-technology",
+    linkUrl: `/content-technology#${CONTENT_AUDIT.anchor}`,
   },
   formIntro: "Tell us where to send it. We reply personally, not with an automated report.",
   confirmation: "Thanks, we'll be in touch within one business day.",
 };
 
-/* How an engagement starts, for each of the three pillars. Kept as literal
-   constants rather than Sanity-sourced: agreed positioning copy should go
-   through code review, not a CMS edit. Mirrors the "priced, bounded
-   onboarding deliverable first, managed package as the sales objective"
-   mechanic in docs/CONTENT-PILLARS-POSITIONING.md, without inventing figures
-   for the two managed packages that doc leaves open. */
-const howItWorks = [
+/* Your first project: the three commitment levels side by side, so a
+   visitor can see what each produces, what it costs them and where it
+   stops. Replaces the former three-step "How it works" cards, which called
+   the first step both "free" and "fixed price" and promised a diagnostic
+   credit toward a managed package "within the window", a window that has
+   never been defined (open decision in docs/CONTENT-PILLARS-POSITIONING.md).
+   Only published terms from lib/offers.ts appear here. Literal, not
+   Sanity-sourced: commercial terms go through code review. */
+const firstProject = [
   {
-    step: "01",
-    title: "Start with a diagnostic",
-    tagline: "A Content Audit, a governance assessment, or the Localisation Cost Estimator.",
-    subtitle: "Whichever pillar you start with, fixed scope, fixed price.",
-    body: "ecm-agent scans your actual content estate rather than relying on self-reporting. A written finding either way: something you can act on, or argue with.",
-    ctaLabel: "Take the free assessment",
-    ctaUrl: "/assessments",
+    label: "Free self-check",
+    title: DEFAULT_TOOL.name,
+    rows: [
+      ["You get", DEFAULT_TOOL.result],
+      ["Commitment", `About ${DEFAULT_TOOL.duration.replace(" min", " minutes")}. No email needed for the result.`],
+      ["Fee", "None."],
+      ["Boundary", "Indicative, from your own answers. Not a review of your content."],
+    ],
+    ctaLabel: "Start the free assessment",
+    ctaUrl: DEFAULT_TOOL.href,
+    secondary: { label: "Or choose a different free tool", url: "/assessments" },
   },
   {
-    step: "02",
-    title: "See the findings in writing",
-    tagline: "A report you can act on, or argue with.",
-    subtitle: "Real findings from your actual estate, not a self-assessment questionnaire.",
-    body: "A live readout with the person who wrote it, not a generated PDF. If the findings aren't useful, say so, we part on good terms: no obligation either way.",
-    ctaLabel: "Talk to us directly",
-    ctaUrl: "/contact",
+    label: "Expert-led first project",
+    title: `${CONTENT_AUDIT.name}: ${CONTENT_AUDIT.snapshot.name}`,
+    rows: [
+      ["You get", "A review of a real sample of your content, a 5 to 10 page report, your top five findings and a recorded readout."],
+      ["Commitment", `${CONTENT_AUDIT.snapshot.duration}. Access to a sample of your content.`],
+      ["Fee", `${CONTENT_AUDIT.snapshot.price}, fixed scope. ${CONTENT_AUDIT.snapshot.credit}`],
+      ["Boundary", "Diagnosis and priorities. Implementation is not included unless agreed separately."],
+    ],
+    ctaLabel: "Discuss a Snapshot",
+    ctaUrl: enquiryHref("snapshot"),
+    secondary: { label: "See both audit depths", url: `/content-technology#${CONTENT_AUDIT.anchor}` },
+    featured: true,
   },
   {
-    step: "03",
-    title: "Turn it into a managed package",
-    tagline: "Or don't. Both are a legitimate outcome.",
-    subtitle: "The diagnostic cost credits toward a managed package if you sign within the window.",
-    body: "Ongoing work on your CMS, your operating model, or your multilingual content, depending on which pillar you started with. The diagnostic proves there is a problem worth fixing. The managed package is where the fix actually happens.",
-    ctaLabel: "Talk about a managed package",
-    ctaUrl: "/contact",
+    label: "Only if it is worth doing",
+    title: "Fixing it, together",
+    rows: [
+      ["You get", "Ongoing work on your CMS, your operating model or your multilingual content, shaped by what the findings showed."],
+      ["Commitment", "A separate agreement, scoped in writing before it starts."],
+      ["Fee", "Quoted against the agreed scope."],
+      ["Boundary", "Optional. Stopping after the diagnosis, or acting on it yourselves, is a legitimate outcome."],
+    ],
+    ctaLabel: "Discuss a first project",
+    ctaUrl: enquiryHref("first-project"),
   },
+];
+
+const journeySteps = [
+  { title: "Agree the question", body: "What is slowing you down, and what decision the work should support." },
+  { title: "Assess", body: "A free self-check, or an expert review of real evidence." },
+  { title: "Review findings together", body: "A written result you can act on, or argue with." },
+  { title: "You choose", body: "Stop, act internally, or work with us on the fix." },
 ];
 
 /* Closing section, immediately above the contact form. Placed last, after
@@ -242,8 +282,7 @@ const fallbackTicker = [
   "Provenance, not certification.",
   "The same judgement, retained month to month.",
   "No fixed term. Step away when the system no longer needs us.",
-  "Every engagement starts with a free assessment.",
-  "A fixed-price build, then a monthly retained service.",
+  "Start with a free self-check, or a fixed-scope Content Audit.",
   "The alternative to a year of ramp-up.",
   "A system that runs without needing to staff for it.",
   "An AI-readiness score you could defend to your own board.",
@@ -271,19 +310,19 @@ export default async function HomePage() {
   const heroBody = fallbackHero.body;
   const heroSupportingLine = fallbackHero.supportingLine;
 
-  // Hero buttons
-  const heroCtaPrimaryLabel = homePage?.heroCta?.primaryLabel || "Start with the free assessment";
-  const heroCtaPrimaryUrl = homePage?.heroCta?.primaryUrl || "/assessments";
-  const heroCtaPrimaryNote = homePage?.heroCta?.primaryNote ?? "";
+  // Hero buttons. Literal for the same reason as the hero copy: the
+  // primary action must go straight to the one tool the supporting line
+  // describes, not to a directory of mostly email-gated tools.
+  const heroCtaPrimaryLabel = "Start the free assessment";
+  const heroCtaPrimaryUrl = DEFAULT_TOOL.href;
+  const heroCtaPrimaryNote = DEFAULT_TOOL.duration;
   const heroCtaSecondaryLabel = homePage?.heroCta?.secondaryLabel || "See the work";
   const heroCtaSecondaryUrl = homePage?.heroCta?.secondaryUrl || "/case-study";
 
-  // Three-pillars section headings.
-  const pillarsHeading =
-    homePage?.symptomsHeading || "Three pillars, one operating system.";
+  // Starting-points section headings.
+  const pillarsHeading = "What is getting in your way?";
   const pillarsSubhead =
-    homePage?.symptomsSubhead ||
-    "Content Technology, Content Operations, and Content Localisation. Start with whichever one hurts most.";
+    "We work across three pillars: Content Operations, Content Technology and Content Localisation. Start with whichever problem you recognise.";
 
   // Ticker
   const tickerPhrases = homePage?.tickerPhrases?.length ? homePage.tickerPhrases : fallbackTicker;
@@ -348,6 +387,15 @@ export default async function HomePage() {
                   </Link>
                 )}
               </div>
+              <p className="mt-4 text-white/70 text-sm">
+                <Link href="/assessments" className="underline hover:text-ecm-lime">
+                  Choose a different free tool
+                </Link>
+                <span aria-hidden="true"> · </span>
+                <Link href={enquiryHref("first-project")} className="underline hover:text-ecm-lime">
+                  Ready to talk? Discuss a first project
+                </Link>
+              </p>
             </div>
           </div>
         </div>
@@ -359,22 +407,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ─── DIAGNOSIS ─── */}
-      <section className="py-20 bg-surface">
-        <div className="max-w-3xl mx-auto px-6">
-          <h2 className="text-heading font-barlow font-bold text-2xl sm:text-3xl leading-snug mb-6">
-            Your CMS is not broken. The system around it is.
-          </h2>
-          <p className="text-ink text-base leading-relaxed mb-4">
-            Most organisations already have the parts: a CMS, a content team, a translation process, and usually some AI running on top of all three. What they do not have is an operating system connecting them, so the CMS never quite does what it was bought to do, content has no clear owner once it is published, and every new market costs as much as the last one.
-          </p>
-          <p className="text-ink text-base leading-relaxed">
-            We find out which of the three areas is actually breaking. Then, if you want, we keep fixing it as a managed package, not a one-off report that goes out of date within a month.
-          </p>
-        </div>
-      </section>
-
-      {/* ─── THREE PILLARS ─── */}
+      {/* ─── STARTING POINTS (three pillars, problem-led) ─── */}
       <section className="py-20 bg-surface">
         <div className="max-w-5xl mx-auto px-6">
           <h2 className="text-heading font-barlow font-bold text-3xl lg:text-4xl text-center mb-4">
@@ -392,6 +425,9 @@ export default async function HomePage() {
                 href={pillar.href}
                 className="group bg-ecm-green rounded-xl p-6 sm:p-8 border border-ecm-lime/20 flex flex-col hover:border-ecm-lime/50 transition-colors"
               >
+                <p className="text-ecm-lime/70 font-barlow font-semibold text-xs uppercase tracking-wide mb-2">
+                  {pillar.pillar}
+                </p>
                 <h3 className="text-ecm-lime font-barlow font-bold text-lg sm:text-xl mb-2">
                   {pillar.title}
                 </h3>
@@ -402,19 +438,153 @@ export default async function HomePage() {
                   {pillar.entry}
                 </p>
                 <span className="mt-4 inline-flex items-center gap-1 text-ecm-lime font-barlow font-semibold text-sm group-hover:gap-2 transition-all">
-                  See the service <span aria-hidden="true">&rarr;</span>
+                  See where to start <span aria-hidden="true">&rarr;</span>
                 </span>
               </Link>
             ))}
           </div>
-          <div className="text-center mt-10">
+          {/* AI readiness is a route across all three pillars, not a fourth
+              service: surfaced as one link rather than a fourth card. */}
+          <div className="mt-6 rounded-xl border border-surface-border bg-surface-alt px-6 py-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <p className="text-ink text-sm leading-relaxed">
+              <span className="text-heading font-barlow font-semibold">AI struggles to use your content?</span>{" "}
+              That usually crosses all three: structure, ownership and platform.
+            </p>
+            <Link
+              href="/problems/ai-isnt-delivering"
+              className="inline-flex items-center gap-1 text-heading font-barlow font-semibold text-sm hover:opacity-80 transition-opacity whitespace-nowrap"
+            >
+              Explore AI content readiness <span aria-hidden="true">&rarr;</span>
+            </Link>
+          </div>
+          <div className="text-center mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8">
             <Link
               href="/problems"
               className="inline-flex items-center gap-1 text-heading font-barlow font-semibold text-sm hover:opacity-80 transition-opacity"
             >
-              Not sure which one? See the problems we solve <span aria-hidden="true">&rarr;</span>
+              See all the problems we solve <span aria-hidden="true">&rarr;</span>
+            </Link>
+            <Link
+              href={enquiryHref("first-project")}
+              className="inline-flex items-center gap-1 text-heading font-barlow font-semibold text-sm hover:opacity-80 transition-opacity"
+            >
+              Not sure? Discuss a first project <span aria-hidden="true">&rarr;</span>
             </Link>
           </div>
+        </div>
+      </section>
+
+      {/* ─── YOUR FIRST PROJECT ─── */}
+      <section id="first-project" className="py-20 bg-surface scroll-mt-24">
+        <div className="max-w-6xl mx-auto px-6">
+          <h2 className="text-heading font-barlow font-bold text-3xl lg:text-4xl text-center mb-4">
+            Your first project.
+          </h2>
+          <p className="text-ink text-center text-base mb-12 max-w-2xl mx-auto">
+            Three levels of commitment, the same for every pillar. Each one is
+            useful on its own, and none of them commits you to the next.
+          </p>
+          <div className="grid md:grid-cols-3 gap-6 mb-12">
+            {firstProject.map((offer) => (
+              <div
+                key={offer.title}
+                className={`rounded-xl p-6 sm:p-8 flex flex-col border ${
+                  offer.featured
+                    ? "bg-ecm-green border-ecm-lime/40"
+                    : "bg-surface-alt border-surface-border"
+                }`}
+              >
+                <p
+                  className={`font-barlow font-semibold text-xs uppercase tracking-wide mb-1 ${
+                    offer.featured ? "text-ecm-lime/70" : "text-heading/70"
+                  }`}
+                >
+                  {offer.label}
+                </p>
+                <h3
+                  className={`font-barlow font-bold text-xl mb-4 ${
+                    offer.featured ? "text-ecm-lime" : "text-heading"
+                  }`}
+                >
+                  {offer.title}
+                </h3>
+                <dl className="space-y-3 mb-6 flex-1">
+                  {offer.rows.map(([term, detail]) => (
+                    <div key={term}>
+                      <dt
+                        className={`font-barlow font-semibold text-xs uppercase tracking-wide ${
+                          offer.featured ? "text-ecm-lime/80" : "text-heading"
+                        }`}
+                      >
+                        {term}
+                      </dt>
+                      <dd
+                        className={`text-sm leading-relaxed ${
+                          offer.featured ? "text-white/85" : "text-ink"
+                        }`}
+                      >
+                        {detail}
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+                <Link
+                  href={offer.ctaUrl}
+                  className={`inline-flex items-center justify-center font-barlow font-semibold text-sm px-6 py-3 rounded-full transition-colors ${
+                    offer.featured
+                      ? "bg-ecm-lime text-ecm-green hover:bg-ecm-lime-hover"
+                      : "border-2 border-heading text-heading hover:bg-ecm-green hover:text-white"
+                  }`}
+                >
+                  {offer.ctaLabel}
+                </Link>
+                {offer.secondary && (
+                  <Link
+                    href={offer.secondary.url}
+                    className={`mt-3 text-center text-xs underline ${
+                      offer.featured ? "text-ecm-lime hover:text-ecm-lime-hover" : "text-ink hover:text-heading"
+                    }`}
+                  >
+                    {offer.secondary.label}
+                  </Link>
+                )}
+              </div>
+            ))}
+          </div>
+
+          {/* How it works: the shared journey, in four steps. */}
+          <h3 className="text-heading font-barlow font-bold text-xl text-center mb-6">
+            How it works
+          </h3>
+          <ol className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {journeySteps.map((step, i) => (
+              <li
+                key={step.title}
+                className="rounded-xl border border-surface-border p-5"
+              >
+                <span className="inline-flex w-8 h-8 bg-ecm-lime rounded-lg items-center justify-center text-ecm-green-dark font-barlow font-bold text-sm mb-3">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <p className="text-heading font-barlow font-semibold text-base mb-1">{step.title}</p>
+                <p className="text-ink text-sm leading-relaxed">{step.body}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      {/* ─── DIAGNOSIS ─── */}
+      <section className="py-20 bg-surface">
+        <div className="max-w-3xl mx-auto px-6">
+          <h2 className="text-heading font-barlow font-bold text-2xl sm:text-3xl leading-snug mb-6">
+            Your CMS is not broken. The system around it is.
+          </h2>
+          <p className="text-ink text-base leading-relaxed mb-4">
+            Most organisations already have the parts: a CMS, a content team, a translation process, and usually some AI running on top of all three. What they do not have is an operating system connecting them, so the CMS never quite does what it was bought to do, content has no clear owner once it is published, and every new market costs as much as the last one.
+          </p>
+          <p className="text-ink text-base leading-relaxed">
+            We find out which of the three areas is actually breaking. Then, if you want, we keep fixing it with you, rather than leaving a one-off report that goes out of date within a month.
+          </p>
         </div>
       </section>
 
@@ -551,46 +721,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ─── OFFER LADDER (was engagement tiers) ─── */}
-      <section className="py-20 bg-surface">
-        <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-heading font-barlow font-bold text-3xl lg:text-4xl text-center mb-4">
-            How it works.
-          </h2>
-          <p className="text-ink text-center text-base mb-16 max-w-2xl mx-auto">
-            The same pattern for all three services: a fixed-price diagnostic first, then ongoing support to fix it properly, if that is worth doing.
-          </p>
-          <div className="grid md:grid-cols-3 gap-6 mb-6">
-            {howItWorks.map((step) => (
-              <div
-                key={step.step}
-                className="relative bg-ecm-green rounded-xl p-6 sm:p-8 border border-ecm-lime/20 flex flex-col"
-              >
-                <div className="w-10 h-10 bg-ecm-lime rounded-lg flex items-center justify-center mb-4">
-                  <span className="text-ecm-green-dark font-barlow font-bold text-lg">{step.step}</span>
-                </div>
-                <h3 className="text-ecm-lime font-barlow font-bold text-xl mb-1">{step.title}</h3>
-                <p className="text-ecm-lime/80 font-barlow font-semibold text-sm mb-1">{step.tagline}</p>
-                <p className="text-white/60 text-xs mb-4">{step.subtitle}</p>
-                <p className="text-white/85 text-sm leading-relaxed mb-4 flex-1">{step.body}</p>
-                <Link
-                  href={step.ctaUrl}
-                  className="inline-flex items-center justify-center bg-ecm-lime text-ecm-green font-barlow font-semibold text-sm px-6 py-3 rounded-full hover:bg-ecm-lime-hover transition-colors mt-auto"
-                >
-                  {step.ctaLabel}
-                </Link>
-              </div>
-            ))}
-          </div>
-          <p className="text-center text-ink text-xs">
-            Working at larger scale or need the full content infrastructure picture?{" "}
-            <Link href="/content-operations" className="underline hover:text-heading">
-              Full service range
-            </Link>
-          </p>
-        </div>
-      </section>
-
       {/* ─── LATEST INSIGHTS (Blog) ─── */}
       <section className="relative py-20 bg-surface">
         <div className="max-w-6xl mx-auto px-6">
@@ -685,12 +815,10 @@ export default async function HomePage() {
       <ContactForm />
 
       {/* ─── MOBILE STICKY CTA ─── */}
-      <Link
-        href="/assessment/content-operations-maturity"
-        className="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-ecm-lime text-ecm-green font-barlow font-bold text-center py-4 shadow-[0_-4px_12px_rgba(0,0,0,0.15)] hover:bg-ecm-lime-hover transition-colors"
-      >
-        Assess your content infrastructure · 10 min
-      </Link>
+      <MobileStickyCta
+        href={DEFAULT_TOOL.href}
+        label={`Free maturity assessment · ${DEFAULT_TOOL.duration}`}
+      />
     </>
   );
 }

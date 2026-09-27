@@ -5,6 +5,7 @@ import { buildPillarMetadata } from "@/lib/pillarMetadata";
 import ServicePage from "@/components/ServicePage";
 import PillarClusters from "@/components/PillarClusters";
 import ContentAuditTiers from "@/components/ContentAuditTiers";
+import FirstStepPanel from "@/components/FirstStepPanel";
 import JsonLd from "@/components/JsonLd";
 import { serviceSchema } from "@/lib/structuredData";
 import type { ServicePageData } from "@/lib/serviceTypes";
@@ -43,8 +44,11 @@ export default async function ContentLocalizationPage() {
           serviceType: "Content Localization",
         })}
       />
-      <ServicePage data={data} />
-      <ContentAuditTiers />
+      <ServicePage
+        data={data}
+        afterDiagnosis={<FirstStepPanel pillar="localization" />}
+      />
+      <ContentAuditTiers pillar="localization" />
       <PillarClusters pillar="localization" />
     </>
   );
