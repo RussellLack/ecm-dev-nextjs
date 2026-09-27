@@ -80,14 +80,20 @@ const fallbackHero = {
    consistent description of each pillar wherever they meet it. See
    docs/CONTENT-PILLARS-POSITIONING.md and
    docs/SERVICE-CLARITY-AUDIT-2026-09-20.md. */
-/* Compact proof line under the hero. Three documented engagements, one
-   per pillar, linked to their full case studies. Clients are described by
+/* Compact proof line under the hero. Four documented engagements linked
+   to their full case studies: the Nordic retail procurement case first,
+   as the featured case delivered independently through ECM.DEV (its
+   attribution says so), then one per pillar. Clients are described by
    type, as on the case-study cards, and no outcome is claimed here that the
    case study does not document. Most of this work was delivered as an
    agency lead rather than through ECM.DEV, so the line says so; each case
    study carries its own attribution. The count comes from Sanity in the
    existing homepage query and is omitted if unavailable. */
 const proofItems = [
+  {
+    label: "Inventory platform selection for a Nordic retail group, through ECM.DEV",
+    href: "/case-study/inventory-optimisation-platform-selection-nordic-retail-group",
+  },
   {
     label: "A global digital platform for a maritime services group",
     href: "/case-study/global-digital-platform-maritime-services-group",
