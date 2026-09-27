@@ -34,10 +34,6 @@ export async function generateMetadata(): Promise<Metadata> {
     fallbackTitle: "Content Operations",
     fallbackDescription: PILLAR_FALLBACKS.services.metaDescription,
     canonical: "/content-operations",
-    // The Sanity seo.metaTitle for this document still reads "Content
-    // Services" from before the /content-services -> /content-operations
-    // rename; pin the label used everywhere else on the site.
-    forceTitle: "Content Operations | ECM.DEV",
   });
 }
 
