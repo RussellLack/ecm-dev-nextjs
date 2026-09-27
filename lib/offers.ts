@@ -112,6 +112,8 @@ export const CONTENT_AUDIT = {
     ],
   },
   vatNote: "All prices exclude VAT where applicable.",
+  /** Illustrative Snapshot report for a fictional company. */
+  samplePath: "/content-audit/sample",
 } as const;
 
 /* ─── Time-bound introductory offer ─── */

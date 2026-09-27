@@ -92,7 +92,10 @@ export default function ContentAuditTiers({ pillar }: { pillar?: Pillar }) {
           ))}
         </div>
         <p className="text-center text-ink text-xs mt-8 max-w-2xl mx-auto">
-          {CONTENT_AUDIT.vatNote}
+          {CONTENT_AUDIT.vatNote}{" "}
+          <Link href={CONTENT_AUDIT.samplePath} className="underline hover:text-heading">
+            See what a Snapshot report looks like (illustrative sample)
+          </Link>
         </p>
       </div>
     </section>

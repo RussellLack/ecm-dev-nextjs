@@ -107,6 +107,12 @@ export default function FirstStepPanel({ pillar }: { pillar: Pillar }) {
               >
                 Discuss a {snap.name}
               </Link>
+              <Link
+                href={CONTENT_AUDIT.samplePath}
+                className="text-ecm-lime text-sm underline hover:text-ecm-lime-hover"
+              >
+                See a sample report
+              </Link>
               <a
                 href={`#${CONTENT_AUDIT.anchor}`}
                 className="text-ecm-lime text-sm underline hover:text-ecm-lime-hover"

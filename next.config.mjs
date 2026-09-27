@@ -42,6 +42,14 @@ const nextConfig = {
                       permanent: true,
             },
             {
+                      // Only /content-audit/sample exists under this path; send
+                      // the bare parent to the tiers on the audit's home pillar.
+                      // Temporary, since a dedicated audit page may follow.
+                      source: "/content-audit",
+                      destination: "/content-technology#content-audit",
+                      permanent: false,
+            },
+            {
                       source: "/case-study/crm-activation-program",
                       destination: "/case-study/advertising-sales-platform",
                       permanent: true,
