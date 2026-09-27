@@ -31,6 +31,7 @@ export async function getHomePage() {
     ctaHeading,
     ctaSubheading,
     fieldNotes[]{text, href, linkLabel},
+    "caseStudyCount": count(*[_type == "caseStudy" && defined(slug.current)]),
     seo
   }`);
 }
