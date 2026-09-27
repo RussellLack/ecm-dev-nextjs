@@ -7,6 +7,8 @@ import {
   enquiryHref,
 } from "@/lib/offers";
 import { isAuditOfferOpen } from "@/lib/auditOffer";
+import OfferViewTracker from "@/components/analytics/OfferViewTracker";
+import { JOURNEY_OFFER } from "@/lib/analytics";
 import { getAllAssessments } from "@/lib/assessment/queries";
 import ShareLinkButton from "@/components/assessments/ShareLinkButton";
 import PreviewButton from "@/components/assessments/PreviewButton";
@@ -356,6 +358,7 @@ export default async function AssessmentsPage() {
                 {AUDIT_OFFER_COPY.capacity}
               </p>
             )}
+            <OfferViewTracker offer={JOURNEY_OFFER.auditTiers} />
             <div id="content-audit" className="grid md:grid-cols-2 gap-6 scroll-mt-24">
               {[
                 { tier: snap, note: snap.credit },

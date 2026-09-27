@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CONTENT_AUDIT, enquiryHref } from "@/lib/offers";
+import OfferViewTracker from "@/components/analytics/OfferViewTracker";
+import { JOURNEY_OFFER } from "@/lib/analytics";
 
 /* Sample Content Audit Snapshot.
 
@@ -260,6 +262,7 @@ export default function SampleSnapshotPage() {
           <h1 className="text-white font-barlow font-bold text-3xl sm:text-4xl lg:text-5xl leading-tight mb-6">
             What a Snapshot gives you, before you commission one.
           </h1>
+          <OfferViewTracker offer={JOURNEY_OFFER.sampleReport} />
           <p className="text-white/85 text-base sm:text-lg leading-relaxed max-w-3xl">
             This is the shape of a real {snap.name} report, written for a
             fictional company. Read it for the quality of the decision it

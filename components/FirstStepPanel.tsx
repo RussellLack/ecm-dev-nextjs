@@ -1,4 +1,6 @@
 import Link from "next/link";
+import OfferViewTracker from "@/components/analytics/OfferViewTracker";
+import { JOURNEY_OFFER } from "@/lib/analytics";
 import {
   CONTENT_AUDIT,
   PILLAR_FIRST_STEP,
@@ -39,6 +41,7 @@ export default function FirstStepPanel({ pillar }: { pillar: Pillar }) {
         >
           {step.question}
         </h2>
+        <OfferViewTracker offer={JOURNEY_OFFER.snapshot} pillar={pillar} />
         <p className="text-ink text-base leading-relaxed mb-8 max-w-3xl">
           Two ways in. Check your own position for free, or have us review
           the evidence. Neither commits you to anything after it.

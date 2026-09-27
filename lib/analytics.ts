@@ -144,3 +144,61 @@ export function pushGateEvent(
     marketing_opt_in: params.marketing_opt_in ?? null,
   });
 }
+
+// ---------------------------------------------------------------------------
+// Commercial journey events
+// ---------------------------------------------------------------------------
+//
+// Measure the route from a recognised problem to a first-project enquiry
+// (docs/COMMERCIAL-JOURNEY-2026-09-27.md, section 6):
+//   journey_selected  - a homepage starting-point card was clicked
+//   offer_viewed      - an offer panel scrolled into view (once per page view)
+//   enquiry_submitted - the contact or audit-request form was sent
+//
+// Params are drawn from fixed lists only: never free text, never anything
+// the visitor typed, never assessment answers. GTM wiring (container UI, see
+// ANALYTICS.md): one Custom Event trigger matching
+// ^(journey_selected|offer_viewed|enquiry_submitted)$ and one GA4 event tag
+// forwarding `pillar`, `offer` and `source_page`.
+
+export type JourneyEventName =
+  | "journey_selected"
+  | "offer_viewed"
+  | "enquiry_submitted";
+
+/** Controlled offer values. Keep low-cardinality: add here, not inline. */
+export const JOURNEY_OFFER = {
+  firstProject: "first-project",
+  snapshot: "snapshot",
+  fullEstateAudit: "full-estate-audit",
+  auditTiers: "content-audit-tiers",
+  sampleReport: "snapshot-sample",
+  auditRequest: "audit-request",
+  ongoingSupport: "ongoing-support",
+  maturityResults: "maturity-results",
+  general: "general",
+} as const;
+
+export type JourneyOffer = (typeof JOURNEY_OFFER)[keyof typeof JOURNEY_OFFER];
+export type JourneyPillar = "technology" | "services" | "localization";
+
+export interface JourneyEventParams {
+  offer: JourneyOffer | null;
+  pillar: JourneyPillar | null;
+  source_page: string;
+}
+
+/** Push a commercial journey event. No-ops on the server. */
+export function pushJourneyEvent(
+  event: JourneyEventName,
+  params: Partial<JourneyEventParams>
+): void {
+  if (typeof window === "undefined") return;
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({
+    event,
+    offer: params.offer ?? null,
+    pillar: params.pillar ?? null,
+    source_page: params.source_page ?? window.location.pathname,
+  });
+}

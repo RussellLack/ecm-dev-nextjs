@@ -1,7 +1,30 @@
 # Commercial Journey: First Release
 
-Status: first release implemented on branch `claude/sharp-pasteur-hfmxq7`, 27 September 2026.
+Status: implemented and merged to `main` on 27 September 2026 across PRs #93 to #99
+(see section 0 for the release log and section 9 for what is left).
 Source brief: *ECM.dev Commercial Architecture Review, September 2026*.
+## 0. Release log, 27 September 2026
+
+All PRs were merged into `main` (auto-deployed by Netlify) only after every check
+passed, including the Playwright e2e suite. #99 is the last; confirm it merged.
+
+| PR | What it shipped |
+|---|---|
+| RussellLack/ecm-dev-nextjs#93 | First release of the commercial journey: `lib/offers.ts` source of truth, homepage restructure ("Your first project", problem-led starting points, shorter hero straight to the ungated tool), pillar `FirstStepPanel`, contextual contact form, consent-aware sticky CTA, consistency fixes. Also extended the free audit offer to 31 October. |
+| RussellLack/ecm-dev-nextjs#94 | Removed the temporary Operations title pin once Sanity was corrected. |
+| RussellLack/ecm-dev-nextjs#95 | Sample Snapshot report at `/content-audit/sample`; Snapshot sample tie-break; item definition and 50-item minimum ("What counts as an item?" under the audit tiers). |
+| RussellLack/ecm-dev-nextjs#96 | `/assessments` grouped by commitment type; CTA buttons aligned on the homepage and pillar panels; homepage ticker replaced by a single "field note". |
+| RussellLack/ecm-dev-nextjs#97 | Field notes moved into Sanity (`homePage.fieldNotes`), with a code fallback. |
+| RussellLack/ecm-dev-nextjs#98 | "Selected work" proof line under the hero: four documented case studies, count from Sanity. |
+| RussellLack/ecm-dev-nextjs#99 | Commercial journey analytics events; rewritten homepage "Why not hire, or share it out?" section; this document update. |
+
+**Sanity changes made directly (project `0dep7ult`, dataset `production`, all published):**
+
+- `service-services.seo.metaTitle` set to "Content Operations & Governance Consulting | ECM.DEV" (was "Content Services...").
+- Maturity assessment (`DoFxt9hc4cRN1iDurUoG3v`) intro text now says "content operations maturity" (was "content infrastructure maturity"). `estimatedMinutes` confirmed as 5.
+- `homePage.fieldNotes` seeded with the nine field notes.
+- Checked, no change needed: `homePage.tickerPhrases` never contained the "fixed-price build" line, and the site never read that field.
+
 This file does four jobs. It records the current-state inventory, lists the commercial
 decisions only Russell can make, maps what changed page by page, and serves as the
 verification record. Anything marked **OPEN** has been kept out of public copy.
@@ -23,8 +46,8 @@ Read directly from the repository (not the cached search index the brief warns a
 | D9 | The Operations browser title still read "Content Services" (a stale Sanity `seo.metaTitle`). | Sanity `service-services` | **Fixed in Sanity** (27 September): now "Content Operations & Governance Consulting \| ECM.DEV". The temporary code pin (`forceTitle`) has been removed. |
 | D10 | Contact form ignored the `?service=` context that pillar pages already sent. It had no "what happens next" copy, and a failed send gave no fallback route. | `ContactForm.tsx` | **Fixed.** See section 3. |
 | D11 | The mobile sticky CTA and the cookie banner were both fixed to the bottom on first visit. | `app/page.tsx` | **Fixed.** The sticky bar appears only once consent is answered. |
-| D12 | The ticker fallback said "A fixed-price build, then a monthly retained service". No fixed-price build offer is published. | `app/page.tsx` | **Fixed in fallback.** The ticker is Sanity-overridable, so check `homePage.tickerPhrases` in Studio for the same line. |
-| D13 | The `/assessments` hub durations were literals that could drift from the tools. | `app/assessments/page.tsx` | **Fixed.** They read `TOOLS`. The featured card still reads `estimatedMinutes` from Sanity (should be 5). |
+| D12 | The ticker fallback said "A fixed-price build, then a monthly retained service". No fixed-price build offer is published. | `app/page.tsx` | **Resolved.** The ticker was later replaced by field notes (#96, #97). The homepage query never read `tickerPhrases`, so only the code fallback had ever been shown; that field is now hidden in the Studio. |
+| D13 | The `/assessments` hub durations were literals that could drift from the tools. | `app/assessments/page.tsx` | **Fixed.** They read `TOOLS`. The featured card reads `estimatedMinutes` from Sanity, confirmed as 5. |
 
 Also confirmed: the `/content-services` redirect to `/content-operations` exists (`next.config.mjs`, permanent). No URLs were changed in this release, so no redirects are needed.
 
@@ -54,6 +77,15 @@ None of these appear in public copy until decided.
 | `ContactForm.tsx`, `/api/contact`, `public/__forms.html` | Reads `?offer=` and `?pillar=` against fixed lists, plus the older `?service=` / `?topic=` (length-capped). Shows the context as a visible, clearable "About:" line. Submits it as `enquiryContext`. Adds "What happens next" steps and a mailing-list disclaimer. Success is confirmed via `role=status`. On error, input is kept, `role=alert` is set and `rl@ecm.dev` is offered as a fallback. |
 | `MobileStickyCta.tsx` (new) | Homepage sticky bar, shown only after the cookie choice. |
 | `ProblemPage.tsx`, `SolutionPage.tsx`, `app/assessments/page.tsx` | Durations come from `lib/offers.ts`. |
+| `/content-audit/sample` (new, #95) | Illustrative Snapshot report for a fictional company (Calder & Finch Instruments), labelled synthetic three times. In the sitemap; bare `/content-audit` redirects (temporarily) to `/content-technology#content-audit`. |
+| `CONTENT_AUDIT.itemDefinition` (#95) | "What counts as an item?" disclosure under the audit tiers; sample rule shown on tiers and first-step panels. |
+| `/assessments` (#96) | Three groups with jump links: free with no email, free with an email to open, expert-led fixed fee. Badges read `UNGATED_ASSESSMENT_SLUGS` (moved to `lib/offers.ts`, also used by the email gate). One `ToolCard` replaces five duplicated blocks; share-link anchors unchanged. |
+| CTA alignment (#96) | Homepage first-project cards and `FirstStepPanel` reserve equal link rows and equal button heights, so primary buttons line up (measured at 768 to 1600px). |
+| Field notes (#96, #97) | `components/FieldNote.tsx` replaces the ticker: one still note at a time, "Another note" button, aria-live only after a request. Content in Sanity `homePage.fieldNotes` (Studio validation rejects dashes and external links); `lib/fieldNotes.ts` is the fallback. |
+| Proof line (#98) | "Selected work" under the hero: Nordic retail procurement (the one delivered through ECM.DEV) first, then maritime platform, paints and coatings product finding, seafood localisation. Clients by type, attribution note, "See all N case studies" from the existing homepage query. |
+| "Why" section (#99) | Heading "Why not hire, or share it out?"; body shows the cost of each option; ends on "a system your own team can run" and "evidence you could put in front of your board". |
+| Analytics (#99) | See section 6. |
+| Language rule | "Guaranteed saving" reworded to "promise of savings" in the hub and `FirstStepPanel`. |
 
 **Route map:** no routes added, removed or renamed. `/contact?offer=<topic>&pillar=<pillar>#contact` is the new contextual enquiry pattern (`enquiryHref()`).
 
@@ -99,18 +131,19 @@ Published facts are filled in. **MISSING** marks business facts that must not be
 One complete journey, available from every pillar:
 **problem card → pillar page → first-step panel → free self-check or "Discuss a Snapshot" → contact form with the offer retained → confirmation that explains the next step.**
 
-Deliberately left out of this release: new offers, pricing changes, a sample-output page, a pilot page, restructuring the assessments hub by intent, new analytics events and the promotion's end state (it switches automatically).
+Deliberately left out of the first release (#93): new offers, pricing changes, a pilot page and the promotion's end state (it switches automatically). The sample output, hub restructure, proof line and analytics events followed later the same day (#95 to #99).
 
-## 6. Measurement definitions (proposed, not yet instrumented)
+## 6. Measurement (instrumented in #99; GTM still to configure)
 
-The existing `close_convert_lead` event already fires on contact and audit submissions. Proposed additions, keeping the vocabulary small:
+Pushed to `window.dataLayer` by `pushJourneyEvent()` in `lib/analytics.ts`. Full detail,
+including the GTM trigger, tag and GA4 custom dimensions, is in `ANALYTICS.md`.
 
-| Event | When | Params (no personal or answer data) |
+| Event | When | Params (fixed lists only; no personal or answer data) |
 |---|---|---|
-| `journey_selected` | Click on a homepage starting-point card | `pillar` |
-| `offer_viewed` | First-step panel or tiers enter the viewport | `offer`, `pillar`, `source_page` |
-| `enquiry_submitted` | Contact form success | `offer`, `pillar` (from the whitelisted context only) |
-| `diagnostic_completed` | Already covered by `qualify_lead` | none |
+| `journey_selected` | Homepage starting-point card clicked | `pillar` |
+| `offer_viewed` | Offer panel first scrolls into view, once per page view: homepage "Your first project", pillar first-step panel and audit tiers, `/assessments` expert group, sample report | `offer`, `pillar`, `source_page` |
+| `enquiry_submitted` | Contact form (offer and pillar from the URL's fixed lists, else `general` / `null`) or audit-request form (`audit-request`) sent | `offer`, `pillar`, `source_page` |
+| `diagnostic_completed` | Already covered by the existing `qualify_lead` | none |
 | `first_project_agreed` | Recorded in the CRM, not in analytics | none |
 
 Primary measures: qualified first-project enquiries per month, enquiry to scoping, scoping to paid, and days from enquiry to agreed first project. Traffic is low, so review enquiries qualitatively and do not claim significance from small counts. No percentage targets until there is a baseline.
@@ -126,12 +159,32 @@ Primary measures: qualified first-project enquiries per month, enquiry to scopin
 | Mobile 390×844, first visit | Primary hero CTA fully visible above the cookie banner. Sticky bar hidden. |
 | Mobile after consent | Sticky bar shown with the label "Free maturity assessment · 5 min". |
 | Contact context | "About: Content Audit: Snapshot · Content Operations" shown and clearable. |
-| Not verified here | Real form submission to Netlify (needs deploy and CSRF secret), GA4, dark mode on the new sections, keyboard focus order on the new sections, and live Sanity content overriding fallbacks. |
+| CI on every PR (#93 to #99) | Netlify redirect and header rules, and the Playwright e2e suite, green before each merge. Lighthouse Best Practices shows 83 on every preview, including PRs that do not touch these pages (#92): a preview-environment difference, not a regression. |
+| Sample page, hub, proof line, field notes | Screenshots at 390px and 1280px: no horizontal scroll, no page errors from these changes. Hub share-link anchors all resolve. |
+| CTA alignment | Button tops and heights identical across cards at 768, 1024, 1280 and 1600px. |
+| Field notes | "Another note" changes the note; `aria-live` switches to `polite` only after the first click. Fallback renders when Sanity is unreachable; the production GROQ projection returns all nine notes. |
+| Proof line | All four case-study slugs and the count (72) confirmed against production Sanity. |
+| Analytics | `dataLayer` read in Chromium: `offer_viewed` once per panel and not on load; `journey_selected` carries the pillar; `enquiry_submitted` carries `snapshot` / `services` from the URL and `general` / `null` for junk params. |
+| Not verified here | Real form submission to Netlify (needs deploy and CSRF secret), GA4 receipt (GTM not yet configured), dark mode on the new sections, keyboard focus order on the new sections. The deploy previews could not be opened from this environment. |
 
-## 8. Suggested next steps (after O1 to O8)
+## 8. Suggested next steps
 
-1. ~~Build a sample Snapshot output page (O8).~~ Done: `/content-audit/sample`.
-2. Reorganise `/assessments` by commitment type: free and ungated, free with email, expert-led.
-3. Add a compact, substantiated proof line directly under the hero (the brief's section 2). At the moment, proof is the full featured-work block further down.
-4. Instrument the three events above.
+1. ~~Build a sample Snapshot output page (O8).~~ Done (#95).
+2. ~~Reorganise `/assessments` by commitment type.~~ Done (#96).
+3. ~~Add a compact, substantiated proof line under the hero.~~ Done (#98).
+4. ~~Instrument the three journey events.~~ Done in code (#99); GTM configuration outstanding (section 9).
 5. Point each `/problems/*` page's CMS `diagnosticUrl` at a single named tool so its duration label shows.
+6. Once ECM.DEV Intel has around ten published items (it had none on 27 September), switch the field-note slot to show the latest Intel signals.
+7. The CMS estimator's methodology notes still use "guarantees" in a negated sense (`app/assessment/cms-implementation/methodology/page.tsx`, `components/assessment/cms-implementation/Result.tsx`). Review against the language rule.
+
+## 9. Left for Russell
+
+**Operational (a few minutes each):**
+
+- Open ecm-dev.sanity.studio and check the Field Notes field on the Home Page document. No manual deploy is needed: `.github/workflows/studio-deploy.yml` redeploys the Studio whenever Studio files change on `main`, and it ran successfully after #97 merged (27 September, 13:51 UTC).
+- Configure GTM: Data Layer Variables `offer`, `pillar`, `source_page`; one Custom Event trigger for `^(journey_selected|offer_viewed|enquiry_submitted)$`; one GA4 event tag; register `offer` and `pillar` as GA4 custom dimensions. Steps in `ANALYTICS.md`.
+- Send one real contact enquiry via `/contact?offer=snapshot&pillar=services` and check that `enquiryContext` appears in the Netlify form notification.
+- Read `/content-audit/sample` for realism against real Snapshot delivery.
+- Check the new sections in dark mode.
+
+**Commercial decisions still open (section 2):** O1 free audit depth; O2 any credit toward ongoing work; O3 trial projects; O4 pillar-specific Snapshot framing; O6 contact response time; O7 managed package pricing. O5 and O8 are closed.

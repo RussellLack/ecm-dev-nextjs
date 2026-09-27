@@ -11,6 +11,9 @@ import { urlFor } from "@/lib/sanity";
 import { isAuditOfferOpen } from "@/lib/auditOffer";
 import MobileStickyCta from "@/components/MobileStickyCta";
 import FieldNote from "@/components/FieldNote";
+import TrackedLink from "@/components/analytics/TrackedLink";
+import OfferViewTracker from "@/components/analytics/OfferViewTracker";
+import { JOURNEY_OFFER } from "@/lib/analytics";
 import { resolveFieldNotes } from "@/lib/fieldNotes";
 import {
   AUDIT_OFFER_COPY,
@@ -116,6 +119,7 @@ const pillars = [
   {
     title: "Publishing takes too long.",
     pillar: "Content Operations",
+    pillarKey: "services" as const,
     href: "/content-operations",
     blurb:
       "Find where approvals, handoffs and ownership slow work down, then give content an owner and a workflow that holds.",
@@ -124,6 +128,7 @@ const pillars = [
   {
     title: "Your CMS is getting in the way.",
     pillar: "Content Technology",
+    pillarKey: "technology" as const,
     href: "/content-technology",
     blurb:
       "Understand which problems come from the platform and which come from how it is set up, before anyone mentions a migration.",
@@ -132,6 +137,7 @@ const pillars = [
   {
     title: "Localisation costs keep growing.",
     pillar: "Content Localisation",
+    pillarKey: "localization" as const,
     href: "/content-localization",
     blurb:
       "Identify the source-content and workflow issues creating avoidable effort in every new language.",
@@ -277,10 +283,13 @@ const journeySteps = [
    opener: by this point the visitor has seen the pillars, the audit, the
    offer, and the evidence. */
 const whyEcmDev = {
-  heading: "Why ecm.dev?",
-  body: "There are really only two ways most businesses solve this today: hire for it, or hand tasks to whoever's available and hope the pieces add up to something coherent. Both have a real cost. A hire means recruiting, management time, and months of ramp-up before you see the judgement you're paying for. Handing out tasks means no one owns the outcome, and whatever gets built has to be rebuilt the next time someone new picks it up.",
+  heading: "Why not hire, or share it out?",
+  paragraphs: [
+    "When content starts to matter, most businesses do one of two things. They hire someone, or they spread the work across whoever has time.",
+    "Hiring is the tidier answer on paper. In practice it means recruiting, managing, and several months before the new person knows the organisation well enough to exercise the judgement you hired them for. Sharing the work out is quicker to start, but nobody owns the result, so each new person rebuilds what the last one left behind.",
+  ],
   closingLine:
-    "ECM.DEV is neither: a system that runs without needing to staff for it, the same judgement retained month to month rather than re-hired each time, and an AI-readiness score you could defend to your own board.",
+    "ECM.DEV sits between the two. The judgement stays with you from one month to the next instead of being hired again, and what gets built is a system your own team can run. When the question is AI readiness, the answer comes with evidence you could put in front of your board.",
 };
 
 const fallbackBlogPosts = [
@@ -471,9 +480,11 @@ export default async function HomePage() {
           )}
           <div className="grid md:grid-cols-3 gap-6">
             {pillars.map((pillar) => (
-              <Link
+              <TrackedLink
                 key={pillar.href}
                 href={pillar.href}
+                event="journey_selected"
+                params={{ pillar: pillar.pillarKey }}
                 className="group bg-ecm-green rounded-xl p-6 sm:p-8 border border-ecm-lime/20 flex flex-col hover:border-ecm-lime/50 transition-colors"
               >
                 <p className="text-ecm-lime/70 font-barlow font-semibold text-xs uppercase tracking-wide mb-2">
@@ -491,7 +502,7 @@ export default async function HomePage() {
                 <span className="mt-4 inline-flex items-center gap-1 text-ecm-lime font-barlow font-semibold text-sm group-hover:gap-2 transition-all">
                   See where to start <span aria-hidden="true">&rarr;</span>
                 </span>
-              </Link>
+              </TrackedLink>
             ))}
           </div>
           {/* AI readiness is a route across all three pillars, not a fourth
@@ -531,6 +542,7 @@ export default async function HomePage() {
           <h2 className="text-heading font-barlow font-bold text-3xl lg:text-4xl text-center mb-4">
             Your first project.
           </h2>
+          <OfferViewTracker offer={JOURNEY_OFFER.firstProject} />
           <p className="text-ink text-center text-base mb-12 max-w-2xl mx-auto">
             Three levels of commitment, the same for every pillar. Each one is
             useful on its own, and none of them commits you to the next.
@@ -842,9 +854,11 @@ export default async function HomePage() {
           <h2 className="text-heading font-barlow font-bold text-3xl lg:text-4xl mb-6">
             {whyEcmDev.heading}
           </h2>
-          <p className="text-ink text-base leading-relaxed mb-6">
-            {whyEcmDev.body}
-          </p>
+          {whyEcmDev.paragraphs.map((para) => (
+            <p key={para.slice(0, 24)} className="text-ink text-base leading-relaxed mb-6">
+              {para}
+            </p>
+          ))}
           <p className="text-heading font-barlow font-semibold text-base leading-relaxed">
             {whyEcmDev.closingLine}
           </p>

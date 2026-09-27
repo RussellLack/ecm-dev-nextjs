@@ -1,4 +1,6 @@
 import Link from "next/link";
+import OfferViewTracker from "@/components/analytics/OfferViewTracker";
+import { JOURNEY_OFFER } from "@/lib/analytics";
 import { isAuditOfferOpen } from "@/lib/auditOffer";
 import {
   AUDIT_OFFER_COPY,
@@ -51,6 +53,7 @@ export default function ContentAuditTiers({ pillar }: { pillar?: Pillar }) {
         <h2 className="text-heading font-barlow font-bold text-3xl lg:text-4xl text-center mb-4">
           Deeper proof, when you need it in writing.
         </h2>
+        <OfferViewTracker offer={JOURNEY_OFFER.auditTiers} pillar={pillar} />
         <p className="text-ink text-center text-base mb-6 max-w-2xl mx-auto">
           ecm-agent scans your actual content estate rather than relying on
           self-reporting. Two depths, both fixed scope. Diagnosis only:

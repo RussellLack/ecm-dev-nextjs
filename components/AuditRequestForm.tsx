@@ -11,7 +11,13 @@
 
 import { useState } from "react";
 import { useCsrf } from "@/lib/useCsrf";
-import { pushLeadEvent, LEAD_TYPE, TOOL_NAME } from "@/lib/analytics";
+import {
+  pushLeadEvent,
+  pushJourneyEvent,
+  LEAD_TYPE,
+  TOOL_NAME,
+  JOURNEY_OFFER,
+} from "@/lib/analytics";
 
 const FIELD_CLASS =
   "w-full bg-transparent border-b border-white/60 text-white text-sm py-1.5 focus:border-ecm-lime outline-none transition-colors";
@@ -59,6 +65,7 @@ export default function AuditRequestForm({
         tool_name: TOOL_NAME.auditRequest,
         lead_type: LEAD_TYPE.bookedCall,
       });
+      pushJourneyEvent("enquiry_submitted", { offer: JOURNEY_OFFER.auditRequest });
       setFormData({ fullName: "", workEmail: "", company: "", websiteUrl: "", notes: "" });
     } catch {
       setStatus("error");
