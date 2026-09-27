@@ -24,7 +24,7 @@ const tiers = [
     kicker: "First real proof",
     tier: CONTENT_AUDIT.snapshot,
     description:
-      "ecm-agent scans a genuine sample of your content, up to 100 items or 10% of the estate. A report of 5 to 10 pages, your top five findings, and one or two shown actually failing in an AI answer. 45-minute recorded readout.",
+      "ecm-agent scans a genuine sample of your content, up to 100 items or 10% of the estate, whichever is smaller. A report of 5 to 10 pages, your top five findings, and one or two shown actually failing in an AI answer. 45-minute recorded readout.",
     note: CONTENT_AUDIT.snapshot.credit,
   },
   {

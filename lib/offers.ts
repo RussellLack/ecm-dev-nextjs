@@ -89,7 +89,7 @@ export const CONTENT_AUDIT = {
     name: "Snapshot",
     price: "£2,000 to £3,000",
     duration: "5 to 7 business days",
-    scope: "a real sample of your estate, up to 100 items or 10% of it",
+    scope: "a real sample of your estate, up to 100 items or 10% of it, whichever is smaller",
     outputs: [
       "A 5 to 10 page report",
       "Your top five findings",
