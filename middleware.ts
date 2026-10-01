@@ -44,6 +44,10 @@ export function middleware(request: NextRequest) {
         "https://ssl.google-analytics.com",
         "https://www.googletagmanager.com",
         "https://tagmanager.google.com",
+        // Cloudflare Turnstile (assessment bot check). Loaded dynamically by
+        // our own bundle, so 'strict-dynamic' already covers it; listed for
+        // browsers without 'strict-dynamic' support.
+        "https://challenges.cloudflare.com",
       ]
       .filter(Boolean)
       .join(" ");
@@ -58,7 +62,8 @@ export function middleware(request: NextRequest) {
         `img-src 'self' data: blob: https://cdn.sanity.io https://*.google-analytics.com https://www.googletagmanager.com https://*.gstatic.com`,
         `connect-src 'self' https://cdn.sanity.io https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://tagmanager.google.com https://tagassistant.google.com`,
         // GTM <noscript> iframe + Tag Assistant / Preview overlay load from these.
-        `frame-src 'self' https://www.googletagmanager.com https://tagmanager.google.com`,
+        // challenges.cloudflare.com: the Turnstile widget iframe on assessments.
+        `frame-src 'self' https://www.googletagmanager.com https://tagmanager.google.com https://challenges.cloudflare.com`,
         // Allow tagassistant.google.com to embed ecm.dev for Preview mode.
         // No third-party can frame ecm.dev otherwise (clickjacking protection).
         `frame-ancestors 'self' https://tagassistant.google.com`,

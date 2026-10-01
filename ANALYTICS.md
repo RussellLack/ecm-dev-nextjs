@@ -196,6 +196,37 @@ review the enquiries themselves before drawing conclusions from small counts.
 - The "24frames Performance Dashboard" collection may still appear in the left
   nav — this is a legacy artefact. It is safe to delete if it reappears.
 
+## Lead Events Behind Bot Verification (October 2026)
+
+GA4 showed most key events coming from US data-centre sessions that ran
+JavaScript and finished an assessment in about 2 seconds, plus the site's own
+E2E suite (source `e2e`). Two changes followed. The GTM container and GA4
+property were not touched: event names and parameters are unchanged.
+
+**`qualify_lead` waits for the server.** The lead magnet and process
+assessments show their result immediately, then call `POST /api/assessment/verify`
+(`lib/assessment/useLeadVerification.ts`). `qualify_lead` is pushed only when
+it answers `qualified: true`. The route checks, in order:
+
+1. Honeypot: the off-screen `website` field must be empty.
+2. Minimum time: at least 8 seconds since the assessment first rendered.
+3. Cloudflare Turnstile: the invisible widget's token must verify.
+
+It always answers HTTP 200 so bots get no signal, and a Cloudflare outage
+counts the completion as unqualified rather than showing an error. Needs
+`NEXT_PUBLIC_TURNSTILE_SITE_KEY` and `TURNSTILE_SECRET_KEY` in Netlify;
+without them nothing qualifies, so `qualify_lead` stops firing.
+
+Unchanged: funnel and gate events (`gate_view`, `gate_register`,
+`assessment_preview`), and the lead events that already followed a server
+check (`lead_submit` after the PDF email, `close_convert_lead` and
+`enquiry_submitted` after the contact or audit-request form).
+
+**E2E tests send nothing to GA4.** Every spec imports `test` from
+`tests/e2e/fixtures.ts`, which aborts requests to Google Analytics, Tag
+Manager and the first-party `/gtm/` proxy. The suite targets a local server
+by default; production only via `E2E_BASE_URL` (the scheduled monitor).
+
 ## Verification Checklist
 
 After any GTM or analytics code change, verify the following on
@@ -234,6 +265,17 @@ Check: Confirm the nonce is being passed to the GTM init `Script` tag. Confirm
 proxy routes are returning 200. Confirm the CSP is set on **both** the request
 and response headers in `middleware.ts` (see CSP & Nonce above).
 
+**Problem: `qualify_lead` stopped appearing in GA4 after the bot check shipped.**
+Check: both Turnstile keys are set in Netlify for the production context and
+the ecm.dev hostname is on the Cloudflare widget. Netlify function logs show
+`Assessment verify rejected: <reason>` or `Assessment verify: no_secret` /
+`turnstile_unreachable` for every refused completion.
+
+**Problem: source `e2e` or data-centre sessions in GA4 again.**
+Check: a spec imports from `@playwright/test` instead of `./fixtures`, or a
+spec opens `browser.newContext()` directly instead of the `newContext`
+fixture, so the analytics block is skipped.
+
 ## Known Issues
 
 | Issue | Status | Notes |
@@ -243,4 +285,4 @@ and response headers in `middleware.ts` (see CSP & Nonce above).
 
 ---
 
-_Last updated: June 2026_
+_Last updated: October 2026_

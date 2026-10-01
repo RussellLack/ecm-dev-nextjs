@@ -16,6 +16,8 @@ import { expect, type Page, type Request } from "@playwright/test";
  *                              opt-in via `allowAnonymousScoring`, because the
  *                              server-rendered results page needs a real
  *                              stored submission to render)
+ *   - /api/assessment/verify  (bot check before qualify_lead; stores and
+ *                              sends nothing)
  */
 
 export const TEST_EMAIL = "e2e-noreply@example.com";
@@ -84,6 +86,8 @@ export async function interceptSubmissions(
     }
 
     if (path === "/api/csrf") return route.continue();
+    // fallback (not continue) so a spec's own handler for verify still runs.
+    if (path === "/api/assessment/verify") return route.fallback();
     if (path === "/api/assessment" && opts.allowAnonymousScoring) {
       return route.continue();
     }

@@ -1,5 +1,5 @@
 import fs from "node:fs";
-import { test, expect, type Page } from "@playwright/test";
+import { test, expect, type Page } from "./fixtures";
 import { TARGETS_FILE } from "./global-setup";
 import { BESPOKE_SLUGS, type AssessmentTarget } from "./helpers/targets";
 import { attachConsoleGuard } from "./helpers/hydration";
@@ -226,7 +226,7 @@ function sanityTargets(): AssessmentTarget[] {
   return all.filter((t) => !bespoke.has(t.slug));
 }
 
-test("sanity-authored: register → complete → email report", async ({ browser }) => {
+test("sanity-authored: register → complete → email report", async ({ newContext }) => {
   const targets = sanityTargets();
   test.skip(targets.length === 0, "no Sanity-authored assessments discovered");
   test.setTimeout(Math.max(150_000, targets.length * 150_000));
@@ -235,13 +235,14 @@ test("sanity-authored: register → complete → email report", async ({ browser
   for (const target of targets) {
     try {
       await test.step(`${target.slug} — ${target.url}`, async () => {
-        const context = await browser.newContext();
+        const context = await newContext();
         const page = await context.newPage();
         try {
           // The shell's anonymous scoring POST must reach the server: the
           // results page is server-rendered from the stored submission. It
           // holds answers + score only (no email, no CRM push). UTM tags mark
-          // these records as test traffic.
+          // these stored records as test traffic. GA4 never sees them: the
+          // fixtures block analytics in every test.
           const recorder = await interceptSubmissions(page, { allowAnonymousScoring: true });
           const guard = attachConsoleGuard(page);
 

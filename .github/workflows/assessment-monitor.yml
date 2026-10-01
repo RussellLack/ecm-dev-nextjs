@@ -43,7 +43,9 @@ jobs:
 
       - name: Smoke-test production assessments
         env:
-          BASE_URL: https://ecm.dev
+          # E2E_BASE_URL is the only way to aim the suite at production.
+          # Analytics are blocked in every test, so this sends nothing to GA4.
+          E2E_BASE_URL: https://ecm.dev
         run: npm run test:e2e:smoke
 
       - uses: actions/upload-artifact@v4

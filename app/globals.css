@@ -208,3 +208,21 @@ body {
   transform: translateY(-4px);
   box-shadow: 0 12px 24px rgba(49, 97, 72, 0.15);
 }
+
+/* Bot protection on assessments (see lib/assessment/useLeadVerification.ts).
+   Honeypot: off-screen rather than display:none, so naive bots still fill it. */
+.offscreen-trap {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+/* Turnstile runs in interaction-only mode: this slot is empty and invisible
+   unless Cloudflare needs the visitor to tick a box. */
+.turnstile-slot {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 60;
+}

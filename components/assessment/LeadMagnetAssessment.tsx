@@ -13,6 +13,8 @@ import Link from "next/link";
 import { useCsrf } from "@/lib/useCsrf";
 import { pushLeadEvent, TOOL_NAME, LEAD_TYPE } from "@/lib/analytics";
 import { CONSENT_TEXT, CONSENT_VERSION } from "@/lib/consent";
+import { useLeadVerification } from "@/lib/assessment/useLeadVerification";
+import { HoneypotField } from "@/components/assessment/HoneypotField";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // TYPES
@@ -959,18 +961,27 @@ export default function LeadMagnetAssessment() {
 
   const currentStep = STEPS[step];
 
+  // Bot protection: the Turnstile widget runs from the final question onwards.
+  const { honeypot, verify } = useLeadVerification(
+    currentStep === "context" || currentStep === "results"
+  );
+
   // Fire qualify_lead once when the results are shown (assessment completed,
-  // no PDF ordered yet). The results screen IS the qualification outcome.
+  // no PDF ordered yet), but only after the server confirms a real visitor.
+  // The results are already on screen; verification never delays them.
   const qualifyFired = useRef(false);
   useEffect(() => {
     if (currentStep === "results" && !qualifyFired.current) {
       qualifyFired.current = true;
-      pushLeadEvent("qualify_lead", {
-        tool_name: TOOL_NAME.leadMagnet,
-        lead_type: LEAD_TYPE.qualified,
+      void verify().then((qualified) => {
+        if (!qualified) return;
+        pushLeadEvent("qualify_lead", {
+          tool_name: TOOL_NAME.leadMagnet,
+          lead_type: LEAD_TYPE.qualified,
+        });
       });
     }
-  }, [currentStep]);
+  }, [currentStep, verify]);
 
   const setAnswer = (key: keyof Answers, val: string) =>
     setAnswers((prev) => ({ ...prev, [key]: val }));
@@ -1094,6 +1105,7 @@ export default function LeadMagnetAssessment() {
           <div className="space-y-8">
             <SectionHeader step="4 of 4" title="Your competitive context" subtitle="One last question — this shapes which formats will help you stand out rather than blend in." />
             <Question label="How would you describe the content / lead magnet landscape in your space?" options={COMPETITION_LEVEL} value={answers.competition} onChange={(v) => setAnswer("competition", v)} />
+            <HoneypotField honeypot={honeypot} />
             <NavButtons onBack={() => setStep(3)} onNext={() => setStep(5)} canNext={canAdvance()} />
           </div>
         )}

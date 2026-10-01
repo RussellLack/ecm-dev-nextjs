@@ -1,5 +1,5 @@
 import fs from "node:fs";
-import { test, expect } from "@playwright/test";
+import { test, expect } from "./fixtures";
 import { TARGETS_FILE } from "./global-setup";
 import type { AssessmentTarget } from "./helpers/targets";
 import { attachConsoleGuard } from "./helpers/hydration";
@@ -22,13 +22,13 @@ function loadTargets(): AssessmentTarget[] {
   if (!fs.existsSync(TARGETS_FILE)) {
     throw new Error(
       `Targets file missing (${TARGETS_FILE}). globalSetup should have written it — ` +
-        "ensure BASE_URL is set and global setup ran.",
+        "ensure the target is reachable and global setup ran.",
     );
   }
   return JSON.parse(fs.readFileSync(TARGETS_FILE, "utf-8")) as AssessmentTarget[];
 }
 
-test("every assessment hydrates and is interactive", async ({ browser }) => {
+test("every assessment hydrates and is interactive", async ({ newContext }) => {
   const targets = loadTargets();
   expect(
     targets.length,
@@ -46,7 +46,7 @@ test("every assessment hydrates and is interactive", async ({ browser }) => {
   for (const target of targets) {
     try {
       await test.step(`${target.slug} — ${target.url}`, async () => {
-        const context = await browser.newContext();
+        const context = await newContext();
         // The assessment tools sit behind the registration gate. Grant access
         // via the gate cookie so the suite reaches the tool itself — otherwise
         // every target would only ever see the gate form. Same cookie the gate

@@ -186,6 +186,11 @@ export default function PrivacyPage() {
                   <span className="font-semibold">Resend</span> &mdash; email
                   delivery for contact form submissions
                 </li>
+                <li>
+                  <span className="font-semibold">Cloudflare Turnstile</span>:
+                  we use Cloudflare Turnstile to protect our assessments and
+                  forms from automated abuse.
+                </li>
               </ul>
               <p className="mt-3">
                 Each of these services has its own privacy policy governing how

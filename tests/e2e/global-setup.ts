@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { getAssessmentTargets, warmTargets } from "./helpers/targets";
+import { resolveBaseURL } from "./base-url";
 
 /** Where the discovered target list is written for specs to read at collection. */
 export const TARGETS_FILE = path.join(process.cwd(), "test-results", "targets.json");
@@ -11,8 +12,7 @@ export const TARGETS_FILE = path.join(process.cwd(), "test-results", "targets.js
  * test graph synchronously, so async discovery must happen here).
  */
 export default async function globalSetup(): Promise<void> {
-  const baseURL = process.env.BASE_URL;
-  if (!baseURL) throw new Error("BASE_URL is required for global setup.");
+  const baseURL = resolveBaseURL();
 
   const targets = await getAssessmentTargets(baseURL);
   if (targets.length === 0) {
