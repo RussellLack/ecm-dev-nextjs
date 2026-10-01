@@ -65,15 +65,12 @@ export async function generateCsrfToken(): Promise<string> {
   return `${randomB64}.${sig}`;
 }
 
-/** Verify a token: returns true only if format + HMAC + identity check pass. */
-export async function verifyCsrfToken(
-  headerToken: string | null | undefined,
-  cookieToken: string | null | undefined
+/** True if the token is well-formed and its HMAC verifies against CSRF_SECRET. */
+export async function isSignedCsrfToken(
+  token: string | null | undefined
 ): Promise<boolean> {
-  if (!headerToken || !cookieToken) return false;
-  if (!safeEqual(headerToken, cookieToken)) return false;
-
-  const parts = headerToken.split(".");
+  if (!token) return false;
+  const parts = token.split(".");
   if (parts.length !== 2) return false;
   const [random, sig] = parts;
   if (!random || !sig) return false;
@@ -85,6 +82,16 @@ export async function verifyCsrfToken(
     return false;
   }
   return safeEqual(sig, expected);
+}
+
+/** Verify a token: returns true only if format + HMAC + identity check pass. */
+export async function verifyCsrfToken(
+  headerToken: string | null | undefined,
+  cookieToken: string | null | undefined
+): Promise<boolean> {
+  if (!headerToken || !cookieToken) return false;
+  if (!safeEqual(headerToken, cookieToken)) return false;
+  return isSignedCsrfToken(headerToken);
 }
 
 export const CSRF_COOKIE_NAME = COOKIE_NAME;

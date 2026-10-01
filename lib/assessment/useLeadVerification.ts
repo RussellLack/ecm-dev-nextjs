@@ -11,6 +11,8 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
+import { readCsrfCookie } from "@/lib/useCsrf";
+
 const SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 const SCRIPT_SRC =
   "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
@@ -40,20 +42,12 @@ declare global {
 
 let scriptPromise: Promise<void> | null = null;
 
-const CSRF_COOKIE = "ecm-csrf";
 const CSRF_HEADER = "x-csrf-token";
 
-function readCsrfCookie(): string | null {
-  const match = document.cookie.match(new RegExp(`(?:^|; )${CSRF_COOKIE}=([^;]*)`));
-  return match ? decodeURIComponent(match[1]!) : null;
-}
-
 /**
- * Double-submit header read from the cookie at send time. Not useCsrf():
- * every useCsrf() instance fetches its own token and resets the cookie, so a
- * token held in component state can stop matching the cookie the browser
- * actually sends (the results screen mounts another instance at the same
- * moment this request goes out).
+ * Double-submit header read from the cookie at send time. This hook has no
+ * useCsrf() of its own, so if no other component has fetched a token yet it
+ * fetches one first.
  */
 async function csrfHeader(): Promise<Record<string, string>> {
   let token = readCsrfCookie();
