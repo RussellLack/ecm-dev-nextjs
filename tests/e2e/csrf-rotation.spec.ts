@@ -233,9 +233,42 @@ test("slow first /api/csrf: a form submitted before the token arrives still send
   const checks = await recordCsrfPairs(page);
   // Long enough that the visitor registers while the only token is in flight.
   await delayFirstCsrfResponse(page, 4_000);
+  const csrf = trackCsrf(page);
+  // How many /api/csrf responses were in when the form was last submitted.
+  let responsesAtSubmit = -1;
+  await page.exposeFunction("__csrfTestSubmitted", () => {
+    responsesAtSubmit = csrf.responses();
+  });
+  await page.addInitScript(() => {
+    document.addEventListener(
+      "submit",
+      () => (window as unknown as { __csrfTestSubmitted: () => void }).__csrfTestSubmitted(),
+      true,
+    );
+  });
 
   await page.goto("/assessment/lead-magnet", { waitUntil: "domcontentloaded", timeout: 60_000 });
   await registerViaGate(page, recorder, "lead-magnet");
 
+  expect(responsesAtSubmit, "the gate was submitted while the token was still in flight").toBe(0);
+  expectAllMatch(checks, ["/api/assessment/gate"]);
+});
+
+test("expired cookie: a form submitted after the cookie is gone fetches a new token first", async ({
+  page,
+}) => {
+  const recorder = await interceptSubmissions(page);
+  const checks = await recordCsrfPairs(page);
+  const csrf = trackCsrf(page);
+
+  await page.goto("/assessment/lead-magnet", { waitUntil: "domcontentloaded", timeout: 60_000 });
+  await expect.poll(csrf.settled, { timeout: 15_000 }).toBe(true);
+  const before = csrf.responses();
+  // The mount fetch is done; now the cookie expires while the tab sits open.
+  await page.context().clearCookies({ name: CSRF_COOKIE });
+
+  await registerViaGate(page, recorder, "lead-magnet");
+
+  expect(csrf.responses(), "withCsrf fetched a new token").toBeGreaterThan(before);
   expectAllMatch(checks, ["/api/assessment/gate"]);
 });
