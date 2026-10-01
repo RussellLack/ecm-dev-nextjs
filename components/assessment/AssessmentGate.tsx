@@ -82,7 +82,7 @@ export default function AssessmentGate({ slug, title, children }: Props) {
       try {
         const res = await fetch("/api/assessment/gate", {
           method: "POST",
-          headers: withCsrf({ "Content-Type": "application/json" }),
+          headers: await withCsrf({ "Content-Type": "application/json" }),
           body: JSON.stringify({
             toolSlug: slug,
             toolTitle: title,

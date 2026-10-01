@@ -11,7 +11,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import { readCsrfCookie } from "@/lib/useCsrf";
+import { withCsrf } from "@/lib/useCsrf";
 
 const SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 const SCRIPT_SRC =
@@ -41,22 +41,6 @@ declare global {
 }
 
 let scriptPromise: Promise<void> | null = null;
-
-const CSRF_HEADER = "x-csrf-token";
-
-/**
- * Double-submit header read from the cookie at send time. This hook has no
- * useCsrf() of its own, so if no other component has fetched a token yet it
- * fetches one first.
- */
-async function csrfHeader(): Promise<Record<string, string>> {
-  let token = readCsrfCookie();
-  if (!token) {
-    await fetch("/api/csrf", { credentials: "same-origin" }).catch(() => null);
-    token = readCsrfCookie();
-  }
-  return token ? { [CSRF_HEADER]: token } : {};
-}
 
 /** Load the Turnstile script once per page. Only assessment pages call this. */
 function loadTurnstile(): Promise<void> {
@@ -149,7 +133,7 @@ export function useLeadVerification(challengeActive: boolean): LeadVerification 
       const res = await fetch("/api/assessment/verify", {
         method: "POST",
         credentials: "same-origin",
-        headers: { "Content-Type": "application/json", ...(await csrfHeader()) },
+        headers: await withCsrf({ "Content-Type": "application/json" }),
         body: JSON.stringify({
           startedAt: startedAt.current,
           website,

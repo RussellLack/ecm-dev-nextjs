@@ -683,7 +683,7 @@ function Results({
       const res = await fetch("/api/assessment/tool-submit", {
         method: "POST",
         credentials: "same-origin",
-        headers: withCsrf({ "Content-Type": "application/json" }),
+        headers: await withCsrf({ "Content-Type": "application/json" }),
         body: JSON.stringify({
           toolType: "lead-magnet",
           answers,
@@ -727,7 +727,7 @@ function Results({
         const res = await fetch("/api/assessment/tool-email", {
           method: "POST",
           credentials: "same-origin",
-          headers: withCsrf({ "Content-Type": "application/json" }),
+          headers: await withCsrf({ "Content-Type": "application/json" }),
           body: JSON.stringify({
             submissionId: sid,
             email: email.trim(),

@@ -60,7 +60,7 @@ export default function ContactForm() {
       const res = await fetch("/api/contact", {
         method: "POST",
         credentials: "same-origin",
-        headers: withCsrf({ "Content-Type": "application/json" }),
+        headers: await withCsrf({ "Content-Type": "application/json" }),
         body: JSON.stringify({ ...formData, enquiryContext: context, _hp: hp }),
       });
 

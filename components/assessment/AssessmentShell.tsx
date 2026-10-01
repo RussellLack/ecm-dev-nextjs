@@ -103,7 +103,7 @@ export default function AssessmentShell({ assessment }: AssessmentShellProps) {
       const res = await fetch("/api/assessment", {
         method: "POST",
         credentials: "same-origin",
-        headers: withCsrf({ "Content-Type": "application/json" }),
+        headers: await withCsrf({ "Content-Type": "application/json" }),
         body: JSON.stringify({
           assessmentId: assessment.slug.current,
           answers: answerEntries,

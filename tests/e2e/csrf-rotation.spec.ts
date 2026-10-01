@@ -15,7 +15,9 @@ import { TEST_EMAIL, interceptSubmissions, registerViaGate } from "./helpers/sub
  * held back so it lands last, or a second tab opened mid-flow) and asserts
  * every form POST carried a header equal to the cookie sent with it. The lead
  * endpoints stay stubbed, so nothing is stored or sent. The API test proves
- * the server side: a second GET keeps the first token valid.
+ * the server side: a second GET keeps the first token valid. The last test
+ * covers a slow first /api/csrf: a form submitted while the only token is
+ * still in flight must wait for it rather than POST without one.
  */
 
 test.setTimeout(150_000);
@@ -79,12 +81,17 @@ async function delayFirstCsrfResponse(page: Page, ms = 1_500) {
   });
 }
 
-function countCsrfResponses(page: Page): () => number {
-  let n = 0;
-  page.on("response", (res) => {
-    if (new URL(res.url()).pathname === "/api/csrf") n++;
+/** Counts /api/csrf responses, and whether any request is still unanswered. */
+function trackCsrf(page: Page): { responses: () => number; settled: () => boolean } {
+  let requests = 0;
+  let responses = 0;
+  page.on("request", (req) => {
+    if (new URL(req.url()).pathname === "/api/csrf") requests++;
   });
-  return () => n;
+  page.on("response", (res) => {
+    if (new URL(res.url()).pathname === "/api/csrf") responses++;
+  });
+  return { responses: () => responses, settled: () => requests > 0 && responses === requests };
 }
 
 async function answerStep(page: Page, questions: number) {
@@ -153,12 +160,12 @@ test("returning visitor: gate and tool mount together, late /api/csrf does not b
   const recorder = await interceptSubmissions(page);
   const checks = await recordCsrfPairs(page);
   await delayFirstCsrfResponse(page);
-  const csrfResponses = countCsrfResponses(page);
+  const csrf = trackCsrf(page);
 
   await page.goto("/assessment/process", { waitUntil: "domcontentloaded", timeout: 60_000 });
   await page.getByTestId("assessment-start").click();
-  // Gate and tool have both fetched, and the held-back response has landed.
-  await expect.poll(csrfResponses, { timeout: 15_000 }).toBeGreaterThanOrEqual(2);
+  // Every /api/csrf fetch from gate and tool, including the held-back one, has landed.
+  await expect.poll(csrf.settled, { timeout: 15_000 }).toBe(true);
 
   for (const questions of [1, 4, 3, 3, 2, 3]) {
     await answerStep(page, questions);
@@ -179,12 +186,12 @@ test("new visitor: Results mount and a second tab do not break the first tab's P
 }) => {
   const recorder = await interceptSubmissions(page);
   const checks = await recordCsrfPairs(page);
-  const csrfResponses = countCsrfResponses(page);
+  const csrf = trackCsrf(page);
 
   await page.goto("/assessment/lead-magnet", { waitUntil: "domcontentloaded", timeout: 60_000 });
   // The gate's own token has arrived (a POST before any token exists is a
   // different problem from rotation, so it is kept out of this test).
-  await expect.poll(csrfResponses, { timeout: 15_000 }).toBeGreaterThanOrEqual(1);
+  await expect.poll(csrf.responses, { timeout: 15_000 }).toBeGreaterThanOrEqual(1);
   await registerViaGate(page, recorder, "lead-magnet");
 
   await page.getByTestId("assessment-start").click();
@@ -196,8 +203,8 @@ test("new visitor: Results mount and a second tab do not break the first tab's P
   await answerStep(page, 1);
   await next(page);
   await expect(page.getByText("Lead Magnet Analysis")).toBeVisible();
-  // Gate instance plus the Results instance.
-  await expect.poll(csrfResponses, { timeout: 15_000 }).toBeGreaterThanOrEqual(2);
+  // The Results screen's fetch on mount has landed too.
+  await expect.poll(csrf.settled, { timeout: 15_000 }).toBe(true);
 
   // Another tab on the same site fetches /api/csrf for its own forms.
   const other = await context.newPage();
@@ -217,4 +224,18 @@ test("new visitor: Results mount and a second tab do not break the first tab's P
     "/api/assessment/tool-submit",
     "/api/assessment/tool-email",
   ]);
+});
+
+test("slow first /api/csrf: a form submitted before the token arrives still sends it", async ({
+  page,
+}) => {
+  const recorder = await interceptSubmissions(page);
+  const checks = await recordCsrfPairs(page);
+  // Long enough that the visitor registers while the only token is in flight.
+  await delayFirstCsrfResponse(page, 4_000);
+
+  await page.goto("/assessment/lead-magnet", { waitUntil: "domcontentloaded", timeout: 60_000 });
+  await registerViaGate(page, recorder, "lead-magnet");
+
+  expectAllMatch(checks, ["/api/assessment/gate"]);
 });

@@ -33,7 +33,7 @@ export default function EmailCaptureCTA({ inputs, result }: Props) {
     try {
       const res = await fetch("/api/feedback/email", {
         method: "POST",
-        headers: withCsrf({ "Content-Type": "application/json" }),
+        headers: await withCsrf({ "Content-Type": "application/json" }),
         body: JSON.stringify({
           email: email.trim(),
           consentGiven: true,
