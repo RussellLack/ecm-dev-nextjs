@@ -10,6 +10,7 @@
     "check:sanity": "node scripts/check-sanity-economy.mjs .",
     "prebuild": "npm run check:sanity",
     "test:cms-engine": "node --experimental-strip-types lib/assessment/cms-implementation/__tests__/engine.test.ts",
+    "test:bot-check": "node --experimental-strip-types lib/assessment/__tests__/verification.test.ts",
     "test:e2e": "playwright test",
     "test:e2e:smoke": "playwright test assessments.smoke",
     "test:e2e:full": "playwright test assessments.full",

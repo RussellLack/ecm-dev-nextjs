@@ -14,6 +14,8 @@ import Link from "next/link";
 import { useCsrf } from "@/lib/useCsrf";
 import { pushLeadEvent, TOOL_NAME, LEAD_TYPE } from "@/lib/analytics";
 import { CONSENT_TEXT, CONSENT_VERSION } from "@/lib/consent";
+import { useLeadVerification } from "@/lib/assessment/useLeadVerification";
+import { HoneypotField } from "@/components/assessment/HoneypotField";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // TYPES
@@ -619,6 +621,10 @@ export default function ProcessAssessment() {
   const [consentGiven, setConsentGiven] = useState(false);
   const [saving, setSaving] = useState(false);
   const [submissionId, setSubmissionId] = useState<string | null>(null);
+  // Bot protection: the Turnstile widget runs from the final stage onwards.
+  const { honeypot, verify } = useLeadVerification(
+    (view === "stage" && stage === 6) || view === "complete"
+  );
 
   /** Resolve assessment values to display labels and save to Sanity */
   async function saveSubmission(): Promise<string | null> {
@@ -660,7 +666,7 @@ export default function ProcessAssessment() {
       const res = await fetch("/api/assessment/tool-submit", {
         method: "POST",
         credentials: "same-origin",
-        headers: withCsrf({ "Content-Type": "application/json" }),
+        headers: await withCsrf({ "Content-Type": "application/json" }),
         body: JSON.stringify({
           toolType: "process",
           answers: a,
@@ -709,7 +715,7 @@ export default function ProcessAssessment() {
         const res = await fetch("/api/assessment/tool-email", {
           method: "POST",
           credentials: "same-origin",
-          headers: withCsrf({ "Content-Type": "application/json" }),
+          headers: await withCsrf({ "Content-Type": "application/json" }),
           body: JSON.stringify({
             submissionId: sid,
             email: assessment.email.trim(),
@@ -771,12 +777,17 @@ export default function ProcessAssessment() {
   function submit() {
     setAssessment(prev => ({ ...prev, status: "submitted", submittedAt: new Date().toISOString() }));
     setView("complete");
-    // Assessment completed (no PDF ordered yet) — the qualified-lead moment.
-    pushLeadEvent("qualify_lead", {
-      tool_name: TOOL_NAME.process,
-      lead_type: LEAD_TYPE.qualified,
-    });
     window.scrollTo(0, 0);
+    // Assessment completed (no PDF ordered yet): the qualified-lead moment,
+    // counted only after the server confirms a real visitor. The completion
+    // screen is already showing; verification never delays it.
+    void verify().then((qualified) => {
+      if (!qualified) return;
+      pushLeadEvent("qualify_lead", {
+        tool_name: TOOL_NAME.process,
+        lead_type: LEAD_TYPE.qualified,
+      });
+    });
   }
 
   // WELCOME
@@ -1192,6 +1203,7 @@ export default function ProcessAssessment() {
                 ))}
               </div>
             </div>
+            <HoneypotField honeypot={honeypot} />
           </div>
         )}
 

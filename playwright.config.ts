@@ -1,24 +1,21 @@
 import { defineConfig, devices } from "@playwright/test";
 
+import { resolveBaseURL, LOCAL_BASE_URL } from "./tests/e2e/base-url";
+
 /**
  * Playwright config for the assessment E2E suite.
  *
- * Target is selected entirely by the BASE_URL env var so the same specs run
- * against a Netlify deploy preview (the gate) or production (the monitor):
+ * The target origin comes from tests/e2e/base-url.ts:
  *
- *   BASE_URL=https://www.ecm.dev npm run test:e2e:smoke
+ *   npm run test:e2e                                  local server (default)
+ *   BASE_URL=<deploy preview> npm run test:e2e        deploy-preview gate
+ *   E2E_BASE_URL=https://ecm.dev npm run test:e2e:smoke   production, explicitly
  *
- * There is deliberately no default — an unset BASE_URL should fail loudly
- * rather than silently testing the wrong origin.
+ * Every spec imports from tests/e2e/fixtures.ts, which blocks Google
+ * Analytics and the /gtm/ proxy so test runs never reach GA4.
  */
-const baseURL = process.env.BASE_URL;
-
-if (!baseURL) {
-  throw new Error(
-    "BASE_URL is required (e.g. BASE_URL=https://www.ecm.dev). " +
-      "Set it to the deploy-preview or production origin under test.",
-  );
-}
+const baseURL = resolveBaseURL();
+const isLocal = baseURL === LOCAL_BASE_URL;
 
 export default defineConfig({
   testDir: "./tests/e2e",
@@ -36,6 +33,15 @@ export default defineConfig({
   reporter: process.env.CI
     ? [["list"], ["html", { open: "never" }]]
     : [["list"]],
+  // Default local target: reuse a running `npm run dev`, or start one.
+  webServer: isLocal
+    ? {
+        command: "npm run dev",
+        url: LOCAL_BASE_URL,
+        reuseExistingServer: true,
+        timeout: 180_000,
+      }
+    : undefined,
   use: {
     baseURL,
     trace: "on-first-retry",

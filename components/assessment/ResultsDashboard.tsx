@@ -96,7 +96,7 @@ export default function ResultsDashboard({
       const res = await fetch("/api/assessment/report", {
         method: "POST",
         credentials: "same-origin",
-        headers: withCsrf({ "Content-Type": "application/json" }),
+        headers: await withCsrf({ "Content-Type": "application/json" }),
         body: JSON.stringify({
           submissionId,
           email: reportEmail.trim(),
@@ -135,7 +135,7 @@ export default function ResultsDashboard({
       const res = await fetch("/api/assessment/feedback", {
         method: "POST",
         credentials: "same-origin",
-        headers: withCsrf({ "Content-Type": "application/json" }),
+        headers: await withCsrf({ "Content-Type": "application/json" }),
         body: JSON.stringify({
           submissionId,
           q1: feedbackQ1,

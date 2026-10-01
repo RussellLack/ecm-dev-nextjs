@@ -31,7 +31,7 @@ export default function FeedbackWidget({ inputs, result }: Props) {
     try {
       const res = await fetch("/api/feedback", {
         method: "POST",
-        headers: withCsrf({ "Content-Type": "application/json" }),
+        headers: await withCsrf({ "Content-Type": "application/json" }),
         body: JSON.stringify({
           modelVersion: MODEL_VERSION,
           inputs,
@@ -58,7 +58,7 @@ export default function FeedbackWidget({ inputs, result }: Props) {
     try {
       await fetch("/api/feedback", {
         method: "PATCH",
-        headers: withCsrf({ "Content-Type": "application/json" }),
+        headers: await withCsrf({ "Content-Type": "application/json" }),
         body: JSON.stringify({
           token,
           comment: comment.slice(0, 140),

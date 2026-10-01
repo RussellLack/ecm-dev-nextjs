@@ -51,7 +51,7 @@ export default function AuditRequestForm({
       const res = await fetch("/api/audit-request", {
         method: "POST",
         credentials: "same-origin",
-        headers: withCsrf({ "Content-Type": "application/json" }),
+        headers: await withCsrf({ "Content-Type": "application/json" }),
         body: JSON.stringify({ ...formData, _hp: hp }),
       });
 
