@@ -29,6 +29,11 @@ export async function generateMetadata({
     vendor.category ? ` (${vendor.category})` : ""
   }: AI-enriched briefings on platform updates, partnerships, and product direction.`;
   return {
+  /* Intel feed hidden 2026-09-06. Dropping the page from the sitemap does
+     not remove it from an index that already holds it — noindex is what
+     does. Routes still resolve for anyone holding a direct link. Remove
+     this to bring the surface back. */
+  robots: { index: false, follow: false },
     title,
     description,
     alternates: { canonical: `/intel/vendor/${slug}` },

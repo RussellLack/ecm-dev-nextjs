@@ -20,7 +20,8 @@ const siteLinks = [
 const resourceLinks = [
   { name: "Guides", href: "/guides" },
   { name: "Assessments", href: "/assessments" },
-  { name: "Intel", href: "/intel" },
+  /* Intel feed hidden 2026-09-06 — nothing was ever published to it.
+     Restore this line to bring the surface back into navigation. */
   { name: "Platforms", href: "/platforms" },
 ];
 

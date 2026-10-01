@@ -127,9 +127,6 @@ export async function GET() {
         ...posts.map((p) => link(`/post/${p.slug}`, p.title, p.description)),
       ]
     ),
-    section("Market intelligence", null, [
-      link("/intel", "Intel", "Curated market signals across ECM, headless CMS and content operations vendors."),
-    ]),
     section("Machine-readable", null, [
       link("/sitemap.xml", "Sitemap", "Full URL inventory for crawlers."),
       link("/robots.txt", "robots.txt", "Crawler access policy."),
