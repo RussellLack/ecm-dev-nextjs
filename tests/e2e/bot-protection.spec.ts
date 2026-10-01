@@ -207,7 +207,23 @@ test("invalid Turnstile token: no qualify_lead, no error", async ({ page }) => {
   });
 
   await runLeadMagnet(page);
-  test.skip(!widgetLoaded, "NEXT_PUBLIC_TURNSTILE_SITE_KEY is not set for this build");
+  // The widget script loads asynchronously; give it a moment before deciding.
+  await expect
+    .poll(() => widgetLoaded, { timeout: 5_000 })
+    .toBe(true)
+    .catch(() => {});
+  if (!widgetLoaded) {
+    // Say which case this is in the CI log: no script tag means the build has
+    // no NEXT_PUBLIC_TURNSTILE_SITE_KEY; a tag without an intercepted request
+    // means something (CSP, routing) stopped the load.
+    const tags = await page.locator('script[src*="challenges.cloudflare.com"]').count();
+    const reason =
+      tags === 0
+        ? "NEXT_PUBLIC_TURNSTILE_SITE_KEY is not set for this build (no Turnstile script tag)"
+        : `Turnstile script tag present (${tags}) but its request was never made`;
+    console.log(`invalid Turnstile token test skipped: ${reason}`);
+    test.skip(true, reason);
+  }
 
   await expectRejectedQuietly(page, seen, guard);
   expect(seen[0]!.body.turnstileToken).toBe("invalid-token");

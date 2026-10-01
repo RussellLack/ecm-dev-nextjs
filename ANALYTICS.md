@@ -216,6 +216,9 @@ It always answers HTTP 200 so bots get no signal, and a Cloudflare outage
 counts the completion as unqualified rather than showing an error. Needs
 `NEXT_PUBLIC_TURNSTILE_SITE_KEY` and `TURNSTILE_SECRET_KEY` in Netlify;
 without them nothing qualifies, so `qualify_lead` stops firing.
+Deploy previews use Cloudflare's test keys: the always-pass site key with
+the always-fail secret (the always-pass secret accepts any token, which
+breaks the e2e invalid-token test).
 
 Unchanged: funnel and gate events (`gate_view`, `gate_register`,
 `assessment_preview`), and the lead events that already followed a server
