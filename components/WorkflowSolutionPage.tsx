@@ -2,11 +2,17 @@ import Link from "next/link";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import JsonLd from "@/components/JsonLd";
 import FractionalLeadCard from "@/components/FractionalLeadCard";
+import ProofCard from "@/components/proof/ProofCard";
 import OfferViewTracker from "@/components/analytics/OfferViewTracker";
 import { JOURNEY_OFFER } from "@/lib/analytics";
 import { PILLAR_LABEL, enquiryHref } from "@/lib/offers";
 import { serviceSchema } from "@/lib/structuredData";
 import { PILLAR_HREF, type WorkflowSolution } from "@/lib/workflowSolutions";
+import {
+  ENGAGEMENTS_PATH,
+  SOLUTION_PROOF,
+  requireEngagement,
+} from "@/lib/representativeEngagements";
 
 /* One template for the seven buyer-situation pages (lib/workflowSolutions.ts).
    Section order follows the brief: hero, recognisable friction, the
@@ -57,6 +63,9 @@ export default function WorkflowSolutionPage({ data }: { data: WorkflowSolution 
   const path = `/solutions/${data.slug}`;
   const contactHref = enquiryHref("first-project", undefined, data.slug);
   const id = (s: string) => `${data.slug}-${s}`;
+  const proof = SOLUTION_PROOF[data.slug];
+  const primaryProof = requireEngagement(proof.primary);
+  const secondaryProof = requireEngagement(proof.secondary);
 
   return (
     <>
@@ -192,6 +201,48 @@ export default function WorkflowSolutionPage({ data }: { data: WorkflowSolution 
               {data.workflow.exception.body}
             </p>
           </aside>
+        </div>
+      </section>
+
+      {/* ─── WHAT THIS LOOKS LIKE IN PRACTICE ───
+          Representative engagements (lib/representativeEngagements.ts):
+          relevance today, placed after the workflow and before the first
+          project offer. The named-project evidence further down is the
+          proof of past delivery; the two are kept visibly separate. */}
+      <section aria-labelledby={id("practice")} className="bg-surface pb-20">
+        <div className="max-w-5xl mx-auto px-6">
+          <div className="border-t-2 border-heading pt-10">
+            <p className={EYEBROW}>Representative engagement</p>
+            <h2 id={id("practice")} className={`${H2} mb-3`}>
+              What this looks like in practice.
+            </h2>
+            <p className="text-ink text-base leading-relaxed mb-10 max-w-3xl">
+              An anonymised scenario drawn from patterns across our past
+              work, showing how this kind of problem gets solved. Named
+              projects follow further down the page.
+            </p>
+          </div>
+          <div className="grid lg:grid-cols-3 gap-6 items-stretch">
+            <div className="lg:col-span-2">
+              <ProofCard engagement={primaryProof} size="featured" />
+            </div>
+            <div className="flex flex-col">
+              <p className="text-heading/70 font-barlow font-semibold text-xs uppercase tracking-wider mb-2">
+                Related pattern
+              </p>
+              <div className="flex-1">
+                <ProofCard engagement={secondaryProof} size="compact" />
+              </div>
+            </div>
+          </div>
+          <p className="mt-6 text-sm">
+            <Link
+              href={ENGAGEMENTS_PATH}
+              className={`text-heading font-barlow font-semibold underline underline-offset-4 hover:opacity-80 ${FOCUS_ON_LIGHT}`}
+            >
+              All representative engagements
+            </Link>
+          </p>
         </div>
       </section>
 

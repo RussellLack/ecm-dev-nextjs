@@ -1,5 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import ProofCard from "@/components/proof/ProofCard";
+import {
+  ENGAGEMENTS_PATH,
+  HOMEPAGE_ENGAGEMENTS,
+  requireEngagement,
+} from "@/lib/representativeEngagements";
 import Image from "next/image";
 import ContactForm from "@/components/ContactForm";
 import AuditRequestForm from "@/components/AuditRequestForm";
@@ -656,6 +662,50 @@ export default async function HomePage() {
           <p className="text-ink text-base leading-relaxed">
             We find out which of the three areas is actually breaking. Then, if you want, we keep fixing it with you, rather than leaving a one-off report that goes out of date within a month.
           </p>
+        </div>
+      </section>
+
+      {/* ─── WHAT THIS LOOKS LIKE IN PRACTICE ───
+          Three representative engagements (FP01, FP04, FP06), placed just
+          above the named featured work so relevance today leads straight
+          into evidence of past delivery. Labelled as representative on
+          every card; never counted as projects. */}
+      <section aria-labelledby="in-practice-heading" className="py-20 bg-surface">
+        <div className="max-w-6xl mx-auto px-6">
+          <h2 id="in-practice-heading" className="text-heading font-barlow font-bold text-3xl lg:text-4xl text-center mb-4">
+            What this looks like in practice
+          </h2>
+          <p className="text-ink text-center text-base mb-12 max-w-3xl mx-auto">
+            The problems are different. The pattern is similar: valuable
+            knowledge gets trapped between people, systems and workflows.
+            Here are three ways we turn it into something the business can use.
+          </p>
+          <ul className="grid md:grid-cols-3 gap-6">
+            {HOMEPAGE_ENGAGEMENTS.map(requireEngagement).map((e) => (
+              <li key={e.id}>
+                <ProofCard
+                  engagement={e}
+                  size="compact"
+                  theme={e.homepage?.theme}
+                  summary={e.homepage?.blurb}
+                />
+              </li>
+            ))}
+          </ul>
+          <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-sm">
+            <p className="text-ink text-center">
+              Looking for evidence of previous delivery?{" "}
+              <Link href="/case-study" className="text-heading font-barlow font-semibold underline underline-offset-4 hover:opacity-80">
+                {typeof homePage?.caseStudyCount === "number" && homePage.caseStudyCount > 0
+                  ? `See all ${homePage.caseStudyCount} named and anonymised projects`
+                  : "See named and anonymised projects"}{" "}
+                <span aria-hidden="true">&rarr;</span>
+              </Link>
+            </p>
+            <Link href={ENGAGEMENTS_PATH} className="text-heading font-barlow font-semibold hover:opacity-80">
+              All representative engagements <span aria-hidden="true">&rarr;</span>
+            </Link>
+          </div>
         </div>
       </section>
 
