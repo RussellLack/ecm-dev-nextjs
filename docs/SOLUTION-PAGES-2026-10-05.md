@@ -45,13 +45,15 @@ in scoping, attributed evidence, the Russell card, and the next step.
 
 ## 3. Evidence used
 
-Only published case studies, each shown with the opening sentence of its own
-`attribution` field and a note on why the workflow is relevant. A general
-note states that the work was delivered by the people now behind ECM.DEV,
-much of it while employed elsewhere, and that client names do not imply
-endorsement.
+Only published case studies, each with a note on why the workflow is
+relevant. Since 5 October the cards no longer repeat each employer
+attribution (Russell found it too prominent): one sentence above the cards
+says the work is by the people behind ECM.DEV, that each case study says how
+it was delivered, and that client names do not imply endorsement. The full
+attribution stays at the foot of every case-study page, one click away, so
+prior work is never presented as ECM.DEV delivery.
 
-Export manufacturers: Jotun product finding; global paints taxonomy.
+Export manufacturers: Jotun product finding; building-materials distributor service platform (replaced a second paints case, 5 October).
 Engineering consultancies: project management consultancy relaunch; robotics
 copywriting. SaaS and industrial tech: B2B software demand generation; FLIR
 demand generation. Maritime suppliers: Wilhelmsen global platform. PE-backed:
@@ -96,4 +98,4 @@ delivery to Netlify, and GA4 receipt of `solution` (GTM step in `ANALYTICS.md`).
 - C1 (O3) is confirmed and C3 (`/about`) is fixed.
 - Read the seven pages for factual fit, especially the workflow steps and exceptions, which describe typical roles rather than any one client.
 - Add the `solution` variable and GA4 dimension in GTM (`ANALYTICS.md`).
-- Missing assets: no sector-specific maritime second case study, and no case study yet delivered through ECM.DEV for any of the seven situations. The pages say so implicitly through attribution; replace with direct work as it becomes publishable.
+- Missing assets: no sector-specific maritime second case study, and no case study yet delivered through ECM.DEV for any of the seven situations. The linked case studies say so in their attribution; replace with direct work as it becomes publishable.

@@ -250,10 +250,9 @@ export default function WorkflowSolutionPage({ data }: { data: WorkflowSolution 
             Similar work, and why it is relevant.
           </h2>
           <p className="text-ink text-sm sm:text-base leading-relaxed mb-10 max-w-3xl">
-            This work was delivered by the people now behind ECM.DEV, much of
-            it while employed elsewhere, as each attribution states. It is
-            shown because the workflow is similar, not because the sector is
-            identical. Client names identify the work and do not imply
+            Work by the people behind ECM.DEV, chosen because the workflow is
+            similar, not because the sector is identical. Each case study
+            says how it was delivered, and client names do not imply
             endorsement.
           </p>
           <div className={`grid gap-6 ${data.proof.length > 1 ? "md:grid-cols-2" : "max-w-2xl"}`}>
@@ -270,8 +269,7 @@ export default function WorkflowSolutionPage({ data }: { data: WorkflowSolution 
                     {p.title}
                   </Link>
                 </h3>
-                <p className="text-ink text-sm leading-relaxed mb-4 flex-1">{p.relevance}</p>
-                <p className="text-ink-muted text-xs leading-relaxed mb-4">{p.attribution}</p>
+                <p className="text-ink text-sm leading-relaxed mb-5 flex-1">{p.relevance}</p>
                 <Link
                   href={`/case-study/${p.slug}`}
                   className={`inline-flex items-center gap-1 text-heading font-barlow font-semibold text-sm hover:opacity-80 ${FOCUS_ON_LIGHT}`}
