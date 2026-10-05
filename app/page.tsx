@@ -330,7 +330,7 @@ export default async function HomePage() {
   const heroCtaSecondaryUrl = "/case-study";
 
   // Starting-points section headings.
-  const pillarsHeading = "What is getting in your way?";
+  const pillarsHeading = "What's blocking progress today?";
   const pillarsSubhead =
     "We work across three pillars: Content Operations, Content Technology and Content Localisation. Start with whichever problem you recognise.";
 
