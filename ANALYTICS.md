@@ -8,7 +8,7 @@
 | GA4 Account | ECM Agency | — |
 | GTM Account | ECM.DEV | `6350600794` |
 | GTM Container | ECM.DEV | `GTM-M7DKTZKC` |
-| GTM Current Version | Version 15 (commercial journey events, 27 September 2026) | — |
+| GTM Current Version | Published 5 October 2026: `solution` parameter on the commercial journey tag (previous: Version 15, commercial journey events, 27 September) | — |
 | Google Account | — | `authuser=2` |
 | Active GA4 Measurement ID | fired from inside GTM container | `G-5B9Q2WHCNL` |
 
@@ -139,17 +139,19 @@ Values: `export-manufacturers`, `engineering-consultancies`,
 `saas-industrial-tech`, `maritime-suppliers`, `pe-backed-companies`,
 `professional-services`, `multilingual-industrial-teams`.
 
-**GTM and GA4 (to do):** import `gtm-import-commercial-journey-solution.json`
+**GTM: done, published 5 October 2026.** Imported `gtm-import-commercial-journey-solution.json`
 (built with `.claude/skills/ecm-dev-analytics/scripts/build_gtm_import.py`
 from the commercial-journey spec plus `DLV - solution`). Admin, Import
 Container, Merge, **Overwrite conflicting**: this import is meant to change
 the existing `GA4 - commercial journey events` tag, so "Rename conflicting"
 would create a second tag and double-count every journey event. The preview
 should show one variable added and the tag modified, with the measurement ID
-still `G-5B9Q2WHCNL`. Publish, then register `Solution` from `solution` as an
-Event-scoped GA4 custom dimension the same day (dimensions do not backfill).
-Until then the parameter is pushed to the dataLayer but not forwarded, which
-is harmless.
+still `G-5B9Q2WHCNL`. **GA4 (to do):** register `Solution` from `solution`
+as an Event-scoped custom dimension (Admin, Custom definitions). Dimensions
+do not backfill, so `solution` values collected before it exists will not
+appear in reports. To check the tag: on `/solutions/<slug>`, scroll to "A
+bounded first project" and confirm `offer_viewed` with `solution` in GA4
+Realtime (click the event name to see parameter values).
 
 ### GTM and GA4 setup (to do in the container UI; not yet configured)
 
