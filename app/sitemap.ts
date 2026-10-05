@@ -6,6 +6,7 @@ import {
 } from "@/lib/intel/queries";
 import { tagToSlug } from "@/lib/tags";
 import { WORKFLOW_SOLUTION_SLUGS } from "@/lib/workflowSolutions";
+import { REPRESENTATIVE_ENGAGEMENTS, ENGAGEMENTS_PATH } from "@/lib/representativeEngagements";
 
 // Regenerate at most once a day. This route makes ten separate sanityFetch
 // calls, and sanityFetch bypasses Next's Data Cache entirely because
@@ -23,7 +24,8 @@ const siteUrl = "https://ecm.dev";
 // crawl priority. Bump this when the static pages are meaningfully edited.
 const STATIC_LAST_MODIFIED = new Date("2026-06-01T00:00:00.000Z");
 
-// The workflow-led solution pages are code records (lib/workflowSolutions.ts),
+// The workflow-led solution pages and the representative engagements are
+// code records (lib/workflowSolutions.ts, lib/representativeEngagements.ts),
 // so they carry a fixed date: bump it when their copy is meaningfully edited.
 const SOLUTIONS_LAST_MODIFIED = new Date("2026-10-05T00:00:00.000Z");
 
@@ -313,6 +315,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: SOLUTIONS_LAST_MODIFIED,
       changeFrequency: "monthly" as const,
       priority: 0.8,
+    })),
+    { url: `${siteUrl}${ENGAGEMENTS_PATH}`, lastModified: SOLUTIONS_LAST_MODIFIED, changeFrequency: "monthly", priority: 0.7 },
+    ...REPRESENTATIVE_ENGAGEMENTS.map((e) => ({
+      url: `${siteUrl}${ENGAGEMENTS_PATH}/${e.slug}`,
+      lastModified: SOLUTIONS_LAST_MODIFIED,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
     })),
     { url: `${siteUrl}/case-study`, lastModified: caseStudiesMax, changeFrequency: "monthly", priority: 0.8 },
     { url: `${siteUrl}/content-audit/sample`, lastModified: new Date("2026-09-27T00:00:00.000Z"), changeFrequency: "monthly", priority: 0.7 },

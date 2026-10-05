@@ -1,5 +1,7 @@
 import { getCaseStudies } from "@/lib/queries";
+import Link from "next/link";
 import CaseStudyGrid from "@/components/CaseStudyGrid";
+import { ENGAGEMENTS_PATH } from "@/lib/representativeEngagements";
 
 export const revalidate = 3600;
 
@@ -36,6 +38,28 @@ export default async function CaseStudyPage() {
       <section className="py-20 bg-surface">
         <div className="max-w-6xl mx-auto px-6">
           <CaseStudyGrid caseStudies={caseStudies || []} />
+
+          {/* Representative engagements live on their own index so they
+              never join this grid or its count of delivered work. */}
+          <aside
+            aria-labelledby="representative-strip"
+            className="mt-16 rounded-2xl border border-surface-border bg-surface-alt px-6 py-6 sm:flex sm:items-center sm:justify-between gap-6"
+          >
+            <div>
+              <h2 id="representative-strip" className="text-heading font-barlow font-bold text-lg mb-1">
+                Representative engagements
+              </h2>
+              <p className="text-ink text-sm leading-relaxed">
+                Current problems, reconstructed from patterns across our experience.
+              </p>
+            </div>
+            <Link
+              href={ENGAGEMENTS_PATH}
+              className="mt-4 sm:mt-0 inline-flex shrink-0 items-center gap-1 text-heading font-barlow font-semibold text-sm hover:opacity-80"
+            >
+              See what this looks like in practice <span aria-hidden="true">&rarr;</span>
+            </Link>
+          </aside>
         </div>
       </section>
     </>
