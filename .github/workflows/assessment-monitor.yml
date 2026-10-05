@@ -1,6 +1,8 @@
 name: Assessment Monitor (production)
 
-# Smoke-tests every live assessment on ecm.dev on a schedule. Catches
+# Smoke-tests every live assessment on ecm.dev on a schedule, plus the
+# read-only representative-engagement checks (Projects archive strip, index,
+# homepage section; tests/e2e/representative-engagements.smoke.spec.ts). Catches
 # breakage that bypasses a deploy (infra, env, CSP, Sanity outage). Smoke depth
 # only — never submits a form — so it is safe to run against production on a
 # schedule. A failure fails the workflow, which emails repo admins.
