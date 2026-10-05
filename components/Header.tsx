@@ -295,7 +295,7 @@ export default function Header() {
           </div>
 
           {/* Contact secondary link */}
-          <Link href="/contact" className="text-white/70 font-barlow font-medium text-sm tracking-wide hover:text-ecm-lime transition-colors">
+          <Link href="/contact" className="text-white/80 font-barlow font-medium text-sm tracking-wide hover:text-ecm-lime transition-colors">
             Contact
           </Link>
 

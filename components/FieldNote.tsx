@@ -87,7 +87,7 @@ export default function FieldNote({ notes }: { notes: FieldNoteType[] }) {
       <div className="max-w-3xl mx-auto px-6 pt-8 sm:pt-10">
         <p
           id="field-note-label"
-          className="text-ecm-lime/70 font-barlow font-semibold text-xs tracking-[0.2em] uppercase mb-6"
+          className="text-ecm-lime/90 font-barlow font-semibold text-xs tracking-[0.2em] uppercase mb-6"
         >
           Field note
         </p>
