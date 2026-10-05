@@ -51,7 +51,7 @@ note states that the work was delivered by the people now behind ECM.DEV,
 much of it while employed elsewhere, and that client names do not imply
 endorsement.
 
-Export manufacturers: Jotun product finding; global paints taxonomy.
+Export manufacturers: Jotun product finding; building-materials distributor service platform (replaced a second paints case, 5 October).
 Engineering consultancies: project management consultancy relaunch; robotics
 copywriting. SaaS and industrial tech: B2B software demand generation; FLIR
 demand generation. Maritime suppliers: Wilhelmsen global platform. PE-backed:

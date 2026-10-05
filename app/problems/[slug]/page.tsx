@@ -17,7 +17,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const data = (await getProblemPage(slug).catch(() => null)) as ProblemPageData | null;
-  if (!data) return { title: "Problems We Solve | ECM.DEV" };
+  if (!data) return { title: "Problems We Solve" };
   const seo = (data as any).seo || {};
   const title = seo.metaTitle || `${data.title} | ECM.DEV`;
   const description =
@@ -25,7 +25,10 @@ export async function generateMetadata({
     data.heroSubhead ||
     "How ECM.DEV helps enterprise marketing teams fix the content infrastructure behind the problem.";
   return {
-    title,
+    // `absolute`, as in lib/pillarMetadata.ts: the fallback above already
+    // ends in "| ECM.DEV", and editor metaTitles follow that convention, so
+    // the root layout's `%s | ECM.DEV` template must not apply again.
+    title: { absolute: title },
     description,
     alternates: { canonical: `/problems/${slug}` },
     ...(seo.noIndex ? { robots: { index: false, follow: false } } : {}),

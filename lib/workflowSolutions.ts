@@ -218,11 +218,12 @@ export const WORKFLOW_SOLUTIONS: WorkflowSolution[] = [
           "A product-attribute model that let B2B buyers narrow a large range by their own application. Approved application answers rest on the same structured product facts.",
       },
       {
-        slug: "redesigning-content-taxonomy-for-a-regional-bank",
-        title: "Redesigning Content Taxonomy for a Global Paints & Chemicals Manufacturer",
-        attribution: MW,
+        slug: "digital-service-platform-building-materials-distributor",
+        title: "Digital Service Platform for a Building Materials Distributor",
+        attribution:
+          "Delivered while employed at Making Waves (later NoA Ignite), as part of a multidisciplinary delivery team.",
         relevance:
-          "A controlled vocabulary, metadata schema and governance model across product, solution and market content. It is what keeps an answer library findable once it grows.",
+          "A service platform that put estimating, tendering and project documentation into professional buyers' everyday work, drawing on product data across CMS, PIM and ERP. Approved application answers depend on the same connected product information.",
       },
     ],
     leadNote:
