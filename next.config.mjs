@@ -84,6 +84,12 @@ const nextConfig = {
                       destination: "/case-study",
                       permanent: true,
             },
+            {
+                      // Veidekke, unpublished October 2026.
+                      source: "/case-study/content-strategy-and-streamlined-cms-implementation",
+                      destination: "/case-study",
+                      permanent: true,
+            },
                 ];
     },
 

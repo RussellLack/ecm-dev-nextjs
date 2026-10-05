@@ -6,7 +6,8 @@
  * - Rename "Global Digital Platform" (Wilhelmsen) to
  *   "Global Customer Services Portal".
  * - Unpublish the Vizrt case study (cs-5), which was a proposal rather
- *   than delivered work. It stays in Studio as a draft.
+ *   than delivered work, and the Veidekke case study (cs-16), which is
+ *   not strong enough. Both stay in Studio as drafts.
  *
  * Slugs are unchanged, so existing URLs keep working.
  *
@@ -166,15 +167,18 @@ console.log(
 
 if (dryRun) {
   console.log(JSON.stringify(updates, null, 2));
-  console.log(`[dry] unpublish cs-5 (Vizrt), keep as drafts.cs-5`);
+  console.log(`[dry] unpublish cs-5 (Vizrt) and cs-16 (Veidekke), keep as drafts`);
   process.exit(0);
 }
 
 // ─── Unpublish ────────────────────────────────────────────────────────
-// Vizrt (cs-5) was a proposal, not delivered work. Unpublish it: keep the
-// content as a draft in Studio (so it can be republished) and delete the
-// published copy. next.config.mjs redirects its URL to /case-study.
-const UNPUBLISH = { id: "cs-5", label: "Vizrt" };
+// Keep the content as a draft in Studio (so it can be republished) and
+// delete the published copy. next.config.mjs redirects each URL to
+// /case-study.
+const UNPUBLISH = [
+  { id: "cs-5", label: "Vizrt" }, // a proposal, not delivered work
+  { id: "cs-16", label: "Veidekke" }, // not strong enough
+];
 
 async function unpublish({ id, label }) {
   const url = `https://${PROJECT_ID}.api.sanity.io/v${API_VERSION}/data/doc/${DATASET}/${id}`;
@@ -197,7 +201,7 @@ async function unpublish({ id, label }) {
   }
 }
 
-await unpublish(UNPUBLISH);
+for (const u of UNPUBLISH) await unpublish(u);
 
 for (const u of updates) {
   for (const id of [u.id, `drafts.${u.id}`]) {
