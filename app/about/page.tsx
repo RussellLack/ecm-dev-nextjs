@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
+import { TOOLS, enquiryHref } from "@/lib/offers";
 
 export const revalidate = 3600;
 
 const hero = {
   heading: "What we do",
-  body: "ECM.dev is a fractional content operations and AI-readiness service. We work with mid-market and owner-managed businesses, engineering consultancies, exporters, B2B SaaS teams, professional services, who have outgrown ad hoc content production and are weighing whether to build a content function in-house. We're built to be the alternative to that build: senior diagnosis, a working system, and ongoing ownership of it, without the salary, the management overhead, or the year it takes a new hire to get up to speed.",
+  body: "ECM.dev is a fractional content operations and AI-readiness service. We work with mid-market and owner-managed businesses, engineering consultancies, exporters, B2B SaaS teams, professional services, who have outgrown ad hoc content production and are weighing whether to build a content function in-house. We're built to be the alternative to that build: senior diagnosis and a working system, with ongoing ownership if you want it, without the salary, the management overhead, or the year it takes a new hire to get up to speed.",
 };
 
 const founder = {
@@ -17,19 +18,19 @@ const founder = {
 const sections = [
   {
     title: "Why this exists",
-    body: "Most organisations still treat content as a finished product: a page, a document, a translated file, filed and forgotten. That assumption breaks down once content also has to feed search, feed AI answer engines, and feed decisions inside the business itself. Content that only looks right to a human reader is no longer enough on its own. This isn't a new idea. Content strategists have understood content as a system rather than a pile of assets for well over a decade. ECM.dev applies that discipline as a retained service, not a one-off report you're left to implement yourself.",
+    body: "Most organisations still treat content as a finished product: a page, a document, a translated file, filed and forgotten. That assumption breaks down once content also has to feed search, feed AI answer engines, and feed decisions inside the business itself. Content that only looks right to a human reader is no longer enough on its own. This isn't a new idea. Content strategists have understood content as a system rather than a pile of assets for well over a decade. ECM.dev applies that discipline to the work itself: a defined project that leaves your team with a system it can run, not a report you're left to implement yourself.",
   },
   {
     title: "How we work",
-    body: "Every engagement starts with the same person doing the diagnosis, the build, and the ongoing work, so judgement doesn't reset each time something changes. Most \"AI content audits\" on the market are shallow: a search-visibility check dressed up as a system review. We built ecm-agent, our own AI-readiness scoring engine, because that wasn't good enough. It scores governance, workflow, technology and AI-readiness together, against a versioned rubric, with every finding traceable back to its evidence. We call that provenance, not certification, because we won't claim more confidence than the evidence supports.",
+    body: "The same person scopes the work, delivers it, and leads any support that follows, so judgement doesn't reset each time something changes. Most \"AI content audits\" on the market are shallow: a search-visibility check dressed up as a system review. We built ecm-agent, our own AI-readiness scoring engine, because that wasn't good enough. It scores governance, workflow, technology and AI-readiness together, against a versioned rubric, with every finding traceable back to its evidence. We call that provenance, not certification, because we won't claim more confidence than the evidence supports.",
   },
   {
     title: "What makes this different",
-    body: "There are really only two ways most businesses solve this today: hire for it, or hand tasks to whoever's available and hope the pieces add up to something coherent. Both have a real cost. A hire means recruiting, management time, and months of ramp-up before you see the judgement you're paying for. Handing out tasks means no one owns the outcome, and whatever gets built has to be rebuilt the next time someone new picks it up. ECM.dev is neither. You get a system that runs without needing to staff for it, the same judgement retained month to month rather than re-hired each time, and an AI-readiness score you could defend to your own board.",
+    body: "There are really only two ways most businesses solve this today: hire for it, or hand tasks to whoever's available and hope the pieces add up to something coherent. Both have a real cost. A hire means recruiting, management time, and months of ramp-up before you see the judgement you're paying for. Handing out tasks means no one owns the outcome, and whatever gets built has to be rebuilt the next time someone new picks it up. ECM.dev is neither. You get a system your own team can run, senior judgement available again when you need it rather than re-hired each time, and an AI-readiness score you could defend to your own board.",
   },
   {
     title: "Start here",
-    body: "Every engagement starts with a free assessment. It's a diagnosis, not a discount audit, no sales call, no email gate on the result. If it's worth fixing, we scope a fixed-price build, usually delivered in one to two weeks, moving into a monthly retained service after that: no fixed term, and you step away from it when the system no longer needs us running it.",
+    body: `There are two ways in. The ${TOOLS.maturity.name} takes about five minutes and shows its result without asking for your email. It is a self-check based on your own answers, not a review of your content. Or start with a conversation about one problem. If a first project makes sense, you receive a written scope, fee, timing and the time it needs from your team before any work starts. When it is complete, you decide whether anything more is useful. Stopping there is a good outcome. If you want continued support, it is scoped separately, with a rhythm that fits your team.`,
   },
 ];
 
@@ -45,7 +46,7 @@ const team = [
 export async function generateMetadata(): Promise<Metadata> {
   const title = "About ECM.DEV";
   const description =
-    "ECM.dev is a fractional content operations and AI-readiness service: senior diagnosis, a working system, and ongoing ownership of it, without the overhead of an in-house hire.";
+    "ECM.dev is a fractional content operations and AI-readiness service: senior diagnosis and a working system, with ongoing ownership if you want it, without the overhead of an in-house hire.";
   return {
     title,
     description,
@@ -156,10 +157,10 @@ export default function AboutPage() {
               Start with a free assessment
             </Link>
             <Link
-              href="/contact"
+              href={enquiryHref("first-project")}
               className="inline-flex items-center justify-center border-2 border-ecm-lime text-ecm-lime font-barlow font-semibold text-base sm:text-lg px-8 py-4 rounded-full hover:bg-ecm-lime hover:text-ecm-green transition-colors"
             >
-              Talk to us directly
+              Discuss a first project
             </Link>
           </div>
         </div>
