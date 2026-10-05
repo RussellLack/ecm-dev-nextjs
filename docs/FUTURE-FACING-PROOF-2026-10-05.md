@@ -35,7 +35,7 @@ exactly and lives in `SOLUTION_PROOF`. Homepage shows FP01, FP04, FP06.
 | `components/proof/FlowSteps.tsx` | Responsive workflow diagram: vertical with downward arrows on phones, wrapping with rightward arrows from `sm`. Arrows are `aria-hidden` inside each step's `<li>`. |
 | `app/representative-engagements/` | Index and `[slug]` routes; static, no Sanity calls; `dynamicParams = false`. |
 | `components/WorkflowSolutionPage.tsx` | "What this looks like in practice" after the workflow, before "A bounded first project". |
-| `app/page.tsx` | Homepage section between "Your CMS is not broken" and "Featured work", with the live project count. |
+| `app/page.tsx` | Homepage section between "A bounded first project" and "Featured work" (the "Your CMS is not broken" framing that preceded it moved to `/solutions`), with the live project count. |
 | `app/case-study/page.tsx` | A small strip below the grid linking to the index. The grid and its count are unchanged. |
 | `app/sitemap.ts` | Index plus ten pages. |
 

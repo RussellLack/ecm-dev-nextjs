@@ -657,21 +657,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ─── DIAGNOSIS ─── */}
-      <section className="py-20 bg-surface">
-        <div className="max-w-3xl mx-auto px-6">
-          <h2 className="text-heading font-barlow font-bold text-2xl sm:text-3xl leading-snug mb-6">
-            Your CMS is not broken. The system around it is.
-          </h2>
-          <p className="text-ink text-base leading-relaxed mb-4">
-            Most organisations already have the parts: a CMS, a content team, a translation process, and usually some AI running on top of all three. What they do not have is an operating system connecting them, so the CMS never quite does what it was bought to do, content has no clear owner once it is published, and every new market costs as much as the last one.
-          </p>
-          <p className="text-ink text-base leading-relaxed">
-            We find out which of the three areas is actually breaking. Then, if you want, we keep fixing it with you, rather than leaving a one-off report that goes out of date within a month.
-          </p>
-        </div>
-      </section>
-
       {/* ─── WHAT THIS LOOKS LIKE IN PRACTICE ───
           Three representative engagements (FP01, FP04, FP06), placed just
           above the named featured work so relevance today leads straight

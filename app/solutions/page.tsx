@@ -57,6 +57,25 @@ export default async function SolutionsIndexPage() {
         </div>
       </section>
 
+      {/* Framing: why the work starts with diagnosis. Moved from the
+          homepage (5 October 2026) so the hub opens with the argument
+          its two routes below then act on. */}
+      <section aria-labelledby="system-around-it" className="bg-surface pt-20">
+        <div className="max-w-5xl mx-auto px-6">
+          <div className="max-w-3xl">
+            <h2 id="system-around-it" className="text-heading font-barlow font-bold text-2xl sm:text-3xl leading-snug mb-6">
+              Your CMS is not broken. The system around it is.
+            </h2>
+            <p className="text-ink text-base leading-relaxed mb-4">
+              Most organisations already have the parts: a CMS, a content team, a translation process, and usually some AI running on top of all three. What they do not have is an operating system connecting them, so the CMS never quite does what it was bought to do, content has no clear owner once it is published, and every new market costs as much as the last one.
+            </p>
+            <p className="text-ink text-base leading-relaxed">
+              We find out which of the three areas is actually breaking. Then, if you want, we keep fixing it with you, rather than leaving a one-off report that goes out of date within a month.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* By situation: the workflow-led pages (lib/workflowSolutions.ts).
           Manufacturers and engineering consultancies lead, larger; each
           card says whether it is a sector, a business situation or an
