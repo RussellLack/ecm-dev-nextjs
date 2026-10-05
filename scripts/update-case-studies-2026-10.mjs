@@ -106,7 +106,7 @@ const updates = [
       title: "SEO & PPC Strategy for a Norwegian Coffee Importer's Multi-Brand Portfolio",
       client: "Joh. Johannson Kaffe",
       industry: "retail",
-      pillars: ["services"],
+      pillars: ["services", "technology"],
       tags: ["SEO", "PPC", "Keyword Research", "Content Strategy", "FMCG"],
       description:
         "Ran brand-by-brand keyword research, an SEO and content workshop, and a PPC budget model for Joh. Johannson Kaffe, the Norwegian coffee importer and roaster behind Evergood, Ali Kaffe, Cirkel Kaffe, Farmers Coffee, Greenworld and Coffee of the World.",
