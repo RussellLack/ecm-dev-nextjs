@@ -11,7 +11,7 @@ spec.json describes only what is being added:
                  "events": ["journey_selected", "offer_viewed"]}],
   "tags": [{"name": "GA4 - commercial journey events",
             "trigger": "CE - commercial journey",
-            "measurement_id": "G-33HFQC8STP",
+            "measurement_id": "G-5B9Q2WHCNL",
             "event_name": "{{Event}}",
             "params": {"offer": "{{DLV - offer}}"},
             "notes": "optional"}]
@@ -67,7 +67,7 @@ def build(spec, public_id="GTM-M7DKTZKC"):
         tag = {**ZERO, "tagId": str(next_id), "name": tg["name"], "type": "gaawe",
             "parameter": [{"type": "BOOLEAN", "key": "sendEcommerceData", "value": "false"},
                           t("eventName", tg.get("event_name", "{{Event}}")),
-                          t("measurementIdOverride", tg.get("measurement_id", "G-33HFQC8STP")),
+                          t("measurementIdOverride", tg.get("measurement_id", "G-5B9Q2WHCNL")),
                           {"type": "LIST", "key": "eventSettingsTable", "list": table}],
             "firingTriggerId": [trigger_ids[tg["trigger"]]],
             "tagFiringOption": "ONCE_PER_EVENT",

@@ -11,7 +11,7 @@
   "tags": [
     {"name": "GA4 - commercial journey events",
      "trigger": "CE - commercial journey",
-     "measurement_id": "G-33HFQC8STP",
+     "measurement_id": "G-5B9Q2WHCNL",
      "params": {"offer": "{{DLV - offer}}", "pillar": "{{DLV - pillar}}", "source_page": "{{DLV - source_page}}"},
      "notes": "Do not mark enquiry_submitted as a key event: close_convert_lead already counts those enquiries."}
   ]

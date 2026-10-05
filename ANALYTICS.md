@@ -8,13 +8,15 @@
 | GA4 Account | ECM Agency | — |
 | GTM Account | ECM.DEV | `6350600794` |
 | GTM Container | ECM.DEV | `GTM-M7DKTZKC` |
-| GTM Current Version | Version 9 | — |
+| GTM Current Version | Version 15 (commercial journey events, 27 September 2026) | — |
 | Google Account | — | `authuser=2` |
-| Active GA4 Measurement ID | fired from inside GTM container | `G-33HFQC8STP` |
+| Active GA4 Measurement ID | fired from inside GTM container | `G-5B9Q2WHCNL` |
 
-> The active measurement ID (`G-33HFQC8STP`) is documented in the
-> `components/Analytics.tsx` header comment. It is configured **inside** the
-> GTM container — never hardcode a second GA4 config tag in app code.
+> The active measurement ID is `G-5B9Q2WHCNL`, the stream that replaced
+> `G-33HFQC8STP`. Per the `components/Analytics.tsx` header comment,
+> `G-33HFQC8STP` broke after a delete and recreate (gtag/js returns 404) and
+> must not be used again. The ID is configured **inside** the GTM container:
+> never hardcode a second GA4 config tag in app code.
 
 ## Architecture Overview
 
@@ -28,7 +30,7 @@ User browser
   → /gtm/js?id=GTM-M7DKTZKC   (Next.js proxy → GTM container script)
   → /gtm/gtag                 (Next.js proxy → GA4 gtag.js)
   → /gtm/collect              (Next.js proxy → GA4 collect endpoint)
-  → GTM fires GA4 tag → GA4 property p532585628 (G-33HFQC8STP)
+  → GTM fires GA4 tag → GA4 property p532585628 (G-5B9Q2WHCNL)
 ```
 
 ## Proxy Routes
@@ -93,7 +95,7 @@ This is a **consent bridge only** — it does **NOT** load GTM. It:
 
 ## GTM Container
 
-### Current State (Version 9)
+### State at Version 9 (the current version is 15; see the table above)
 
 - 8 Tags, 7 Triggers, 6 Variables
 - Published: "Remove orphan Google Tag G-KWLEYMNW28"
@@ -103,7 +105,7 @@ This is a **consent bridge only** — it does **NOT** load GTM. It:
 - The orphan tag "Google Tag `G-KWLEYMNW28`" was deleted in Version 9. This was
   a duplicate GA4 config tag that would have caused double-firing. **Do not
   re-add it.**
-- The active GA4 measurement ID (`G-33HFQC8STP`) is wired through the GTM
+- The active GA4 measurement ID (`G-5B9Q2WHCNL`) is wired through the GTM
   container — **do not** add a separate hardcoded GA4 tag outside of GTM.
 
 ## Commercial Journey Events (September 2026)
@@ -144,7 +146,7 @@ Container, Merge, **Overwrite conflicting**: this import is meant to change
 the existing `GA4 - commercial journey events` tag, so "Rename conflicting"
 would create a second tag and double-count every journey event. The preview
 should show one variable added and the tag modified, with the measurement ID
-still `G-33HFQC8STP`. Publish, then register `Solution` from `solution` as an
+still `G-5B9Q2WHCNL`. Publish, then register `Solution` from `solution` as an
 Event-scoped GA4 custom dimension the same day (dimensions do not backfill).
 Until then the parameter is pushed to the dataLayer but not forwarded, which
 is harmless.
@@ -278,7 +280,8 @@ Network tab checks:
 
 **Problem: GTM loads but no data appears in GA4.**
 Check: Confirm the GA4 tag in GTM is using the correct measurement ID
-(`G-33HFQC8STP`). Confirm consent defaults are set correctly before GTM loads.
+(`G-5B9Q2WHCNL`, not the retired `G-33HFQC8STP`). Confirm consent defaults
+are set correctly before GTM loads.
 Use GA4 DebugView (Realtime → DebugView) with `?gtm_debug=1` appended to the URL.
 
 **Problem: GTM script not executing at all.**
