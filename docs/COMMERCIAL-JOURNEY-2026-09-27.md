@@ -62,7 +62,7 @@ None of these appear in public copy until decided.
 |---|---|---|---|
 | **O1** | Free audit promotion: **extended to 31 October** (decided 27 September). Still open: is the free audit Snapshot depth, a different scope, or a choice? | `lib/auditOffer.ts` switches the homepage strip and tier banner to paid framing at 00:00 UTC on 1 November, within an hour because of ISR. | Depth is not stated anywhere. To change the date again, edit `AUDIT_OFFER_ENDS` and `AUDIT_OFFER_COPY.deadlineLabel`. |
 | **O2** | Does a diagnostic credit toward ongoing work? If so: which diagnostic, what percentage, what window? | It was published with an undefined window. | Removed. It can go back as a field in `lib/offers.ts` once defined. |
-| **O3** | Standalone trial project or pilot: offered or not? | The brief recommends one. `CONTENT-PILLARS-POSITIONING.md` says one-offs are sold only inside a managed relationship, so the two conflict. | Not offered. The third homepage column says "Fixing it, together" with a separately agreed scope, and implies no pilot product. |
+| **O3** | Standalone trial project or pilot: offered or not? | The brief recommends one. `CONTENT-PILLARS-POSITIONING.md` says one-offs are sold only inside a managed relationship, so the two conflict. | **Decided 5 October 2026 (Russell):** a bounded first project is offered and replaces "not offered". It is a standalone, defined piece of work, not a pilot product: scope, fee, timing and client involvement are agreed in writing before work starts, no price or duration is published, and a completed project with nothing further is a valid outcome. Ongoing support is optional, never an automatic next step. Described on each `/solutions/<slug>` page (see `SOLUTION-PAGES-2026-10-05.md`). |
 | **O4** | Does the Snapshot need pillar-specific framing (governance, CMS, localisation) or stay one AI-oriented audit? | Its outputs include "failing in an AI answer", which reads naturally for AI readiness but less so for localisation cost. | Kept as one offer. Each pillar page frames the buyer's question above it but adds no scope. |
 | **O5** | What does "up to 100 items or 10% of the estate" mean in practice? | Scope clarity at the point of purchase. | **Decided 27 September.** Sample = 10% of the estate, minimum 50, maximum 100 (all items if fewer than 50). "Item" defined in `CONTENT_AUDIT.itemDefinition` and published as "What counts as an item?" under the audit tiers. |
 | **O6** | Response time for the contact form. | The audit form promises "within one business day". The contact form promises only a personal reply. | Only the personal reply is stated. Add a time once it is supported operationally. |
@@ -128,8 +128,8 @@ Published facts are filled in. **MISSING** marks business facts that must not be
 ### Ongoing work (managed package)
 - **MISSING:** all commercial terms (O2, O7). Publicly described only as optional, scoped in writing and quoted against scope.
 
-### Trial project / pilot
-- **Not offered** pending O3.
+### First project (replaces "trial project / pilot")
+- **Offered** (O3, decided 5 October 2026). One bounded project per buyer situation, scoped and priced in writing per client. No published price, duration or pilot product name. Specified per situation in `lib/workflowSolutions.ts`.
 
 ## 5. First-release scope (this change)
 
@@ -194,4 +194,4 @@ Primary measures: qualified first-project enquiries per month, enquiry to scopin
 - Send one real contact enquiry via `/contact?offer=snapshot&pillar=services` and check that `enquiryContext` appears in the Netlify form notification.
 - Read `/content-audit/sample` for realism against real Snapshot delivery.
 
-**Commercial decisions still open (section 2):** O1 free audit depth; O2 any credit toward ongoing work; O3 trial projects; O4 pillar-specific Snapshot framing; O6 contact response time; O7 managed package pricing. O5 and O8 are closed.
+**Commercial decisions still open (section 2):** O1 free audit depth; O2 any credit toward ongoing work; O4 pillar-specific Snapshot framing; O6 contact response time; O7 managed package pricing. O3, O5 and O8 are closed.

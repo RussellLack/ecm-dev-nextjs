@@ -1,13 +1,18 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getSolutionPages } from "@/lib/queries";
+import {
+  WORKFLOW_SOLUTIONS,
+  SOLUTION_KIND_LABEL,
+  type WorkflowSolution,
+} from "@/lib/workflowSolutions";
 
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "Solutions | ECM.DEV",
+  title: "Solutions",
   description:
-    "Outcome-led solutions for growing marketing teams: improve campaign velocity, scale global marketing, increase CMS ROI, prepare content for AI, and build a marketing operating system.",
+    "Start from your situation: export manufacturers, engineering consultancies, SaaS and industrial tech, maritime suppliers, PE-backed groups, professional services and multilingual teams. Or explore by outcome.",
   alternates: { canonical: "/solutions" },
 };
 
@@ -42,7 +47,7 @@ export default async function SolutionsIndexPage() {
             What changes when the infrastructure is right.
           </h1>
           <p className="text-white/85 font-barlow font-light text-lg sm:text-xl leading-relaxed mt-6 max-w-3xl">
-            Every solution starts by finding where your content operation actually leaks time, cost, and quality, then rebuilding that part of the system.
+            Start from the situation you are in, or the outcome you want. Either way, the work begins by finding where time, cost and quality leak, then fixing that part of the system first.
           </p>
         </div>
         <div className="wave-divider wave-divider-bottom">
@@ -52,9 +57,46 @@ export default async function SolutionsIndexPage() {
         </div>
       </section>
 
-      {/* Solution cards */}
-      <section className="bg-surface py-20">
+      {/* By situation: the workflow-led pages (lib/workflowSolutions.ts).
+          Manufacturers and engineering consultancies lead, larger; each
+          card says whether it is a sector, a business situation or an
+          operating need, rather than presenting all seven as industries. */}
+      <section aria-labelledby="by-situation" className="bg-surface pt-20 pb-6">
         <div className="max-w-5xl mx-auto px-6">
+          <p className="text-heading/70 font-barlow font-semibold text-xs tracking-[0.2em] uppercase mb-3">
+            Start from your situation
+          </p>
+          <h2 id="by-situation" className="scroll-mt-28 text-heading font-barlow font-bold text-2xl sm:text-3xl leading-snug mb-3">
+            One recognisable problem, one first project.
+          </h2>
+          <p className="text-ink text-base leading-relaxed mb-10 max-w-3xl">
+            Each page follows one workflow from the moment work arrives to an
+            accepted result, and sets out a bounded first project around it.
+          </p>
+          <div className="grid md:grid-cols-2 gap-6 mb-6">
+            {WORKFLOW_SOLUTIONS.filter((s) => s.priority).map((s) => (
+              <SituationCard key={s.slug} s={s} featured />
+            ))}
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {WORKFLOW_SOLUTIONS.filter((s) => !s.priority).map((s) => (
+              <SituationCard key={s.slug} s={s} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* By outcome: the Sanity-managed solution pages */}
+      <section aria-labelledby="by-outcome" className="bg-surface pt-14 pb-20">
+        <div className="max-w-5xl mx-auto px-6">
+          <div className="border-t-2 border-heading pt-10 mb-10">
+            <p className="text-heading/70 font-barlow font-semibold text-xs tracking-[0.2em] uppercase mb-3">
+              Or explore by outcome
+            </p>
+            <h2 id="by-outcome" className="text-heading font-barlow font-bold text-2xl sm:text-3xl leading-snug">
+              What you want to change.
+            </h2>
+          </div>
           <div className="grid sm:grid-cols-2 gap-6">
             {solutions.map((s) => (
               <Link
@@ -62,9 +104,9 @@ export default async function SolutionsIndexPage() {
                 href={`/solutions/${s.slug}`}
                 className="block bg-ecm-green rounded-xl p-8 border border-ecm-lime/20 hover:border-ecm-lime/50 hover:shadow-lg transition-all group"
               >
-                <h2 className="text-ecm-lime font-barlow font-bold text-xl sm:text-2xl mb-3 group-hover:text-white transition-colors">
+                <h3 className="text-ecm-lime font-barlow font-bold text-xl sm:text-2xl mb-3 group-hover:text-white transition-colors">
                   {s.title}
-                </h2>
+                </h3>
                 {s.heroSubhead && (
                   <p className="text-white/85 text-sm leading-relaxed">{s.heroSubhead}</p>
                 )}
@@ -85,5 +127,45 @@ export default async function SolutionsIndexPage() {
         </div>
       </section>
     </>
+  );
+}
+
+function SituationCard({ s, featured = false }: { s: WorkflowSolution; featured?: boolean }) {
+  return (
+    <Link
+      href={`/solutions/${s.slug}`}
+      className={`group flex flex-col rounded-xl border transition-all hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-heading ${
+        featured
+          ? "bg-ecm-green border-ecm-lime/20 hover:border-ecm-lime/50 p-8"
+          : "bg-surface-alt border-surface-border hover:border-heading/40 p-6"
+      }`}
+    >
+      <p
+        className={`font-barlow font-semibold text-xs uppercase tracking-wide mb-2 ${
+          featured ? "text-ecm-lime/70" : "text-heading/70"
+        }`}
+      >
+        {SOLUTION_KIND_LABEL[s.kind]} · {s.eyebrow}
+      </p>
+      <h3
+        className={`font-barlow font-bold leading-snug mb-3 ${
+          featured
+            ? "text-ecm-lime text-xl sm:text-2xl group-hover:text-white transition-colors"
+            : "text-heading text-lg"
+        }`}
+      >
+        {s.headline}
+      </h3>
+      <p className={`text-sm leading-relaxed flex-1 ${featured ? "text-white/85" : "text-ink"}`}>
+        {s.hubSummary}
+      </p>
+      <span
+        className={`mt-5 inline-flex items-center gap-2 font-barlow font-semibold text-sm ${
+          featured ? "text-ecm-lime" : "text-heading"
+        }`}
+      >
+        See the workflow <span aria-hidden="true">&rarr;</span>
+      </span>
+    </Link>
   );
 }

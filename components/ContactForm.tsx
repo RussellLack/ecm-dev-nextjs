@@ -13,25 +13,30 @@ import {
 import {
   ENQUIRY_TOPICS,
   PILLAR_LABEL,
+  SOLUTION_CONTEXT,
   isEnquiryTopic,
   isPillar,
+  isSolutionSlug,
 } from "@/lib/offers";
 
 /** Where the visitor came from, as a short human-readable label, so the
  * enquiry keeps the offer they were looking at and they don't have to
- * restate it. `offer` and `pillar` are matched against fixed lists in
- * lib/offers.ts; the older free-text `service` / `topic` params (package and
- * explainer titles from our own links) are length-capped. Nothing the
+ * restate it. `offer`, `pillar` and `solution` (the /solutions page they
+ * came from) are matched against fixed lists in lib/offers.ts; the older
+ * free-text `service` / `topic` params (package and explainer titles from
+ * our own links) are length-capped. Nothing the
  * visitor types is ever put into a URL. */
 function readEnquiryContext(): string {
   if (typeof window === "undefined") return "";
   const params = new URLSearchParams(window.location.search);
   const offer = params.get("offer");
   const pillar = params.get("pillar");
+  const solution = params.get("solution");
   const parts: string[] = [];
   if (isEnquiryTopic(offer)) parts.push(ENQUIRY_TOPICS[offer]);
   const legacy = (params.get("service") || params.get("topic") || "").trim();
   if (!parts.length && legacy) parts.push(legacy.slice(0, 80));
+  if (isSolutionSlug(solution)) parts.push(SOLUTION_CONTEXT[solution]);
   if (isPillar(pillar)) parts.push(PILLAR_LABEL[pillar]);
   return parts.join(" · ");
 }
@@ -80,11 +85,13 @@ export default function ContactForm() {
       const params = new URLSearchParams(window.location.search);
       const offerParam = params.get("offer");
       const pillarParam = params.get("pillar");
+      const solutionParam = params.get("solution");
       pushJourneyEvent("enquiry_submitted", {
         offer: isEnquiryTopic(offerParam)
           ? (offerParam as JourneyOffer)
           : JOURNEY_OFFER.general,
         pillar: isPillar(pillarParam) ? pillarParam : null,
+        solution: isSolutionSlug(solutionParam) ? solutionParam : null,
       });
       setFormData({ firstName: "", lastName: "", email: "", message: "" });
     } catch {

@@ -5,6 +5,7 @@ import {
   getActiveIntelVendors,
 } from "@/lib/intel/queries";
 import { tagToSlug } from "@/lib/tags";
+import { WORKFLOW_SOLUTION_SLUGS } from "@/lib/workflowSolutions";
 
 // Regenerate at most once a day. This route makes ten separate sanityFetch
 // calls, and sanityFetch bypasses Next's Data Cache entirely because
@@ -21,6 +22,10 @@ const siteUrl = "https://ecm.dev";
 // learns to ignore a `lastmod` that changes on every crawl, which suppresses
 // crawl priority. Bump this when the static pages are meaningfully edited.
 const STATIC_LAST_MODIFIED = new Date("2026-06-01T00:00:00.000Z");
+
+// The workflow-led solution pages are code records (lib/workflowSolutions.ts),
+// so they carry a fixed date: bump it when their copy is meaningfully edited.
+const SOLUTIONS_LAST_MODIFIED = new Date("2026-10-05T00:00:00.000Z");
 
 // Largest `_updatedAt` across a set of Sanity docs, or a stable fallback.
 // Used to give listing/archive/hub pages a freshness date that only moves
@@ -302,6 +307,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${siteUrl}/content-technology`, lastModified: STATIC_LAST_MODIFIED, changeFrequency: "monthly", priority: 0.9 },
     { url: `${siteUrl}/content-operations`, lastModified: STATIC_LAST_MODIFIED, changeFrequency: "monthly", priority: 0.9 },
     { url: `${siteUrl}/content-localization`, lastModified: STATIC_LAST_MODIFIED, changeFrequency: "monthly", priority: 0.9 },
+    { url: `${siteUrl}/solutions`, lastModified: SOLUTIONS_LAST_MODIFIED, changeFrequency: "monthly", priority: 0.8 },
+    ...WORKFLOW_SOLUTION_SLUGS.map((slug) => ({
+      url: `${siteUrl}/solutions/${slug}`,
+      lastModified: SOLUTIONS_LAST_MODIFIED,
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    })),
     { url: `${siteUrl}/case-study`, lastModified: caseStudiesMax, changeFrequency: "monthly", priority: 0.8 },
     { url: `${siteUrl}/content-audit/sample`, lastModified: new Date("2026-09-27T00:00:00.000Z"), changeFrequency: "monthly", priority: 0.7 },
     { url: `${siteUrl}/methodology`, lastModified: STATIC_LAST_MODIFIED, changeFrequency: "monthly", priority: 0.7 },

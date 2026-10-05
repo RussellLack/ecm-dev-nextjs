@@ -8,9 +8,9 @@
  * catalogues).
  *
  * Only terms that are already published and agreed live here. Anything still
- * open (managed-package pricing and credit window, standalone trial projects,
- * the free audit's depth) is listed as an open decision in that doc and is
- * deliberately absent, so it cannot leak into public copy by accident.
+ * open (managed-package pricing and credit window, the free audit's depth)
+ * is listed as an open decision in that doc and is deliberately absent, so
+ * it cannot leak into public copy by accident.
  * Pricing changes go through code review, not a CMS edit.
  */
 
@@ -185,9 +185,34 @@ export function isPillar(v: string | null): v is Pillar {
   return v === "technology" || v === "services" || v === "localization";
 }
 
-export function enquiryHref(topic: EnquiryTopic, pillar?: Pillar): string {
+/** Buyer situations with a workflow-led solution page under /solutions.
+ * The full page records live in lib/workflowSolutions.ts; only the short
+ * labels sit here, so the client-side contact form can show "About: ..."
+ * without bundling every page's copy. */
+export const SOLUTION_CONTEXT = {
+  "export-manufacturers": "Export manufacturers",
+  "engineering-consultancies": "Engineering consultancies",
+  "saas-industrial-tech": "SaaS and industrial tech",
+  "maritime-suppliers": "Maritime suppliers",
+  "pe-backed-companies": "PE-backed B2B companies",
+  "professional-services": "Multi-market professional services",
+  "multilingual-industrial-teams": "Multilingual industrial teams",
+} as const;
+
+export type SolutionSlug = keyof typeof SOLUTION_CONTEXT;
+
+export function isSolutionSlug(v: string | null): v is SolutionSlug {
+  return !!v && Object.prototype.hasOwnProperty.call(SOLUTION_CONTEXT, v);
+}
+
+export function enquiryHref(
+  topic: EnquiryTopic,
+  pillar?: Pillar,
+  solution?: SolutionSlug
+): string {
   const params = new URLSearchParams({ offer: topic });
   if (pillar) params.set("pillar", pillar);
+  if (solution) params.set("solution", solution);
   return `/contact?${params.toString()}#contact`;
 }
 

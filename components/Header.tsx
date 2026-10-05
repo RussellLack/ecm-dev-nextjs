@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import ThemeToggle from "@/components/ThemeToggle";
+import { SOLUTION_CONTEXT, type SolutionSlug } from "@/lib/offers";
 
 /* ── Menu data ─────────────────────────────────────────────── */
 
@@ -21,6 +22,13 @@ const solutions = [
   { name: "Prepare Content for AI", href: "/solutions/prepare-content-for-ai" },
   { name: "Build a Marketing Operating System", href: "/solutions/build-a-marketing-operating-system" },
 ];
+
+/* Workflow-led pages by buyer situation (lib/workflowSolutions.ts). Short
+   labels from SOLUTION_CONTEXT, so the menu, hub and contact form agree. */
+const situations = (Object.keys(SOLUTION_CONTEXT) as SolutionSlug[]).map((slug) => ({
+  name: SOLUTION_CONTEXT[slug],
+  href: `/solutions/${slug}`,
+}));
 
 const services = [
   {
@@ -66,7 +74,7 @@ const insightsMore = [
 
 /* Flat menus for the mobile accordion */
 const mobileMenus = [
-  { name: "Solutions", href: "/solutions", children: [{ name: "Start with a problem", href: "/problems", heading: true }, ...problems, { name: "Explore by outcome", href: "/solutions", heading: true }, ...solutions] },
+  { name: "Solutions", href: "/solutions", children: [{ name: "Start with a problem", href: "/problems", heading: true }, ...problems, { name: "Start from your situation", href: "/solutions", heading: true }, ...situations, { name: "Explore by outcome", href: "/solutions", heading: true }, ...solutions] },
   { name: "Insights", href: "/briefings", children: [...briefings, ...insightsMore] },
   { name: "Services", href: "/content-operations", children: services },
 ];
@@ -149,6 +157,23 @@ export default function Header() {
                     ))}
                   </ul>
                 </div>
+              </div>
+              {/* By situation: full-width row, so the panel stays inside
+                  the viewport at the lg breakpoint */}
+              <div className="border-t border-white/10 px-7 pt-5 pb-6">
+                <p className={labelClass}>Start from your situation</p>
+                <ul className="grid grid-cols-2 gap-x-8 gap-y-1">
+                  {situations.map((s) => (
+                    <li key={s.href}>
+                      <Link
+                        href={s.href}
+                        className="block rounded-lg px-3 py-2 text-white text-sm hover:text-ecm-lime hover:bg-ecm-green transition-colors"
+                      >
+                        {s.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
               </div>
               {/* Services callout */}
               <Link

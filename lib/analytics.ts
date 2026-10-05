@@ -185,6 +185,9 @@ export type JourneyPillar = "technology" | "services" | "localization";
 export interface JourneyEventParams {
   offer: JourneyOffer | null;
   pillar: JourneyPillar | null;
+  /** Buyer situation from /solutions/<slug> (SOLUTION_CONTEXT keys in
+   * lib/offers.ts), else null. A fixed list, like offer and pillar. */
+  solution: string | null;
   source_page: string;
 }
 
@@ -199,6 +202,7 @@ export function pushJourneyEvent(
     event,
     offer: params.offer ?? null,
     pillar: params.pillar ?? null,
+    solution: params.solution ?? null,
     source_page: params.source_page ?? window.location.pathname,
   });
 }

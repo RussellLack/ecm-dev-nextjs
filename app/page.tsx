@@ -525,6 +525,12 @@ export default async function HomePage() {
               See all the problems we solve <span aria-hidden="true">&rarr;</span>
             </Link>
             <Link
+              href="/solutions#by-situation"
+              className="inline-flex items-center gap-1 text-heading font-barlow font-semibold text-sm hover:opacity-80 transition-opacity"
+            >
+              Start from your situation <span aria-hidden="true">&rarr;</span>
+            </Link>
+            <Link
               href={enquiryHref("first-project")}
               className="inline-flex items-center gap-1 text-heading font-barlow font-semibold text-sm hover:opacity-80 transition-opacity"
             >

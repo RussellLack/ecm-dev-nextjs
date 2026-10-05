@@ -1,6 +1,6 @@
 ---
 name: ecm-dev-analytics
-description: How ecm.dev measures visitors with Google Tag Manager (GTM-M7DKTZKC) and GA4 (G-33HFQC8STP), and how to change it with the least manual work for Russell. Use whenever a task touches ecm.dev tracking, such as adding or renaming a dataLayer event, wiring a new tag, trigger or variable in GTM, creating GA4 custom dimensions or key events, checking whether events arrive (Tag Assistant, DebugView, Realtime), consent or cookie-banner behaviour, the CSP or /gtm proxy, or "Tag Assistant could not connect", even if the user just says "is tracking working", "set up the analytics", "measure this CTA" or "why is GA4 empty". Not for building charts from GA4 data or for other sites' analytics.
+description: How ecm.dev measures visitors with Google Tag Manager (GTM-M7DKTZKC) and GA4 (G-5B9Q2WHCNL), and how to change it with the least manual work for Russell. Use whenever a task touches ecm.dev tracking, such as adding or renaming a dataLayer event, wiring a new tag, trigger or variable in GTM, creating GA4 custom dimensions or key events, checking whether events arrive (Tag Assistant, DebugView, Realtime), consent or cookie-banner behaviour, the CSP or /gtm proxy, or "Tag Assistant could not connect", even if the user just says "is tracking working", "set up the analytics", "measure this CTA" or "why is GA4 empty". Not for building charts from GA4 data or for other sites' analytics.
 ---
 
 # ecm.dev analytics (GTM + GA4)
