@@ -146,10 +146,9 @@ Container, Merge, **Overwrite conflicting**: this import is meant to change
 the existing `GA4 - commercial journey events` tag, so "Rename conflicting"
 would create a second tag and double-count every journey event. The preview
 should show one variable added and the tag modified, with the measurement ID
-still `G-5B9Q2WHCNL`. **GA4 (to do):** register `Solution` from `solution`
-as an Event-scoped custom dimension (Admin, Custom definitions). Dimensions
-do not backfill, so `solution` values collected before it exists will not
-appear in reports. To check the tag: on `/solutions/<slug>`, scroll to "A
+still `G-5B9Q2WHCNL`. **GA4: done, 5 October 2026.** `Solution` (from
+`solution`) is registered as an Event-scoped custom dimension. Dimensions do
+not backfill, so reports show `solution` values from 5 October onwards. To check the tag: on `/solutions/<slug>`, scroll to "A
 bounded first project" and confirm `offer_viewed` with `solution` in GA4
 Realtime (click the event name to see parameter values).
 
