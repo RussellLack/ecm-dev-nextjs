@@ -118,9 +118,31 @@ allows it; the push itself is harmless without either.
 | `offer_viewed` | An offer panel first scrolls into view, once per page view (`OfferViewTracker`) | `first-project` (homepage), `snapshot` (pillar first-step panel), `content-audit-tiers` (pillar pages, `/assessments`), `snapshot-sample` (`/content-audit/sample`) | the pillar page's key, else `null` |
 | `enquiry_submitted` | Contact form or audit-request form sent successfully | contact: the `?offer=` value if it is a known topic, else `general`; audit form: `audit-request` | contact: the `?pillar=` value if known, else `null` |
 
-Every event also carries `source_page` (the path). Values come from fixed
-lists (`JOURNEY_OFFER`, the pillar keys); nothing the visitor typed and no
+Every event also carries `source_page` (the path) and `solution`. Values
+come from fixed lists (`JOURNEY_OFFER`, the pillar keys, the
+`SOLUTION_CONTEXT` keys in `lib/offers.ts`); nothing the visitor typed and no
 assessment answers are ever sent.
+
+### `solution` parameter (October 2026)
+
+Added with the workflow-led solution pages (`/solutions/<slug>`, see
+`docs/SOLUTION-PAGES-2026-10-05.md`). It is `null` everywhere except:
+
+| Event | When `solution` is set |
+| --- | --- |
+| `offer_viewed` | The "A bounded first project" panel on a solution page scrolls into view: `offer = first-project`, `solution = <slug>` |
+| `enquiry_submitted` | The contact form was reached from a solution page CTA (`/contact?offer=first-project&solution=<slug>`) |
+
+Values: `export-manufacturers`, `engineering-consultancies`,
+`saas-industrial-tech`, `maritime-suppliers`, `pe-backed-companies`,
+`professional-services`, `multilingual-industrial-teams`.
+
+**GTM and GA4 (to do, about 5 minutes):** add a Data Layer Variable
+`DLV - solution` (name `solution`), add `solution = {{DLV - solution}}` to the
+`GA4 - commercial journey events` tag's parameters, publish, then register
+`Solution` from `solution` as an Event-scoped GA4 custom dimension the same
+day (dimensions do not backfill). Until then the parameter is pushed to the
+dataLayer but not forwarded, which is harmless.
 
 ### GTM and GA4 setup (to do in the container UI; not yet configured)
 

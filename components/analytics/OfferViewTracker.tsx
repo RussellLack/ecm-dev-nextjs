@@ -15,9 +15,12 @@ import {
 export default function OfferViewTracker({
   offer,
   pillar,
+  solution,
 }: {
   offer: JourneyOffer;
   pillar?: JourneyPillar;
+  /** Buyer situation key (SOLUTION_CONTEXT in lib/offers.ts). */
+  solution?: string;
 }) {
   const ref = useRef<HTMLSpanElement>(null);
 
@@ -27,7 +30,11 @@ export default function OfferViewTracker({
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries.some((e) => e.isIntersecting)) {
-          pushJourneyEvent("offer_viewed", { offer, pillar: pillar ?? null });
+          pushJourneyEvent("offer_viewed", {
+            offer,
+            pillar: pillar ?? null,
+            solution: solution ?? null,
+          });
           observer.disconnect();
         }
       },
@@ -35,7 +42,7 @@ export default function OfferViewTracker({
     );
     observer.observe(el);
     return () => observer.disconnect();
-  }, [offer, pillar]);
+  }, [offer, pillar, solution]);
 
   return <span ref={ref} aria-hidden="true" className="block h-px w-px" />;
 }

@@ -6,6 +6,7 @@ import ServicePage from "@/components/ServicePage";
 import PillarClusters from "@/components/PillarClusters";
 import ContentAuditTiers from "@/components/ContentAuditTiers";
 import FirstStepPanel from "@/components/FirstStepPanel";
+import FractionalLeadCard from "@/components/FractionalLeadCard";
 import LearnMoreSection from "@/components/LearnMoreSection";
 import JsonLd from "@/components/JsonLd";
 import { serviceSchema } from "@/lib/structuredData";
@@ -64,6 +65,9 @@ export default async function ContentOperationsPage() {
       />
 
       <ContentAuditTiers pillar="services" />
+
+      {/* Who leads the work, after the offers and before the explainers. */}
+      <FractionalLeadCard pillar="services" />
 
       <section className="relative py-20 bg-surface-alt">
         <div className="max-w-6xl mx-auto px-6">
