@@ -79,8 +79,8 @@ export async function generateMetadata(): Promise<Metadata> {
    an email first; see UNGATED_ASSESSMENT_SLUGS in lib/offers.ts).
    See docs/COMMERCIAL-JOURNEY-2026-09-27.md. */
 const fallbackHero = {
-  heading: "Content operations and AI readiness, without the hire.",
-  body: "A senior content partner for mid-market and owner-managed businesses that have outgrown ad hoc production. We diagnose the problem, build a working system and can take ongoing responsibility for it.",
+  heading: "Your organisation knows more than its marketing can use.",
+  body: "ECM.DEV turns scattered expertise, content and customer knowledge into a working system for marketing, sales and AI.",
   supportingLine: `Start with the free ${DEFAULT_TOOL.name}: about ${DEFAULT_TOOL.duration.replace(" min", " minutes")}, result on screen, no email needed. Then decide whether you need expert help.`,
 };
 
@@ -341,12 +341,14 @@ export default async function HomePage() {
 
   // Hero buttons. Literal for the same reason as the hero copy: the
   // primary action must go straight to the one tool the supporting line
-  // describes, not to a directory of mostly email-gated tools.
-  const heroCtaPrimaryLabel = "Start the free assessment";
+  // describes, not to a directory of mostly email-gated tools. The
+  // secondary used to fall back to Sanity's homePage.heroCta, which still
+  // held "Explore the guides" and shadowed this; both are now literal.
+  const heroCtaPrimaryLabel = "Find where it is breaking";
   const heroCtaPrimaryUrl = DEFAULT_TOOL.href;
   const heroCtaPrimaryNote = DEFAULT_TOOL.duration;
-  const heroCtaSecondaryLabel = homePage?.heroCta?.secondaryLabel || "See the work";
-  const heroCtaSecondaryUrl = homePage?.heroCta?.secondaryUrl || "/case-study";
+  const heroCtaSecondaryLabel = "See how we've done it";
+  const heroCtaSecondaryUrl = "/case-study";
 
   // Starting-points section headings.
   const pillarsHeading = "What is getting in your way?";
