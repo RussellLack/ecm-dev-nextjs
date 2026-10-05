@@ -162,5 +162,11 @@ export default defineType({
       type: "string",
       hidden: ({ document }) => !document?.featured,
     }),
+    defineField({
+      name: "seo",
+      title: "SEO",
+      type: "seo",
+      options: { collapsible: true, collapsed: true },
+    }),
   ],
 });

@@ -104,7 +104,7 @@ export async function generateMetadata({
   if (!cs) return { title: "Case Study | ECM.DEV" };
   return {
     title: `${cs.title} | ECM.DEV`,
-    description: cs.description?.slice(0, 160),
+    description: cs.seo?.metaDescription || cs.description?.slice(0, 160),
   };
 }
 
@@ -247,7 +247,7 @@ export default async function CaseStudyDetailPage({
                 <h2 className="text-heading font-barlow font-bold text-2xl mb-3">
                   Overview
                 </h2>
-                <p className="text-ink leading-relaxed text-base lg:text-lg">
+                <p className="text-ink leading-relaxed text-base lg:text-lg whitespace-pre-line">
                   {cs.description}
                 </p>
 
