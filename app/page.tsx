@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { SENIOR_PARTNER_LINE } from "@/lib/positioning";
 import ProofCard from "@/components/proof/ProofCard";
 import {
   ENGAGEMENTS_PATH,
@@ -295,8 +296,9 @@ const whyEcmDev = {
     "When content starts to matter, most businesses do one of two things. They hire someone, or they spread the work across whoever has time.",
     "Hiring is the tidier answer on paper. In practice it means recruiting, managing, and several months before the new person knows the organisation well enough to exercise the judgement you hired them for. Sharing the work out is quicker to start, but nobody owns the result, so each new person rebuilds what the last one left behind.",
   ],
-  closingLine:
-    "ECM.DEV sits between the two. The judgement stays with you from one month to the next instead of being hired again, and what gets built is a system your own team can run. When the question is AI readiness, the answer comes with evidence you could put in front of your board.",
+  closingLine: `ECM.DEV sits between the two. ${SENIOR_PARTNER_LINE}`,
+  followUp:
+    "The judgement stays with you from one month to the next instead of being hired again, and what gets built is a system your own team can run. When the question is AI readiness, the answer comes with evidence you could put in front of your board.",
 };
 
 const fallbackBlogPosts = [
@@ -918,8 +920,11 @@ export default async function HomePage() {
               {para}
             </p>
           ))}
-          <p className="text-heading font-barlow font-semibold text-base leading-relaxed">
+          <p className="text-heading font-barlow font-semibold text-base leading-relaxed mb-6">
             {whyEcmDev.closingLine}
+          </p>
+          <p className="text-ink text-base leading-relaxed">
+            {whyEcmDev.followUp}
           </p>
         </div>
       </section>
