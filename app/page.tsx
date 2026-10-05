@@ -93,32 +93,6 @@ const fallbackHero = {
    consistent description of each pillar wherever they meet it. See
    docs/CONTENT-PILLARS-POSITIONING.md and
    docs/SERVICE-CLARITY-AUDIT-2026-09-20.md. */
-/* Compact proof line under the hero. Three documented engagements linked
-   to their full case studies: the Nordic retail procurement case first,
-   as the featured case delivered independently through ECM.DEV (its
-   attribution says so), then the maritime platform and paints and coatings
-   cases. The seafood trade body case was taken off the homepage (here and
-   as a featured card) in October 2026; it remains at its own URL.
-   Clients are described by type, as on the case-study cards, and no outcome is claimed here that the
-   case study does not document. Most of this work was delivered as an
-   agency lead rather than through ECM.DEV, so the line says so; each case
-   study carries its own attribution. The count comes from Sanity in the
-   existing homepage query and is omitted if unavailable. */
-const proofItems = [
-  {
-    label: "Inventory platform selection for a Nordic retail group, through ECM.DEV",
-    href: "/case-study/inventory-optimisation-platform-selection-nordic-retail-group",
-  },
-  {
-    label: "A global digital platform for a maritime services group",
-    href: "/case-study/global-digital-platform-maritime-services-group",
-  },
-  {
-    label: "B2B product finding for a paints and coatings manufacturer",
-    href: "/case-study/digital-tools-for-product-selection-in-pim",
-  },
-];
-
 /* Cards lead with the buyer's problem; the pillar name stays visible as
    the eyebrow so the specialist discipline isn't lost. `entry` names only
    starting points that actually exist: the former "Starts with a
@@ -438,43 +412,6 @@ export default async function HomePage() {
           <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="var(--color-surface)" />
           </svg>
-        </div>
-      </section>
-
-      {/* ─── COMPACT PROOF ─── */}
-      <section aria-labelledby="proof-heading" className="bg-surface pt-10 pb-2">
-        <div className="max-w-5xl mx-auto px-6">
-          <div className="flex flex-col lg:flex-row lg:items-baseline gap-3 lg:gap-6 border-b border-surface-border pb-8">
-            <h2
-              id="proof-heading"
-              className="text-heading/70 font-barlow font-semibold text-xs tracking-[0.2em] uppercase whitespace-nowrap"
-            >
-              Selected work
-            </h2>
-            <div className="flex-1">
-              <ul className="flex flex-col sm:flex-row sm:flex-wrap gap-x-6 gap-y-2">
-                {proofItems.map((item) => (
-                  <li key={item.href}>
-                    <Link
-                      href={item.href}
-                      className="text-heading font-barlow font-semibold text-sm sm:text-base underline decoration-ecm-lime decoration-2 underline-offset-4 hover:opacity-80"
-                    >
-                      {item.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-              <p className="text-ink-muted text-xs mt-3">
-                Delivered as an agency lead and independently through ECM.DEV;
-                each case study says which.{" "}
-                <Link href="/case-study" className="underline hover:text-heading">
-                  {typeof homePage?.caseStudyCount === "number" && homePage.caseStudyCount > 0
-                    ? `See all ${homePage.caseStudyCount} case studies`
-                    : "See all case studies"}
-                </Link>
-              </p>
-            </div>
-          </div>
         </div>
       </section>
 
