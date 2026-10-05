@@ -93,32 +93,6 @@ const fallbackHero = {
    consistent description of each pillar wherever they meet it. See
    docs/CONTENT-PILLARS-POSITIONING.md and
    docs/SERVICE-CLARITY-AUDIT-2026-09-20.md. */
-/* Compact proof line under the hero. Three documented engagements linked
-   to their full case studies: the Nordic retail procurement case first,
-   as the featured case delivered independently through ECM.DEV (its
-   attribution says so), then the maritime platform and paints and coatings
-   cases. The seafood trade body case was taken off the homepage (here and
-   as a featured card) in October 2026; it remains at its own URL.
-   Clients are described by type, as on the case-study cards, and no outcome is claimed here that the
-   case study does not document. Most of this work was delivered as an
-   agency lead rather than through ECM.DEV, so the line says so; each case
-   study carries its own attribution. The count comes from Sanity in the
-   existing homepage query and is omitted if unavailable. */
-const proofItems = [
-  {
-    label: "Inventory platform selection for a Nordic retail group, through ECM.DEV",
-    href: "/case-study/inventory-optimisation-platform-selection-nordic-retail-group",
-  },
-  {
-    label: "A global digital platform for a maritime services group",
-    href: "/case-study/global-digital-platform-maritime-services-group",
-  },
-  {
-    label: "B2B product finding for a paints and coatings manufacturer",
-    href: "/case-study/digital-tools-for-product-selection-in-pim",
-  },
-];
-
 /* Cards lead with the buyer's problem; the pillar name stays visible as
    the eyebrow so the specialist discipline isn't lost. `entry` names only
    starting points that actually exist: the former "Starts with a
@@ -356,7 +330,7 @@ export default async function HomePage() {
   const heroCtaSecondaryUrl = "/case-study";
 
   // Starting-points section headings.
-  const pillarsHeading = "What is getting in your way?";
+  const pillarsHeading = "What's blocking progress today?";
   const pillarsSubhead =
     "We work across three pillars: Content Operations, Content Technology and Content Localisation. Start with whichever problem you recognise.";
 
@@ -409,7 +383,7 @@ export default async function HomePage() {
                 >
                   {heroCtaPrimaryLabel}
                   {heroCtaPrimaryNote && (
-                    <span className="ml-2 text-ecm-green/70 font-medium text-sm">{heroCtaPrimaryNote}</span>
+                    <span className="ml-2 text-ecm-green font-medium text-sm">{heroCtaPrimaryNote}</span>
                   )}
                 </Link>
                 {heroCtaSecondaryLabel && (
@@ -421,7 +395,7 @@ export default async function HomePage() {
                   </Link>
                 )}
               </div>
-              <p className="mt-4 text-white/70 text-sm">
+              <p className="mt-4 text-white/85 text-sm">
                 <Link href="/assessments" className="underline hover:text-ecm-lime">
                   Choose a different free tool
                 </Link>
@@ -438,43 +412,6 @@ export default async function HomePage() {
           <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="var(--color-surface)" />
           </svg>
-        </div>
-      </section>
-
-      {/* ─── COMPACT PROOF ─── */}
-      <section aria-labelledby="proof-heading" className="bg-surface pt-10 pb-2">
-        <div className="max-w-5xl mx-auto px-6">
-          <div className="flex flex-col lg:flex-row lg:items-baseline gap-3 lg:gap-6 border-b border-surface-border pb-8">
-            <h2
-              id="proof-heading"
-              className="text-heading/70 font-barlow font-semibold text-xs tracking-[0.2em] uppercase whitespace-nowrap"
-            >
-              Selected work
-            </h2>
-            <div className="flex-1">
-              <ul className="flex flex-col sm:flex-row sm:flex-wrap gap-x-6 gap-y-2">
-                {proofItems.map((item) => (
-                  <li key={item.href}>
-                    <Link
-                      href={item.href}
-                      className="text-heading font-barlow font-semibold text-sm sm:text-base underline decoration-ecm-lime decoration-2 underline-offset-4 hover:opacity-80"
-                    >
-                      {item.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-              <p className="text-ink-muted text-xs mt-3">
-                Delivered as an agency lead and independently through ECM.DEV;
-                each case study says which.{" "}
-                <Link href="/case-study" className="underline hover:text-heading">
-                  {typeof homePage?.caseStudyCount === "number" && homePage.caseStudyCount > 0
-                    ? `See all ${homePage.caseStudyCount} case studies`
-                    : "See all case studies"}
-                </Link>
-              </p>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -498,7 +435,7 @@ export default async function HomePage() {
                 params={{ pillar: pillar.pillarKey }}
                 className="group bg-ecm-green rounded-xl p-6 sm:p-8 border border-ecm-lime/20 flex flex-col hover:border-ecm-lime/50 transition-colors"
               >
-                <p className="text-ecm-lime/70 font-barlow font-semibold text-xs uppercase tracking-wide mb-2">
+                <p className="text-ecm-lime/90 font-barlow font-semibold text-xs uppercase tracking-wide mb-2">
                   {pillar.pillar}
                 </p>
                 <h3 className="text-ecm-lime font-barlow font-bold text-lg sm:text-xl mb-2">
@@ -507,7 +444,7 @@ export default async function HomePage() {
                 <p className="text-white/85 text-sm leading-relaxed mb-4 flex-1">
                   {pillar.blurb}
                 </p>
-                <p className="text-ecm-lime/70 font-barlow font-semibold text-xs uppercase tracking-wide">
+                <p className="text-ecm-lime/90 font-barlow font-semibold text-xs uppercase tracking-wide">
                   {pillar.entry}
                 </p>
                 <span className="mt-4 inline-flex items-center gap-1 text-ecm-lime font-barlow font-semibold text-sm group-hover:gap-2 transition-all">
@@ -576,7 +513,7 @@ export default async function HomePage() {
               >
                 <p
                   className={`font-barlow font-semibold text-xs uppercase tracking-wide mb-1 ${
-                    offer.featured ? "text-ecm-lime/70" : "text-heading/70"
+                    offer.featured ? "text-ecm-lime/90" : "text-heading/70"
                   }`}
                 >
                   {offer.label}
@@ -593,7 +530,7 @@ export default async function HomePage() {
                     <div key={term}>
                       <dt
                         className={`font-barlow font-semibold text-xs uppercase tracking-wide ${
-                          offer.featured ? "text-ecm-lime/80" : "text-heading"
+                          offer.featured ? "text-ecm-lime/90" : "text-heading"
                         }`}
                       >
                         {term}
@@ -758,7 +695,7 @@ export default async function HomePage() {
                 normal, unremarkable pattern in any color scheme. */}
             <div className="lg:col-span-3">
               <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mb-3">
-                <p className="text-ecm-lime/70 font-barlow font-semibold text-xs tracking-widest uppercase">
+                <p className="text-ecm-lime/90 font-barlow font-semibold text-xs tracking-widest uppercase">
                   {auditStrip.eyebrow}
                 </p>
                 {auditOfferOpen && (
@@ -792,7 +729,7 @@ export default async function HomePage() {
                   </span>
                 ))}
               </div>
-              <p className="text-white/70 text-sm leading-relaxed mt-5">
+              <p className="text-white/80 text-sm leading-relaxed mt-5">
                 {auditStrip.trustLine}
               </p>
             </div>
