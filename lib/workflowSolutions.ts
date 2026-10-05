@@ -13,8 +13,9 @@
  *  - Frame pains as situations the visitor may recognise, not diagnoses.
  *  - No prices, turnaround promises, percentage improvements or guarantees:
  *    scope, fee, timing and client involvement are agreed before work starts.
- *  - Evidence is existing, published case studies only, with their own
- *    attribution, and the relevance is the workflow, never "same sector".
+ *  - Evidence is existing, published case studies only. Each card links to
+ *    the case study, which carries the full attribution; the relevance is
+ *    the workflow, never "same sector".
  *  - No internal ICP numbers, hypotheses or research terms on the page.
  */
 
@@ -43,8 +44,6 @@ export interface SolutionProof {
   /** Published case-study slug, verified against Sanity. */
   slug: string;
   title: string;
-  /** Opening sentence of the case study's own `attribution` field. */
-  attribution: string;
   /** Why this work is relevant here: the workflow, not the sector. */
   relevance: string;
 }
@@ -91,9 +90,6 @@ export const SOLUTION_KIND_LABEL: Record<SolutionKind, string> = {
   situation: "Business situation",
   "operating-need": "Operating need",
 };
-
-/* Attribution sentences, quoted from each case study's published field. */
-const MW = "Delivered while employed at Making Waves (later NoA Ignite).";
 
 export const WORKFLOW_SOLUTIONS: WorkflowSolution[] = [
   /* ─── Export manufacturers ─── */
@@ -212,16 +208,12 @@ export const WORKFLOW_SOLUTIONS: WorkflowSolution[] = [
       {
         slug: "digital-tools-for-product-selection-in-pim",
         title: "Product-Finding Tools for a Global Paints & Coatings Manufacturer's B2B Website",
-        attribution:
-          "Delivered while employed at NoA Ignite, coordinating a content, design and platform team.",
         relevance:
           "A product-attribute model that let B2B buyers narrow a large range by their own application. Approved application answers rest on the same structured product facts.",
       },
       {
         slug: "digital-service-platform-building-materials-distributor",
         title: "Digital Service Platform for a Building Materials Distributor",
-        attribution:
-          "Delivered while employed at Making Waves (later NoA Ignite), as part of a multidisciplinary delivery team.",
         relevance:
           "A service platform that put estimating, tendering and project documentation into professional buyers' everyday work, drawing on product data across CMS, PIM and ERP. Approved application answers depend on the same connected product information.",
       },
@@ -347,14 +339,12 @@ export const WORKFLOW_SOLUTIONS: WorkflowSolution[] = [
       {
         slug: "growth-strategy-and-new-website",
         title: "Website Relaunch & Content Strategy for a Project Management Consultancy",
-        attribution: MW,
         relevance:
           "Moved a consultancy from unevenly written, single-language material to a bilingual site backed by a defined content system. Proposal material needs the same agreed source.",
       },
       {
         slug: "industrial-robots-website",
         title: "Core Website Copywriting for a Robotics & Automation Engineering Company",
-        attribution: "Delivered independently through his own consultancy.",
         relevance:
           "Translated deep technical capability into language an industrial buyer could act on, working directly with the engineers who held it.",
       },
@@ -478,15 +468,12 @@ export const WORKFLOW_SOLUTIONS: WorkflowSolution[] = [
       {
         slug: "inbound-marketing-strategy-energy-consultancy",
         title: "Demand Generation for a B2B Software Provider",
-        attribution: MW,
         relevance:
           "An inbound model connecting search, expert content and campaign paths to qualified sales leads, for a specialist software provider with technical buyers.",
       },
       {
         slug: "digital-demand-generation",
         title: "Digital Demand Generation for a Global Technology Manufacturer",
-        attribution:
-          "Delivered while at Making Waves (later NoA Ignite), as part of the multidisciplinary team supporting FLIR.",
         relevance:
           "Lead scoring and attribution reporting designed across marketing automation, analytics and CRM, so a technology manufacturer could see which enquiries turned into revenue.",
       },
@@ -608,8 +595,6 @@ export const WORKFLOW_SOLUTIONS: WorkflowSolution[] = [
       {
         slug: "global-digital-platform-maritime-services-group",
         title: "Global Customer Services Portal",
-        attribution:
-          "Led the strategy, design and delivery of Wilhelmsen's global digital platform while at Making Waves (later NoA Ignite).",
         relevance:
           "Replaced a site structured around business divisions with one built around customer needs and solutions, for a global maritime services group. A decision pack applies the same principle to a single sale.",
       },
@@ -731,15 +716,12 @@ export const WORKFLOW_SOLUTIONS: WorkflowSolution[] = [
       {
         slug: "esg-sustainability-content-strategy",
         title: "Unified Positioning for a Sustainability Reporting Firm",
-        attribution: "Delivered while employed at NoA Ignite.",
         relevance:
           "Unified the messaging across an advisory, an academy, a data platform and a recently combined specialist consultancy into one positioning. The closest match to a two-business offer.",
       },
       {
         slug: "marketing-technology-due-diligence",
         title: "Marketing Technology Due Diligence & Investment Strategy for a Private Equity Firm",
-        attribution:
-          "Delivered while employed at Making Waves (later NoA Ignite), working directly with Verdane Capital.",
         relevance:
           "Independent due diligence for a growth equity investor evaluating an acquisition. It shows familiarity with the investor's view of a business; it was not integration work.",
       },
@@ -861,15 +843,12 @@ export const WORKFLOW_SOLUTIONS: WorkflowSolution[] = [
       {
         slug: "cms-migration-to-episerver-nordic-training-company",
         title: "Website Copy & Customer Case Studies for a Scandinavian EdTech Company",
-        attribution:
-          "Delivered through Hubster, the content consultancy run by the people now behind ECM.DEV.",
         relevance:
           "Four interview-based case studies that gave a company evidence it could take into new partner markets. The same route runs from conversation to approved, reusable material.",
       },
       {
         slug: "ecm-governance-financial-services",
         title: "Content Strategy & Editorial Governance for a Nordic Pension & Insurance Group",
-        attribution: MW,
         relevance:
           "An editorial governance model to run a regulated organisation's content as one system, with clear owners and review.",
       },
@@ -992,16 +971,12 @@ export const WORKFLOW_SOLUTIONS: WorkflowSolution[] = [
       {
         slug: "content-localization-15-countrieslanguages",
         title: "Multilingual Content Operations for a National Seafood Trade Body",
-        attribution:
-          "Assignments from 2014 through 2020 were delivered while employed at Making Waves (later NoA Ignite), and recent assignments have been delivered directly, independent of any employer.",
         relevance:
           "Original English content moved into more than a dozen languages and published in the CMS, including time-critical material where every market had to say the same thing.",
       },
       {
         slug: "content-operations-transformation",
         title: "Content Operations Transformation",
-        attribution:
-          "Led a multidisciplinary editorial and technical team working with Visit Norway over several years, as a practice lead at Making Waves (later NoA Ignite).",
         relevance:
           "Multilingual publishing across 14 languages with editorial governance, for a national tourism platform over several years.",
       },
