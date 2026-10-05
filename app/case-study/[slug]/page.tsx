@@ -304,8 +304,12 @@ export default async function CaseStudyDetailPage({
                   </div>
                 )}
 
+                {/* A footnote, not part of the story: smaller and set off
+                    by a rule, but kept in the muted ink colour (not faded
+                    further) so it stays readable. It is the record that
+                    prior work was not ECM.DEV delivery, so it stays. */}
                 {cs.attribution && (
-                  <p className="mt-10 text-xs text-ink-muted leading-relaxed">
+                  <p className="mt-12 pt-4 border-t border-surface-border text-[11px] text-ink-muted leading-snug">
                     {cs.attribution}
                   </p>
                 )}
