@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { SENIOR_PARTNER_LINE } from "@/lib/positioning";
 import ProofCard from "@/components/proof/ProofCard";
 import {
   ENGAGEMENTS_PATH,
@@ -38,20 +39,23 @@ export async function generateMetadata(): Promise<Metadata> {
   // positioning copy goes through code review, not a CMS edit, so it
   // must render as written rather than be shadowed by a stale
   // seo.metaTitle/metaDescription value still sitting in Sanity.
-  const title = "ECM.DEV: Fractional Content Operations and AI Readiness";
+  // Aligned with the hero headline and subhead (5 October 2026). Passed
+  // as an absolute title below so the layout's "%s | ECM.DEV" template can
+  // never add a second suffix.
+  const title = "Your organisation knows more than its marketing can use | ECM.DEV";
   const description =
-    "ECM.DEV is a fractional content operations and AI-readiness service. Senior diagnosis, a working system, and ongoing ownership of it, without the salary or the ramp-up of an in-house hire.";
+    "ECM.DEV turns scattered expertise, content and customer knowledge into a working system for marketing, sales and AI. Start with one workflow.";
 
-  const ogTitle = "ECM.DEV: Fractional Content Operations and AI Readiness";
+  const ogTitle = "Your organisation knows more than its marketing can use";
   const ogDescription =
-    "The alternative to building a content function in-house: senior diagnosis, a working system, and ongoing ownership of it, without the salary or the year it takes a new hire to get up to speed.";
+    "ECM.DEV turns scattered expertise, content and customer knowledge into a working system for marketing, sales and AI.";
 
   const ogImage = seo.ogImage
     ? urlFor(seo.ogImage).width(1200).height(630).fit("crop").crop("center").url()
     : undefined;
 
   return {
-    title,
+    title: { absolute: title },
     description,
     alternates: { canonical: "/" },
     ...(seo.noIndex ? { robots: { index: false, follow: false } } : {}),
@@ -79,8 +83,8 @@ export async function generateMetadata(): Promise<Metadata> {
    an email first; see UNGATED_ASSESSMENT_SLUGS in lib/offers.ts).
    See docs/COMMERCIAL-JOURNEY-2026-09-27.md. */
 const fallbackHero = {
-  heading: "Content operations and AI readiness, without the hire.",
-  body: "A senior content partner for mid-market and owner-managed businesses that have outgrown ad hoc production. We diagnose the problem, build a working system and can take ongoing responsibility for it.",
+  heading: "Your organisation knows more than its marketing can use.",
+  body: "ECM.DEV turns scattered expertise, content and customer knowledge into a working system for marketing, sales and AI.",
   supportingLine: `Start with the free ${DEFAULT_TOOL.name}: about ${DEFAULT_TOOL.duration.replace(" min", " minutes")}, result on screen, no email needed. Then decide whether you need expert help.`,
 };
 
@@ -292,8 +296,9 @@ const whyEcmDev = {
     "When content starts to matter, most businesses do one of two things. They hire someone, or they spread the work across whoever has time.",
     "Hiring is the tidier answer on paper. In practice it means recruiting, managing, and several months before the new person knows the organisation well enough to exercise the judgement you hired them for. Sharing the work out is quicker to start, but nobody owns the result, so each new person rebuilds what the last one left behind.",
   ],
-  closingLine:
-    "ECM.DEV sits between the two. The judgement stays with you from one month to the next instead of being hired again, and what gets built is a system your own team can run. When the question is AI readiness, the answer comes with evidence you could put in front of your board.",
+  closingLine: `ECM.DEV sits between the two. ${SENIOR_PARTNER_LINE}`,
+  followUp:
+    "The judgement stays with you from one month to the next instead of being hired again, and what gets built is a system your own team can run. When the question is AI readiness, the answer comes with evidence you could put in front of your board.",
 };
 
 const fallbackBlogPosts = [
@@ -341,12 +346,14 @@ export default async function HomePage() {
 
   // Hero buttons. Literal for the same reason as the hero copy: the
   // primary action must go straight to the one tool the supporting line
-  // describes, not to a directory of mostly email-gated tools.
-  const heroCtaPrimaryLabel = "Start the free assessment";
+  // describes, not to a directory of mostly email-gated tools. The
+  // secondary used to fall back to Sanity's homePage.heroCta, which still
+  // held "Explore the guides" and shadowed this; both are now literal.
+  const heroCtaPrimaryLabel = "Find where it is breaking";
   const heroCtaPrimaryUrl = DEFAULT_TOOL.href;
   const heroCtaPrimaryNote = DEFAULT_TOOL.duration;
-  const heroCtaSecondaryLabel = homePage?.heroCta?.secondaryLabel || "See the work";
-  const heroCtaSecondaryUrl = homePage?.heroCta?.secondaryUrl || "/case-study";
+  const heroCtaSecondaryLabel = "See how we've done it";
+  const heroCtaSecondaryUrl = "/case-study";
 
   // Starting-points section headings.
   const pillarsHeading = "What is getting in your way?";
@@ -913,8 +920,11 @@ export default async function HomePage() {
               {para}
             </p>
           ))}
-          <p className="text-heading font-barlow font-semibold text-base leading-relaxed">
+          <p className="text-heading font-barlow font-semibold text-base leading-relaxed mb-6">
             {whyEcmDev.closingLine}
+          </p>
+          <p className="text-ink text-base leading-relaxed">
+            {whyEcmDev.followUp}
           </p>
         </div>
       </section>
