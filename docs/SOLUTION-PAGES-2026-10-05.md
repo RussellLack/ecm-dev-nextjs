@@ -64,7 +64,7 @@ Visit Norway.
 
 | # | Item | Handling |
 |---|---|---|
-| C1 | **O3 in `COMMERCIAL-JOURNEY-2026-09-27.md`** says a standalone trial project or pilot is "not offered". The brief makes a bounded first project the core of every page and states that a completed standalone project is a valid outcome. | Implemented per the brief (the newer decision). No price, duration or pilot product name is published; every page says scope, fee, timing and client involvement are agreed in writing first. **Russell to confirm O3 is now decided**, and update that doc. |
+| C1 | **O3 in `COMMERCIAL-JOURNEY-2026-09-27.md`** says a standalone trial project or pilot is "not offered". The brief makes a bounded first project the core of every page and states that a completed standalone project is a valid outcome. | Implemented per the brief (the newer decision). No price, duration or pilot product name is published; every page says scope, fee, timing and client involvement are agreed in writing first. **Confirmed by Russell, 5 October 2026:** the first-project framing replaces "not offered"; O3 closed in the commercial journey doc. |
 | C2 | The brief proposed `/solutions` as a new hub; it already existed with five Sanity outcome pages. | Kept both: situations first, outcomes second. Nothing removed or renamed, so no redirects needed. |
 | C3 | `/about` still says the free assessment leads to "a fixed-price build, usually delivered in one to two weeks, moving into a monthly retained service". This conflicts with the brief (no automatic retainer progression) and with D12 in the commercial journey doc. | Not changed (outside this brief). Flagged for a separate edit. |
 | C4 | The five Sanity outcome pages render titles as "… \| ECM.DEV \| ECM.DEV" because the layout template already appends the site name. | Fixed for the hub and the seven new pages only. |
@@ -93,7 +93,7 @@ delivery to Netlify, and GA4 receipt of `solution` (GTM step in `ANALYTICS.md`).
 
 ## 6. Left for Russell
 
-- Confirm C1 (pilot / first project, O3) and decide whether to edit `/about` (C3).
+- Decide whether to edit `/about` (C3). C1 (O3) is confirmed.
 - Read the seven pages for factual fit, especially the workflow steps and exceptions, which describe typical roles rather than any one client.
 - Add the `solution` variable and GA4 dimension in GTM (`ANALYTICS.md`).
 - Missing assets: no sector-specific maritime second case study, and no case study yet delivered through ECM.DEV for any of the seven situations. The pages say so implicitly through attribution; replace with direct work as it becomes publishable.

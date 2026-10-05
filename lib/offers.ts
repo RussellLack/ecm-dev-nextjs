@@ -8,8 +8,7 @@
  * catalogues).
  *
  * Only terms that are already published and agreed live here. Anything still
- * open (managed-package pricing and credit window, standalone trial projects,
- * the free audit's depth) is listed as an open decision in that doc and is
+ * open (managed-package pricing and credit window, the free audit's depth) is listed as an open decision in that doc and is
  * deliberately absent, so it cannot leak into public copy by accident.
  * Pricing changes go through code review, not a CMS edit.
  */
