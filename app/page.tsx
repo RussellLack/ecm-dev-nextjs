@@ -38,20 +38,23 @@ export async function generateMetadata(): Promise<Metadata> {
   // positioning copy goes through code review, not a CMS edit, so it
   // must render as written rather than be shadowed by a stale
   // seo.metaTitle/metaDescription value still sitting in Sanity.
-  const title = "ECM.DEV: Fractional Content Operations and AI Readiness";
+  // Aligned with the hero headline and subhead (5 October 2026). Passed
+  // as an absolute title below so the layout's "%s | ECM.DEV" template can
+  // never add a second suffix.
+  const title = "Your organisation knows more than its marketing can use | ECM.DEV";
   const description =
-    "ECM.DEV is a fractional content operations and AI-readiness service. Senior diagnosis, a working system, and ongoing ownership of it, without the salary or the ramp-up of an in-house hire.";
+    "ECM.DEV turns scattered expertise, content and customer knowledge into a working system for marketing, sales and AI. Start with one workflow.";
 
-  const ogTitle = "ECM.DEV: Fractional Content Operations and AI Readiness";
+  const ogTitle = "Your organisation knows more than its marketing can use";
   const ogDescription =
-    "The alternative to building a content function in-house: senior diagnosis, a working system, and ongoing ownership of it, without the salary or the year it takes a new hire to get up to speed.";
+    "ECM.DEV turns scattered expertise, content and customer knowledge into a working system for marketing, sales and AI.";
 
   const ogImage = seo.ogImage
     ? urlFor(seo.ogImage).width(1200).height(630).fit("crop").crop("center").url()
     : undefined;
 
   return {
-    title,
+    title: { absolute: title },
     description,
     alternates: { canonical: "/" },
     ...(seo.noIndex ? { robots: { index: false, follow: false } } : {}),
