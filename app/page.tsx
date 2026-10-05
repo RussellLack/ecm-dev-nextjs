@@ -83,11 +83,13 @@ const fallbackHero = {
    consistent description of each pillar wherever they meet it. See
    docs/CONTENT-PILLARS-POSITIONING.md and
    docs/SERVICE-CLARITY-AUDIT-2026-09-20.md. */
-/* Compact proof line under the hero. Four documented engagements linked
+/* Compact proof line under the hero. Three documented engagements linked
    to their full case studies: the Nordic retail procurement case first,
    as the featured case delivered independently through ECM.DEV (its
-   attribution says so), then one per pillar. Clients are described by
-   type, as on the case-study cards, and no outcome is claimed here that the
+   attribution says so), then the maritime platform and paints and coatings
+   cases. The seafood trade body case was taken off the homepage (here and
+   as a featured card) in October 2026; it remains at its own URL.
+   Clients are described by type, as on the case-study cards, and no outcome is claimed here that the
    case study does not document. Most of this work was delivered as an
    agency lead rather than through ECM.DEV, so the line says so; each case
    study carries its own attribution. The count comes from Sanity in the
@@ -104,10 +106,6 @@ const proofItems = [
   {
     label: "B2B product finding for a paints and coatings manufacturer",
     href: "/case-study/digital-tools-for-product-selection-in-pim",
-  },
-  {
-    label: "Thirteen years of localisation for a national seafood trade body",
-    href: "/case-study/content-localization-15-countrieslanguages",
   },
 ];
 
