@@ -108,9 +108,9 @@ export const WORKFLOW_SOLUTIONS: WorkflowSolution[] = [
     metaDescription:
       "Turn recurring application questions into approved answers with stated limits, so sales responds faster and engineering stops rewriting the same reply. Start with one product family.",
     secondaryCta: {
-      label: `Map one process: ${TOOLS.process.name}`,
-      href: TOOLS.process.href,
-      note: TOOLS.process.duration,
+      label: `Free self-check: ${TOOLS.expertise.name}`,
+      href: TOOLS.expertise.href,
+      note: TOOLS.expertise.duration,
     },
     pains: [
       {
@@ -238,9 +238,9 @@ export const WORKFLOW_SOLUTIONS: WorkflowSolution[] = [
     metaDescription:
       "Reduce the specialist time each proposal takes: approved project credentials, reusable approach components and a clear review process for one service.",
     secondaryCta: {
-      label: `Map one process: ${TOOLS.process.name}`,
-      href: TOOLS.process.href,
-      note: TOOLS.process.duration,
+      label: `Free self-check: ${TOOLS.expertise.name}`,
+      href: TOOLS.expertise.href,
+      note: TOOLS.expertise.duration,
     },
     pains: [
       {

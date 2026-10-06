@@ -88,6 +88,18 @@ const nextConfig = {
                       destination: "/case-study/content-operations-transformation",
                       permanent: true,
             },
+            {
+                      // Vizrt proposal, unpublished October 2026 (not delivered work).
+                      source: "/case-study/enterprise-website-redesign-and-new-customer-services-portal",
+                      destination: "/case-study",
+                      permanent: true,
+            },
+            {
+                      // Veidekke, unpublished October 2026.
+                      source: "/case-study/content-strategy-and-streamlined-cms-implementation",
+                      destination: "/case-study",
+                      permanent: true,
+            },
                 ];
     },
 
