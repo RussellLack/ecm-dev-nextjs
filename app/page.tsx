@@ -183,9 +183,9 @@ const auditStrip = {
      deadline is what closes the offer. Once the offer window (lib/auditOffer.ts)
      closes, the strip renders `paidOffer` below and the badge disappears. */
   introOffer: {
-    badge: `Free for audits requested by ${AUDIT_OFFER_COPY.deadlineLabel}`,
+    badge: `Free for Snapshots requested by ${AUDIT_OFFER_COPY.deadlineLabel}`,
     heading: "Why this one is free",
-    body: `This is a new service and it will normally be paid work. We are running it free of charge for audits requested by ${AUDIT_OFFER_COPY.deadlineLabel}, in exchange for a recommendation if the analysis turns out to be something you can use.`,
+    body: `This is a new service and it will normally be paid work. We are running it free of charge for Snapshots requested by ${AUDIT_OFFER_COPY.deadlineLabel}, in exchange for a short written recommendation if the analysis turns out to be something you can use.`,
     caveat: `This is a person reviewing your content, not the automated self-check. ${AUDIT_OFFER_COPY.capacity} If we are at capacity we will tell you when we can start rather than leave you waiting. If the findings are not useful, say so and we part on good terms: no recommendation, no invoice, no obligation either way.`,
   },
   /* Shown automatically once the introductory offer closes. No price here by
@@ -229,7 +229,7 @@ const firstProject = [
     label: "Expert-led first project",
     title: `${CONTENT_AUDIT.name}: ${CONTENT_AUDIT.snapshot.name}`,
     rows: [
-      ["You get", "A review of a real sample of your content, a 5 to 10 page report, your top five findings and a recorded readout."],
+      ["You get", "A review of a real sample of your content, the five problems costing you most with the evidence, a 5 to 10 page report and a recorded readout."],
       ["Commitment", `${CONTENT_AUDIT.snapshot.duration}. Access to a sample of your content.`],
       ["Fee", `${CONTENT_AUDIT.snapshot.price}, fixed scope. ${CONTENT_AUDIT.snapshot.credit}`],
       ["Boundary", "Diagnosis and priorities. Implementation is not included unless agreed separately."],

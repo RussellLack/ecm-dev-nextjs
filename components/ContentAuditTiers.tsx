@@ -1,4 +1,5 @@
 import Link from "next/link";
+import AuditFeeTable from "@/components/AuditFeeTable";
 import OfferViewTracker from "@/components/analytics/OfferViewTracker";
 import { JOURNEY_OFFER } from "@/lib/analytics";
 import { isAuditOfferOpen } from "@/lib/auditOffer";
@@ -16,7 +17,7 @@ import {
    docs/CONTENT-PILLARS-POSITIONING.md), so this lives as one component
    rather than three copy-pasted sections that could drift out of sync.
 
-   Currency: GBP, matching the UK-primary ICP. Every figure, duration and
+   Currency: EUR, the default for every price on the site. Every figure, duration and
    credit rule is read from lib/offers.ts, the same source the homepage and
    the pillar pages' first-step panel use, so none of them can drift apart.
    `pillar` only tags the enquiry link so /contact knows where the visitor
@@ -26,14 +27,14 @@ const tiers = [
     kicker: "First real proof",
     tier: CONTENT_AUDIT.snapshot,
     description:
-      "ecm-agent scans a genuine sample of your content: 10% of the estate, at least 50 items and at most 100. A report of 5 to 10 pages, your top five findings, and one or two shown actually failing in an AI answer. 45-minute recorded readout.",
+      "ecm-agent scans a sample of 50 to 100 items, about a tenth of your estate, and a consultant reviews the results. You get the five problems costing you most, ranked, each with the evidence, and one or two of them shown failing in a live AI answer about your business. A 5 to 10 page report and a 45-minute recorded readout.",
     note: CONTENT_AUDIT.snapshot.credit,
   },
   {
     kicker: "Full proof, board-ready",
     tier: CONTENT_AUDIT.full,
     description:
-      "Every finding family available, scored across your full content estate, and a board-ready report of 20 to 30 pages with a costed remediation roadmap. 90-minute stakeholder readout, plus two weeks of async Q&A.",
+      "Your whole content estate, up to 5,000 items. A 20 to 30 page report written for a board, with a remediation roadmap that has each step costed and sequenced. A 90-minute readout for your stakeholders, plus two weeks of follow-up questions answered in writing.",
     note: undefined as string | undefined,
   },
 ];
@@ -61,10 +62,8 @@ export default function ContentAuditTiers({ pillar }: { pillar?: Pillar }) {
         </p>
         {offerOpen && (
           <p className="text-center text-sm mb-10 max-w-2xl mx-auto bg-ecm-lime/10 border border-ecm-lime/30 rounded-2xl px-5 py-2.5 text-heading">
-            Audits requested by {AUDIT_OFFER_COPY.deadlineLabel} are
-            free, in exchange for a recommendation if the findings are
-            useful. {AUDIT_OFFER_COPY.capacity} The prices below are what
-            this becomes afterwards.
+            {AUDIT_OFFER_COPY.terms} {AUDIT_OFFER_COPY.capacity} The
+            Snapshot price below is what it becomes afterwards.
           </p>
         )}
         <div className="grid md:grid-cols-2 gap-6">
@@ -93,6 +92,9 @@ export default function ContentAuditTiers({ pillar }: { pillar?: Pillar }) {
               </Link>
             </div>
           ))}
+        </div>
+        <div className="max-w-2xl mx-auto">
+          <AuditFeeTable />
         </div>
         <details className="mt-8 max-w-2xl mx-auto rounded-xl border border-surface-border px-5 py-3 text-sm text-ink">
           <summary className="cursor-pointer text-heading font-barlow font-semibold">
