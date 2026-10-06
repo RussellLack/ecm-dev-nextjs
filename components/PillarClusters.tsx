@@ -22,13 +22,9 @@ type Pillar = "technology" | "services" | "localization";
 
 const HARDCODED_ASSESSMENT_LINKS: Record<Pillar, { title: string; href: string; subtitle: string }[]> = {
   technology: [],
-  services: [
-    {
-      title: "Lead Magnet Ideation Tool",
-      subtitle: "Find your best-fit lead magnet format and close capability gaps.",
-      href: "/assessment/lead-magnet",
-    },
-  ],
+  // Empty: the Sanity-authored assessments tagged to this pillar list
+  // themselves. The Lead Magnet Ideation Tool is no longer linked.
+  services: [],
   // Localisation Cost Estimator is deliberately not listed here: it
   // already gets top billing on this pillar page (a package card that
   // links straight to it, plus the closing CTA band), so a second,
