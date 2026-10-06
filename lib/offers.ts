@@ -122,29 +122,48 @@ export const CONTENT_AUDIT = {
   snapshot: {
     key: "snapshot",
     name: "Snapshot",
-    price: "£2,000 to £3,000",
+    price: "€2,000 to €3,000",
     duration: "5 to 7 business days",
-    scope: "a real sample of your estate: 10% of it, at least 50 items and at most 100",
+    scope: "a sample of 50 to 100 items, about a tenth of your estate",
+    audience: "For teams who suspect a problem and need proof before asking for budget.",
     outputs: [
-      "A 5 to 10 page report",
-      "Your top five findings",
-      "One or two findings shown actually failing in an AI answer",
+      "The five problems costing you most, ranked, each with the evidence",
+      "One or two of them shown failing in a live AI answer about your business",
+      "A 5 to 10 page report you can forward as it stands",
       "A 45-minute recorded readout",
     ],
-    credit: "100% credited toward a Full Estate Audit if you sign within 30 days.",
+    credit: "The full fee is credited against a Full Estate Audit if you sign within 30 days.",
   },
   full: {
     key: "full-estate-audit",
     name: "Full Estate Audit",
-    price: "£12,000 to £15,000",
+    price: "€12,000 to €15,000",
     duration: "3 to 4 weeks",
-    scope: "your whole content estate",
+    scope: "your whole content estate, up to 5,000 items",
+    audience: "For teams who have the mandate to fix it and need the plan and the numbers.",
     outputs: [
-      "A board-ready report of 20 to 30 pages",
-      "A costed remediation roadmap",
-      "A 90-minute stakeholder readout",
-      "Two weeks of async Q&A",
+      "A 20 to 30 page report written for a board",
+      "A remediation roadmap with each step costed and sequenced",
+      "A 90-minute readout for your stakeholders",
+      "Two weeks of follow-up questions answered in writing",
     ],
+  },
+  /** How a fee is fixed within each range. Approved by Russell,
+   * 6 October 2026. All prices on the site are in euros. */
+  pricing: {
+    intro: "The fee is fixed before we start. Three questions decide it:",
+    questions: [
+      "Is your content in more than one language?",
+      "Does it live in more than one system?",
+      "Is any of it subject to regulatory or safety sign-off?",
+    ],
+    rows: [
+      { answers: "None", snapshot: "€2,000", full: "€12,000" },
+      { answers: "One", snapshot: "€2,500", full: "€13,500" },
+      { answers: "Two or three", snapshot: "€3,000", full: "€15,000" },
+    ],
+    limits:
+      "These fees cover up to three languages and three systems, and estates up to 5,000 items for the Full Estate Audit. Beyond that we quote separately.",
   },
   vatNote: "All prices exclude VAT where applicable.",
   /** How estate size and the Snapshot sample are counted. Approved by
@@ -157,9 +176,9 @@ export const CONTENT_AUDIT = {
     notCounted:
       "Navigation, search results, tag and listing pages, images and video, pages that redirect elsewhere, and duplicates of the same content at a second address.",
     languages:
-      "Each language version is a separate item. A Snapshot covers one language, so only that language's items count.",
+      "Each language version is a separate item. A Snapshot covers up to three languages, and the sample is drawn across them.",
     sampleRule:
-      "Your estate is the number of countable items in that language. A Snapshot samples 10% of it, at least 50 items and at most 100. If you have fewer than 50 items, we review all of them.",
+      "Your estate is the number of countable items in the languages covered. A Snapshot samples 10% of it, at least 50 items and at most 100. If you have fewer than 50 items, we review all of them.",
   },
   /** Illustrative Snapshot report for a fictional company. */
   samplePath: "/content-audit/sample",
@@ -173,6 +192,9 @@ export const CONTENT_AUDIT = {
 export const AUDIT_OFFER_COPY = {
   deadlineLabel: "31 October",
   capacity: "We take on five at a time.",
+  /** The free offer applies to the Snapshot only. */
+  terms:
+    "Snapshots requested by 31 October are free, in exchange for a short written recommendation if the findings are useful.",
 } as const;
 
 /* ─── Contact-form context ─── */
