@@ -166,9 +166,11 @@ function GroupHeading({ id, step, title, body }: { id: string; step: string; tit
   );
 }
 
-/* The three bespoke tools, in the order a buyer is most likely to need them.
+/* The two bespoke estimators, in the order a buyer is most likely to need them.
    (The Process Assessment was retired in favour of the Sanity-authored
-   Expertise-to-Sales Check, which lists itself in the no-email group.)
+   Expertise-to-Sales Check, and the Lead Magnet Ideation Tool is unlisted
+   in favour of the Content-to-Pipeline Check. Both replacements list
+   themselves in the no-email group.)
    Copy is unchanged from the previous flat list. None is in
    UNGATED_ASSESSMENT_SLUGS, so all register an email before opening. */
 const GATED_TOOLS: ToolCardProps[] = [
@@ -196,18 +198,6 @@ const GATED_TOOLS: ToolCardProps[] = [
     detail: "Interactive model",
     href: TOOLS["localisation-estimator"].href,
     ctaLabel: "Open estimator",
-    ungated: false,
-  },
-  {
-    id: "lead-magnet",
-    title: TOOLS["lead-magnet"].name,
-    subtitle: "Find your best-fit lead magnet format and close the capability gaps holding you back.",
-    intro:
-      "Answer 13 questions about your market position, authority, and capabilities. Get three ranked lead magnet recommendations with specific topic ideas, a capability radar chart, and targeted gap-closing actions.",
-    duration: TOOLS["lead-magnet"].duration,
-    detail: "13 questions",
-    href: TOOLS["lead-magnet"].href,
-    ctaLabel: "Take assessment",
     ungated: false,
   },
 ];
