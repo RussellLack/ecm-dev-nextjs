@@ -1,0 +1,455 @@
+import { NextResponse } from "next/server";
+import { getSubmission, getMaturityBands, getServiceRecommendations } from "@/lib/assessment/queries";
+import { patchSubmissionRecord, type AssessmentSubmissionRecord } from "@/lib/submissions.server";
+import { guardSubmission } from "@/lib/submissionGuard";
+import { getCRMProvider, classifyIntent, SnovioCRMProvider } from "@/lib/assessment/crm";
+import { sendEmail } from "@/lib/postmark.server";
+
+// Blobs requires the Node runtime (not edge).
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
+/** Escape HTML special characters to prevent XSS in email templates */
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+export async function POST(request: Request) {
+  try {
+    const body = await request.json();
+
+    // Honeypot + CSRF + rate limit (5/min per IP)
+    const guard = await guardSubmission(request, body, {
+      rateLimit: { limit: 5, windowMs: 60_000 },
+    });
+    if (!guard.ok) return guard.response;
+
+    const {
+      submissionId,
+      email,
+      name,
+      consentGiven,
+      consentText,
+      consentVersion,
+    } = body;
+
+    if (!submissionId || !email) {
+      return NextResponse.json(
+        { error: "submissionId and email are required" },
+        { status: 400 }
+      );
+    }
+
+    // Consent gate — explicit opt-in required to receive the email AND to
+    // activate the contact in Snov.io. The checkbox is unchecked by default
+    // in the results UI; if it wasn't ticked we don't proceed.
+    if (consentGiven !== true) {
+      return NextResponse.json(
+        { error: "Consent is required to send the report email." },
+        { status: 400 }
+      );
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return NextResponse.json(
+        { error: "Invalid email address" },
+        { status: 400 }
+      );
+    }
+
+    // Fetch submission data
+    const submission = await getSubmission(submissionId);
+    if (!submission) {
+      return NextResponse.json(
+        { error: "Submission not found" },
+        { status: 404 }
+      );
+    }
+
+    // Fetch bands for full band info
+    const [bands, recommendations] = await Promise.all([
+      getMaturityBands(submission.assessment._id),
+      getServiceRecommendations(),
+    ]);
+
+    const band = bands.find(
+      (b: any) =>
+        submission.totalScore >= b.minScore && submission.totalScore <= b.maxScore
+    ) || bands[0];
+
+    // Map recommendations for weak areas
+    const weakAreas: string[] = submission.weakAreas || [];
+    const mappedRecs: Array<{
+      title: string;
+      summary: string;
+      dimensionTitle: string;
+    }> = [];
+
+    for (const dimKey of weakAreas) {
+      const matching = recommendations
+        .filter(
+          (r: any) =>
+            r.dimension?.key?.current === dimKey &&
+            submission.bandLevel <= (r.minBandLevel || 4)
+        )
+        .sort((a: any, b: any) => (a.priority || 0) - (b.priority || 0));
+
+      for (const rec of matching.slice(0, 2)) {
+        mappedRecs.push({
+          title: rec.title,
+          summary: rec.summary || "",
+          dimensionTitle:
+            submission.dimensionScores?.find((d: any) => d.dimensionKey === dimKey)
+              ?.dimensionTitle || dimKey,
+        });
+      }
+    }
+
+    // Update submission with email + consent audit trail (captures the lead)
+    const nowIso = new Date().toISOString();
+    const firstNameToStore = (name || submission.firstName || "").toString();
+    const [fnFirst, ...fnRest] = firstNameToStore.split(/\s+/);
+    const patch: Partial<AssessmentSubmissionRecord> = {
+      email,
+      firstName: firstNameToStore,
+      consent: {
+        given: true,
+        text: typeof consentText === "string" ? consentText : null,
+        version: typeof consentVersion === "string" ? consentVersion : null,
+        capturedAt: nowIso,
+      },
+    };
+    await patchSubmissionRecord(submissionId, patch).catch((err: unknown) =>
+      console.error("Failed to patch submission record with email:", err),
+    );
+
+    // ─── Activate in Snov.io (fire-and-forget) ───
+    // This is the real opt-in moment: the visitor has explicitly asked for
+    // the report and ticked the consent box. Failures are logged but do not
+    // block the email send.
+    const crm = getCRMProvider();
+    if (crm instanceof SnovioCRMProvider) {
+      // We only store the scoring fields Snov.io actually reads
+      // (totalScore / bandLevel / bandTitle / dimensionScores / weakAreas).
+      // The full ScoringResult type includes bandHeadline / bandColor /
+      // recommendations which aren't needed here — the unknown cast
+      // acknowledges the partial shape without leaking `any`.
+      const partialScoring = {
+        totalScore: submission.totalScore,
+        bandLevel: submission.bandLevel,
+        bandTitle: submission.bandTitle,
+        dimensionScores: submission.dimensionScores || [],
+        weakAreas: submission.weakAreas || [],
+      } as unknown as Parameters<typeof crm.syncSubmission>[0]["scoring"];
+
+      const intent = classifyIntent(partialScoring, submission.requestedContact || false);
+      void intent; // currently surfaced via customFields.intent inside syncSubmission
+
+      crm
+        .syncSubmission({
+          contact: {
+            firstName: fnFirst || "",
+            lastName: fnRest.join(" "),
+            email,
+            company: submission.company || "",
+            role: "",
+          },
+          scoring: partialScoring,
+          tracking: {},
+          assessmentTitle: submission.assessment?.title || "",
+          submissionId,
+          requestedContact: submission.requestedContact || false,
+        })
+        .then(() =>
+          patchSubmissionRecord(submissionId, {
+            activation: {
+              pushedToCrm: true,
+              pushedAt: new Date().toISOString(),
+              error: null,
+            },
+          }),
+        )
+        .catch((err: unknown) => {
+          console.error("Snov.io push failed (non-blocking):", err);
+          void patchSubmissionRecord(submissionId, {
+            activation: {
+              pushedToCrm: false,
+              pushedAt: new Date().toISOString(),
+              error: err instanceof Error ? err.message : String(err),
+            },
+          });
+        });
+    }
+
+    const firstName = name?.split(" ")[0] || "there";
+
+    // Title and band labels come from the assessment the submission belongs
+    // to, so a second Sanity-authored assessment gets its own report.
+    const reportTitle =
+      submission.assessment?.resultsIntro ||
+      (submission.assessment?.title
+        ? `Your ${submission.assessment.title} Result`
+        : "Your Content Operations Maturity Report");
+    const bandLabels = [...bands]
+      .sort((a: any, b: any) => a.level - b.level)
+      .map((b: any) => ({ level: b.level as number, label: b.title as string }));
+
+    const sendResult = await sendEmail({
+      to: email,
+      subject: `${reportTitle}: ${submission.totalScore}% (${band?.title || submission.bandTitle})`,
+      html: buildReportEmail({
+        firstName,
+        totalScore: submission.totalScore,
+        bandTitle: band?.title || submission.bandTitle || "",
+        bandHeadline: band?.headline || "",
+        bandDescription: band?.description || "",
+        bandColor: band?.color || "#6B7280",
+        bandLevel: submission.bandLevel,
+        bandLabels,
+        reportTitle,
+        dimensionScores: submission.dimensionScores || [],
+        weakAreas,
+        recommendations: mappedRecs,
+      }),
+    });
+
+    if (!sendResult.ok) {
+      if (sendResult.reason === "not_configured") {
+        return NextResponse.json({
+          success: true,
+          warning: "Email delivery skipped (no API key)",
+        });
+      }
+      return NextResponse.json(
+        { error: "Failed to send email. Please try again." },
+        { status: 500 }
+      );
+    }
+
+    return NextResponse.json({ success: true });
+  } catch (error: unknown) {
+    console.error("Report email error:", error);
+    return NextResponse.json(
+      { error: "Failed to generate report" },
+      { status: 500 }
+    );
+  }
+}
+
+// ─── Full Report Email HTML ───
+function buildReportEmail({
+  firstName,
+  totalScore,
+  bandTitle,
+  bandHeadline,
+  bandDescription,
+  bandColor,
+  bandLevel,
+  bandLabels,
+  reportTitle,
+  dimensionScores,
+  weakAreas,
+  recommendations,
+}: {
+  firstName: string;
+  totalScore: number;
+  bandTitle: string;
+  bandHeadline: string;
+  bandDescription: string;
+  bandColor: string;
+  bandLevel: number;
+  bandLabels: Array<{ level: number; label: string }>;
+  reportTitle: string;
+  dimensionScores: Array<{
+    dimensionKey: string;
+    dimensionTitle: string;
+    score: number;
+  }>;
+  weakAreas: string[];
+  recommendations: Array<{
+    title: string;
+    summary: string;
+    dimensionTitle: string;
+  }>;
+}) {
+  // Band level bar
+  const bandLevels =
+    bandLabels.length > 0
+      ? bandLabels
+      : [
+          { level: 1, label: "Ad Hoc" },
+          { level: 2, label: "Developing" },
+          { level: 3, label: "Structured" },
+          { level: 4, label: "Optimised" },
+        ];
+
+  const bandBar = bandLevels
+    .map(
+      (b) =>
+        `<td style="width:25%;text-align:center;padding:4px 2px;">
+          <div style="height:6px;border-radius:3px;background-color:${
+            b.level <= bandLevel ? bandColor : "#E5E5E5"
+          };margin-bottom:4px;"></div>
+          <span style="font-family:Helvetica,Arial,sans-serif;font-size:10px;color:${
+            b.level === bandLevel ? "#333333" : "#AAAAAA"
+          };">${b.label}</span>
+        </td>`
+    )
+    .join("");
+
+  // Dimension score rows
+  const dimensionRows = dimensionScores
+    .map((d) => {
+      const isWeak = weakAreas.includes(d.dimensionKey);
+      const barColor = isWeak ? "#D97706" : "#AAF870";
+      return `<tr>
+        <td style="padding:10px 0;border-bottom:1px solid #f0f0f0;">
+          <table width="100%" cellpadding="0" cellspacing="0">
+            <tr>
+              <td style="font-family:Helvetica,Arial,sans-serif;font-size:13px;color:#333;padding-bottom:4px;">
+                ${escapeHtml(d.dimensionTitle)}${isWeak ? ' <span style="color:#D97706;font-size:10px;font-weight:600;">Needs attention</span>' : ""}
+              </td>
+              <td style="font-family:Helvetica,Arial,sans-serif;font-size:13px;color:#333;text-align:right;font-weight:600;padding-bottom:4px;">
+                ${d.score}%
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <div style="width:100%;height:8px;background-color:#f0f0f0;border-radius:4px;overflow:hidden;">
+                  <div style="width:${d.score}%;height:8px;background-color:${barColor};border-radius:4px;"></div>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>`;
+    })
+    .join("");
+
+  // Recommendation cards
+  const recCards =
+    recommendations.length > 0
+      ? `<tr>
+        <td style="padding:0 40px 32px;">
+          <h3 style="margin:0 0 16px;font-family:Helvetica,Arial,sans-serif;font-size:16px;color:#333;font-weight:700;">Where to Focus Next</h3>
+          ${recommendations
+            .map(
+              (rec) => `<div style="background-color:#f9f9f9;border:1px solid #eee;border-radius:8px;padding:16px 20px;margin-bottom:12px;">
+              <p style="margin:0 0 2px;font-family:Helvetica,Arial,sans-serif;font-size:10px;color:#999;text-transform:uppercase;letter-spacing:1px;">${escapeHtml(rec.dimensionTitle)}</p>
+              <p style="margin:0 0 6px;font-family:Helvetica,Arial,sans-serif;font-size:14px;color:#1a1a2e;font-weight:600;">${escapeHtml(rec.title)}</p>
+              ${rec.summary ? `<p style="margin:0;font-family:Helvetica,Arial,sans-serif;font-size:12px;color:#666;line-height:1.5;">${escapeHtml(rec.summary)}</p>` : ""}
+            </div>`
+            )
+            .join("")}
+        </td>
+      </tr>`
+      : "";
+
+  return `<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1" /></head>
+<body style="margin:0;padding:0;background-color:#f4f4f4;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f4f4;padding:40px 20px;">
+    <tr><td align="center">
+      <table width="600" cellpadding="0" cellspacing="0" style="background-color:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+
+        <!-- Header -->
+        <tr>
+          <td style="background-color:#1a1a2e;padding:36px 40px;">
+            <p style="margin:0 0 6px;font-family:Helvetica,Arial,sans-serif;font-size:11px;color:#AAF870;text-transform:uppercase;letter-spacing:2px;font-weight:600;">ECM.DEV</p>
+            <h1 style="margin:0;font-family:Helvetica,Arial,sans-serif;font-size:22px;color:#ffffff;font-weight:700;">${escapeHtml(reportTitle)}</h1>
+          </td>
+        </tr>
+
+        <!-- Greeting -->
+        <tr>
+          <td style="padding:32px 40px 12px;">
+            <p style="margin:0;font-family:Helvetica,Arial,sans-serif;font-size:14px;color:#666;line-height:1.6;">
+              Hi ${escapeHtml(firstName)}, here is your personalised assessment report.
+            </p>
+          </td>
+        </tr>
+
+        <!-- Overall Score -->
+        <tr>
+          <td style="padding:20px 40px 8px;">
+            <table cellpadding="0" cellspacing="0">
+              <tr>
+                <td style="padding-right:24px;vertical-align:bottom;">
+                  <span style="font-family:Helvetica,Arial,sans-serif;font-size:60px;font-weight:700;color:${bandColor};line-height:1;">${totalScore}%</span>
+                </td>
+                <td style="vertical-align:bottom;padding-bottom:12px;">
+                  <span style="display:inline-block;padding:5px 14px;border-radius:20px;background-color:${bandColor};color:#1a1a2e;font-family:Helvetica,Arial,sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;">${escapeHtml(bandTitle)}</span>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Band Progress Bar -->
+        <tr>
+          <td style="padding:8px 40px 20px;">
+            <table width="100%" cellpadding="0" cellspacing="0">
+              <tr>${bandBar}</tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Band Description -->
+        ${bandHeadline || bandDescription ? `<tr>
+          <td style="padding:0 40px 24px;">
+            ${bandHeadline ? `<p style="margin:0 0 6px;font-family:Helvetica,Arial,sans-serif;font-size:15px;color:#1a1a2e;font-weight:600;">${escapeHtml(bandHeadline)}</p>` : ""}
+            ${bandDescription ? `<p style="margin:0;font-family:Helvetica,Arial,sans-serif;font-size:13px;color:#666;line-height:1.6;">${escapeHtml(bandDescription)}</p>` : ""}
+          </td>
+        </tr>` : ""}
+
+        <!-- Divider -->
+        <tr><td style="padding:0 40px;"><div style="height:1px;background-color:#eee;"></div></td></tr>
+
+        <!-- Dimension Scores -->
+        <tr>
+          <td style="padding:24px 40px 8px;">
+            <h3 style="margin:0 0 12px;font-family:Helvetica,Arial,sans-serif;font-size:16px;color:#333;font-weight:700;">Score by Dimension</h3>
+            <table width="100%" cellpadding="0" cellspacing="0">
+              ${dimensionRows}
+            </table>
+          </td>
+        </tr>
+
+        <!-- Spacing -->
+        <tr><td style="height:24px;"></td></tr>
+
+        <!-- Recommendations -->
+        ${recCards}
+
+        <!-- CTA -->
+        <tr>
+          <td style="padding:8px 40px 40px;text-align:center;">
+            <p style="margin:0 0 16px;font-family:Helvetica,Arial,sans-serif;font-size:13px;color:#666;">
+              Want to discuss your results and explore next steps?
+            </p>
+            <a href="https://ecm.dev/contact" style="display:inline-block;padding:14px 36px;background-color:#AAF870;color:#1a1a2e;font-family:Helvetica,Arial,sans-serif;font-size:14px;font-weight:700;text-decoration:none;border-radius:30px;">Talk to us</a>
+          </td>
+        </tr>
+
+        <!-- Footer -->
+        <tr>
+          <td style="background-color:#f9f9f9;padding:24px 40px;border-top:1px solid #eee;">
+            <p style="margin:0;font-family:Helvetica,Arial,sans-serif;font-size:11px;color:#999;text-align:center;">
+              ECM.DEV — Content Infrastructure for the AI Enterprise<br />
+              <a href="https://ecm.dev" style="color:#999;">ecm.dev</a>
+            </p>
+          </td>
+        </tr>
+
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>`;
+}
