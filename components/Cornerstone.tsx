@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { PortableText, type PortableTextComponents } from "@portabletext/react";
+import { enquiryHref } from "@/lib/offers";
 
 export interface CornerstoneData {
   title: string;
@@ -161,10 +162,10 @@ export default function Cornerstone({ data }: { data: CornerstoneData }) {
           </Link>
           <p className="mt-6">
             <Link
-              href="/contact"
+              href={enquiryHref("first-project")}
               className="text-white/80 font-barlow text-sm underline underline-offset-4 hover:text-ecm-lime transition-colors"
             >
-              or book a strategy session
+              or discuss a first project
             </Link>
           </p>
         </div>

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { toolDurationFor } from "@/lib/offers";
+import { enquiryHref, toolDurationFor } from "@/lib/offers";
 
 export interface SolutionPageData {
   title: string;
@@ -186,10 +186,10 @@ export default function SolutionPage({ data }: { data: SolutionPageData }) {
           </Link>
           <p className="mt-6">
             <Link
-              href="/contact"
+              href={enquiryHref("first-project")}
               className="text-white/80 font-barlow text-sm underline underline-offset-4 hover:text-ecm-lime transition-colors"
             >
-              or book a strategy session
+              or discuss a first project
             </Link>
           </p>
         </div>
