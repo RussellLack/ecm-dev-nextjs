@@ -20,6 +20,7 @@ export type Pillar = "technology" | "services" | "localization";
 
 export type ToolKey =
   | "maturity"
+  | "platform-check"
   | "cms-estimator"
   | "localisation-estimator"
   | "expertise"
@@ -32,6 +33,7 @@ export type ToolKey =
 export const UNGATED_ASSESSMENT_SLUGS: ReadonlySet<string> = new Set([
   "content-operations-maturity",
   "expertise-to-sales",
+  "platform-or-setup",
 ]);
 
 export const TOOLS: Record<
@@ -54,6 +56,16 @@ export const TOOLS: Record<
     duration: "5 min",
     ungated: true,
     result: "A maturity score across six dimensions, based on your own answers.",
+  },
+  // Step one for Content Technology: is it the platform, or how it was set
+  // up? Sanity-authored (slug "platform-or-setup"). The cost estimator
+  // below is step two, for when the answer is the platform.
+  "platform-check": {
+    name: "Platform or Setup Check",
+    href: "/assessment/platform-or-setup",
+    duration: "4 min",
+    ungated: true,
+    result: "A score across four areas showing how far your CMS problems come from setup and how far from the platform, based on your own answers.",
   },
   "cms-estimator": {
     name: "CMS Implementation Cost Estimator",
@@ -234,7 +246,7 @@ export const PILLAR_FIRST_STEP: Record<
   },
   technology: {
     question: "Which problems come from the platform, and which from how it is set up?",
-    tool: "cms-estimator",
+    tool: "platform-check",
   },
   localization: {
     question: "Which source and workflow issues are creating avoidable multilingual effort?",
