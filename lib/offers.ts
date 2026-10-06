@@ -24,7 +24,7 @@ export type ToolKey =
   | "cms-estimator"
   | "localisation-estimator"
   | "expertise"
-  | "lead-magnet";
+  | "pipeline";
 
 /** Assessment slugs that show their result without an email registration.
  * Read by app/assessment/[slug]/page.tsx (which skips AssessmentGate for
@@ -34,6 +34,7 @@ export const UNGATED_ASSESSMENT_SLUGS: ReadonlySet<string> = new Set([
   "content-operations-maturity",
   "expertise-to-sales",
   "platform-or-setup",
+  "content-to-pipeline",
 ]);
 
 export const TOOLS: Record<
@@ -90,12 +91,15 @@ export const TOOLS: Record<
     ungated: true,
     result: "A score across four areas showing how much of your experts' knowledge marketing and sales can use, based on your own answers.",
   },
-  "lead-magnet": {
-    name: "Lead Magnet Ideation Tool",
-    href: "/assessment/lead-magnet",
-    duration: "5 min",
-    ungated: false,
-    result: "Three ranked lead magnet formats with topic ideas and capability gaps.",
+  // Replaces the Lead Magnet Ideation Tool as the listed tool. Sanity-authored
+  // (slug "content-to-pipeline"). The Lead Magnet tool is unlinked, not
+  // removed: /assessment/lead-magnet still works, and the e2e suite uses it.
+  pipeline: {
+    name: "Content-to-Pipeline Check",
+    href: "/assessment/content-to-pipeline",
+    duration: "4 min",
+    ungated: true,
+    result: "A score across four areas showing how far your content connects to sales and what sales learns comes back, based on your own answers.",
   },
 };
 

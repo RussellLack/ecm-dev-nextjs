@@ -213,6 +213,15 @@ export default function ResultsDashboard({
       "Connections and running costs are tied to custom work, so every upgrade and every new system costs more than it should.",
     "pos-vendor":
       "Support, compliance or skills for this platform are at risk, so the timing of a decision may not be yours to choose.",
+    // Content-to-Pipeline Check
+    "c2p-buying-questions":
+      "Content is planned around campaigns and traffic, so it attracts readers without answering what buyers need to decide.",
+    "c2p-next-action":
+      "Readers have no fitting next step, so interest shows up as an email address with no sign of the problem behind it.",
+    "c2p-crm-handoff":
+      "Leads reach sales without context, so every conversation starts from scratch and good signals are lost on the way.",
+    "c2p-sales-learning":
+      "What sales hears never returns, so the next quarter's content is planned without knowing what moved or stalled deals.",
   };
 
   // Overall framing by band level, per assessment. The maturity copy is the
@@ -230,6 +239,12 @@ export default function ResultsDashboard({
       3: "Most of what your experts know can be used without them. The remaining cost is in upkeep: older versions in circulation, and areas that still depend on one person.",
       4: "Little is being lost today. The cost to watch is drift, as people, methods and standards change.",
     },
+  };
+  bandCostBySlug["content-to-pipeline"] = {
+    1: "At this level, content goes out and nothing comes back. Marketing cannot show what it contributes, and sales works without what content could tell it.",
+    2: "Marketing hands over a contact and the outcome disappears from its view. Effort is judged on traffic and downloads, which says little about what wins work.",
+    3: "Context reaches sales, but little of what sales learns returns to planning. The same objections keep meeting the same gaps in content.",
+    4: "Little is being lost today. The cost to watch is drift: the loop depends on habits that lapse when people or systems change.",
   };
   bandCostBySlug["platform-or-setup"] = {
     1: "Most of the friction you describe is built into the platform. Working around it costs developer time on every change, and that cost does not fall.",

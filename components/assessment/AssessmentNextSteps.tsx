@@ -48,18 +48,6 @@ const HARDCODED_TOOLS: Array<{
   pillars: Pillar[];
 }> = [
   {
-    slug: "lead-magnet",
-    title: "Lead Magnet Ideation Tool",
-    href: "/assessment/lead-magnet",
-    subtitle:
-      "Find your best-fit lead magnet format and close capability gaps.",
-    // Not tagged to a pillar: a content-marketing ideation tool, not part of
-    // Content Technology, Operations, or Localisation as currently scoped.
-    // Deliberately excluded from cross-linking so it doesn't get suggested
-    // as a "next step" from a pillar it has nothing to do with.
-    pillars: [],
-  },
-  {
     slug: "localisation-cost",
     title: "Localisation Cost Estimator",
     href: "/assessment/localisation-cost",

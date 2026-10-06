@@ -485,7 +485,7 @@ export const REPRESENTATIVE_ENGAGEMENTS: RepresentativeEngagement[] = [
         relevance: "A CRM-connected sales platform linking audience data, formats, pricing and sales contacts." },
     ],
     related: ["FP05", "FP08"],
-    startingPoint: tool("expertise"),
+    startingPoint: tool("pipeline"),
     homepage: {
       theme: "Pipeline",
       blurb: "Connect content, qualification, CRM context and sales feedback so marketing learns from real commercial conversations rather than stopping at traffic and leads.",
