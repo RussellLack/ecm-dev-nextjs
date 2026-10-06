@@ -203,7 +203,7 @@ export const REPRESENTATIVE_ENGAGEMENTS: RepresentativeEngagement[] = [
         relevance: "Content strategy for a large association of engineers and technologists." },
     ],
     related: ["FP05", "FP06"],
-    startingPoint: tool("process"),
+    startingPoint: tool("expertise"),
     homepage: {
       theme: "Knowledge",
       blurb: "Capture specialist knowledge once. Validate it properly. Reuse it across marketing, sales and AI-assisted workflows without repeatedly dragging experts back into production.",
@@ -485,7 +485,7 @@ export const REPRESENTATIVE_ENGAGEMENTS: RepresentativeEngagement[] = [
         relevance: "A CRM-connected sales platform linking audience data, formats, pricing and sales contacts." },
     ],
     related: ["FP05", "FP08"],
-    startingPoint: tool("process"),
+    startingPoint: tool("expertise"),
     homepage: {
       theme: "Pipeline",
       blurb: "Connect content, qualification, CRM context and sales feedback so marketing learns from real commercial conversations rather than stopping at traffic and leads.",
@@ -834,7 +834,7 @@ export const REPRESENTATIVE_ENGAGEMENTS: RepresentativeEngagement[] = [
         relevance: "An outsourced content desk: writing, translating, publishing and turning round time-critical material." },
     ],
     related: ["FP06", "FP02"],
-    startingPoint: tool("process"),
+    startingPoint: tool("expertise"),
   },
 
   /* ─── FP09 ─── */
