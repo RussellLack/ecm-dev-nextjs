@@ -578,8 +578,12 @@ function buildMaturityPdf(submission: any, band: any): Buffer {
   const pdf = new SimplePdf();
   pdf.startPage();
 
-  pdf.brand("ECM.DEV -- Content Maturity Assessment");
-  pdf.title("Your Maturity Results");
+  // Sanity-authored assessments share this builder, so the heading comes
+  // from the submission's own assessment (maturity wording is the fallback).
+  const assessmentTitle: string =
+    submission.assessment?.title || "Content Maturity Assessment";
+  pdf.brand(`ECM.DEV -- ${assessmentTitle}`);
+  pdf.title("Your Results");
   pdf.subtitle(
     [submission.firstName || "Anonymous", submission.company].filter(Boolean).join(" | ")
   );
@@ -596,7 +600,7 @@ function buildMaturityPdf(submission: any, band: any): Buffer {
   const bandColor = hexToColorStr(band?.color || "#6B7280");
 
   pdf.bigStat(`${submission.totalScore || 0}%`, "Total Score", bandColor);
-  pdf.bigStat(band?.title || submission.bandTitle || "--", "Maturity Band", bandColor);
+  pdf.bigStat(band?.title || submission.bandTitle || "--", "Band", bandColor);
 
   if (band?.headline) {
     pdf.space(4);
@@ -919,7 +923,12 @@ export async function GET(request: NextRequest) {
         ) || bands[0];
 
       pdfBuffer = buildMaturityPdf(submission, band);
-      filename = `ECM-Maturity-Assessment-${submission.firstName || sid.slice(0, 8)}.pdf`;
+      const slugPart =
+        submission.assessment?.slug?.current === "content-operations-maturity" ||
+        !submission.assessment?.slug?.current
+          ? "Maturity-Assessment"
+          : String(submission.assessment.slug.current).replace(/[^a-z0-9-]/gi, "");
+      filename = `ECM-${slugPart}-${submission.firstName || sid.slice(0, 8)}.pdf`;
     }
 
     return new NextResponse(new Uint8Array(pdfBuffer), {

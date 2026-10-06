@@ -188,9 +188,20 @@ export async function POST(request: Request) {
 
     const firstName = name?.split(" ")[0] || "there";
 
+    // Title and band labels come from the assessment the submission belongs
+    // to, so a second Sanity-authored assessment gets its own report.
+    const reportTitle =
+      submission.assessment?.resultsIntro ||
+      (submission.assessment?.title
+        ? `Your ${submission.assessment.title} Result`
+        : "Your Content Operations Maturity Report");
+    const bandLabels = [...bands]
+      .sort((a: any, b: any) => a.level - b.level)
+      .map((b: any) => ({ level: b.level as number, label: b.title as string }));
+
     const sendResult = await sendEmail({
       to: email,
-      subject: `Your Content Operations Maturity Report — ${submission.totalScore}% (${band?.title || submission.bandTitle})`,
+      subject: `${reportTitle}: ${submission.totalScore}% (${band?.title || submission.bandTitle})`,
       html: buildReportEmail({
         firstName,
         totalScore: submission.totalScore,
@@ -199,6 +210,8 @@ export async function POST(request: Request) {
         bandDescription: band?.description || "",
         bandColor: band?.color || "#6B7280",
         bandLevel: submission.bandLevel,
+        bandLabels,
+        reportTitle,
         dimensionScores: submission.dimensionScores || [],
         weakAreas,
         recommendations: mappedRecs,
@@ -237,6 +250,8 @@ function buildReportEmail({
   bandDescription,
   bandColor,
   bandLevel,
+  bandLabels,
+  reportTitle,
   dimensionScores,
   weakAreas,
   recommendations,
@@ -248,6 +263,8 @@ function buildReportEmail({
   bandDescription: string;
   bandColor: string;
   bandLevel: number;
+  bandLabels: Array<{ level: number; label: string }>;
+  reportTitle: string;
   dimensionScores: Array<{
     dimensionKey: string;
     dimensionTitle: string;
@@ -261,12 +278,15 @@ function buildReportEmail({
   }>;
 }) {
   // Band level bar
-  const bandLevels = [
-    { level: 1, label: "Ad Hoc" },
-    { level: 2, label: "Developing" },
-    { level: 3, label: "Structured" },
-    { level: 4, label: "Optimised" },
-  ];
+  const bandLevels =
+    bandLabels.length > 0
+      ? bandLabels
+      : [
+          { level: 1, label: "Ad Hoc" },
+          { level: 2, label: "Developing" },
+          { level: 3, label: "Structured" },
+          { level: 4, label: "Optimised" },
+        ];
 
   const bandBar = bandLevels
     .map(
@@ -342,7 +362,7 @@ function buildReportEmail({
         <tr>
           <td style="background-color:#1a1a2e;padding:36px 40px;">
             <p style="margin:0 0 6px;font-family:Helvetica,Arial,sans-serif;font-size:11px;color:#AAF870;text-transform:uppercase;letter-spacing:2px;font-weight:600;">ECM.DEV</p>
-            <h1 style="margin:0;font-family:Helvetica,Arial,sans-serif;font-size:22px;color:#ffffff;font-weight:700;">Content Operations Maturity Report</h1>
+            <h1 style="margin:0;font-family:Helvetica,Arial,sans-serif;font-size:22px;color:#ffffff;font-weight:700;">${escapeHtml(reportTitle)}</h1>
           </td>
         </tr>
 

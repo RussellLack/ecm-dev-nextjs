@@ -8,9 +8,9 @@
  * catalogues).
  *
  * Only terms that are already published and agreed live here. Anything still
- * open (managed-package pricing and credit window, the free audit's depth)
- * is listed as an open decision in that doc and is deliberately absent, so
- * it cannot leak into public copy by accident.
+ * open (managed-package pricing and credit window, standalone trial projects,
+ * the free audit's depth) is listed as an open decision in that doc and is
+ * deliberately absent, so it cannot leak into public copy by accident.
  * Pricing changes go through code review, not a CMS edit.
  */
 
@@ -22,7 +22,7 @@ export type ToolKey =
   | "maturity"
   | "cms-estimator"
   | "localisation-estimator"
-  | "process"
+  | "expertise"
   | "lead-magnet";
 
 /** Assessment slugs that show their result without an email registration.
@@ -31,6 +31,7 @@ export type ToolKey =
  * a "no email needed" label can never drift from the actual gate. */
 export const UNGATED_ASSESSMENT_SLUGS: ReadonlySet<string> = new Set([
   "content-operations-maturity",
+  "expertise-to-sales",
 ]);
 
 export const TOOLS: Record<
@@ -68,12 +69,14 @@ export const TOOLS: Record<
     ungated: false,
     result: "An indicative view of where multilingual spend goes, based on the inputs you declare.",
   },
-  process: {
-    name: "Process Assessment",
-    href: "/assessment/process",
-    duration: "10 to 15 min",
-    ungated: false,
-    result: "A map of one process with its blockers and ownership gaps.",
+  // Replaces the retired Process Assessment. Sanity-authored (slug
+  // "expertise-to-sales"); /assessment/process redirects here.
+  expertise: {
+    name: "Expertise-to-Sales Check",
+    href: "/assessment/expertise-to-sales",
+    duration: "4 min",
+    ungated: true,
+    result: "A score across four areas showing how much of your experts' knowledge marketing and sales can use, based on your own answers.",
   },
   "lead-magnet": {
     name: "Lead Magnet Ideation Tool",
@@ -185,34 +188,9 @@ export function isPillar(v: string | null): v is Pillar {
   return v === "technology" || v === "services" || v === "localization";
 }
 
-/** Buyer situations with a workflow-led solution page under /solutions.
- * The full page records live in lib/workflowSolutions.ts; only the short
- * labels sit here, so the client-side contact form can show "About: ..."
- * without bundling every page's copy. */
-export const SOLUTION_CONTEXT = {
-  "export-manufacturers": "Export manufacturers",
-  "engineering-consultancies": "Engineering consultancies",
-  "saas-industrial-tech": "SaaS and industrial tech",
-  "maritime-suppliers": "Maritime suppliers",
-  "pe-backed-companies": "PE-backed B2B companies",
-  "professional-services": "Multi-market professional services",
-  "multilingual-industrial-teams": "Multilingual industrial teams",
-} as const;
-
-export type SolutionSlug = keyof typeof SOLUTION_CONTEXT;
-
-export function isSolutionSlug(v: string | null): v is SolutionSlug {
-  return !!v && Object.prototype.hasOwnProperty.call(SOLUTION_CONTEXT, v);
-}
-
-export function enquiryHref(
-  topic: EnquiryTopic,
-  pillar?: Pillar,
-  solution?: SolutionSlug
-): string {
+export function enquiryHref(topic: EnquiryTopic, pillar?: Pillar): string {
   const params = new URLSearchParams({ offer: topic });
   if (pillar) params.set("pillar", pillar);
-  if (solution) params.set("solution", solution);
   return `/contact?${params.toString()}#contact`;
 }
 

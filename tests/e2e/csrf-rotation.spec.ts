@@ -152,7 +152,9 @@ test("/api/csrf keeps a valid existing token instead of rotating it", async ({ r
   expect(t3.split(".")).toHaveLength(2);
 });
 
-test("returning visitor: gate and tool mount together, late /api/csrf does not break the tool", async ({
+// FIXME: /assessment/process now redirects to the Sanity-authored
+// Expertise-to-Sales Check. Port this to another gated bespoke tool.
+test.fixme("returning visitor: gate and tool mount together, late /api/csrf does not break the tool", async ({
   page,
   baseURL,
 }) => {
@@ -209,7 +211,7 @@ test("new visitor: Results mount and a second tab do not break the first tab's P
   // Another tab on the same site fetches /api/csrf for its own forms.
   const other = await context.newPage();
   const otherCsrf = other.waitForResponse((r) => new URL(r.url()).pathname === "/api/csrf");
-  await other.goto("/assessment/process", { waitUntil: "domcontentloaded", timeout: 60_000 });
+  await other.goto("/assessment/lead-magnet", { waitUntil: "domcontentloaded", timeout: 60_000 });
   await otherCsrf;
   await other.close();
 

@@ -166,22 +166,12 @@ function GroupHeading({ id, step, title, body }: { id: string; step: string; tit
   );
 }
 
-/* The four bespoke tools, in the order a buyer is most likely to need them.
+/* The three bespoke tools, in the order a buyer is most likely to need them.
+   (The Process Assessment was retired in favour of the Sanity-authored
+   Expertise-to-Sales Check, which lists itself in the no-email group.)
    Copy is unchanged from the previous flat list. None is in
    UNGATED_ASSESSMENT_SLUGS, so all register an email before opening. */
 const GATED_TOOLS: ToolCardProps[] = [
-  {
-    id: "process",
-    title: TOOLS.process.name,
-    subtitle: "Map a key process, surface blockers and ownership gaps, and generate a pre-diagnostic brief.",
-    intro:
-      "Work through 6 focused sections covering process type, current state, ownership, pain points, and automation readiness. Your responses generate a structured brief your consultant reviews before your first call, so there is no need to repeat yourself.",
-    duration: TOOLS.process.duration,
-    detail: "6 sections",
-    href: TOOLS.process.href,
-    ctaLabel: "Take assessment",
-    ungated: false,
-  },
   {
     id: "cms-implementation",
     title: TOOLS["cms-estimator"].name,

@@ -246,7 +246,10 @@ test("a full assessment run sends nothing to Google Analytics or /gtm/", async (
   console.log(`analytics requests attempted and blocked: ${attempted.length}`);
 });
 
-test("process: qualify_lead follows the server's answer", async ({ page }) => {
+// FIXME: the Process Assessment is retired; /assessment/process redirects
+// to the Sanity-authored Expertise-to-Sales Check (covered by the
+// "sanity-authored" test). Remove with the Process tool code.
+test.fixme("process: qualify_lead follows the server's answer", async ({ page }) => {
   for (const qualified of [false, true]) {
     await page.context().clearCookies();
     await page.unrouteAll({ behavior: "ignoreErrors" });

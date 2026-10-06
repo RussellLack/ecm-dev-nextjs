@@ -105,6 +105,7 @@ export default async function ResultsPage({
         bandDescription={band?.description || ""}
         bandColor={band?.color || "#6B7280"}
         bandLevel={submission.bandLevel}
+        bands={bands.map((b: any) => ({ level: b.level, title: b.title }))}
         dimensionScores={submission.dimensionScores || []}
         weakAreas={weakAreas}
         recommendations={mappedRecs}

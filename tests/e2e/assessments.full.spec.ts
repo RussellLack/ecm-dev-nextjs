@@ -110,7 +110,10 @@ test("lead-magnet: register → complete → email results", async ({ page }) =>
 
 // ─── Process Assessment ─────────────────────────────────────────────────────
 
-test("process: register → complete → email results", async ({ page }) => {
+// FIXME: the Process Assessment is retired; /assessment/process redirects
+// to the Sanity-authored Expertise-to-Sales Check (covered by the
+// "sanity-authored" test). Remove with the Process tool code.
+test.fixme("process: register → complete → email results", async ({ page }) => {
   const recorder = await interceptSubmissions(page);
   const guard = attachConsoleGuard(page);
 
