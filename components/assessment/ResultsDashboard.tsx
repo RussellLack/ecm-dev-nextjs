@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useCsrf } from "@/lib/useCsrf";
 import { CONSENT_TEXT, CONSENT_VERSION } from "@/lib/consent";
 import type { DimensionScore, Recommendation } from "@/lib/assessment/types";
+import { enquiryHref } from "@/lib/offers";
 
 /** Assessments that get the post-results feedback prompt. */
 const FEEDBACK_ENABLED_SLUGS = new Set(["content-operations-maturity"]);
@@ -203,6 +204,15 @@ export default function ResultsDashboard({
       "Nobody owns the current answer, so old versions resurface in proposals and review stalls with no one to decide.",
     "e2s-using-it-in-sales":
       "Sales cannot answer technical questions without an expert, so responses are slow and marketing reads like any other firm's.",
+    // Platform or Setup Check (a low area score means the platform is the limit)
+    "pos-publishing":
+      "Routine changes depend on a developer or on rigid templates, so publishing waits and small edits become projects.",
+    "pos-structure":
+      "Content is locked into pages, so each new channel, language or AI use means copying or custom work.",
+    "pos-integration":
+      "Connections and running costs are tied to custom work, so every upgrade and every new system costs more than it should.",
+    "pos-vendor":
+      "Support, compliance or skills for this platform are at risk, so the timing of a decision may not be yours to choose.",
   };
 
   // Overall framing by band level, per assessment. The maturity copy is the
@@ -221,10 +231,26 @@ export default function ResultsDashboard({
       4: "Little is being lost today. The cost to watch is drift, as people, methods and standards change.",
     },
   };
+  bandCostBySlug["platform-or-setup"] = {
+    1: "Most of the friction you describe is built into the platform. Working around it costs developer time on every change, and that cost does not fall.",
+    2: "The platform is the main constraint, and setup problems add to it. Both cost you, but only one needs a migration to fix.",
+    3: "Most of the cost comes from setup and structure, which can be fixed in place for a fraction of what a migration costs.",
+    4: "The cost here comes from setup, not the platform. A migration would be an expensive way to carry the same problems to a new system.",
+  };
   const bandCost = bandCostBySlug[assessmentSlug] || maturityBandCost;
 
-  const weakDims = dimensionScores.filter((d) =>
-    weakAreas.includes(d.dimensionKey)
+  // Platform or Setup Check only: the score is the share of problems that
+  // point at setup, so bands 1 and 2 lead to costing a move and bands 3 and
+  // 4 lead to reviewing the setup first. The estimator is step two.
+  const isPlatformCheck = assessmentSlug === "platform-or-setup";
+  const platformLed = isPlatformCheck && bandLevel <= 2;
+
+  // For the Platform or Setup Check, only list an area as a cost when it
+  // really leans towards the platform (half or less of it points at setup).
+  const weakDims = dimensionScores.filter(
+    (d) =>
+      weakAreas.includes(d.dimensionKey) &&
+      (assessmentSlug !== "platform-or-setup" || d.score <= 50)
   );
   const topStep = recommendations[0];
   const otherSteps = recommendations.slice(1);
@@ -355,6 +381,54 @@ export default function ResultsDashboard({
         </div>
       </section>
 
+      {/* Platform or Setup Check: step two depends on the band */}
+      {isPlatformCheck && (
+        <section className="pb-16">
+          <div className="max-w-3xl mx-auto px-6">
+            <div className="bg-white/5 border border-white/10 rounded-2xl px-8 py-10">
+              <p className="text-ecm-lime font-barlow text-xs uppercase tracking-widest font-bold mb-2">
+                Step two
+              </p>
+              <h3 className="text-white font-barlow font-bold text-xl sm:text-2xl mb-2">
+                {platformLed
+                  ? "Cost the move."
+                  : "Review the setup before you cost anything."}
+              </h3>
+              <p className="text-white/70 font-barlow leading-relaxed mb-6 max-w-2xl">
+                {platformLed
+                  ? "Your answers point at the platform. The CMS Implementation Cost Estimator gives a three or five year cost range for a move, so the decision rests on a number. Fix any setup issues you named first, so they do not travel with you."
+                  : "Your answers point at how the platform was set up, not at the platform. A migration would carry those problems to a new system. Have the setup reviewed first. The estimator is there if you want the cost of a move for comparison."}
+              </p>
+              <div className="flex flex-col sm:flex-row gap-3">
+                {platformLed ? (
+                  <Link
+                    href="/assessment/cms-implementation"
+                    className="inline-flex items-center justify-center bg-ecm-lime text-ecm-green font-barlow font-bold px-8 py-3 rounded-full hover:bg-ecm-lime-hover transition-colors"
+                  >
+                    Open the cost estimator
+                  </Link>
+                ) : (
+                  <>
+                    <Link
+                      href="/content-technology"
+                      className="inline-flex items-center justify-center bg-ecm-lime text-ecm-green font-barlow font-bold px-8 py-3 rounded-full hover:bg-ecm-lime-hover transition-colors"
+                    >
+                      See how a setup review works
+                    </Link>
+                    <Link
+                      href="/assessment/cms-implementation"
+                      className="inline-flex items-center justify-center border border-ecm-lime/40 text-ecm-lime font-barlow font-semibold px-8 py-3 rounded-full hover:bg-ecm-lime/10 transition-colors"
+                    >
+                      Open the cost estimator anyway
+                    </Link>
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Your recommended next step */}
       {topStep && (
         <section className="pb-16">
@@ -372,11 +446,14 @@ export default function ResultsDashboard({
                 </p>
               )}
               <div className="flex flex-col sm:flex-row gap-3">
+                {/* The site promises no sales call. The expert-led next step
+                    is the fixed-scope Content Audit Snapshot, opened as a
+                    written enquiry, not a booked session. */}
                 <Link
-                  href="/contact"
+                  href={enquiryHref("snapshot")}
                   className="inline-flex items-center justify-center bg-ecm-lime text-ecm-green font-barlow font-bold px-8 py-3 rounded-full hover:bg-ecm-lime-hover transition-colors"
                 >
-                  Book a strategy session
+                  Discuss a Snapshot
                 </Link>
                 {topStep.serviceHref && (
                   <Link
@@ -695,18 +772,26 @@ export default function ResultsDashboard({
         <div className="max-w-3xl mx-auto px-6">
           <div className="bg-ecm-green-dark/60 border border-ecm-lime/15 rounded-2xl px-8 py-10 text-center">
             <h3 className="text-ecm-lime font-barlow font-bold text-2xl sm:text-3xl mb-3">
-              {ctaHeading || "Review your readout with us"}
+              {ctaHeading || "Want evidence from your own content?"}
             </h3>
             <p className="text-white/60 font-barlow mb-6 max-w-lg mx-auto">
               {ctaBody ||
-                "Bring this readout to a 30-minute strategy session. We'll talk through where your marketing operation is leaking time, cost, and quality, and what fixing it looks like. No pitch, no obligation."}
+                "This result comes from your own answers. A Content Audit Snapshot reviews a real sample of your content and shows what holds up in practice. Stopping here, or acting on this yourselves, is a legitimate outcome."}
             </p>
-            <Link
-              href="/contact"
-              className="inline-block bg-ecm-lime text-ecm-green font-barlow font-bold text-lg px-10 py-4 rounded-full hover:bg-ecm-lime-hover transition-colors"
-            >
-              Book a strategy session
-            </Link>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Link
+                href={enquiryHref("snapshot")}
+                className="inline-block bg-ecm-lime text-ecm-green font-barlow font-bold text-lg px-10 py-4 rounded-full hover:bg-ecm-lime-hover transition-colors"
+              >
+                Discuss a Snapshot
+              </Link>
+              <Link
+                href="/content-audit/sample"
+                className="text-ecm-lime font-barlow font-semibold underline hover:no-underline"
+              >
+                See a sample Snapshot report
+              </Link>
+            </div>
           </div>
         </div>
       </section>
