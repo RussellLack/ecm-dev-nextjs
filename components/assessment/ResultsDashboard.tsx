@@ -33,6 +33,10 @@ interface ResultsDashboardProps {
   bandDescription: string;
   bandColor: string;
   bandLevel: number;
+  /** This assessment's own bands (level + title), so the indicator shows
+   * the right labels for every Sanity-authored assessment. Falls back to
+   * the maturity labels when not supplied. */
+  bands?: Array<{ level: number; title: string }>;
   dimensionScores: DimensionScore[];
   weakAreas: string[];
   recommendations: Recommendation[];
@@ -51,6 +55,7 @@ export default function ResultsDashboard({
   bandDescription,
   bandColor,
   bandLevel,
+  bands,
   dimensionScores,
   weakAreas,
   recommendations,
@@ -158,38 +163,65 @@ export default function ResultsDashboard({
     }
   }
 
-  // Band level indicator dots
-  const bandLevels = [
-    { level: 1, label: "Ad Hoc" },
-    { level: 2, label: "Developing" },
-    { level: 3, label: "Structured" },
-    { level: 4, label: "Optimised" },
-  ];
+  // Band level indicator dots. Labels come from the assessment's own bands;
+  // the maturity labels are only a fallback.
+  const bandLevels =
+    bands && bands.length > 0
+      ? [...bands]
+          .sort((a, b) => a.level - b.level)
+          .map((b) => ({ level: b.level, label: b.title }))
+      : [
+          { level: 1, label: "Ad Hoc" },
+          { level: 2, label: "Developing" },
+          { level: 3, label: "Structured" },
+          { level: 4, label: "Optimised" },
+        ];
 
-  // Executive readout: translate the weakest dimensions into the commercial
-  // consequence a marketing leader actually feels. Keyed by dimension key.
+  // Executive readout: translate the weakest areas into the consequence a
+  // leader actually feels. Keyed by dimension key; keys are unique across
+  // assessments (the Expertise-to-Sales Check uses the "e2s-" prefix).
   const dimensionCost: Record<string, string> = {
+    // Content Operations Maturity Assessment
     strategy:
-      "Content isn't tied to business outcomes, so effort goes into work that can't be defended or measured.",
-    workflow:
-      "Every campaign waits on manual handoffs, so time-to-market slips and the team reworks instead of shipping.",
-    technology:
-      "The platforms you've paid for underperform, so licence spend outruns the value they return.",
+      "Content is not planned around the questions buyers ask, so effort goes into work that is hard to defend or measure.",
     governance:
-      "Quality and consistency depend on individuals, which is where exposure and rework accumulate as you scale.",
+      "Nobody owns the answer, so conflicting versions stay live and customers, and AI tools, repeat whichever they find first.",
+    workflow:
+      "Work waits at approvals and on the same few experts, so publishing is slow and the same knowledge is extracted again each time.",
+    technology:
+      "The platform is not set up for how you work, so content stays cut off from sales systems and each new language starts from scratch.",
     measurement:
-      "You can't connect content to pipeline or conversion, so budget gets defended on volume, not value.",
+      "Content and sales run apart, so you cannot show which content helps win work, and what customers ask never shapes what gets produced.",
     "ai-readiness":
-      "Content isn't structured for AI, so AI initiatives produce unreliable results and stall.",
+      "Content is hard for AI tools to find, date or trust, so what they say about you is incomplete, out of date or wrong.",
+    // Expertise-to-Sales Check
+    "e2s-where-it-lives":
+      "What wins you work sits with a few people, so it leaves when they do and every proposal starts from memory.",
+    "e2s-getting-it-out":
+      "Marketing and sales wait on the same few experts, who spend their time rewriting answers they have already given.",
+    "e2s-keeping-it-right":
+      "Nobody owns the current answer, so old versions resurface in proposals and review stalls with no one to decide.",
+    "e2s-using-it-in-sales":
+      "Sales cannot answer technical questions without an expert, so responses are slow and marketing reads like any other firm's.",
   };
 
-  // Overall commercial framing by maturity band.
-  const bandCost: Record<number, string> = {
-    1: "At this level, marketing runs on individual effort rather than a system. That caps how fast you can move and how much you can scale without adding people.",
-    2: "You have pockets of good practice, but the inconsistency between teams is where time, cost, and quality quietly leak.",
-    3: "The foundations are solid. The opportunity now is to turn a good operation into an integrated system that compounds, especially for AI.",
-    4: "You're operating at the frontier. The work now is consolidating the advantage and holding it as AI raises the bar.",
+  // Overall framing by band level, per assessment. The maturity copy is the
+  // default for any assessment without its own entry.
+  const maturityBandCost: Record<number, string> = {
+    1: "At this level, content runs on individual effort, not a system. That limits how fast you can move and how much you can produce without adding people.",
+    2: "You have pockets of good practice, but the inconsistency between teams is where time, cost and quality leak.",
+    3: "The foundations hold. The remaining cost is in reuse: across sales, across languages, and in what AI tools can find.",
+    4: "Little is being lost today. The cost to watch is drift: content going out of date as people, products and methods change.",
   };
+  const bandCostBySlug: Record<string, Record<number, string>> = {
+    "expertise-to-sales": {
+      1: "At this level, what your firm knows is only available when a particular person is. That slows every bid and enquiry, and puts the knowledge at risk when people move on.",
+      2: "The knowledge exists in writing, but finding it costs time on every proposal, and experts keep redoing work they have already done.",
+      3: "Most of what your experts know can be used without them. The remaining cost is in upkeep: older versions in circulation, and areas that still depend on one person.",
+      4: "Little is being lost today. The cost to watch is drift, as people, methods and standards change.",
+    },
+  };
+  const bandCost = bandCostBySlug[assessmentSlug] || maturityBandCost;
 
   const weakDims = dimensionScores.filter((d) =>
     weakAreas.includes(d.dimensionKey)
@@ -266,7 +298,7 @@ export default function ResultsDashboard({
                   }}
                 />
                 <span
-                  className={`font-barlow text-xs mt-1 ${
+                  className={`font-barlow text-xs mt-1 w-16 sm:w-24 text-center leading-tight ${
                     b.level === bandLevel ? "text-white" : "text-white/30"
                   }`}
                 >
@@ -313,7 +345,7 @@ export default function ResultsDashboard({
                         {dim.dimensionTitle}:
                       </span>{" "}
                       {dimensionCost[dim.dimensionKey] ||
-                        "This dimension is holding back marketing performance and is a priority to address."}
+                        "This is one of your weakest areas, and the first place to look."}
                     </span>
                   </li>
                 ))}

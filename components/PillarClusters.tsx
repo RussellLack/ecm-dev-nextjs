@@ -24,11 +24,6 @@ const HARDCODED_ASSESSMENT_LINKS: Record<Pillar, { title: string; href: string; 
   technology: [],
   services: [
     {
-      title: "Process Assessment",
-      subtitle: "Map a key process and surface blockers and ownership gaps.",
-      href: "/assessment/process",
-    },
-    {
       title: "Lead Magnet Ideation Tool",
       subtitle: "Find your best-fit lead magnet format and close capability gaps.",
       href: "/assessment/lead-magnet",

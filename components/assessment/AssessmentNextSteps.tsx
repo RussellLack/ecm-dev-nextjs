@@ -48,13 +48,6 @@ const HARDCODED_TOOLS: Array<{
   pillars: Pillar[];
 }> = [
   {
-    slug: "process",
-    title: "Process Assessment",
-    href: "/assessment/process",
-    subtitle: "Map a key process and surface blockers and ownership gaps.",
-    pillars: ["services"],
-  },
-  {
     slug: "lead-magnet",
     title: "Lead Magnet Ideation Tool",
     href: "/assessment/lead-magnet",
