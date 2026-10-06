@@ -17,9 +17,9 @@ const PILLAR_CTA: Record<
   { text: string; label: string; url: string }
 > = {
   technology: {
-    text: "See exactly what a CMS or platform migration would cost, and what it would save.",
-    label: "Open the CMS Implementation Cost Estimator",
-    url: "/assessment/cms-implementation",
+    text: "Find out whether your CMS problems come from the platform or from how it was set up, before anyone costs a migration.",
+    label: "Take the Platform or Setup Check",
+    url: "/assessment/platform-or-setup",
   },
   services: {
     text: "Score your content operation across six dimensions and see where it needs to go.",
