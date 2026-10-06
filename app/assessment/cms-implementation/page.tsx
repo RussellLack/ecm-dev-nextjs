@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import CmsImplementationClient from "@/components/assessment/cms-implementation/Client";
 import AssessmentNextSteps from "@/components/assessment/AssessmentNextSteps";
 import AssessmentGate from "@/components/assessment/AssessmentGate";
-import Link from "next/link";
-import { TOOLS } from "@/lib/offers";
 
 export const metadata: Metadata = {
   title: "CMS Implementation Cost Estimator | ECM.DEV",
@@ -21,20 +19,6 @@ export const metadata: Metadata = {
 export default function CmsImplementationAssessmentPage() {
   return (
     <>
-      {/* The estimator is step two. Anyone unsure a move is needed should
-          rule out a setup problem first. */}
-      <div className="bg-surface-alt border-b border-surface-border">
-        <p className="max-w-5xl mx-auto px-6 py-3 text-sm text-ink">
-          Not sure a move is needed?{" "}
-          <Link
-            href={TOOLS["platform-check"].href}
-            className="font-semibold text-heading underline hover:no-underline"
-          >
-            Take the {TOOLS["platform-check"].name} first
-          </Link>{" "}
-          ({TOOLS["platform-check"].duration}, no email needed).
-        </p>
-      </div>
       <AssessmentGate
         slug="cms-implementation"
         title="CMS Implementation Cost Estimator"

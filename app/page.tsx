@@ -114,7 +114,7 @@ const pillars = [
     href: "/content-technology",
     blurb:
       "Understand which problems come from the platform and which come from how it is set up, before anyone mentions a migration.",
-    entry: "Free platform check, or a Content Audit.",
+    entry: "Free cost estimator, or a Content Audit.",
   },
   {
     title: "Localisation costs keep growing.",
