@@ -22,7 +22,7 @@ export const SCENARIOS: Scenario[] = [
         size: "mid",
         industry: "manufacturing",
         region: "UK",
-        currency: "GBP",
+        currency: "EUR",
       },
       current: {
         platform: "wordpress",
@@ -61,7 +61,7 @@ export const SCENARIOS: Scenario[] = [
         size: "global",
         industry: "financial-services",
         region: "US",
-        currency: "USD",
+        currency: "EUR",
       },
       current: {
         platform: "adobe-aem",

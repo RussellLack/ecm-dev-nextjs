@@ -53,11 +53,9 @@ export default function CmsImplementationForm({ inputs, onChange, onReset }: Pro
           value={inputs.org.region}
           options={REGION_OPTIONS}
           onChange={(v) => {
-            const region = v as Region;
-            // Auto-default the currency on region change.
-            const currency: Currency =
-              region === "UK" ? "GBP" : region === "EU" ? "EUR" : "USD";
-            update("org", { region, currency });
+            // Region sets day rates only. The display currency stays in
+            // euros (the site default) unless the visitor changes it.
+            update("org", { region: v as Region });
           }}
         />
         <SelectRow
@@ -466,9 +464,9 @@ const REGION_OPTIONS = [
 ];
 
 const CURRENCY_OPTIONS = [
-  { value: "USD", label: "USD ($)" },
-  { value: "GBP", label: "GBP (£)" },
   { value: "EUR", label: "EUR (€)" },
+  { value: "GBP", label: "GBP (£)" },
+  { value: "USD", label: "USD ($)" },
 ];
 
 const CURRENT_PLATFORM_OPTIONS = [
