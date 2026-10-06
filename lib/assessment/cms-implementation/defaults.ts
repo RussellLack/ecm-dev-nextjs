@@ -9,7 +9,7 @@ export const DEFAULT_INPUTS: CmsImplementationInputs = {
     size: "mid",
     industry: "manufacturing",
     region: "UK",
-    currency: "GBP",
+    currency: "EUR",
   },
   current: {
     platform: "wordpress",
