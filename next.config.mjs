@@ -23,16 +23,6 @@ const nextConfig = {
     async redirects() {
           return [
             {
-                      // The Process Assessment is retired in favour of the
-                      // Sanity-authored Expertise-to-Sales Check. Exact path
-                      // only, so /assessment/process/results?sid=... links in
-                      // already-sent emails keep working. Temporary until the
-                      // replacement has proved itself.
-                      source: "/assessment/process",
-                      destination: "/assessment/expertise-to-sales",
-                      permanent: false,
-            },
-            {
                       // The Content Operations pillar page moved off its old
                       // /content-services URL so the route matches the label
                       // used everywhere else on the site (nav, footer, case
@@ -86,6 +76,18 @@ const nextConfig = {
             {
                       source: "/case-study/content-and-localization-services-for-national-tourism-portal",
                       destination: "/case-study/content-operations-transformation",
+                      permanent: true,
+            },
+            {
+                      // Vizrt proposal, unpublished October 2026 (not delivered work).
+                      source: "/case-study/enterprise-website-redesign-and-new-customer-services-portal",
+                      destination: "/case-study",
+                      permanent: true,
+            },
+            {
+                      // Veidekke, unpublished October 2026.
+                      source: "/case-study/content-strategy-and-streamlined-cms-implementation",
+                      destination: "/case-study",
                       permanent: true,
             },
                 ];
