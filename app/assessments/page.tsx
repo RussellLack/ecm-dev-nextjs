@@ -1,3 +1,4 @@
+import AuditFeeTable from "@/components/AuditFeeTable";
 import Link from "next/link";
 import {
   AUDIT_OFFER_COPY,
@@ -328,14 +329,12 @@ export default async function AssessmentsPage() {
             <GroupHeading
               id="expert"
               step="3 · Expert-led · fixed fee"
-              title="Evidence from your own content"
-              body={`When you need findings from your actual content estate rather than your own answers, the ${CONTENT_AUDIT.name} reviews it for you and a person writes up what it found.`}
+              title="What your content actually does when a buyer or an AI goes looking"
+              body={`The self-checks tell you where you think the gaps are. The ${CONTENT_AUDIT.name} tests your real content: whether it can be found, whether it can be trusted, and whether it can be reused by your own teams and by AI answer engines. A consultant reviews it and shows you where it fails, with examples from your own pages.`}
             />
             {offerOpen && (
               <p className="mb-6 text-sm text-heading bg-ecm-lime/10 border border-ecm-lime/30 rounded-2xl px-5 py-3 max-w-3xl">
-                Audits requested by {AUDIT_OFFER_COPY.deadlineLabel} are free, in
-                exchange for a recommendation if the findings are useful.{" "}
-                {AUDIT_OFFER_COPY.capacity}
+                {AUDIT_OFFER_COPY.terms} {AUDIT_OFFER_COPY.capacity}
               </p>
             )}
             <OfferViewTracker offer={JOURNEY_OFFER.auditTiers} />
@@ -353,6 +352,7 @@ export default async function AssessmentsPage() {
                   <p className="text-white/60 text-xs mb-4">
                     {tier.duration} · {tier.scope}
                   </p>
+                  <p className="text-white text-sm font-semibold mb-3">{tier.audience}</p>
                   <ul className="text-white/85 text-sm leading-relaxed mb-4 flex-1 space-y-1 list-disc list-inside">
                     {tier.outputs.map((o) => (
                       <li key={o}>{o}</li>
@@ -368,6 +368,7 @@ export default async function AssessmentsPage() {
                 </div>
               ))}
             </div>
+            <AuditFeeTable />
             <p className="text-ink text-sm mt-6 flex flex-wrap gap-x-6 gap-y-2">
               <Link href={CONTENT_AUDIT.samplePath} className="underline hover:text-heading">
                 See a sample Snapshot report
