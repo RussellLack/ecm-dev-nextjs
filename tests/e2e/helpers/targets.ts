@@ -17,9 +17,10 @@ export interface AssessmentTarget {
 }
 
 /** Bespoke assessment routes that are not Sanity documents. */
+// "process" is retired: /assessment/process redirects to the Sanity-authored
+// Expertise-to-Sales Check, which the sitemap discovery already covers.
 export const BESPOKE_SLUGS = [
   "lead-magnet",
-  "process",
   "localisation-cost",
   "cms-implementation",
 ] as const;
