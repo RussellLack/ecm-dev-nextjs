@@ -38,10 +38,6 @@ const PREVIEW_VIDEOS: Record<string, { src: string; dur: string }> = {
     src: "/assessment-previews/cms-implementation.mp4",
     dur: "35s",
   },
-  "content-operations-maturity": {
-    src: "/assessment-previews/content-operations-maturity.mp4",
-    dur: "64s",
-  },
 };
 
 /* ─── Icons (shared by every card) ─── */
