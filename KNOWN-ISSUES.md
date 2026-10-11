@@ -5,7 +5,38 @@ Tracks notable bugs (resolved and open) and the ongoing monitor list. See also
 
 ## Resolved
 
+### Slow page loads site-wide: nonce CSP forced per-request rendering (October 2026)
+
+**Status:** ✅ Resolved on branch `claude/gallant-pasteur-40d0pr` (see its PR).
+
+**Symptom:** Every page loaded slowly, even content that changes rarely.
+
+**Root cause:** `app/layout.tsx` (and `components/JsonLd.tsx`) read the
+per-request CSP nonce with `await headers()`. Reading request headers in the
+root layout opts the whole app into dynamic rendering, so every
+`export const revalidate = 3600` was ignored. Each visit ran a Netlify function
+(often cold) and live Sanity queries before sending the first byte, and every
+view cost a Sanity CDN request.
+
+**Fix:** The nonce is gone. The CSP is now a static header in
+`next.config.mjs` with `script-src 'self' 'unsafe-inline'` plus explicit hosts
+(`'strict-dynamic'` removed, since it needs a nonce and would disable
+`'unsafe-inline'`). `middleware.ts` is deleted. Pages are prerendered and
+served from the CDN with hourly ISR; results pages that use `force-dynamic`
+stay dynamic.
+
+**Trade-off (accepted):** without a nonce the CSP no longer blocks injected
+inline scripts. The site renders no user-generated HTML, so the risk is low.
+
+**Guardrail:** do not add `headers()`, `cookies()` or a nonce to the root
+layout or shared components. If hydration ever breaks, look for `script-src`
+CSP violations in the console first (a GTM tag loading from an unlisted host
+is the likely cause now that `'strict-dynamic'` is gone).
+
 ### Site-wide React hydration failure — CSP nonce mismatch (June 2026)
+
+> Superseded: the nonce and `middleware.ts` were removed in October 2026 (see
+> the entry above). Kept for history.
 
 **Status:** ✅ Resolved — commit `8d73f27` on `main`.
 

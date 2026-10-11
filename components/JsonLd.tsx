@@ -1,18 +1,13 @@
-import { headers } from "next/headers";
-
 /**
- * Server component that renders a Schema.org JSON-LD <script> with the
- * per-request CSP nonce. The site uses strict-dynamic CSP (see
- * middleware.ts) — without the nonce the browser would refuse to parse
- * the script element. Note: type="application/ld+json" is non-executable
- * data, but strict-dynamic still gates the <script> element itself.
+ * Server component that renders a Schema.org JSON-LD <script>.
+ * type="application/ld+json" is non-executable data, so the CSP's
+ * script-src does not block it and no nonce is needed. (Reading a nonce via
+ * headers() here would also force every page into per-request rendering.)
  */
-export default async function JsonLd({ data }: { data: unknown }) {
-  const nonce = (await headers()).get("x-nonce") ?? undefined;
+export default function JsonLd({ data }: { data: unknown }) {
   return (
     <script
       type="application/ld+json"
-      nonce={nonce}
       // JSON.stringify is safe here — the data comes from our own typed
       // builders in lib/structuredData.ts, not user input.
       dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}

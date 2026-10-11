@@ -30,8 +30,11 @@ Netlify. See `README.md` for testing details.
   `useCdn: true`, and ISR revalidate windows stay long (3600s). Uncached reads
   plus frequent rebuilds exhausted the monthly quota in July 2026 and blocked
   deploys.
-- **CSP nonce.** `middleware.ts` must set the same CSP on the request headers
-  as on the response, or Next.js can't stamp its hydration nonce and the whole
-  site loses interactivity.
+- **Static CSP, no nonce.** The CSP is a static header in `next.config.mjs`
+  (`script-src 'self' 'unsafe-inline'` plus listed hosts). Never reintroduce a
+  per-request nonce or read `headers()`/`cookies()` in the root layout or a
+  shared component: either makes every page render per request, bypassing ISR
+  and the CDN, which is what made the site slow until October 2026. There is no
+  `middleware.ts`. New external script hosts must be added to `script-src`.
 - All Sanity clients are server-only with `perspective: "published"`; there is
   no live/preview client.

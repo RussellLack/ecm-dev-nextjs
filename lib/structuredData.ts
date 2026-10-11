@@ -2,7 +2,7 @@
  * Schema.org JSON-LD builders.
  *
  * Each function returns a plain object that the JsonLd component
- * stringifies and injects as a nonce'd <script type="application/ld+json">.
+ * stringifies and injects as a <script type="application/ld+json">.
  *
  * Keep these PURE — no I/O, no React. Pages / queries fetch the source
  * data, builders just shape it.

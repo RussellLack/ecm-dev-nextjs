@@ -20,9 +20,9 @@ import { useEffect } from "react";
  *   components/Analytics.tsx (this file) consent-update bridge listening for
  *                            ecm:consent-granted / ecm:consent-denied
  *   components/CookieConsent.tsx  banner UI; dispatches the events above
- *   middleware.ts            per-request CSP with nonce + 'strict-dynamic'
- *   next.config.mjs          /gtm/* rewrites that proxy gtm.js, gtag/js and
- *                            the collect endpoint through our own origin
+ *   next.config.mjs          static CSP header (no nonce), plus /gtm/*
+ *                            rewrites that proxy gtm.js, gtag/js and the
+ *                            collect endpoint through our own origin
  *
  * ===========================================================================
  * TAG / PROPERTY IDs (ecm.dev)
@@ -71,14 +71,16 @@ import { useEffect } from "react";
  * If you change the default values, update both halves and the banner copy.
  *
  * ===========================================================================
- * CSP REQUIREMENTS (don't regress these in middleware.ts / next.config.mjs)
+ * CSP REQUIREMENTS (don't regress these in next.config.mjs)
  * ===========================================================================
  *
- *   script-src      MUST include 'strict-dynamic'. Without it, GTM's
- *                   container can't inject its child inline tags (GA4 config,
- *                   custom HTML, conversion pixels) and most tags silently
- *                   never fire. Symptom: console "Executing inline script
- *                   violates ... script-src" on js?id=GTM-M7DKTZKC.
+ *   script-src      MUST include 'unsafe-inline' and must NOT include
+ *                   'strict-dynamic' or a nonce ('strict-dynamic' makes
+ *                   browsers ignore 'unsafe-inline'). GTM's child inline tags
+ *                   (GA4 config, custom HTML) run under 'unsafe-inline'; any
+ *                   script a tag loads from a new vendor host needs that host
+ *                   listed. Symptom: console "Executing inline script /
+ *                   Loading the script ... violates ... script-src".
  *   style-src       must include https://www.googletagmanager.com (GTM
  *                   Preview's debug-badge stylesheet).
  *   img-src         must include https://*.google-analytics.com and
@@ -136,7 +138,7 @@ import { useEffect } from "react";
  *   2. Filter `gtm.js`. Does /gtm/js?id=GTM-M7DKTZKC return 200?
  *      - 4xx/5xx → proxy rewrite broken; check next.config.mjs.
  *      - missing → inline init isn't running; check the gtm-init <Script>
- *        in layout.tsx has the correct nonce and is in <head>.
+ *        in layout.tsx is in <head> and the console shows no CSP errors.
  *   3. Filter `gtag/js`. Does gtag/js?id=<MEASUREMENT_ID> return 200?
  *      - 404 → the measurement ID is dead at Google's CDN, almost always
  *        because the GA4 stream was deleted and re-created. Fix: in GA
@@ -153,7 +155,7 @@ import { useEffect } from "react";
  *      recent data. A "Data collection isn't active" warning means
  *      something upstream is broken (typically step 3).
  *   6. Console: any red CSP errors? If yes, the directive is named in the
- *      error — fix in middleware.ts.
+ *      error — fix in next.config.mjs.
  *   7. GTM container must be PUBLISHED. An unpublished container, or one
  *      where the GA4 tag's trigger doesn't match (we hit this with a
  *      "Consent Accepted" vs `consent_accepted` mismatch), will not fire
@@ -188,7 +190,7 @@ function updateConsent(value: ConsentValue) {
     });
 }
 
-export default function Analytics({ nonce: _nonce }: { nonce: string }) {
+export default function Analytics() {
     useEffect(() => {
           const onGranted = () => updateConsent("granted");
           const onDenied = () => updateConsent("denied");

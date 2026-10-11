@@ -13,9 +13,10 @@ In the ecm.dev tab that Tag Assistant opened, DevTools Network, filter `gtm.js`.
 
 ## 2. Is the CSP blocking it?
 
-Console: any "Content Security Policy" errors. The September 2026 fix added to
-`middleware.ts`: `www.googletagmanager.com` and `tagmanager.google.com` in
-script-src (fallback for browsers without `'strict-dynamic'`),
+Console: any "Content Security Policy" errors. The CSP now lives in
+`next.config.mjs` (static, no nonce, since October 2026). The September 2026
+fix added: `www.googletagmanager.com` and `tagmanager.google.com` in
+script-src,
 `tagmanager.google.com` in style-src, `data:` in font-src,
 `tagassistant.google.com` in connect-src. `frame-ancestors` already allows
 `tagassistant.google.com`.
@@ -28,7 +29,8 @@ the `window.opener` link Tag Assistant can use. Check in the console:
 
 In September 2026 Tag Assistant connected after fixes 1 and 2 alone, with COOP
 unchanged, so this was not the cause then. Only if 1 and 2 are clean and the
-check shows `null`: relax COOP to `unsafe-none` in `middleware.ts` only when
+check shows `null`: relax COOP to `unsafe-none` (this would need a new `middleware.ts`, which must
+not read or set a nonce) only when
 the request has `gtm_debug` or a `__TAG_ASSISTANT` cookie, and remove the
 static header from `next.config.mjs`. This is a security-header change: see
 "Security-sensitive code" in SKILL.md.

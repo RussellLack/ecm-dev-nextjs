@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Barlow } from "next/font/google";
-import { headers } from "next/headers";
 import Script from "next/script";
 import "./globals.css";
 import Header from "@/components/Header";
@@ -152,17 +151,14 @@ gtag('consent', 'default', {
                 })(window,document,'script','dataLayer','${GTM_ID}');
                                       `;
 
-export default async function RootLayout({
+// No per-request nonce and no headers() read here: either would make every
+// page render on every request instead of being served as static/ISR HTML
+// from the CDN. The CSP is static, in next.config.mjs.
+export default function RootLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-    // Consume the per-request x-nonce header set by middleware.ts. This also
-  // opts the whole app into dynamic rendering so Next.js stamps the nonce
-  // onto its own inline bootstrap script at request time. Without this,
-  // pages render statically at build time, no nonce reaches the HTML, and
-  const nonce = (await headers()).get("x-nonce") ?? "";
-
   return (
         <html lang="en" className={barlow.variable}>
           {/* Applies any stored light/dark choice before paint — must run
@@ -171,7 +167,6 @@ export default async function RootLayout({
                 <Script
                           id="theme-init"
                           strategy="beforeInteractive"
-                          nonce={nonce}
                           dangerouslySetInnerHTML={{ __html: themeInitScript }}
                         />
           {/*
@@ -182,7 +177,6 @@ export default async function RootLayout({
                 <Script
                           id="gtm-init"
                           strategy="beforeInteractive"
-                          nonce={nonce}
                           dangerouslySetInnerHTML={{ __html: gtmInitScript }}
                         />
                 <body className="antialiased">
@@ -196,7 +190,7 @@ export default async function RootLayout({
                                                 title="Google Tag Manager"
                                               />
                         </noscript>
-                        <Analytics nonce={nonce} />
+                        <Analytics />
                         {/* Sitewide Organization + WebSite JSON-LD. Individual
                                             pages layer additional Article / Service / Case Study
                                             schemas on top; these two carry the who-we-are triple
