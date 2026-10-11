@@ -16,7 +16,7 @@ import { organizationSchema, websiteSchema } from "@/lib/structuredData";
 // and serves from the same origin (no DNS lookup, no chained request).
 const barlow = Barlow({
     subsets: ["latin"],
-    weight: ["200", "300", "400", "500", "600", "700", "800"],
+    weight: ["300", "400", "500", "600", "700", "800"],
     display: "swap",
     variable: "--font-barlow",
 });
