@@ -44,19 +44,20 @@ Defined in `next.config.mjs`. Always use these in code — never reference
 | `/gtm/gtag` | GA4 `gtag.js` |
 | `/gtm/collect` | GA4 collect endpoint (`/g/collect`) |
 
-## CSP & Nonce
+## CSP
 
-`middleware.ts` generates a per-request nonce for the Content Security Policy.
-This nonce must be applied to the GTM init inline script. It is read from the
-`x-nonce` request header in `layout.tsx` and passed down through the component
-tree. **Do not add new inline scripts without also passing and applying the
-nonce.**
+The Content Security Policy is a static header defined at the top of
+`next.config.mjs`. There is no nonce and no `middleware.ts` (both removed in
+October 2026 because the nonce forced every page to render per request; see
+`KNOWN-ISSUES.md`). `script-src` is `'self' 'unsafe-inline'` plus an explicit
+host list, so inline scripts (the GTM init, GTM Custom HTML tags) run without a
+nonce.
 
-> The CSP (no `'unsafe-inline'` in `script-src`) is set on **both** the request
-> and response headers in `middleware.ts`. Next.js reads the nonce off the
-> *request* CSP header to stamp its own inline hydration scripts — if the CSP is
-> ever set on the response only, React stops hydrating site-wide. (See the
-> June 2026 hydration incident in `KNOWN-ISSUES`.)
+> `'strict-dynamic'` is gone, so scripts GTM loads are allowed **only** if
+> their host is in `script-src`. When adding a GTM tag that loads a script from
+> a new vendor host, add that host to `script-src` (and `connect-src` /
+> `img-src` / `frame-src` as needed) in `next.config.mjs`, or the tag is
+> CSP-blocked.
 
 ## Code Architecture
 
@@ -73,7 +74,7 @@ This is where GTM is initialised. Key elements:
   - `localStorage` consent check (reads prior user choice)
   - `gtag('consent', 'default', {...})` — sets consent defaults before GTM loads
   - GTM loader IIFE (loads via proxy `/gtm/js?id=GTM-M7DKTZKC`)
-- `<Script id="gtm-init" strategy="beforeInteractive" nonce={nonce}
+- `<Script id="gtm-init" strategy="beforeInteractive"
   dangerouslySetInnerHTML={{ __html: gtmInitScript }} />` — placed between the
   `<html>` and `<body>` tags
 - `<noscript>` GTM iframe fallback — placed inside `<body>`
@@ -86,7 +87,6 @@ This is a **consent bridge only** — it does **NOT** load GTM. It:
 - Updates GTM consent state via `window.gtag('consent', 'update', {...})` when
   those events fire
 - Returns `null` (no rendered output)
-- Accepts `{ nonce: _nonce }` prop (unused, kept for API compatibility)
 
 > **Critical rule:** Do not put `next/script` tags inside this component. In the
 > Next.js App Router, `Script` tags inside `"use client"` components are
@@ -295,9 +295,9 @@ Check: Look for duplicate GA4 config tags in the GTM container. Only one GA4
 configuration tag should exist.
 
 **Problem: CSP blocking GTM or GA4 scripts.**
-Check: Confirm the nonce is being passed to the GTM init `Script` tag. Confirm
-proxy routes are returning 200. Confirm the CSP is set on **both** the request
-and response headers in `middleware.ts` (see CSP & Nonce above).
+Check: Read the console's CSP violation message for the blocked host and add it
+to the matching directive in `next.config.mjs` (see CSP above). Confirm proxy
+routes are returning 200.
 
 **Problem: `qualify_lead` stopped appearing in GA4 after the bot check shipped.**
 Check: both Turnstile keys are set in Netlify for the production context and

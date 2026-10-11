@@ -34,13 +34,15 @@ yourself. Compensate by shrinking what he must do:
 
 ## How tracking is wired (so you change the right file)
 
-- **Loader:** `app/layout.tsx`, a nonced inline script that sets consent
+- **Loader:** `app/layout.tsx`, an inline script that sets consent
   defaults and loads `gtm.js` through the first-party proxy `/gtm/js`
   (rewrites in `next.config.mjs`). When the URL carries `gtm_debug`
   (Tag Assistant), it loads straight from `www.googletagmanager.com` instead,
   because Google rejects debug requests relayed from Netlify.
-- **CSP:** per-request, in `middleware.ts`, with a nonce and `'strict-dynamic'`,
-  set on both request and response (response-only breaks React hydration).
+- **CSP:** a static header in `next.config.mjs`, no nonce, no
+  `'strict-dynamic'` (a nonce made every page render per request and slowed
+  the site). A GTM tag that loads a script from a new vendor host needs that
+  host added to `script-src` there, or it is CSP-blocked.
 - **Consent:** `localStorage` key `ecm-cookie-consent`. Analytics storage is
   **granted by default** and denied only when the visitor clicks Decline; ad
   storage is granted only on Accept. So testing never requires declining, and
